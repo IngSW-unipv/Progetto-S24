@@ -65,13 +65,13 @@ public class WhPopUpUpdateComponentView {
 		 * CREAZIONE 2 SEZIONE
 		 */
 
-		dataPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
+		dataPanel = new JPanel();
+		dataPanel.setLayout(new GridLayout(1, 3, 10, 10));
 		cellPanel1 = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		cellPanel2 = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		cellPanel3 = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
 		dataPanel.setBackground(Color.BLACK);
-		dataPanel.setLayout(new GridLayout(1, 3, 10, 10));
 
 		id_c = new JTextField("ID COMPONENT");
 		wear = new JTextField("WEAR");
