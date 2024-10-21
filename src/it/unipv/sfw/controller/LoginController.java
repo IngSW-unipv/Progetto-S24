@@ -1,6 +1,5 @@
 package it.unipv.sfw.controller;
 
-import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
@@ -9,7 +8,6 @@ import java.awt.event.KeyListener;
 import it.unipv.sfw.exceptions.AccountNotFoundException;
 import it.unipv.sfw.exceptions.WrongPasswordException;
 import it.unipv.sfw.model.staff.Session;
-import it.unipv.sfw.model.staff.User.Type;
 import it.unipv.sfw.view.LoginView;
 
 /**
@@ -21,18 +19,20 @@ import it.unipv.sfw.view.LoginView;
 
 public class LoginController extends AbsController{
 	
+	
 	private void accedi() {
-		LoginView v = (LoginView) view;
+		LoginView logv =  (LoginView) view;
 		
 		// Try to login into session
 		//USERNAME = ID DELL'OPERATORE
 
 		try {
-			Session.getIstance().login(v.getUsernameField().getText().toLowerCase(),
-					v.getPasswordField().getPassword());
+			Session.getIstance().login(logv.getUsernameField().getText(),
+					logv.getPasswordField().getPassword());
 			
 		} catch (WrongPasswordException | AccountNotFoundException err) {
-			v.upError();
+			System.out.print(err);
+			logv.upError();
 			return;
 		}
 		
@@ -41,7 +41,7 @@ public class LoginController extends AbsController{
 		
 		case "MECCANICO":
 			ControllerManager.getInstance().loadController(TypeController.MECCANICO);
-			
+			System.out.println("Sono un meccanico");
 			break;
 		
 		case "STRATEGA":
@@ -66,7 +66,9 @@ public class LoginController extends AbsController{
 
 	@Override
 	public void initialize() {
+		System.out.println("Inizializzazione di LoginController - @LOGINCONTROLLER");
 		LoginView v = new LoginView();
+		System.out.println("LoginView inizializzata. - @LOGINCONTROLLER");
 
 		v.getPasswordField().setFocusTraversalKeysEnabled(false);
 		v.getPasswordField().addKeyListener(new KeyListener() {
@@ -99,5 +101,13 @@ public class LoginController extends AbsController{
 		
 		view = v;
 	}
+
+	@Override
+	public void onLoad() {
+		// TODO Auto-generated method stub
+		view.onLoad();
+	}
+	
+	
 
 }
