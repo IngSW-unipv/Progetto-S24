@@ -2,10 +2,12 @@ package it.unipv.sfw.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
-import java.awt.Component; 
+import java.awt.Component;
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.swing.JFrame;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTable;
@@ -15,7 +17,7 @@ import it.unipv.sfw.model.component.Components;
 
 public class McGraphicAllComponentView {
 
-	private Set<Components> components;
+	//private Set<Components> components;
 
 	private JFrame frame;
 	
@@ -27,16 +29,17 @@ public class McGraphicAllComponentView {
 
 	public McGraphicAllComponentView(Set<Components> components) {
 
-		this.components = components;
+		//this.components = components;
 
 		frame = new JFrame("COMPONENT");
 		frame.setSize(300, 200);
 		frame.setBackground(Color.BLACK);
 		frame.setLayout(new BorderLayout());
+		frame.setLocationRelativeTo(null); // Questo centra la finestra sullo schermo
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		mainPanel = new JPanel();
-
+        
 		String[] column = { "ID", "NAME", "WEAR" };
 		
 		// Converto il set in Object perchè il costruttore della table lo pretende
