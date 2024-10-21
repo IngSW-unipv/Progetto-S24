@@ -1,13 +1,14 @@
 package it.unipv.sfw.model.staff;
 
 import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Set;
 
-import it.unipv.sfw.dao.mysql.UserDAO;
+import it.unipv.sfw.dao.DAOFactory;
 import it.unipv.sfw.exceptions.AccountNotFoundException;
 import it.unipv.sfw.exceptions.WrongPasswordException;
 import it.unipv.sfw.model.component.Components;
-import it.unipv.sfw.model.request.Request;
 import it.unipv.sfw.model.vehicle.Vehicle;
 
 public class Session {
@@ -43,6 +44,9 @@ public class Session {
 	// session
 	private Session() {
 		currentUser = null;
+		c = new HashSet<>();
+		tps = new ArrayList<>();
+		v = new Vehicle(msn);
 	}
 
 	/**
@@ -60,32 +64,35 @@ public class Session {
 
 	public void login(String id, char[] pwd) throws AccountNotFoundException, WrongPasswordException {
 
-		Staff user = UserDAO.selectByID(id);
-
 		String strPwd = new String(pwd);
+		
+		Staff user = DAOFactory.createUserDAO().selectById(id);
+
 		if (user == null)
 			throw new AccountNotFoundException(id);
 
 		if (!user.getPwd().equals(strPwd))
 			throw new WrongPasswordException(strPwd);
+		System.out.println(user.getType());
 
 		// SWITCH
 		switch ("" + user.getType()) {
 
-		case "Meccanico":
+		case "MECCANICO":
 			Meccanico mc = (Meccanico) user;
 			this.setCurrentUser(user);
 
 			break;
 
-		case "Stratega":
+		case "STRATEGA":
 			Stratega stg = (Stratega) user;
 			this.setCurrentUser(user);
 
 			break;
 
-		case "Magazziniere":
+		case "MAGAZZINIERE":
 			Magazziniere mg = (Magazziniere) user;
+			
 			this.setCurrentUser(user);
 
 			break;
