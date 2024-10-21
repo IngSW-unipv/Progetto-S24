@@ -1,6 +1,5 @@
 package it.unipv.sfw.controller;
 
-import java.awt.Dimension;
 
 /**
  * Classe utilizzata per assicurare che ogni controller venga inizializzato solo
@@ -25,13 +24,15 @@ public class ControllerCache {
 		 * Funzione che esegue l'onLoad del controller dopo aver controllato che esso
 		 * sia già stato inizializzato.
 		 *
-		 * @param dim Dimensione corrente del frame.
 		 * @return Controller inizializzato e caricato.
 		 */
-		public AbsController loadController(Dimension dim) {
+		public AbsController loadController() {
+			System.out.println("Caricamento controller: " + controller.getType());
 			if (!isInit) {
-				
+				System.out.println("Inizializzazione del controller: " + controller.getType());
+				controller.initialize();
 				isInit = true;
+				System.out.println("Controller " + controller.getType() + " inizializzato.");
 			}
 		
 			return controller;
