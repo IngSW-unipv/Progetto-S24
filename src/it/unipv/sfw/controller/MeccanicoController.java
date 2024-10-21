@@ -29,8 +29,21 @@ public class MeccanicoController extends AbsController {
 	@Override
 	public void initialize() {
 		// TODO Auto-generated method stub
+		
+		//
+		try {
 
+			user = Session.getIstance().getCurrentUser();
+			m = (Meccanico) user;
+			
+		} catch (Exception e) {
+			System.out.println("Errore");
+		}
+		
 		MeccanicoView mv = new MeccanicoView();
+		mv.setVisible(true);
+		view = mv;
+		
 		MeccanicoDAO md = new MeccanicoDAO();
 
 		McPopUpComponentController pcc = new McPopUpComponentController();
@@ -42,17 +55,10 @@ public class MeccanicoController extends AbsController {
 		McGraphicAllComponentController gacc;
 
 		gtpc = new McGraphicTimePsController(m.getTime());
-		gacc = new McGraphicAllComponentController(Session.getIstance().getC());
 		
+		Session.getIstance().setC();
+		gacc = new McGraphicAllComponentController();
 		
-		//
-		try {
-
-			user = Session.getIstance().getCurrentUser();
-
-		} catch (Exception e) {
-			System.out.println("Errore");
-		}
 
 		mv.getAddComponentButton().addActionListener(new ActionListener() {
 			@Override
@@ -116,6 +122,8 @@ public class MeccanicoController extends AbsController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				
+				
 				pvc.showWindow();
 			}
 
@@ -136,15 +144,18 @@ public class MeccanicoController extends AbsController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
-				Session.getIstance().setC();
 				gacc.showWindow();
 
 			}
 
 		});
+		
+	}
 
-		view = mv;
+	@Override
+	public void onLoad() {
+		// TODO Auto-generated method stub
+		view.onLoad();
 	}
 	
 }
