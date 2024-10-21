@@ -23,17 +23,14 @@ public class Meccanico extends Staff {
 	 * veicolo del sostituto. non si utilizza una macchina unica per via delle
 	 * caratteristiche di guida diverse.
 	 */
-	protected Set<Vehicle> vehicles;
+	protected Set<Vehicle> vehicles = new HashSet<>();
 	
 	protected String tmePitStop;
-	protected ArrayList<String> allTimePitStop;
+	protected ArrayList<String> allTimePitStop = new ArrayList<>();
 
-	public Meccanico(String name, String surname, String id, String pwd, String tmePitStop) {
+	public Meccanico(String name, String surname, String id, String pwd) {
 		super(name, surname, id, pwd);
-
-		vehicles = new HashSet<>();
-		this.tmePitStop = tmePitStop;
-		allTimePitStop = new ArrayList<>();
+		
 	}
 
 	public void addVehicle() {
