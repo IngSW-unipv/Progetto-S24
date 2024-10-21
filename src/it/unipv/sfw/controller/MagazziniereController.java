@@ -92,5 +92,11 @@ public class MagazziniereController extends AbsController {
 		
 		view = mv;
 	}
+	
+	@Override
+	public void onLoad() {
+		// TODO Auto-generated method stub
+		view.onLoad();
+	}
 
 }
