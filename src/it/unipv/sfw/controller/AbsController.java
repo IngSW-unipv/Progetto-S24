@@ -13,8 +13,7 @@ public abstract class AbsController {
 	 * Enumerazione che rappresenta ogni tipo di controller.
 	 */
 	public enum TypeController  {
-		LOGIN, STRATEGA, MECCANICO, MAGAZZINIERE, RESPONSABILE_LOG, MERCHANDISING, RICHIESTA,
-		VEICOLO, NEGOZIO, ADD_OGGETTO;
+		LOGIN, STRATEGA, MECCANICO, MAGAZZINIERE;
 		
 	}
 
@@ -43,5 +42,7 @@ public abstract class AbsController {
 	 */
 	public abstract void initialize();
 
-
+	public void onLoad() {
+		view.onLoad();
+	}
 }
