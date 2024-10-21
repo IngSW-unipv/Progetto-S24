@@ -20,44 +20,26 @@ import javax.swing.SwingConstants;
 
 import it.unipv.sfw.model.staff.Session;
 
-public class MeccanicoView extends AbsView{
+public class MeccanicoView extends AbsView {
 
 	// frame generale
 	private JFrame frame;
 
 	// contenitori delle 3 sezioni +1 main
-	private JPanel mainContainer,
-							  imgPanel,
-							  overlayPanel,
-							  popUpPanel,
-							  graphicPanel;
+	private JPanel mainContainer, imgPanel, overlayPanel, popUpPanel, graphicPanel;
 
 	// pannelli per non far espandere i bottoni nelle celle
-	private JPanel cellPanel1,
-							  cellPanel2,
-							  cellPanel3,
-							  cellPanel4,
-							  cellPanel5,
-							  cellPanel6,
-							  cellPanel7,
-							  cellPanel8;
-	
-	private JLabel mex,
-							  id_p;
+	private JPanel cellPanel1, cellPanel2, cellPanel3, cellPanel4, cellPanel5, cellPanel6, cellPanel7, cellPanel8;
+
+	private JLabel mex, id_p;
 
 	// bottoni per l'interazione: 6
-	private JButton addComponentButton, 
-								addPilotButton,
-								insertVehicleButton,
-								insertRequestButton,
-								removeComponentButton,
-								removePilotButton,
-								visualTimePsButton,
-								visualStatusComponentButton;
+	private JButton addComponentButton, addPilotButton, insertVehicleButton, insertRequestButton, removeComponentButton,
+			removePilotButton, visualTimePsButton, visualStatusComponentButton;
 
 	public MeccanicoView() {
 
-		frame  = new JFrame("MECHANIC");
+		frame = new JFrame("MECHANIC");
 		frame.setSize(800, 600);
 		frame.setBackground(Color.BLACK);
 		frame.setLayout(new BorderLayout());
@@ -76,45 +58,36 @@ public class MeccanicoView extends AbsView{
 			protected void paintComponent(Graphics g) {
 				// TODO Auto-generated method stub
 				super.paintComponent(g);
-				
-				/*
-				 * ImageIcon imageIcon = new ImageIcon("percorso/della/tua/immagine.jpg");
-				 * Sostituisci con il percorso dell'immagine 
-				 * Image img =
-				 * image.Icon.getImage();
-				 * g.drawImage(image, 0, 0, getWidth(), getHeight(), this);
-				 * 
-				 */
-
+				//immagine
 			}
 
 		};
 
 		// CREAZIONE OVERLAY
 		overlayPanel = new JPanel();
-		
-		overlayPanel.setBackground(new Color(0,0,0,150));
-		
+
+		overlayPanel.setBackground(new Color(0, 0, 0, 150));
+
 		// posizione in basso a sinistra
 		overlayPanel.setBounds(20, frame.getHeight() - 120, 200, 100);
-		
+
 		// divisione in due parti: mex + id pilot
-		overlayPanel.setLayout(new GridLayout(2,1));
-		
+		overlayPanel.setLayout(new GridLayout(2, 1));
+
 		mex = new JLabel("ID PILOT :");
 		mex.setForeground(Color.WHITE);
-		
+
 		// testo centrato orizzontalmente
 		mex.setHorizontalAlignment(SwingConstants.CENTER);
-		
+
 		id_p = new JLabel();
-		
+
 		id_p.setForeground(Color.WHITE);
 		id_p.setHorizontalAlignment(SwingConstants.CENTER);
-			
+
 		overlayPanel.add(mex);
 		overlayPanel.add(id_p);
-		
+
 		/*
 		 * CREAZIONE 2 SEZIONE: 6 BOTTONI E FINESTRE POP UP
 		 */
@@ -127,11 +100,11 @@ public class MeccanicoView extends AbsView{
 		cellPanel4 = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		cellPanel5 = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		cellPanel6 = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		
+
 		// hgap = 10, vgap = 10, horizontal e vertical
 		popUpPanel.setBackground(Color.BLACK);
 		popUpPanel.setLayout(new GridLayout(3, 2, 10, 10));
-		
+
 		insertRequestButton = new JButton("INSERT REQUEST");
 		insertVehicleButton = new JButton("INSERT VEHICLE");
 		addComponentButton = new JButton("ADD COMPONENT");
@@ -147,21 +120,21 @@ public class MeccanicoView extends AbsView{
 		addComponentButton.setPreferredSize(dim);
 		insertRequestButton.setPreferredSize(dim);
 		insertVehicleButton.setPreferredSize(dim);
-		
+
 		cellPanel1.add(insertVehicleButton);
 		cellPanel2.add(insertRequestButton);
 		cellPanel3.add(addComponentButton);
 		cellPanel4.add(removeComponentButton);
 		cellPanel5.add(addPilotButton);
 		cellPanel6.add(removePilotButton);
-		
+
 		popUpPanel.add(cellPanel1);
 		popUpPanel.add(cellPanel2);
 		popUpPanel.add(cellPanel3);
 		popUpPanel.add(cellPanel4);
 		popUpPanel.add(cellPanel5);
 		popUpPanel.add(cellPanel6);
-		
+
 		/*
 		 * CREAZIONE 3 SEZIONE: 2 BOTTONI E ""GRAFICI""
 		 */
@@ -169,7 +142,7 @@ public class MeccanicoView extends AbsView{
 		graphicPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 20));
 		cellPanel7 = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		cellPanel8 = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		
+
 		graphicPanel.setBackground(Color.BLACK);
 		graphicPanel.setLayout(new GridLayout(2, 1, 10, 10));
 
@@ -178,10 +151,10 @@ public class MeccanicoView extends AbsView{
 
 		visualTimePsButton.setPreferredSize(dim);
 		visualStatusComponentButton.setPreferredSize(dim);
-		
+
 		cellPanel7.add(visualTimePsButton);
 		cellPanel8.add(visualStatusComponentButton);
-		
+
 		graphicPanel.add(cellPanel7);
 		graphicPanel.add(cellPanel8);
 
@@ -192,9 +165,9 @@ public class MeccanicoView extends AbsView{
 		mainContainer.add(popUpPanel, BorderLayout.CENTER);
 
 		mainContainer.add(graphicPanel, BorderLayout.SOUTH);
-		
+
 		frame.add(mainContainer);
-		
+
 	}
 
 	public JButton getAddComponentButton() {
