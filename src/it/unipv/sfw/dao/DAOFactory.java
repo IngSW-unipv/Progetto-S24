@@ -1,8 +1,10 @@
 package it.unipv.sfw.dao;
 
+import it.unipv.sfw.dao.mysql.UserDAO;
+
 public class DAOFactory {
 
-	public enum DBType {
+	public enum DbType {
 		MYSQL
 	}
 	
@@ -14,16 +16,31 @@ public class DAOFactory {
 	 *
 	 * @param dbType Parametro che specifica il database a cui collegarsi.
 	 */
-	public static void createInstance (DBType  dbType) {
+	public static void createInstance (DbType  dbType) {
 		if(instance != null)
 			throw new RuntimeException("Instanza DAOFactory già creata.");
 		
 		instance  = new DAOFactory(dbType);
 	}
 	
-	private DBType  dbType;
+	/**
+	 * Metodo che crea il DAO realitivo agli utenti.
+	 *
+	 * @throws Lancia una RuntimeException nel caso in cui l'istanza di DAOFactory
+	 *                non sia stata inizializzata.
+	 * @return Un'istanza di UtenteDAO.
+	 */
+	public static UserDAO createUserDAO() {
+		switch (instance.dbType) {
+		case MYSQL:
+			return new UserDAO();
+		}
+		throw new RuntimeException("Instanza DAOFactory non inizializzata.");
+	}
+	
+	private DbType  dbType;
 
-	private DAOFactory(DBType dbType) {
+	private DAOFactory(DbType dbType) {
 		this.dbType = dbType;
 	}
 }
