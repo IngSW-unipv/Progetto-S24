@@ -18,6 +18,7 @@ public class Vehicle {
 	protected String timeLap;
 
 	private String MSN;
+	
 	// Set perchè non permetto di avere duplicati
 	protected Set<Components> components;
 
