@@ -4,16 +4,18 @@ package it.unipv.sfw.controller;
 import java.util.Set;
 
 import it.unipv.sfw.model.component.Components;
+import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.view.McGraphicAllComponentView;
 
 public class McGraphicAllComponentController {
 	
 	protected Set<Components> components;
-	private McGraphicAllComponentView gv  = new McGraphicAllComponentView(components);
+	private McGraphicAllComponentView gv;
 	
 	
-	public McGraphicAllComponentController(Set<Components> set) {
-		this.components = set;
+	public McGraphicAllComponentController() {
+		this.components = Session.getIstance().getC();
+		this.gv = new McGraphicAllComponentView(components);
 			
 	}
 
