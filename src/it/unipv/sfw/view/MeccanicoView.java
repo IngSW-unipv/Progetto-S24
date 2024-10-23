@@ -7,6 +7,7 @@ import java.awt.FlowLayout;
 import java.awt.Graphics;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -28,35 +29,72 @@ public class MeccanicoView extends AbsView {
 	// contenitori delle 3 sezioni +1 main
 	private JPanel mainContainer, overlayPanel, popUpPanel, graphicPanel;
 
-	// pannelli per non far espandere i bottoni nelle celle
-	private JPanel cellPanel1, cellPanel2, cellPanel3, cellPanel4, cellPanel5, cellPanel6, cellPanel7, cellPanel8;
-
-	private JLabel mex, id_p;
+	private JLabel imgvLabel, mex, id_p;
 
 	// bottoni per l'interazione: 6
 	private JButton addComponentButton, addPilotButton, insertVehicleButton, insertRequestButton, removeComponentButton,
 			removePilotButton, visualTimePsButton, visualStatusComponentButton;
+	
+	private ImageIcon imgVec;
+	private Image img;
 
 	public MeccanicoView() {
 
 		frame = new JFrame("MECHANIC");
-		frame.setSize(800, 600);
+		frame.setSize(900, 800);
+		frame.setLocationRelativeTo(null);
 		frame.setBackground(Color.BLACK);
 		frame.setLayout(new BorderLayout());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-
+		ImageIcon icona = new ImageIcon(getClass().getResource("/F1-Logo.png"));
+		frame.setIconImage(icona.getImage());
 		mainContainer = new JPanel();
 
 		mainContainer.setLayout(new BorderLayout());
+		mainContainer.setBackground(Color.BLACK);
 
 		/*
 		 * CREAZIONE 1 SEZIONE: IMMAGINE VETTURA + OVERLAY
 		 */
+		
+		try {
 
+			imgVec = new ImageIcon(this.getClass().getResource("/Foto-MacchinaF1.jpg"));
+			Image img = imgVec.getImage();
+			System.out.println("immagine macchina caricata");
+
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		imgvLabel = new JLabel();
+		 // Verifica se l'immagine è stata caricata correttamente e imposta l'immagine iniziale
+        if ( img != null) {
+            Image scaledInitialImage = img.getScaledInstance(frame.getWidth(), frame.getHeight() / 3, Image.SCALE_SMOOTH);
+            imgvLabel.setIcon(new ImageIcon(scaledInitialImage));
+        }
+
+        // Aggiungi un listener al frame per monitorare i cambiamenti di dimensione
+        frame.addComponentListener(new ComponentAdapter() {
+            @Override
+            public void componentResized(ComponentEvent e) {
+                // Verifica se l'immagine è stata caricata correttamente
+                if (img != null) {
+                    // Ottieni le dimensioni correnti del frame
+                    int frameWidth = frame.getWidth();
+                    int frameHeight = frame.getHeight();
+
+                    // Ridimensiona l'immagine mantenendo le proporzioni in base alle dimensioni del frame
+                    Image scaledImage = img.getScaledInstance(frameWidth, frameHeight / 3, Image.SCALE_SMOOTH); // Altezza della parte superiore
+                    imgvLabel.setIcon(new ImageIcon(scaledImage));
+                }
+            }
+        });
+		
 		// CREAZIONE OVERLAY
 		overlayPanel = new JPanel();
-
-		overlayPanel.setBackground(new Color(0, 0, 0, 150));
+		
+		overlayPanel.setOpaque(false);
 
 		// posizione in basso a sinistra
 		overlayPanel.setBounds(20, frame.getHeight() - 120, 200, 100);
@@ -74,7 +112,8 @@ public class MeccanicoView extends AbsView {
 
 		id_p.setForeground(Color.WHITE);
 		id_p.setHorizontalAlignment(SwingConstants.CENTER);
-
+		
+		overlayPanel.add(imgvLabel);
 		overlayPanel.add(mex);
 		overlayPanel.add(id_p);
 
@@ -84,12 +123,6 @@ public class MeccanicoView extends AbsView {
 
 		// Pannello con i bottoni in una griglia 3x2
 		popUpPanel = new JPanel();
-		cellPanel1 = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		cellPanel2 = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		cellPanel3 = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		cellPanel4 = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		cellPanel5 = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		cellPanel6 = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
 		// hgap = 10, vgap = 10, horizontal e vertical
 		popUpPanel.setBackground(Color.BLACK);
@@ -102,7 +135,7 @@ public class MeccanicoView extends AbsView {
 		removeComponentButton = new JButton("REMOVE COMPONENT");
 		removePilotButton = new JButton("REMOVE PILOT");
 
-		Dimension dim = new Dimension(100, 100);
+		Dimension dim = new Dimension(200, 50);
 
 		removePilotButton.setPreferredSize(dim);
 		addPilotButton.setPreferredSize(dim);
@@ -111,27 +144,18 @@ public class MeccanicoView extends AbsView {
 		insertRequestButton.setPreferredSize(dim);
 		insertVehicleButton.setPreferredSize(dim);
 
-		cellPanel1.add(insertVehicleButton);
-		cellPanel2.add(insertRequestButton);
-		cellPanel3.add(addComponentButton);
-		cellPanel4.add(removeComponentButton);
-		cellPanel5.add(addPilotButton);
-		cellPanel6.add(removePilotButton);
-
-		popUpPanel.add(cellPanel1);
-		popUpPanel.add(cellPanel2);
-		popUpPanel.add(cellPanel3);
-		popUpPanel.add(cellPanel4);
-		popUpPanel.add(cellPanel5);
-		popUpPanel.add(cellPanel6);
+		popUpPanel.add(insertVehicleButton);
+		popUpPanel.add(insertRequestButton);
+		popUpPanel.add(addComponentButton);
+		popUpPanel.add(removeComponentButton);
+		popUpPanel.add(addPilotButton);
+		popUpPanel.add(removePilotButton);
 
 		/*
 		 * CREAZIONE 3 SEZIONE: 2 BOTTONI E ""GRAFICI""
 		 */
 
 		graphicPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 20));
-		cellPanel7 = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		cellPanel8 = new JPanel(new FlowLayout(FlowLayout.CENTER));
 
 		graphicPanel.setBackground(Color.BLACK);
 		graphicPanel.setLayout(new GridLayout(2, 1, 10, 10));
@@ -142,14 +166,11 @@ public class MeccanicoView extends AbsView {
 		visualTimePsButton.setPreferredSize(dim);
 		visualStatusComponentButton.setPreferredSize(dim);
 
-		cellPanel7.add(visualTimePsButton);
-		cellPanel8.add(visualStatusComponentButton);
-
-		graphicPanel.add(cellPanel7);
-		graphicPanel.add(cellPanel8);
+		graphicPanel.add(visualTimePsButton);
+		graphicPanel.add(visualStatusComponentButton);
 
 		// AGGIUNGO I PANNELLI AL MAIN PANEL
-		//mainContainer.add(imgPanel, BorderLayout.NORTH);
+		
 		mainContainer.add(overlayPanel, BorderLayout.NORTH);
 
 		mainContainer.add(popUpPanel, BorderLayout.CENTER);
