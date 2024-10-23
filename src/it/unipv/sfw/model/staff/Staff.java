@@ -14,7 +14,7 @@ public abstract class Staff {
 	
 	public enum TypeController{
 		
-		STRATEGA, MECCANICO, MAGAZZINIERE, RESPONSABILE_LOG, MERCHANDISING;
+		STRATEGA, MECCANICO, MAGAZZINIERE;
 		
 	}
 	
