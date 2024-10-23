@@ -41,8 +41,7 @@ public class MeccanicoController extends AbsController {
 		}
 		
 		MeccanicoView mv = new MeccanicoView();
-		mv.setVisible(true);
-		view = mv;
+		
 		
 		MeccanicoDAO md = new MeccanicoDAO();
 
@@ -150,12 +149,15 @@ public class MeccanicoController extends AbsController {
 
 		});
 		
+		mv.setVisible(true);
+		view = mv;
+		
 	}
 
 	@Override
 	public void onLoad() {
 		// TODO Auto-generated method stub
-		view.onLoad();
+		this.initialize();
 	}
 	
 }
