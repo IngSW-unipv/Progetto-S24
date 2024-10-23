@@ -17,7 +17,6 @@ import it.unipv.sfw.view.LoginView;
 
 public class ControllerManager {
 	
-	
 	//Contenitore del Singleton
 	private static ControllerManager instance = null;
 	
@@ -96,12 +95,18 @@ public class ControllerManager {
 	 */
 	public void loadController(AbsController.TypeController  controller) {
 		
+		System.out.println(controller);
+		
 		if (!controllers.containsKey(controller))
 			throw new RuntimeException("Il controller :\"" + controller + "\" non esiste.");
 		
 		currentController = controllers.get(controller).loadController();
 		
 		frame.loadView(currentController.getView());
+	}
+	
+	public void closeWindow() {
+		frame.dispose();
 	}
 
 	
