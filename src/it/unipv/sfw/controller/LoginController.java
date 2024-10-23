@@ -17,50 +17,51 @@ import it.unipv.sfw.view.LoginView;
  * @see it.unipv.sfw.view.LoginView
  */
 
-public class LoginController extends AbsController{
-	
-	
+public class LoginController extends AbsController {
+
 	private void accedi() {
-		LoginView logv =  (LoginView) view;
-		
+		LoginView logv = (LoginView) view;
+
 		// Try to login into session
-		//USERNAME = ID DELL'OPERATORE
+		// USERNAME = ID DELL'OPERATORE
 
 		try {
-			Session.getIstance().login(logv.getUsernameField().getText(),
-					logv.getPasswordField().getPassword());
-			
+			Session.getIstance().login(logv.getUsernameField().getText(), logv.getPasswordField().getPassword());
+
 		} catch (WrongPasswordException | AccountNotFoundException err) {
 			System.out.print(err);
 			logv.upError();
 			return;
 		}
-		
-		//SWITCH LOAD CONTROLLER
-		switch(""+Session.getIstance().getCurrentUser().getType()) {
-		
+
+		// SWITCH LOAD CONTROLLER
+		switch ("" + Session.getIstance().getCurrentUser().getType()) {
+
 		case "MECCANICO":
 			ControllerManager.getInstance().loadController(TypeController.MECCANICO);
+			ControllerManager.getInstance().closeWindow();
 			System.out.println("Sono un meccanico");
 			break;
-		
+
 		case "STRATEGA":
 			ControllerManager.getInstance().loadController(TypeController.STRATEGA);
-			
+			ControllerManager.getInstance().closeWindow();
+
 			break;
-		
+
 		case "MAGAZZINIERE":
 			ControllerManager.getInstance().loadController(TypeController.MAGAZZINIERE);
-			
+			ControllerManager.getInstance().closeWindow();
+
 			break;
-		
+
 		}
-		
+
 	}
 
 	@Override
 	public TypeController getType() {
-		
+
 		return TypeController.LOGIN;
 	}
 
@@ -72,33 +73,34 @@ public class LoginController extends AbsController{
 
 		v.getPasswordField().setFocusTraversalKeysEnabled(false);
 		v.getPasswordField().addKeyListener(new KeyListener() {
-			
-		@Override
-		public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_ENTER)
-					accedi();
-		}
-		
-		@Override
-		public void keyReleased(KeyEvent e) {
-		}
 
-		@Override
-		public void keyTyped(KeyEvent e) {
-			
-		}
-	
+			@Override
+			public void keyPressed(KeyEvent e) {
+				if (e.getKeyCode() == KeyEvent.VK_ENTER)
+				accedi();
+			}
+
+			@Override
+			public void keyReleased(KeyEvent e) {
+			}
+
+			@Override
+			public void keyTyped(KeyEvent e) {
+
+			}
+
 		});
 
 		v.getAccediButton().addActionListener(new ActionListener() {
 
-		@Override
-		public void actionPerformed(ActionEvent e) {
-			accedi();
-		}
-		
+			@Override
+			public void actionPerformed(ActionEvent e) {
+
+				accedi();
+			}
+
 		});
-		
+
 		view = v;
 	}
 
@@ -107,7 +109,5 @@ public class LoginController extends AbsController{
 		// TODO Auto-generated method stub
 		view.onLoad();
 	}
-	
-	
 
 }
