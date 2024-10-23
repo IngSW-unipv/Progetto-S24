@@ -28,10 +28,15 @@ import it.unipv.sfw.frame.Frame;
 public class LoginView extends AbsView {
 
 	private JPanel mainContainer, logoPanel, loginPanel, btnPanel, errorPanel;
+	
 	private JTextField username;
+	
 	private JPasswordField pwd;
+	
 	private JLabel imgBackgroundLabel, imgLogoLabel, userLabel, pwdLabel, errLabel;
+	
 	private JButton loginBtn;
+	
 	private ImageIcon imgBackground, imgLogo;
 
 	public LoginView() {
