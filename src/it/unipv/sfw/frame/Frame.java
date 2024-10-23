@@ -52,6 +52,9 @@ public class Frame extends JFrame {
 	 * @see it.unipv.sfw.view.AbsView
 	 */
 	public void loadView(AbsView v) {
+		
+		System.out.println("loadview"+v);
+		
 		if (currentView != null) {
 			System.out.println("rimossa view attuale - @FRAME");
 			this.remove(currentView);
@@ -61,6 +64,7 @@ public class Frame extends JFrame {
 		this.revalidate();
 		this.repaint();
 		currentView = v;
+		System.out.println("il contenuto di currentView: "+v);
 	}
 
 }
