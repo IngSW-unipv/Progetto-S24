@@ -227,4 +227,6 @@ public class LoginView extends AbsView {
 		errorPanel.setVisible(true);
 		mainContainer.repaint();
 	}
+	
+
 }
