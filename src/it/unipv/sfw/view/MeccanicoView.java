@@ -26,7 +26,7 @@ public class MeccanicoView extends AbsView {
 	private JFrame frame;
 
 	// contenitori delle 3 sezioni +1 main
-	private JPanel mainContainer, imgPanel, overlayPanel, popUpPanel, graphicPanel;
+	private JPanel mainContainer, overlayPanel, popUpPanel, graphicPanel;
 
 	// pannelli per non far espandere i bottoni nelle celle
 	private JPanel cellPanel1, cellPanel2, cellPanel3, cellPanel4, cellPanel5, cellPanel6, cellPanel7, cellPanel8;
@@ -52,16 +52,6 @@ public class MeccanicoView extends AbsView {
 		/*
 		 * CREAZIONE 1 SEZIONE: IMMAGINE VETTURA + OVERLAY
 		 */
-		imgPanel = new JPanel() {
-
-			@Override
-			protected void paintComponent(Graphics g) {
-				// TODO Auto-generated method stub
-				super.paintComponent(g);
-				//immagine
-			}
-
-		};
 
 		// CREAZIONE OVERLAY
 		overlayPanel = new JPanel();
@@ -159,7 +149,7 @@ public class MeccanicoView extends AbsView {
 		graphicPanel.add(cellPanel8);
 
 		// AGGIUNGO I PANNELLI AL MAIN PANEL
-		mainContainer.add(imgPanel, BorderLayout.NORTH);
+		//mainContainer.add(imgPanel, BorderLayout.NORTH);
 		mainContainer.add(overlayPanel, BorderLayout.NORTH);
 
 		mainContainer.add(popUpPanel, BorderLayout.CENTER);
@@ -167,7 +157,9 @@ public class MeccanicoView extends AbsView {
 		mainContainer.add(graphicPanel, BorderLayout.SOUTH);
 
 		frame.add(mainContainer);
-
+		frame.setVisible(true);
+		frame.validate();
+	    frame.repaint();
 	}
 
 	public JButton getAddComponentButton() {
