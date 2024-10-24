@@ -47,7 +47,6 @@ public class LoginView extends AbsView {
 		try {
 
 			imgBackground = new ImageIcon(this.getClass().getResource("/wallpaperLogin2.jpg"));
-			imgBackground = new ImageIcon(imgBackground.getImage().getScaledInstance(300, 100, java.awt.Image.SCALE_SMOOTH));
 			System.out.println("immagine wallpaper caricata");
 
 		} catch (Exception e) {
@@ -114,7 +113,6 @@ public class LoginView extends AbsView {
 		gbc.gridx = 1;
 		gbc.gridy = 0;
 
-		// Utilizza la variabile globale username invece di creare una locale
 		username = new JTextField("Insert ID");
 		username.setPreferredSize(dimField);
 		loginPanel.add(username, gbc);
