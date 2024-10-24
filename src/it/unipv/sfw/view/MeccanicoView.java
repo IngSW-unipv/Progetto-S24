@@ -5,9 +5,11 @@ import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Graphics;
+import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
+import java.awt.Insets;
 import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
@@ -17,6 +19,8 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JPasswordField;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import it.unipv.sfw.model.staff.Session;
@@ -27,16 +31,15 @@ public class MeccanicoView extends AbsView {
 	private JFrame frame;
 
 	// contenitori delle 3 sezioni +1 main
-	private JPanel mainContainer, overlayPanel, popUpPanel, graphicPanel;
+	private JPanel mainContainer, topPanel, overlayPanel, popUpPanel, graphicPanel;
 
-	private JLabel imgvLabel, mex, id_p;
+	private JLabel imgLabel, mex, id_p;
 
 	// bottoni per l'interazione: 6
 	private JButton addComponentButton, addPilotButton, insertVehicleButton, insertRequestButton, removeComponentButton,
 			removePilotButton, visualTimePsButton, visualStatusComponentButton;
 	
 	private ImageIcon imgVec;
-	private Image img;
 
 	public MeccanicoView() {
 
@@ -50,9 +53,6 @@ public class MeccanicoView extends AbsView {
 		frame.setIconImage(icona.getImage());
 		mainContainer = new JPanel();
 
-		mainContainer.setLayout(new BorderLayout());
-		mainContainer.setBackground(Color.BLACK);
-
 		/*
 		 * CREAZIONE 1 SEZIONE: IMMAGINE VETTURA + OVERLAY
 		 */
@@ -60,48 +60,25 @@ public class MeccanicoView extends AbsView {
 		try {
 
 			imgVec = new ImageIcon(this.getClass().getResource("/Foto-MacchinaF1.jpg"));
-			Image img = imgVec.getImage();
+			imgVec = new ImageIcon(imgVec.getImage().getScaledInstance(900, 350, java.awt.Image.SCALE_SMOOTH));
 			System.out.println("immagine macchina caricata");
-
+		
 		} catch (Exception e) {
 			System.out.println(e);
 		}
 		
-		imgvLabel = new JLabel();
-		 // Verifica se l'immagine è stata caricata correttamente e imposta l'immagine iniziale
-        if ( img != null) {
-            Image scaledInitialImage = img.getScaledInstance(frame.getWidth(), frame.getHeight() / 3, Image.SCALE_SMOOTH);
-            imgvLabel.setIcon(new ImageIcon(scaledInitialImage));
-        }
-
-        // Aggiungi un listener al frame per monitorare i cambiamenti di dimensione
-        frame.addComponentListener(new ComponentAdapter() {
-            @Override
-            public void componentResized(ComponentEvent e) {
-                // Verifica se l'immagine è stata caricata correttamente
-                if (img != null) {
-                    // Ottieni le dimensioni correnti del frame
-                    int frameWidth = frame.getWidth();
-                    int frameHeight = frame.getHeight();
-
-                    // Ridimensiona l'immagine mantenendo le proporzioni in base alle dimensioni del frame
-                    Image scaledImage = img.getScaledInstance(frameWidth, frameHeight / 3, Image.SCALE_SMOOTH); // Altezza della parte superiore
-                    imgvLabel.setIcon(new ImageIcon(scaledImage));
-                }
-            }
-        });
+		
+		imgLabel = new JLabel(imgVec);
+		
+		mainContainer.setLayout(new BorderLayout());
+		mainContainer.setBackground(Color.BLACK);
 		
 		// CREAZIONE OVERLAY
-		overlayPanel = new JPanel();
-		
-		overlayPanel.setOpaque(false);
-
-		// posizione in basso a sinistra
-		overlayPanel.setBounds(20, frame.getHeight() - 120, 200, 100);
-
-		// divisione in due parti: mex + id pilot
-		overlayPanel.setLayout(new GridLayout(2, 1));
-
+		overlayPanel = new JPanel();	
+		overlayPanel.setPreferredSize(new Dimension(900, 350));
+//		overlayPanel.setOpaque(true);
+		overlayPanel.setLayout(new FlowLayout(FlowLayout.LEFT));
+		overlayPanel.add(imgLabel);
 		mex = new JLabel("ID PILOT :");
 		mex.setForeground(Color.WHITE);
 
@@ -113,58 +90,96 @@ public class MeccanicoView extends AbsView {
 		id_p.setForeground(Color.WHITE);
 		id_p.setHorizontalAlignment(SwingConstants.CENTER);
 		
-		overlayPanel.add(imgvLabel);
 		overlayPanel.add(mex);
 		overlayPanel.add(id_p);
+		
+		overlayPanel.setBounds(20, frame.getHeight() - 120, 200, 50);
 
+		
 		/*
 		 * CREAZIONE 2 SEZIONE: 6 BOTTONI E FINESTRE POP UP
 		 */
 
 		// Pannello con i bottoni in una griglia 3x2
 		popUpPanel = new JPanel();
-
-		// hgap = 10, vgap = 10, horizontal e vertical
+		popUpPanel.setPreferredSize(new Dimension(900,300));
 		popUpPanel.setBackground(Color.BLACK);
-		popUpPanel.setLayout(new GridLayout(3, 2, 10, 10));
+		popUpPanel.setLayout(new GridBagLayout());
+		popUpPanel.setOpaque(true);
+		GridBagConstraints gbc = new GridBagConstraints();
 
-		insertRequestButton = new JButton("INSERT REQUEST");
+		// Spaziatura interna
+		gbc.insets = new Insets(50, 50, 50, 50);
+		
+		Dimension dim = new Dimension(300, 200);
+		
+		// Prima riga - Prima colonna (Insert Veichle)
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+		gbc.gridwidth = 1; // Occupa solo una colonna
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		
 		insertVehicleButton = new JButton("INSERT VEHICLE");
-		addComponentButton = new JButton("ADD COMPONENT");
-		addPilotButton = new JButton("ADD PILOT");
-		removeComponentButton = new JButton("REMOVE COMPONENT");
-		removePilotButton = new JButton("REMOVE PILOT");
-
-		Dimension dim = new Dimension(200, 50);
-
-		removePilotButton.setPreferredSize(dim);
-		addPilotButton.setPreferredSize(dim);
-		removeComponentButton.setPreferredSize(dim);
-		addComponentButton.setPreferredSize(dim);
-		insertRequestButton.setPreferredSize(dim);
 		insertVehicleButton.setPreferredSize(dim);
+		popUpPanel.add(insertVehicleButton, gbc);
+		
+		// Prima riga - Seconda colonna (insert Request)
+		gbc.gridx = 1;
+		gbc.gridy = 0;
 
-		popUpPanel.add(insertVehicleButton);
-		popUpPanel.add(insertRequestButton);
-		popUpPanel.add(addComponentButton);
-		popUpPanel.add(removeComponentButton);
-		popUpPanel.add(addPilotButton);
-		popUpPanel.add(removePilotButton);
+		// Utilizza la variabile globale username invece di creare una locale
+		insertRequestButton = new JButton("INSERT REQUEST");
+		insertRequestButton.setPreferredSize(dim);
+		popUpPanel.add(insertRequestButton, gbc);
+		
+		// Seconda riga - Prima colonna (add Component)
+		gbc.gridx = 0;
+		gbc.gridy = 1;
+
+		addComponentButton = new JButton("ADD COMPONENT");
+		addComponentButton.setPreferredSize(dim);
+		popUpPanel.add(addComponentButton, gbc);
+		
+		// Seconda riga - Seconda colonna (remove Component)
+		gbc.gridx = 1;
+		gbc.gridy = 1;
+
+		removeComponentButton = new JButton("REMOVE COMPONENT");
+		removeComponentButton.setPreferredSize(dim);
+		popUpPanel.add(removeComponentButton, gbc);
+		
+		// Terza riga - Prima colonna (add Pilot)
+		gbc.gridx = 0;
+		gbc.gridy = 2;
+
+		addPilotButton = new JButton("ADD PILOT");
+		addPilotButton.setPreferredSize(dim);
+		popUpPanel.add(addPilotButton, gbc);
+		
+		// Terza riga - Seconda colonna (remove Pilot)
+		gbc.gridx = 1;
+		gbc.gridy = 2;
+		
+		removePilotButton = new JButton("REMOVE PILOT");
+		removePilotButton.setPreferredSize(dim);
+		popUpPanel.add(removePilotButton, gbc);
 
 		/*
 		 * CREAZIONE 3 SEZIONE: 2 BOTTONI E ""GRAFICI""
 		 */
 
-		graphicPanel = new JPanel(new FlowLayout(FlowLayout.LEFT, 20, 20));
+		graphicPanel = new JPanel();
 
 		graphicPanel.setBackground(Color.BLACK);
 		graphicPanel.setLayout(new GridLayout(2, 1, 10, 10));
-
+		
+		Dimension dimBtn = new Dimension(150, 100);
+		
 		visualTimePsButton = new JButton("VISUAL TIME PIT STOP");
 		visualStatusComponentButton = new JButton("VISUAL STATUS COMPONENT");
 
-		visualTimePsButton.setPreferredSize(dim);
-		visualStatusComponentButton.setPreferredSize(dim);
+		visualTimePsButton.setPreferredSize( dimBtn);
+		visualStatusComponentButton.setPreferredSize( dimBtn);
 
 		graphicPanel.add(visualTimePsButton);
 		graphicPanel.add(visualStatusComponentButton);
