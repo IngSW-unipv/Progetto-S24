@@ -29,6 +29,7 @@ public class Frame extends JFrame {
 		this.setVisible(true);
 		this.setTitle("Management Scuderia");
 		this.setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+		this.setResizable(false);
 		ImageIcon icona = new ImageIcon(getClass().getResource("/F1-Logo.png"));
 		this.setIconImage(icona.getImage());
 
