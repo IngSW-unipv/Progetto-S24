@@ -17,6 +17,7 @@ public class McPopUpVehicleController {
 	public McPopUpVehicleController() {
 		
 		vv = new McPopUpVehicleView();
+		md = new MeccanicoDAO();
 		
 		vv.getSendButton().addActionListener(new ActionListener () {
 
