@@ -19,15 +19,14 @@ public class MeccanicoDAO {
 		SCHEMA = "request";
 
 		PreparedStatement st1;
-		ResultSet rs1;
+		int rs1 = 0;
 
 		boolean esito = true;
 
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
 
-			String query = "INSERT INTO " + SCHEMA
-					+ " (DESCRIPTION, ID_STAFF, ID_COMPONENT, ID_VEHICLE) VALUES(?,?,?,?)";
+			String query = "INSERT INTO " + SCHEMA+ " (DESCRIPTION, ID_STAFF, ID_COMPONENT, ID_VEHICLE) VALUES(?,?,?,?)";
 			st1 = conn.prepareStatement(query);
 
 			st1.setString(1, desc);
@@ -39,7 +38,7 @@ public class MeccanicoDAO {
 
 			st1.setString(3, id_v);
 
-			rs1 = st1.executeQuery();
+			rs1 = st1.executeUpdate();
 
 		} catch (SQLIntegrityConstraintViolationException e) {
 			esito = false;
@@ -58,7 +57,7 @@ public class MeccanicoDAO {
 		SCHEMA = "pilot";
 
 		PreparedStatement st1;
-		ResultSet rs1;
+		int rs1 = 0;
 
 		boolean esito = true;
 
@@ -75,7 +74,7 @@ public class MeccanicoDAO {
 
 			st1.setString(3, convert);
 
-			rs1 = st1.executeQuery();
+			rs1 = st1.executeUpdate();
 
 		} catch (SQLIntegrityConstraintViolationException e) {
 			esito = false;
@@ -94,18 +93,18 @@ public class MeccanicoDAO {
 		SCHEMA = "staff";
 
 		PreparedStatement st1;
-		ResultSet rs1;
+		int rs1 = 0; 
 
 		boolean esito = true;
 
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
 
-			String query = "UPDATE" + SCHEMA + "SET ID_ VEHICLE = ? ";
+			String query = "UPDATE " + SCHEMA + " SET ID_ VEHICLE = ? ";
 			st1 = conn.prepareStatement(query);
 
 			st1.setString(1, msn);
-			rs1 = st1.executeQuery();
+			rs1 = st1.executeUpdate();
 
 		} catch (SQLIntegrityConstraintViolationException e) {
 			esito = false;
@@ -123,20 +122,20 @@ public class MeccanicoDAO {
 		SCHEMA = "vehicle";
 
 		PreparedStatement st1;
-		ResultSet rs1;
+		int rs1 = 0;
 
 		boolean esito = true;
 
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
 
-			String query = "UPDATE" + SCHEMA + "SET ID_ PILOT = ? ";
+			String query = "UPDATE " + SCHEMA + " SET ID_ PILOT = ? ";
 			st1 = conn.prepareStatement(query);
 
 			String convert = String.valueOf(id_p);
 
 			st1.setString(1, convert);
-			rs1 = st1.executeQuery();
+			rs1 = st1.executeUpdate();
 
 		} catch (SQLIntegrityConstraintViolationException e) {
 			esito = false;
@@ -154,21 +153,21 @@ public class MeccanicoDAO {
 		SCHEMA = "component";
 
 		PreparedStatement st1;
-		ResultSet rs1;
+		int rs1 = 0;
 
 		boolean esito = true;
 
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
 
-			String query = "UPDATE" + SCHEMA + "SET WAREHOUSE = 0 AND ID_VEHICLE = ? WHERE ID = ?";
+			String query = "UPDATE " + SCHEMA + " SET WAREHOUSE = 0 AND ID_VEHICLE = ? WHERE ID = ?";
 			st1 = conn.prepareStatement(query);
 
 			String convert = String.valueOf(id);
 
 			st1.setString(2, msn);
 			st1.setString(1, convert);
-			rs1 = st1.executeQuery();
+			rs1 = st1.executeUpdate();
 
 		} catch (SQLIntegrityConstraintViolationException e) {
 			esito = false;
@@ -187,14 +186,14 @@ public class MeccanicoDAO {
 		SCHEMA = "component";
 
 		PreparedStatement st1;
-		ResultSet rs1;
+		int rs1 = 0;
 
 		boolean esito = true;
 
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
 
-			String query = "UPDATE " + SCHEMA + "SET WEAR = ? WHERE ID = ?";
+			String query = "UPDATE " + SCHEMA + " SET WEAR = ? WHERE ID = ?";
 			st1 = conn.prepareStatement(query);
 
 			String c1 = String.valueOf(wear);
@@ -203,7 +202,7 @@ public class MeccanicoDAO {
 			String c2 = String.valueOf(id);
 			st1.setString(2, c2);
 
-			rs1 = st1.executeQuery();
+			rs1 = st1.executeUpdate();
 
 		} catch (SQLIntegrityConstraintViolationException e) {
 			esito = false;
@@ -258,14 +257,14 @@ public class MeccanicoDAO {
 		SCHEMA = "vehicle";
 
 		PreparedStatement st1;
-		ResultSet rs1;
+		int rs1 = 0;
 
 		boolean esito = true;
 
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
 
-			String query = "UPDATE " + SCHEMA + "SET ID_PILOT = NULL WHERE MSN = ?";
+			String query = "UPDATE " + SCHEMA + " SET ID_PILOT = NULL WHERE MSN = ?";
 			st1 = conn.prepareStatement(query);
 
 			st1.setString(1, msn);
@@ -273,7 +272,7 @@ public class MeccanicoDAO {
 			String id = String.valueOf(idp);
 			st1.setString(2, id);
 
-			rs1 = st1.executeQuery();
+			rs1 = st1.executeUpdate();
 
 		} catch (SQLIntegrityConstraintViolationException e) {
 			esito = false;
@@ -292,14 +291,14 @@ public class MeccanicoDAO {
 		SCHEMA = "component";
 
 		PreparedStatement st1;
-		ResultSet rs1;
+		int rs1 = 0;
 
 		boolean esito = true;
 
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
 
-			String query = "UPDATE" + SCHEMA + "SET WAREHOUSE = 1 AND STATUS = 'USED'  WHERE ID = ? AND ID_VEHICLE = ?";
+			String query = "UPDATE " + SCHEMA + " SET WAREHOUSE = 1 AND STATUS = 'USED'  WHERE ID = ? AND ID_VEHICLE = ?";
 			st1 = conn.prepareStatement(query);
 
 			String n1 = String.valueOf(id_c), n2 = String.valueOf(id_v);
@@ -307,7 +306,7 @@ public class MeccanicoDAO {
 			st1.setString(1, n1);
 			st1.setString(2, n2);
 
-			rs1 = st1.executeQuery();
+			rs1 = st1.executeUpdate();
 
 		} catch (SQLIntegrityConstraintViolationException e) {
 			esito = false;
@@ -371,7 +370,7 @@ public class MeccanicoDAO {
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
 
-			String query = "SELECT ID FROM" + SCHEMA;
+			String query = "SELECT ID FROM " + SCHEMA;
 			st1 = conn.prepareStatement(query);
 			
 			rs1 = st1.executeQuery();
@@ -399,7 +398,7 @@ public class MeccanicoDAO {
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
 
-			String query = "SELECT * FROM" + SCHEMA + "WHERE MSN = ?";
+			String query = "SELECT * FROM " + SCHEMA + " WHERE MSN = ?";
 			st1 = conn.prepareStatement(query);
 
 			st1.setString(1, msn);
@@ -428,7 +427,7 @@ public class MeccanicoDAO {
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
 
-			String query = "SELECT COUNT (*) FROM" + SCHEMA + "WHERE ID = ? AND NAME = ?";
+			String query = "SELECT COUNT (*) FROM " + SCHEMA + " WHERE ID = ? AND NAME = ?";
 			st1 = conn.prepareStatement(query);
 
 			String idc = String.valueOf(id_c);
