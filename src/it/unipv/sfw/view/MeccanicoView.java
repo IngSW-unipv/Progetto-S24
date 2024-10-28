@@ -47,7 +47,7 @@ public class MeccanicoView extends AbsView {
 	public MeccanicoView() {
 
 		frame = new JFrame("MECHANIC");
-		frame.setSize(900, 1000);
+		frame.setSize(900, 900);
 		frame.setLocationRelativeTo(null);
 		frame.setBackground(Color.BLACK);
 		frame.setLayout(new BorderLayout());
@@ -55,6 +55,7 @@ public class MeccanicoView extends AbsView {
 		frame.setResizable(false);
 		ImageIcon icona = new ImageIcon(getClass().getResource("/F1-Logo.png"));
 		frame.setIconImage(icona.getImage());
+		
 		mainContainer = new JPanel();
 
 		/*
@@ -180,7 +181,7 @@ public class MeccanicoView extends AbsView {
 		Dimension dimBtn = new Dimension(900, 300);
 		
 		// Spaziatura interna
-		gbc.insets = new Insets(50, 50, 50, 50);
+		gbc.insets = new Insets(50, 50, 25, 50);
 		gbc.anchor = GridBagConstraints.CENTER;
 
 		// Prima riga - Prima colonna (Insert Veichle)
