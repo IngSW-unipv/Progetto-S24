@@ -3,9 +3,15 @@ package it.unipv.sfw.view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -14,139 +20,156 @@ import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 public class McPopUpVehicleView {
-	
+
 	private JFrame frame;
-	
-	//contenitori delle 3 sezioni +1 main
-	private JPanel mainContainer,
-							  titlePanel,
-							  dataPanel,
-							  sendPanel;
-	
-	private JLabel textLabel,
-							  mexLabel;
-	
-	//inserimento dati
-	private JTextField msn,
-									id_p;
-	
-	// pannelli per non far espandere i bottoni nelle celle
-	private JPanel cellPanel1,
-							  cellPanel2,
-							  cellPanel3;
-	
-	//bottoni  per l'interazione: 1
+
+	// contenitori delle 3 sezioni +1 main
+	private JPanel mainContainer, dataPanel, sendPanel;
+
+	private JLabel titleLabel, mexLabel;
+
+	// inserimento dati
+	private JTextField msn, id_p;
+
+	// bottoni per l'interazione: 1
 	private JButton sendButton;
-	
 
 	public McPopUpVehicleView() {
-		
+
 		frame = new JFrame("ADD VEHICLE");
-		
-		frame.setSize(300, 200);
+
+		frame.setSize(500, 500);
 		frame.setBackground(Color.BLACK);
+		frame.setLocationRelativeTo(null);
 		frame.setLayout(new BorderLayout());
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		
+		frame.setResizable(false);
+		ImageIcon icona = new ImageIcon(getClass().getResource("/F1-Logo.png"));
+		frame.setIconImage(icona.getImage());
+		frame.setLayout(new GridLayout(3, 1));
+
 		mainContainer = new JPanel();
 
-		mainContainer.setLayout(new BorderLayout());	
-		
-        /*
-         * CREAZIONE 1 SEZIONE
-         */
-        
-		titlePanel = new JPanel();
-		
-		titlePanel.setBackground(Color.BLACK);
-		titlePanel.setLayout(new BorderLayout());
-		
-		textLabel = new JLabel("INSERT VEHICLE", SwingConstants.CENTER);
-		
-		textLabel.setForeground(Color.WHITE);
-		textLabel.setHorizontalAlignment(SwingConstants.CENTER);
-        textLabel.setVerticalAlignment(SwingConstants.CENTER);
-        
-        titlePanel.add(textLabel, BorderLayout.CENTER);
-        
-        /*
-         * CREAZIONE 2 SEZIONE
-         */
-        
-		dataPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20,20));
-		cellPanel1 = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		cellPanel2 = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		
-		dataPanel.setBackground(Color.BLACK);
-		dataPanel.setLayout(new GridLayout(1,2,10,10));
-		
-		msn = new JTextField("MSN");
-		id_p = new JTextField("ID PILOT");
-		
-		Dimension dim = new Dimension(100,100);
-		
-		msn.setPreferredSize(dim);
-		id_p.setPreferredSize(dim);
-		
-		cellPanel1.add(msn);
-		cellPanel2.add(id_p);
-		
-		dataPanel.add(cellPanel1);
-		dataPanel.add(cellPanel2);
-		
+		mainContainer.setLayout(new BorderLayout());
+
 		/*
-         * CREAZIONE 3 SEZIONE
-         */
-		
-		sendPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20,20));
-		cellPanel3 = new JPanel(new FlowLayout(FlowLayout.CENTER)); 
-		
+		 * CREAZIONE 1 SEZIONE - TITOLO
+		 */
+
+		titleLabel = new JLabel("INSERT VEHICLE", SwingConstants.CENTER);
+		titleLabel.setOpaque(true);
+		titleLabel.setBackground(Color.BLACK);
+		titleLabel.setForeground(Color.WHITE);
+		titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
+
+		frame.add(titleLabel);
+
+		/*
+		 * CREAZIONE 2 SEZIONE - INSERT DATA
+		 */
+
+		dataPanel = new JPanel();
+		dataPanel.setLayout(new GridBagLayout());
+		dataPanel.setBackground(Color.BLACK);
+
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.fill = GridBagConstraints.NONE;
+		gbc.anchor = GridBagConstraints.CENTER;
+		gbc.insets = new Insets(10, 20, 10, 10);
+
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+
+		msn = new JTextField("MSN");
+		msn.setPreferredSize(new Dimension(150, 30));
+		dataPanel.add(msn, gbc);
+
+		gbc.gridx = 1;
+		gbc.gridy = 0;
+
+		id_p = new JTextField("ID PILOT");
+		id_p.setPreferredSize(new Dimension(150, 30));
+		dataPanel.add(id_p, gbc);
+
+		frame.add(dataPanel);
+
+		/*
+		 * CREAZIONE 3 SEZIONE - SEND DATA
+		 */
+
+		sendPanel = new JPanel();
+		sendPanel.setLayout(new GridBagLayout());
 		sendPanel.setBackground(Color.BLACK);
-		sendPanel.setLayout(new GridLayout(2,1,10,10));
-		
-		sendButton = new JButton("INSERT");
-		
-		sendButton.setPreferredSize(dim);
-		
-		cellPanel3.add(sendButton);
-		
-		mexLabel = new JLabel();
-		
+
+		GridBagConstraints gbcSend = new GridBagConstraints();
+		gbcSend.insets = new Insets(10, 0, 10, 0); // Margini per centrare il bottone e il messaggio
+		gbcSend.gridx = 0;
+		gbcSend.gridy = 0;
+
+		sendButton = new JButton("SEND");
+		sendButton.setPreferredSize(new Dimension(150, 30));
+		sendPanel.add(sendButton, gbcSend);
+
+		gbcSend.gridy = 1; // Sposta il messaggio sotto il bottone
+		mexLabel = new JLabel("", SwingConstants.CENTER);
 		mexLabel.setForeground(Color.WHITE);
-		mexLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		mexLabel.setVerticalAlignment(SwingConstants.CENTER);
-        
-        sendPanel.add(cellPanel3);
-        sendPanel.add(mexLabel, BorderLayout.WEST);
-        
-        mainContainer.add(titlePanel);
-		mainContainer.add(dataPanel);
-		mainContainer.add(sendPanel);
-        
-		frame.add(mainContainer);
-		
+		sendPanel.add(mexLabel, gbcSend);
+
+		frame.add(sendPanel);
+
+		msn.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				if (msn.getText().equals("MSN")) {
+					msn.setText(""); // Rimuove il testo predefinito
+				}
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (msn.getText().isEmpty()) {
+					msn.setText("MSN"); // Ripristina il testo predefinito se vuoto
+				}
+			}
+		});
+
+		id_p.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				if (id_p.getText().equals("ID PILOT")) {
+					id_p.setText(""); // Rimuove il testo predefinito
+				}
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (id_p.getText().isEmpty()) {
+					id_p.setText("ID PILOT"); // Ripristina il testo predefinito se vuoto
+				}
+			}
+		});
+
 	}
 
 	public void show() {
 		frame.setVisible(true);
 	}
-	
+
 	public void hide() {
 		frame.setVisible(false);
 		frame.setEnabled(false);
 	}
-	
+
 	public void mex1() {
 		mexLabel.setText("WRONG INSERTION");
 		mexLabel.setForeground(Color.RED);
 	}
-	
+
 	public void mex2() {
 		mexLabel.setText("CORRECT INSERTION");
 		mexLabel.setForeground(Color.GREEN);
 	}
-	
-	
+
 	public JTextField getMsn() {
 		return msn;
 	}
@@ -170,5 +193,5 @@ public class McPopUpVehicleView {
 	public void setSendButton(JButton sendButton) {
 		this.sendButton = sendButton;
 	}
-	
+
 }
