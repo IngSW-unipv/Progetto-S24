@@ -26,7 +26,8 @@ public class MeccanicoDAO {
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
 
-			String query = "INSERT INTO " + SCHEMA+ " (DESCRIPTION, ID_STAFF, ID_COMPONENT, ID_VEHICLE) VALUES(?,?,?,?)";
+			String query = "INSERT INTO " + SCHEMA
+					+ " (DESCRIPTION, ID_STAFF, ID_COMPONENT, ID_VEHICLE) VALUES(?,?,?,?)";
 			st1 = conn.prepareStatement(query);
 
 			st1.setString(1, desc);
@@ -36,7 +37,7 @@ public class MeccanicoDAO {
 			String idc = String.valueOf(id_c);
 			st1.setString(3, idc);
 
-			st1.setString(3, id_v);
+			st1.setString(4, id_v);
 
 			rs1 = st1.executeUpdate();
 
@@ -93,7 +94,7 @@ public class MeccanicoDAO {
 		SCHEMA = "staff";
 
 		PreparedStatement st1;
-		int rs1 = 0; 
+		int rs1 = 0;
 
 		boolean esito = true;
 
@@ -268,7 +269,7 @@ public class MeccanicoDAO {
 			st1 = conn.prepareStatement(query);
 
 			st1.setString(1, msn);
-			
+
 			String id = String.valueOf(idp);
 			st1.setString(2, id);
 
@@ -298,7 +299,8 @@ public class MeccanicoDAO {
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
 
-			String query = "UPDATE " + SCHEMA + " SET WAREHOUSE = 1 AND STATUS = 'USED'  WHERE ID = ? AND ID_VEHICLE = ?";
+			String query = "UPDATE " + SCHEMA
+					+ " SET WAREHOUSE = 1 AND STATUS = 'USED'  WHERE ID = ? AND ID_VEHICLE = ?";
 			st1 = conn.prepareStatement(query);
 
 			String n1 = String.valueOf(id_c), n2 = String.valueOf(id_v);
@@ -319,81 +321,76 @@ public class MeccanicoDAO {
 		return esito;
 
 	}
-/*
- * 	public ArrayList<Components> selectComponent(String msn) {
-
-		SCHEMA = "component";
-
-		ArrayList<Components> result = new ArrayList<>();
-
-		PreparedStatement st1;
-		ResultSet rs1;
-
-		try (DBConnection db = new DBConnection(SCHEMA)) {
-			Connection conn = db.getConnection();
-
-			String query = "SELECT * FROM" + SCHEMA + "WHERE ID_VEHICLE = ?";
-			st1 = conn.prepareStatement(query);
-
-			st1.setString(1, msn);
-
-			rs1 = st1.executeQuery();
-
-			String convert = rs1.getString(1);
-
-			int id = Integer.parseInt(convert);
-
-			Components c = new Components(id, rs1.getString(2), rs1.getString(3));
-			result.add(c);
-
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-
-		return result;
-
-	}
-	
- */
-
+	/*
+	 * public ArrayList<Components> selectComponent(String msn) {
+	 * 
+	 * SCHEMA = "component";
+	 * 
+	 * ArrayList<Components> result = new ArrayList<>();
+	 * 
+	 * PreparedStatement st1; ResultSet rs1;
+	 * 
+	 * try (DBConnection db = new DBConnection(SCHEMA)) { Connection conn =
+	 * db.getConnection();
+	 * 
+	 * String query = "SELECT * FROM" + SCHEMA + "WHERE ID_VEHICLE = ?"; st1 =
+	 * conn.prepareStatement(query);
+	 * 
+	 * st1.setString(1, msn);
+	 * 
+	 * rs1 = st1.executeQuery();
+	 * 
+	 * String convert = rs1.getString(1);
+	 * 
+	 * int id = Integer.parseInt(convert);
+	 * 
+	 * Components c = new Components(id, rs1.getString(2), rs1.getString(3));
+	 * result.add(c);
+	 * 
+	 * } catch (Exception e) { // TODO Auto-generated catch block
+	 * e.printStackTrace(); }
+	 * 
+	 * return result;
+	 * 
+	 * }
+	 * 
+	 */
 
 	public String selectIdP() {
-		
+
 		SCHEMA = "pilot";
-		
+
 		PreparedStatement st1;
 		ResultSet rs1;
-		
+
 		String idp = "";
-		
+
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
 
 			String query = "SELECT ID FROM " + SCHEMA;
 			st1 = conn.prepareStatement(query);
-			
+
 			rs1 = st1.executeQuery();
 
 			idp = rs1.getString(1);
-			
-			
+
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
+
 		return idp;
 	}
-	
-	public String checkPilot(String msn) {
 
-		SCHEMA = "vehicle";
+	public boolean checkPilot(int id_p) {
+
+		SCHEMA = "pilot";
 
 		PreparedStatement st1;
 		ResultSet rs1;
 
-		String id_p = "";
+		boolean esito = false;
 
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
@@ -401,20 +398,26 @@ public class MeccanicoDAO {
 			String query = "SELECT * FROM " + SCHEMA + " WHERE MSN = ?";
 			st1 = conn.prepareStatement(query);
 
-			st1.setString(1, msn);
+			String id = String.valueOf(id_p);
+			st1.setString(1, id);
 
 			rs1 = st1.executeQuery();
 
-			id_p = rs1.getString(5);
+			// Verifica se ci sono risultati
+			if (rs1.next()) {
+				// Accedi ai dati solo dopo rs.next()
+				String pilotName = rs1.getString("PILOT_NAME");
+				return esito = true;
+			}
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
-		return id_p;
+		return esito; // Nessun risultato trovato
 	}
-	
+
 	public int checkCompo(int id_c, String name) {
 
 		SCHEMA = "component";
@@ -431,7 +434,7 @@ public class MeccanicoDAO {
 			st1 = conn.prepareStatement(query);
 
 			String idc = String.valueOf(id_c);
-			
+
 			st1.setString(1, idc);
 			st1.setString(2, name);
 
@@ -445,6 +448,6 @@ public class MeccanicoDAO {
 		}
 
 		return result;
-	}	
-	
+	}
+
 }
