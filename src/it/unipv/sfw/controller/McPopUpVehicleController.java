@@ -29,9 +29,9 @@ public class McPopUpVehicleController {
 				
 				int n = Integer.parseInt(id_pilot);
 				
-				String check = md.checkPilot(vv.getMsn().getText());
+				boolean check = md.checkPilot(n);
 				
-				if(check != null) {
+				if(check) {
 					
 					md.insertPilotOnVehicle(n);
 					md.insertMeccOnVehicle(vv.getMsn().getText());
