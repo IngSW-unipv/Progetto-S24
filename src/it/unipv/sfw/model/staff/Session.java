@@ -20,6 +20,7 @@ public class Session {
 	
 	// settare id pilota da query -> meccanico controller -> meccanico view 
 	private String id_pilot;
+	private String id_staff;
 	
 	private ArrayList<String> tps;
 	private Set<Components> c;
@@ -63,7 +64,8 @@ public class Session {
 	 */
 
 	public void login(String id, char[] pwd) throws AccountNotFoundException, WrongPasswordException {
-
+		
+		id_staff = new String(id);
 		String strPwd = new String(pwd);
 		
 		Staff user = DAOFactory.createUserDAO().selectById(id);
@@ -133,6 +135,14 @@ public class Session {
 
 	public void setId_pilot(String id_pilot) {
 		this.id_pilot = id_pilot;
+	}
+
+	public String getId_staff() {
+		return id_staff;
+	}
+
+	public void setId_staff(String id_staff) {
+		this.id_staff = id_staff;
 	}
 
 	public ArrayList<String> getTps() {
