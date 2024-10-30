@@ -48,7 +48,7 @@ public class MeccanicoController extends AbsController {
 		McPopUpComponentController pcc = new McPopUpComponentController();
 		McPopUpPilotController ppc = new McPopUpPilotController();
 		McPopUpRequestController prc = new McPopUpRequestController();
-		McPopUpVehicleController pvc = new McPopUpVehicleController();
+		McPopUpVehicleController pvc = new McPopUpVehicleController(mv);
 
 		McGraphicTimePsController gtpc;
 		McGraphicAllComponentController gacc;
@@ -124,11 +124,11 @@ public class MeccanicoController extends AbsController {
 				
 				
 				pvc.showWindow();
-				if(Session.getIstance().getId_pilot() == "") {
-					System.out.println("no pilota");
-				}else {
-					mv.setId_p();
-				}
+//				if(Session.getIstance().getId_pilot() == "") {
+//					System.out.println("no pilota");
+//				}else {
+//					mv.setId_p();
+//				}
 				
 			}
 
