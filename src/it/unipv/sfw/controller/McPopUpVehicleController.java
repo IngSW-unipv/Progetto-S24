@@ -7,6 +7,7 @@ import it.unipv.sfw.dao.mysql.MeccanicoDAO;
 import it.unipv.sfw.model.staff.Meccanico;
 import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.view.McPopUpVehicleView;
+import it.unipv.sfw.view.MeccanicoView;
 
 public class McPopUpVehicleController {
 	
@@ -14,12 +15,12 @@ public class McPopUpVehicleController {
 	private MeccanicoDAO md;
 	private Meccanico m;
 
-	public McPopUpVehicleController() {
+	public McPopUpVehicleController(MeccanicoView mv) {
 		
 		vv = new McPopUpVehicleView();
 		md = new MeccanicoDAO();
 		m = new Meccanico(Session.getIstance().getId_staff(), Session.getIstance().getPwd_staff());
-
+		
 		vv.getSendButton().addActionListener(new ActionListener() {
 
 			@Override
@@ -36,6 +37,8 @@ public class McPopUpVehicleController {
 					md.insertPilotOnVehicle(id_pilot, msn);
 					Session.getIstance().setId_pilot(id_pilot);
 					
+					mv.setId_p();
+					
 					String id = Session.getIstance().getId_staff();
 					md.insertMeccOnVehicle(msn, id);
 
@@ -44,7 +47,8 @@ public class McPopUpVehicleController {
 					m.addVehicle();
 					vv.mex2();
 					
-					Session.getIstance().setId_pilot(id_pilot);
+					vv.clearComponents(vv.getDataPanel());
+					vv.clearComponents(vv.getSendPanel());
 					
 				} else {
 
