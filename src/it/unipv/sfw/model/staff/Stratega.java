@@ -8,8 +8,8 @@ public class Stratega extends Staff{
 	
 	protected long timeLap;
 	
-	public Stratega(String name, String surname, String id, String pwd) {
-		super(name, surname, id, pwd);
+	public Stratega(String id, String pwd) {
+		super(id, pwd);
 	}
 	
 	@Override
