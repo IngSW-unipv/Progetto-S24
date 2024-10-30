@@ -2,6 +2,7 @@ package it.unipv.sfw.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.Font;
 import java.awt.GridBagConstraints;
@@ -24,7 +25,7 @@ public class McPopUpVehicleView {
 	private JFrame frame;
 
 	// contenitori delle 3 sezioni +1 main
-	private JPanel mainContainer, dataPanel, sendPanel;
+	private JPanel dataPanel, sendPanel;
 
 	private JLabel titleLabel, mexLabel;
 
@@ -47,10 +48,6 @@ public class McPopUpVehicleView {
 		ImageIcon icona = new ImageIcon(getClass().getResource("/F1-Logo.png"));
 		frame.setIconImage(icona.getImage());
 		frame.setLayout(new GridLayout(3, 1));
-
-		mainContainer = new JPanel();
-
-		mainContainer.setLayout(new BorderLayout());
 
 		/*
 		 * CREAZIONE 1 SEZIONE - TITOLO
@@ -149,6 +146,36 @@ public class McPopUpVehicleView {
 			}
 		});
 
+	}
+	
+	public JPanel getDataPanel() {
+		return dataPanel;
+	}
+	
+	public void setDataPanel(JPanel dataPanel) {
+		this.dataPanel = dataPanel;
+	}
+
+	public JPanel getSendPanel() {
+		return sendPanel;
+	}
+
+	public void setSendPanel(JPanel sendPanel) {
+		this.sendPanel = sendPanel;
+	}
+
+	// Metodo per ripulire i JTextField e JLabel in un JPanel
+	public void clearComponents(JPanel panel) {
+	    for (Component comp : panel.getComponents()) {
+	        if (comp instanceof JTextField) {
+	            ((JTextField) comp).setText(""); // Pulisce il JTextField
+	        } else if (comp instanceof JLabel) {
+	            ((JLabel) comp).setText(""); // Pulisce il JLabel
+	        }
+	        // Puoi aggiungere ulteriori condizioni se hai altri componenti da ripulire
+	    }
+	    panel.revalidate(); // Rende il pannello nuovamente valido
+	    panel.repaint(); // Ridisegna il pannello
 	}
 
 	public void show() {
