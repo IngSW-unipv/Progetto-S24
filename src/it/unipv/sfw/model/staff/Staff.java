@@ -21,12 +21,9 @@ public abstract class Staff {
 	private String id,
 							pwd;
 	
-	protected String name,
-								 surname;
 
-	public Staff(String name, String surname, String id, String pwd ) {
-		this.name = name;
-		this.surname = surname;
+	public Staff(String id, String pwd ) {
+
 		this.id = id;
 		this.pwd = pwd;
 	}
@@ -43,23 +40,9 @@ public abstract class Staff {
 		};
 
 		// Controlla che non vi siano campi vuoti
-		if (isValid.test(name) || isValid.test(surname) || isValid.test(pwd))
+		if (isValid.test(id) || isValid.test(pwd))
 			throw new EmptyFieldException();
 
-	}
-	
-	/**
-	 * @return Il nome dell'utente
-	 */
-	public String getName() {
-		return name;
-	}
-
-	/**
-	 * @return Il surname dell'utente.
-	 */
-	public String getSurname() {
-		return this.surname;
 	}
 	
 	/**
