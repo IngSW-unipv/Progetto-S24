@@ -28,8 +28,8 @@ public class Meccanico extends Staff {
 	protected String tmePitStop;
 	protected ArrayList<String> allTimePitStop = new ArrayList<>();
 
-	public Meccanico(String name, String surname, String id, String pwd) {
-		super(name, surname, id, pwd);
+	public Meccanico(String id, String pwd) {
+		super(id, pwd);
 		
 	}
 
