@@ -18,6 +18,7 @@ public class McPopUpVehicleController {
 
 		vv = new McPopUpVehicleView();
 		md = new MeccanicoDAO();
+		m = new Meccanico(Session.getIstance().getId_staff(), Session.getIstance().getPwd_staff());
 
 		vv.getSendButton().addActionListener(new ActionListener() {
 
@@ -33,7 +34,9 @@ public class McPopUpVehicleController {
 				if (check) {
 
 					md.insertPilotOnVehicle(id_pilot, msn);
-					md.insertMeccOnVehicle(msn);
+					
+					String id = Session.getIstance().getId_staff();
+					md.insertMeccOnVehicle(msn, id);
 
 					m.setMSN(msn);
 					Session.getIstance().setMsn(m.getMSN());
