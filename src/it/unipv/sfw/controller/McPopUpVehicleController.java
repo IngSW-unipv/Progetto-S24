@@ -26,7 +26,7 @@ public class McPopUpVehicleController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-
+				
 				String id_pilot = vv.getId_p().getText(), 
 							msn = vv.getMsn().getText();
 
@@ -48,7 +48,6 @@ public class McPopUpVehicleController {
 					vv.mex2();
 					
 					vv.clearComponents(vv.getDataPanel());
-					vv.clearComponents(vv.getSendPanel());
 					
 				} else {
 
@@ -65,6 +64,10 @@ public class McPopUpVehicleController {
 	// Metodo per mostrare la finestra
 	public void showWindow() {
 		vv.show();
+	}
+	
+	public void clear() {
+		vv.clearComponents(vv.getSendPanel());
 	}
 
 }
