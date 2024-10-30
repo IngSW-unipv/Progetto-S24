@@ -9,13 +9,13 @@ import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.view.McPopUpVehicleView;
 
 public class McPopUpVehicleController {
-
+	
 	private McPopUpVehicleView vv;
 	private MeccanicoDAO md;
 	private Meccanico m;
 
 	public McPopUpVehicleController() {
-
+		
 		vv = new McPopUpVehicleView();
 		md = new MeccanicoDAO();
 		m = new Meccanico(Session.getIstance().getId_staff(), Session.getIstance().getPwd_staff());
@@ -34,6 +34,7 @@ public class McPopUpVehicleController {
 				if (check) {
 
 					md.insertPilotOnVehicle(id_pilot, msn);
+					Session.getIstance().setId_pilot(id_pilot);
 					
 					String id = Session.getIstance().getId_staff();
 					md.insertMeccOnVehicle(msn, id);
@@ -42,6 +43,9 @@ public class McPopUpVehicleController {
 					Session.getIstance().setMsn(m.getMSN());
 					m.addVehicle();
 					vv.mex2();
+					
+					Session.getIstance().setId_pilot(id_pilot);
+					
 				} else {
 
 					vv.mex1();
