@@ -35,19 +35,19 @@ public class UserDAO {
 				switch (type) {
 				case "Meccanico":
 
-					result = new Meccanico(rs1.getString(2), rs1.getString(3), rs1.getString(1), rs1.getString(4));
+					result = new Meccanico(rs1.getString(1), rs1.getString(4));
 
 					break;
 
 				case "Stratega":
 
-					result = new Stratega(rs1.getString(2), rs1.getString(3), rs1.getString(1), rs1.getString(4));
+					result = new Stratega(rs1.getString(1), rs1.getString(4));
 
 					break;
 
 				case "Magazziniere":
 
-					result = new Magazziniere(rs1.getString(2), rs1.getString(3), rs1.getString(1), rs1.getString(4));
+					result = new Magazziniere(rs1.getString(1), rs1.getString(4));
 
 					break;
 				}
