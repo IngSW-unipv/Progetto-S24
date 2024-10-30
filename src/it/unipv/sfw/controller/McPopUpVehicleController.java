@@ -9,53 +9,51 @@ import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.view.McPopUpVehicleView;
 
 public class McPopUpVehicleController {
-	
+
 	private McPopUpVehicleView vv;
 	private MeccanicoDAO md;
 	private Meccanico m;
-	
+
 	public McPopUpVehicleController() {
-		
+
 		vv = new McPopUpVehicleView();
 		md = new MeccanicoDAO();
-		
-		vv.getSendButton().addActionListener(new ActionListener () {
+
+		vv.getSendButton().addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+
+				String id_pilot = vv.getId_p().getText(), 
+							msn = vv.getMsn().getText();
+
+				boolean check = md.checkPilot(id_pilot);
 				
-				String id_pilot= vv.getId_p().getText();
-				
-				int n = Integer.parseInt(id_pilot);
-				
-				boolean check = md.checkPilot(n);
-				
-				if(check) {
-					
-					md.insertPilotOnVehicle(n);
-					md.insertMeccOnVehicle(vv.getMsn().getText());
-					
-					m.setMSN(vv.getMsn().getText());
+				if (check) {
+
+					md.insertPilotOnVehicle(id_pilot, msn);
+					md.insertMeccOnVehicle(msn);
+
+					m.setMSN(msn);
 					Session.getIstance().setMsn(m.getMSN());
 					m.addVehicle();
 					vv.mex2();
-				}else {
-					
+				} else {
+
 					vv.mex1();
-					
+
 				}
-			
+
 			}
-					
+
 		});
-		
-		
+
 	}
-	
+
 	// Metodo per mostrare la finestra
-    public void showWindow() {
-        vv.show();
-    }
+	public void showWindow() {
+		vv.show();
+	}
 
 }
