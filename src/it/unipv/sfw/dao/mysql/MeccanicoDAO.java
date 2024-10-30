@@ -89,7 +89,7 @@ public class MeccanicoDAO {
 
 	}
 
-	public boolean insertMeccOnVehicle(String msn) {
+	public boolean insertMeccOnVehicle(String msn, String id) {
 
 		SCHEMA = "staff";
 
@@ -101,10 +101,12 @@ public class MeccanicoDAO {
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
 
-			String query = "UPDATE " + SCHEMA + " SET ID_ VEHICLE = ? ";
+			String query = "UPDATE " + SCHEMA + " SET ID_VEHICLE = ? WHERE ID = ? ";
 			st1 = conn.prepareStatement(query);
 
 			st1.setString(1, msn);
+			st1.setString(2, id);
+			
 			rs1 = st1.executeUpdate();
 
 		} catch (SQLIntegrityConstraintViolationException e) {
@@ -130,13 +132,13 @@ public class MeccanicoDAO {
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
 
-			String query = "UPDATE " + SCHEMA + " SET ID_ PILOT = ? WHERE MSN = '?'";
+			String query = "UPDATE " + SCHEMA + " SET ID_PILOT = ? WHERE MSN = ? ";
 			
 			st1 = conn.prepareStatement(query);
 
 			st1.setString(1, id_p);
 			st1.setString(2, msn);
-			System.out.println(query);
+			
 			rs1 = st1.executeUpdate();
 
 		} catch (SQLIntegrityConstraintViolationException e) {
