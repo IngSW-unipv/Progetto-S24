@@ -124,11 +124,7 @@ public class MeccanicoController extends AbsController {
 				
 				
 				pvc.showWindow();
-//				if(Session.getIstance().getId_pilot() == "") {
-//					System.out.println("no pilota");
-//				}else {
-//					mv.setId_p();
-//				}
+				pvc.clear();
 				
 			}
 
