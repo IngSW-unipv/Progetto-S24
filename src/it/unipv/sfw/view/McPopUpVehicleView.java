@@ -169,10 +169,7 @@ public class McPopUpVehicleView {
 	    for (Component comp : panel.getComponents()) {
 	        if (comp instanceof JTextField) {
 	            ((JTextField) comp).setText(""); // Pulisce il JTextField
-	        } else if (comp instanceof JLabel) {
-	            ((JLabel) comp).setText(""); // Pulisce il JLabel
-	        }
-	        // Puoi aggiungere ulteriori condizioni se hai altri componenti da ripulire
+	        } 
 	    }
 	    panel.revalidate(); // Rende il pannello nuovamente valido
 	    panel.repaint(); // Ridisegna il pannello
