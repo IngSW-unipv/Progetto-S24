@@ -26,7 +26,7 @@ public class McPopUpComponentView extends JFrame {
 	private JTextField insertID_C, insertID_V, nameC, statusC;
 
 	// bottoni per l'interazione: 1
-	private JButton sendButton;
+	private JButton sendButton; 
 
 	public McPopUpComponentView() {
 
