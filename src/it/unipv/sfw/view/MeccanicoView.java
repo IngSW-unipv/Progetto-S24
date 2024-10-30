@@ -3,16 +3,10 @@ package it.unipv.sfw.view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
-import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
-import java.awt.Image;
 import java.awt.Insets;
-import java.awt.event.ComponentAdapter;
-import java.awt.event.ComponentEvent;
-import java.awt.event.ComponentListener;
+
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -20,8 +14,6 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JLayeredPane;
 import javax.swing.JPanel;
-import javax.swing.JPasswordField;
-import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import it.unipv.sfw.model.staff.Session;
@@ -91,7 +83,7 @@ public class MeccanicoView extends AbsView {
 		// testo centrato orizzontalmente
 		mex.setHorizontalAlignment(SwingConstants.CENTER);
 
-		id_p = new JLabel();
+		id_p = new JLabel("NO PILOT");
 
 		id_p.setForeground(Color.WHITE);
 		id_p.setHorizontalAlignment(SwingConstants.CENTER);
@@ -281,6 +273,7 @@ public class MeccanicoView extends AbsView {
 
 	public void setId_p() {
 		this.id_p.setText(Session.getIstance().getId_pilot());
+		frame.validate();
 	}
 
 }
