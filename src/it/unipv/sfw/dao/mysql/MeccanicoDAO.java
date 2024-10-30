@@ -118,7 +118,7 @@ public class MeccanicoDAO {
 		return esito;
 	}
 
-	public boolean insertPilotOnVehicle(int id_p) {
+	public boolean insertPilotOnVehicle(String id_p, String msn) {
 
 		SCHEMA = "vehicle";
 
@@ -130,12 +130,13 @@ public class MeccanicoDAO {
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
 
-			String query = "UPDATE " + SCHEMA + " SET ID_ PILOT = ? ";
+			String query = "UPDATE " + SCHEMA + " SET ID_ PILOT = ? WHERE MSN = '?'";
+			
 			st1 = conn.prepareStatement(query);
 
-			String convert = String.valueOf(id_p);
-
-			st1.setString(1, convert);
+			st1.setString(1, id_p);
+			st1.setString(2, msn);
+			System.out.println(query);
 			rs1 = st1.executeUpdate();
 
 		} catch (SQLIntegrityConstraintViolationException e) {
@@ -143,6 +144,7 @@ public class MeccanicoDAO {
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
+			System.out.println("ERRORE DI ESECUZIONE");
 			e.printStackTrace();
 		}
 
@@ -383,7 +385,7 @@ public class MeccanicoDAO {
 		return idp;
 	}
 
-	public boolean checkPilot(int id_p) {
+	public boolean checkPilot(String id_p) {
 
 		SCHEMA = "pilot";
 
@@ -395,18 +397,17 @@ public class MeccanicoDAO {
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
 
-			String query = "SELECT * FROM " + SCHEMA + " WHERE MSN = ?";
+			String query = "SELECT * FROM " + SCHEMA + " WHERE ID  = ? ";
 			st1 = conn.prepareStatement(query);
-
-			String id = String.valueOf(id_p);
-			st1.setString(1, id);
+			
+			st1.setString(1, id_p);
 
 			rs1 = st1.executeQuery();
 
 			// Verifica se ci sono risultati
 			if (rs1.next()) {
 				// Accedi ai dati solo dopo rs.next()
-				String pilotName = rs1.getString("PILOT_NAME");
+				System.out.println("PILOTA TROVATO");
 				return esito = true;
 			}
 
