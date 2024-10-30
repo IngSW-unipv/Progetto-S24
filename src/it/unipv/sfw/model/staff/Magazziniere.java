@@ -9,8 +9,8 @@ public class Magazziniere extends Staff{
 	
 	protected Set<Request> request = new HashSet<>();
 
-	public Magazziniere(String name, String surname, String id, String pwd) {
-		super(name, surname, id, pwd);
+	public Magazziniere(String id, String pwd) {
+		super(id, pwd);
 		
 	}
 
