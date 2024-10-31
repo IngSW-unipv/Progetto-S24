@@ -53,7 +53,7 @@ public class McPopUpComponentView extends JFrame {
 		 * CREAZIONE 1 SEZIONE
 		 */
 
-		titleLabel = new JLabel("INSERT 	COMPONENT", SwingConstants.CENTER);
+		titleLabel = new JLabel("INSERT COMPONENT", SwingConstants.CENTER);
 		titleLabel.setOpaque(true);
 		titleLabel.setBackground(Color.BLACK);
 		titleLabel.setForeground(Color.WHITE);
@@ -73,7 +73,7 @@ public class McPopUpComponentView extends JFrame {
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.insets = new Insets(10, 20, 10, 20);
 
-		Dimension dim = new Dimension(100, 30);
+		Dimension dim = new Dimension(150, 30);
 
 		// Prima riga, prima colonna
 		gbc.gridx = 0;
