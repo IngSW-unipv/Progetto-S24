@@ -45,7 +45,7 @@ public class MeccanicoController extends AbsController {
 		
 		MeccanicoDAO md = new MeccanicoDAO();
 
-		McPopUpComponentController pcc = new McPopUpComponentController();
+//		McPopUpComponentController pcc = new McPopUpComponentController();
 		McPopUpPilotController ppc = new McPopUpPilotController();
 		McPopUpRequestController prc = new McPopUpRequestController();
 		McPopUpVehicleController pvc = new McPopUpVehicleController(mv);
@@ -64,6 +64,8 @@ public class MeccanicoController extends AbsController {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				Session.getIstance().setOperation("ADD");
+				McPopUpComponentController pcc = new McPopUpComponentController();
+				System.out.println("il contenuto è: "+Session.getIstance().getOperation()+ " @MECCANICO CONTROLLER");
 				pcc.showWindow();
 			}
 
@@ -75,6 +77,8 @@ public class MeccanicoController extends AbsController {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				Session.getIstance().setOperation("REMOVE");
+				McPopUpComponentController pcc = new McPopUpComponentController();
+				System.out.println("il contenuto è: "+Session.getIstance().getOperation()+ " @MECCANICO CONTROLLER");
 				pcc.showWindow();
 			}
 
