@@ -15,8 +15,8 @@ public class Session {
 
 	private static Session istance = null;
 
-	private String operation,
-							msn;
+	private String operation = "",
+							msn = "";
 	
 	// settare id pilota da query -> meccanico controller -> meccanico view 
 	private String id_pilot;
@@ -24,7 +24,7 @@ public class Session {
 	private String pwd_staff;
 	
 	private ArrayList<String> tps;
-	private Set<Components> c;
+	private Set<Components> component;
 
 	private Meccanico m;
 	private Vehicle v;
@@ -46,7 +46,7 @@ public class Session {
 	// session
 	private Session() {
 		currentUser = null;
-		c = new HashSet<>();
+		component = new HashSet<>();
 		tps = new ArrayList<>();
 		v = new Vehicle(msn);
 	}
@@ -167,12 +167,12 @@ public class Session {
 	}
 
 	public Set<Components> getC() {
-		return c;
+		return component;
 	}
 
 	public void setC() {
 		// TODO Auto-generated method stub
-		c.addAll(v.getComponents());
+		component.addAll(v.getComponents());
 	}
 
 }
