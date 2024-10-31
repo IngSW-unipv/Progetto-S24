@@ -20,17 +20,17 @@ public class Vehicle {
 	private String MSN;
 	
 	// Set perchè non permetto di avere duplicati
-	protected Set<Components> components;
+	protected Set<Components> component;
 
 	public Vehicle(String MSN) {
 		this.MSN = MSN;
-		components = new HashSet<>();
+		component = new HashSet<>();
 	}
 
 	public int addComponent(Components cmp) throws WrongReplacementStatusException {
 
 		int result = 0;
-
+		System.out.println(""+cmp.getIdComponent()+ "- " + cmp.getName()+  "- " + cmp.getReplacementStatus());
 		if (cmp.getReplacementStatus() != "NEW" || cmp.getReplacementStatus() != "USED")
 			throw new WrongReplacementStatusException(cmp.getReplacementStatus());
 
@@ -41,7 +41,7 @@ public class Vehicle {
 			System.out.println("Componente ottime condizioni");
 			System.out.println("Componente inserito con successo");
 
-			if(components.add(cmp))
+			if(component.add(cmp))
 				System.out.println("Componente già inserito");
 			return result = 1;
 
@@ -49,7 +49,7 @@ public class Vehicle {
 			System.out.println("Componente buone condizioni");
 			System.out.println("Componente inserito con successo");
 
-			components.add(cmp);
+			component.add(cmp);
 
 			return result = 2;
 
@@ -62,13 +62,13 @@ public class Vehicle {
 
 	public void removeComponent(Components cmp) throws ComponentNotFoundException {
 
-		for (Components comp : components) {
+		for (Components comp : component) {
 			if (comp.getName().equalsIgnoreCase(cmp.getName()))
 				throw new ComponentNotFoundException(cmp.getName());
 
 		}
 
-		components.remove(cmp);
+		component.remove(cmp);
 
 	}
 
@@ -82,7 +82,7 @@ public class Vehicle {
 
 	public void getComponentByName(String name) throws ComponentNotFoundException {
 
-		for (Components c : components) {
+		for (Components c : component) {
 			if (c.getName().equalsIgnoreCase(name)) {
 				// provvisorio
 				System.out.println(c);
@@ -132,11 +132,11 @@ public class Vehicle {
 	}
 
 	public Set<Components> getComponents() {
-		return components;
+		return component;
 	}
 
 	public void setComponents(Set<Components> components) {
-		this.components = components;
+		this.component = components;
 	}
 
 }
