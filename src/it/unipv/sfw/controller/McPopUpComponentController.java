@@ -12,6 +12,7 @@ import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.model.vehicle.Vehicle;
 import it.unipv.sfw.view.McPopUpComponentView;
 import it.unipv.sfw.view.McPopUpRequestView;
+import it.unipv.sfw.view.MeccanicoView;
 
 public class McPopUpComponentController {
 
@@ -28,14 +29,15 @@ public class McPopUpComponentController {
 		pc = new McPopUpComponentView();
 
 		if (Session.getIstance().getOperation() == "ADD") {
-
+			
+			System.out.println("il contenuto è: "+Session.getIstance().getOperation()+ " sono nell'if");
 			pc.getSendButton().addActionListener(new ActionListener() {
 
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
-					int n = 0,
-						 result = 0;
+					
+					int n = 0, result = 0;
 
 					String id_compo = pc.getInsertID_C().getText();
 
@@ -45,13 +47,12 @@ public class McPopUpComponentController {
 
 					result = md.checkCompo(id, pc.getNameC().getText());
 
-					//Se inserisco un valore sbagliato
+					// Se inserisco un valore sbagliato
 					if (result == 0) {
 						pc.mex();
-						
+
 						return;
 					}
-					
 
 					try {
 						n = m.addComponent(c, m.getMSN());
@@ -110,7 +111,6 @@ public class McPopUpComponentController {
 
 								md.insertRequest(pr.getDesc().getText(), pr.getId_s().getText(), id_c,
 										pr.getId_v().getText());
-
 							}
 						});
 
@@ -121,8 +121,9 @@ public class McPopUpComponentController {
 			});
 
 		} else {
-			
+
 			pc.hideField();
+			System.out.println("il contenuto è: "+Session.getIstance().getOperation()+ " sono nell'else");
 
 			pc.getSendButton().addActionListener(new ActionListener() {
 
@@ -145,7 +146,6 @@ public class McPopUpComponentController {
 				}
 
 			});
-
 		}
 
 	}
