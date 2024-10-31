@@ -103,13 +103,6 @@ public class McPopUpComponentView extends JFrame {
 		statusC.setPreferredSize(dim);
 		dataPanel.add(statusC, gbc);
 
-//		// Seconda riga, seconda colonna
-//		gbc.gridx = 1;
-//		gbc.gridy = 1;
-//		JTextField statusH = new JTextField("STATUS COMPONENT");
-//		statusH.setPreferredSize(dim);
-//		dataPanel.add(statusH, gbc);
-
 		// Aggiungi il pannello dati al frame
 		frame.add(dataPanel);
 		frame.repaint();
