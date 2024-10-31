@@ -106,7 +106,7 @@ public class MeccanicoDAO {
 
 			st1.setString(1, msn);
 			st1.setString(2, id);
-			
+
 			rs1 = st1.executeUpdate();
 
 		} catch (SQLIntegrityConstraintViolationException e) {
@@ -133,12 +133,12 @@ public class MeccanicoDAO {
 			Connection conn = db.getConnection();
 
 			String query = "UPDATE " + SCHEMA + " SET ID_PILOT = ? WHERE MSN = ? ";
-			
+
 			st1 = conn.prepareStatement(query);
 
 			st1.setString(1, id_p);
 			st1.setString(2, msn);
-			
+
 			rs1 = st1.executeUpdate();
 
 		} catch (SQLIntegrityConstraintViolationException e) {
@@ -401,7 +401,7 @@ public class MeccanicoDAO {
 
 			String query = "SELECT * FROM " + SCHEMA + " WHERE ID  = ? ";
 			st1 = conn.prepareStatement(query);
-			
+
 			st1.setString(1, id_p);
 
 			rs1 = st1.executeQuery();
@@ -433,7 +433,7 @@ public class MeccanicoDAO {
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
 
-			String query = "SELECT COUNT (*) FROM " + SCHEMA + " WHERE ID = ? AND NAME = ?";
+			String query = "SELECT COUNT(*) FROM " + SCHEMA + " WHERE ID = ? AND NAME = ?";
 			st1 = conn.prepareStatement(query);
 
 			String idc = String.valueOf(id_c);
@@ -443,7 +443,9 @@ public class MeccanicoDAO {
 
 			rs1 = st1.executeQuery();
 
-			result = rs1.getInt(result);
+			if (rs1.next()) { // Spostati alla prima riga del risultato
+				result = rs1.getInt(1); // Ottieni il valore di COUNT(*)
+			}
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
