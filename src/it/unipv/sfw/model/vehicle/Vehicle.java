@@ -32,7 +32,7 @@ public class Vehicle {
 		int result = 0;
 		
 		System.out.println(component.toString());	
-		System.out.println(""+cmp.getIdComponent()+ "- " + cmp.getName()+  "- STATUS" + cmp.getReplacementStatus());
+		System.out.println(""+cmp.getIdComponent()+ "- " + cmp.getName()+  "- STATUS " + cmp.getReplacementStatus());
 		
 		if (!cmp.getReplacementStatus().equals("NEW") && !cmp.getReplacementStatus().equals("USED"))
 	        throw new WrongReplacementStatusException(cmp.getReplacementStatus());
