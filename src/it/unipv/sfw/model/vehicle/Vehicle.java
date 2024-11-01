@@ -30,9 +30,12 @@ public class Vehicle {
 	public int addComponent(Components cmp) throws WrongReplacementStatusException {
 
 		int result = 0;
-		System.out.println(""+cmp.getIdComponent()+ "- " + cmp.getName()+  "- " + cmp.getReplacementStatus());
-		if (cmp.getReplacementStatus() != "NEW" || cmp.getReplacementStatus() != "USED")
-			throw new WrongReplacementStatusException(cmp.getReplacementStatus());
+		
+		System.out.println(component.toString());	
+		System.out.println(""+cmp.getIdComponent()+ "- " + cmp.getName()+  "- STATUS" + cmp.getReplacementStatus());
+		
+		if (!cmp.getReplacementStatus().equals("NEW") && !cmp.getReplacementStatus().equals("USED"))
+	        throw new WrongReplacementStatusException(cmp.getReplacementStatus());
 
 		calcWear(cmp);
 		int cond = cmp.getWear();
@@ -45,12 +48,13 @@ public class Vehicle {
 				System.out.println("Componente già inserito");
 			return result = 1;
 
-		} else if (cond < 80 || cond >= 50) {
+		} else if (cond > 80 || cond >= 50) {
 			System.out.println("Componente buone condizioni");
 			System.out.println("Componente inserito con successo");
 
 			component.add(cmp);
-
+			System.out.println(component.toString());	
+			
 			return result = 2;
 
 		} else {
