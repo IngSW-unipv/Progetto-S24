@@ -80,8 +80,8 @@ public class McPopUpComponentController {
 						
 						// componente inserito con successo
 						if (md.insertComponent(id, pc.getInsertID_V().getText())) {
-							v.calcWear(c);
-							md.updateWear(n, id);
+							System.out.println("WEAR = "+c.getWear()+"@mcpopupcomponent");
+							md.updateWear(c.getWear(), id);
 							pc.mex2();
 						}
 
@@ -90,8 +90,7 @@ public class McPopUpComponentController {
 					case 2:
 
 						if (md.insertComponent(id, pc.getInsertID_V().getText())) {
-							v.calcWear(c);
-							md.updateWear(n, id);
+							md.updateWear(c.getWear(), id);
 							pc.mex2();
 						}
 
