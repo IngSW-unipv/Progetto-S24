@@ -46,9 +46,8 @@ public class Meccanico extends Staff {
 
 		int mode = 0;
 		Vehicle v = new Vehicle(MSN);
-		Components compo = new Components(c.getIdComponent(), c.getName(), c.getReplacementStatus());
 		
-		return mode = v.addComponent(compo);
+		return mode = v.addComponent(c);
 	}
 
 	public void removeComponent(Components c, String MSN) throws ComponentNotFoundException {
