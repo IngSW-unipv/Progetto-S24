@@ -18,7 +18,7 @@ public class Vehicle {
 	protected String timeLap;
 
 	private String MSN;
-	
+
 	// Set perchè non permetto di avere duplicati
 	protected Set<Components> component;
 
@@ -30,32 +30,41 @@ public class Vehicle {
 	public int addComponent(Components cmp) throws WrongReplacementStatusException {
 
 		int result = 0;
-		
-		System.out.println(component.toString());	
-		System.out.println(""+cmp.getIdComponent()+ "- " + cmp.getName()+  "- STATUS " + cmp.getReplacementStatus());
-		
-		if (!cmp.getReplacementStatus().equals("NEW") && !cmp.getReplacementStatus().equals("USED"))
-	        throw new WrongReplacementStatusException(cmp.getReplacementStatus());
 
-		calcWear(cmp);
+		// stringhe per debug
+		System.out.println(component.toString());
+		System.out.println("" + cmp.getIdComponent() + "- " + cmp.getName() + "- STATUS " + cmp.getReplacementStatus());
+
+		if (!cmp.getReplacementStatus().equals("NEW") && !cmp.getReplacementStatus().equals("USED"))
+			throw new WrongReplacementStatusException(cmp.getReplacementStatus());
+
+		cmp.setWear(calcWear(cmp));
+		System.out.println("wear =  "+cmp.getWear()+"@vehicle");
+		
 		int cond = cmp.getWear();
 
-		if (cond == 99 || cond >= 80) {
+		if (cond == 100 || cond >= 80) {
+
+			component.add(cmp);
 			System.out.println("Componente ottime condizioni");
 			System.out.println("Componente inserito con successo");
 
-			if(component.add(cmp))
-				System.out.println("Componente già inserito");
-			return result = 1;
+			System.out.println(component.toString());
+			
+			result = 1;
+			
+			return result;
 
 		} else if (cond > 80 || cond >= 50) {
 			System.out.println("Componente buone condizioni");
 			System.out.println("Componente inserito con successo");
 
 			component.add(cmp);
-			System.out.println(component.toString());	
+			System.out.println(component.toString());
+
+			result = 2;
 			
-			return result = 2;
+			return result;
 
 		} else {
 			System.out.println("Componente usurato --> NON UTILIZZABILE DA SMONTARE");
