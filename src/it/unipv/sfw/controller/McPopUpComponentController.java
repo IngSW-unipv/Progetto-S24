@@ -29,6 +29,7 @@ public class McPopUpComponentController {
 		pc = new McPopUpComponentView();
 		md = new MeccanicoDAO();
 		m = new Meccanico(Session.getIstance().getId_staff(), Session.getIstance().getPwd_staff());
+		v = new Vehicle(Session.getIstance().getMsn());
 		
 		if (Session.getIstance().getOperation() == "ADD") {
 			
@@ -75,7 +76,7 @@ public class McPopUpComponentController {
 						break;
 
 					case 1:
-
+						
 						// componente inserito con successo
 						if (md.insertComponent(id, pc.getInsertID_V().getText())) {
 							v.calcWear(c);
