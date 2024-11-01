@@ -165,13 +165,14 @@ public class MeccanicoDAO {
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
 
-			String query = "UPDATE " + SCHEMA + " SET WAREHOUSE = 0 AND ID_VEHICLE = ? WHERE ID = ?";
+			String query = "UPDATE " + SCHEMA + " SET WAREHOUSE = 0, STATUS = 'USED',  ID_VEHICLE = ? WHERE ID = ?";
 			st1 = conn.prepareStatement(query);
 
 			String convert = String.valueOf(id);
 
-			st1.setString(2, msn);
-			st1.setString(1, convert);
+			st1.setString(1, msn);
+			st1.setString(2, convert);
+			
 			rs1 = st1.executeUpdate();
 
 		} catch (SQLIntegrityConstraintViolationException e) {
