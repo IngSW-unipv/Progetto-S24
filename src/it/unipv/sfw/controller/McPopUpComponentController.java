@@ -27,6 +27,7 @@ public class McPopUpComponentController {
 	public McPopUpComponentController() {
 
 		pc = new McPopUpComponentView();
+		pr = new McPopUpRequestView();
 		md = new MeccanicoDAO();
 		m = new Meccanico(Session.getIstance().getId_staff(), Session.getIstance().getPwd_staff());
 		v = new Vehicle(Session.getIstance().getMsn());
