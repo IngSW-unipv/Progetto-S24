@@ -14,6 +14,7 @@ public class McPopUpRequestController {
 	public McPopUpRequestController() {
 		
 		pr = new McPopUpRequestView();
+		md = new MeccanicoDAO();
 		
 		pr.getSendButton().addActionListener(new ActionListener() {
 
@@ -35,6 +36,10 @@ public class McPopUpRequestController {
 	// Metodo per mostrare la finestra
     public void showWindow() {
         pr.show();
+    }
+    
+    public void clear() {
+    	pr.clearComponents(pr.getDataPanel());
     }
     
 }
