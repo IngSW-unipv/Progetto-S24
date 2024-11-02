@@ -194,8 +194,8 @@ public class McPopUpComponentView extends JFrame {
 			}
 		});
 
-		frame.repaint();
-		frame.validate();
+//		frame.repaint();
+//		frame.validate();
 	}
 
 	public JPanel getDataPanel() {
