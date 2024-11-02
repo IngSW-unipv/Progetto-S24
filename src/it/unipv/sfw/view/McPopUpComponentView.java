@@ -44,7 +44,7 @@ public class McPopUpComponentView extends JFrame {
 		frame.setLocationRelativeTo(null);
 		frame.setLayout(new BorderLayout());
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		// frame.setResizable(false);
+		frame.setResizable(false);
 		ImageIcon icona = new ImageIcon(getClass().getResource("/F1-Logo.png"));
 		frame.setIconImage(icona.getImage());
 		frame.setLayout(new GridLayout(3, 1));
@@ -116,9 +116,9 @@ public class McPopUpComponentView extends JFrame {
 
 		GridBagConstraints gbcSend = new GridBagConstraints();
 		gbcSend.insets = new Insets(10, 0, 10, 0); // Margini per centrare il bottone e il messaggio
+		
 		gbcSend.gridx = 0;
 		gbcSend.gridy = 0;
-
 		sendButton = new JButton("SEND");
 		sendButton.setPreferredSize(new Dimension(150, 30));
 		sendPanel.add(sendButton, gbcSend);
@@ -194,8 +194,6 @@ public class McPopUpComponentView extends JFrame {
 			}
 		});
 
-//		frame.repaint();
-//		frame.validate();
 	}
 
 	public JPanel getDataPanel() {
