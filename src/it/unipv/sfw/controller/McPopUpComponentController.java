@@ -55,7 +55,7 @@ public class McPopUpComponentController {
 					if (result == 0) {
 						System.out.println("Componente inesistente");
 						pc.mex();
-
+						pc.clearComponents(pc.getSendPanel());
 						return;
 					}
 
@@ -73,6 +73,7 @@ public class McPopUpComponentController {
 
 						// componente già inserito
 						pc.mex1();
+						pc.clearComponents(pc.getDataPanel());
 
 						break;
 
@@ -83,6 +84,7 @@ public class McPopUpComponentController {
 							System.out.println("WEAR = "+c.getWear()+"@mcpopupcomponent");
 							md.updateWear(c.getWear(), id);
 							pc.mex2();
+							pc.clearComponents(pc.getDataPanel());
 						}
 
 						break;
@@ -92,6 +94,7 @@ public class McPopUpComponentController {
 						if (md.insertComponent(id, pc.getInsertID_V().getText())) {
 							md.updateWear(c.getWear(), id);
 							pc.mex2();
+							pc.clearComponents(pc.getDataPanel());
 						}
 
 						break;
@@ -116,6 +119,7 @@ public class McPopUpComponentController {
 
 								md.insertRequest(pr.getDesc().getText(), pr.getId_s().getText(), id_c,
 										pr.getId_v().getText());
+								
 							}
 						});
 
@@ -148,6 +152,8 @@ public class McPopUpComponentController {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
 					}
+					
+					pc.clearComponents(pc.getDataPanel());
 				}
 
 			});
@@ -158,6 +164,10 @@ public class McPopUpComponentController {
 	// Metodo per mostrare la finestra
 	public void showWindow() {
 		pc.show();
+	}
+	
+	public void clear() {
+		pc.clearComponents(pc.getSendPanel());
 	}
 
 }

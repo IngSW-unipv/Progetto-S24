@@ -67,6 +67,7 @@ public class MeccanicoController extends AbsController {
 				McPopUpComponentController pcc = new McPopUpComponentController();
 				System.out.println("il contenuto è: "+Session.getIstance().getOperation()+ " @MECCANICO CONTROLLER");
 				pcc.showWindow();
+				pcc.clear();
 			}
 
 		});
