@@ -172,7 +172,7 @@ public class MeccanicoDAO {
 
 			st1.setString(1, msn);
 			st1.setString(2, convert);
-			
+
 			rs1 = st1.executeUpdate();
 
 		} catch (SQLIntegrityConstraintViolationException e) {
@@ -422,7 +422,7 @@ public class MeccanicoDAO {
 		return esito; // Nessun risultato trovato
 	}
 
-	public int checkCompo(int id_c, String name) {
+	public int checkCompo(int id_c) {
 
 		SCHEMA = "component";
 
@@ -434,13 +434,74 @@ public class MeccanicoDAO {
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
 
-			String query = "SELECT COUNT(*) FROM " + SCHEMA + " WHERE ID = ? AND NAME = ?";
+			String query = "SELECT COUNT(*) FROM " + SCHEMA + " WHERE ID = ?";
 			st1 = conn.prepareStatement(query);
 
 			String idc = String.valueOf(id_c);
 
 			st1.setString(1, idc);
-			st1.setString(2, name);
+
+			rs1 = st1.executeQuery();
+
+			if (rs1.next()) { // Spostati alla prima riga del risultato
+				result = rs1.getInt(1); // Ottieni il valore di COUNT(*)
+			}
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return result;
+	}
+
+	public int checkVehicle(String msn) {
+
+		SCHEMA = "vehicle";
+
+		PreparedStatement st1;
+		ResultSet rs1;
+
+		int result = 0;
+
+		try (DBConnection db = new DBConnection(SCHEMA)) {
+			Connection conn = db.getConnection();
+
+			String query = "SELECT COUNT(*) FROM " + SCHEMA + " WHERE MSN = ?";
+			st1 = conn.prepareStatement(query);
+
+			st1.setString(1, msn);
+
+			rs1 = st1.executeQuery();
+
+			if (rs1.next()) { // Spostati alla prima riga del risultato
+				result = rs1.getInt(1); // Ottieni il valore di COUNT(*)
+			}
+
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		return result;
+	}
+
+	public int checkStaff(String id) {
+
+		SCHEMA = "staff";
+
+		PreparedStatement st1;
+		ResultSet rs1;
+
+		int result = 0;
+
+		try (DBConnection db = new DBConnection(SCHEMA)) {
+			Connection conn = db.getConnection();
+
+			String query = "SELECT COUNT(*) FROM " + SCHEMA + " WHERE ID = ?";
+			st1 = conn.prepareStatement(query);
+
+			st1.setString(1, id);
 
 			rs1 = st1.executeQuery();
 
