@@ -74,13 +74,12 @@ public class McPopUpRequestView {
 
 		dataPanel = new JPanel();
 		dataPanel.setBackground(Color.BLACK);
-		dataPanel.setLayout(new GridLayout(2, 3, 10, 10));
 
 		GridBagConstraints gbc = new GridBagConstraints();
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.insets = new Insets(10, 20, 10, 20);
 
-		Dimension dim = new Dimension(100, 30);
+		Dimension dim = new Dimension(130, 30);
 
 		// Prima riga, prima colonna
 		gbc.gridx = 0;
@@ -95,25 +94,25 @@ public class McPopUpRequestView {
 		id_c = new JTextField("ID COMPONENT");
 		id_c.setPreferredSize(dim);
 		dataPanel.add(id_c, gbc);
-		
-		// Prima  riga, terza colonna
+
+		// Prima riga, terza colonna
 		gbc.gridx = 2;
 		gbc.gridy = 0;
 		id_v = new JTextField("ID VEHICLE");
 		id_v.setPreferredSize(dim);
 		dataPanel.add(id_v, gbc);
-		
+
 		// Seconda riga, prima/seconda/terza colonna
 		gbc.gridx = 0;
 		gbc.gridy = 1;
-		gbc.gridwidth = 3;   // Numero di colonne da occupare
-        gbc.gridheight = 1;  // Numero di righe da occupare
+		gbc.gridwidth = 3; // Numero di colonne da occupare
+		gbc.gridheight = 1; // Numero di righe da occupare
 		desc = new JTextArea("DESCRIPTION...");
 		desc.setPreferredSize(new Dimension(400, 100));
 		dataPanel.add(desc, gbc);
-		
+
 		frame.add(dataPanel);
-		
+
 		/*
 		 * CREAZIONE 3 SEZIONE
 		 */
@@ -124,13 +123,13 @@ public class McPopUpRequestView {
 
 		GridBagConstraints gbcSend = new GridBagConstraints();
 		gbcSend.insets = new Insets(10, 0, 10, 0); // Margini per centrare il bottone e il messaggio
-		
+
 		gbcSend.gridx = 0;
 		gbcSend.gridy = 0;
 		sendButton = new JButton("SEND");
-		sendButton.setPreferredSize(new Dimension(150,30));
+		sendButton.setPreferredSize(new Dimension(150, 30));
 		sendPanel.add(sendButton, gbcSend);
-		
+
 		mexLabel = new JLabel();
 
 		gbcSend.gridy = 1; // Sposta il messaggio sotto il bottone
@@ -139,7 +138,7 @@ public class McPopUpRequestView {
 		sendPanel.add(mexLabel, gbcSend);
 
 		frame.add(sendPanel, BorderLayout.CENTER);
-		
+
 		id_s.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent e) {
@@ -209,6 +208,16 @@ public class McPopUpRequestView {
 		frame.setVisible(true);
 	}
 
+	public void mex() {
+		mexLabel.setText("INVALID ERROR");
+		mexLabel.setForeground(Color.RED);
+	}
+
+	public void mex1() {
+		mexLabel.setText("SUCCESSFULLY  INSERTED");
+		mexLabel.setForeground(Color.GREEN);
+	}
+
 	public JPanel getDataPanel() {
 		return dataPanel;
 	}
@@ -224,12 +233,14 @@ public class McPopUpRequestView {
 	public void setSendPanel(JPanel sendPanel) {
 		this.sendPanel = sendPanel;
 	}
-	
+
 	// Metodo per ripulire i JTextField e JLabel in un JPanel
 	public void clearComponents(JPanel panel) {
 		for (Component comp : panel.getComponents()) {
 			if (comp instanceof JTextField) {
 				((JTextField) comp).setText(""); // Pulisce il JTextField
+			} else if (comp instanceof JTextArea) {
+				((JTextArea) comp).setText("");
 			}
 		}
 		panel.revalidate(); // Rende il pannello nuovamente valido
