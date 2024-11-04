@@ -49,7 +49,7 @@ public class McPopUpComponentController {
 
 					c = new Components(id, pc.getNameC().getText(), pc.getStatusC().getText());
 
-					result = md.checkCompo(id, pc.getNameC().getText());
+					result = md.checkCompo(id);
 
 					// Se inserisco un valore sbagliato
 					if (result == 0) {
