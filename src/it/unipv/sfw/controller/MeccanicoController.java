@@ -117,6 +117,7 @@ public class MeccanicoController extends AbsController {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				prc.showWindow();
+				prc.clear();
 			}
 
 		});
