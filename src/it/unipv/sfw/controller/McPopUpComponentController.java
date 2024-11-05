@@ -34,7 +34,7 @@ public class McPopUpComponentController {
 		
 		if (Session.getIstance().getOperation() == "ADD") {
 			
-			System.out.println("il contenuto è: "+Session.getIstance().getOperation()+ " sono nell'if");
+			System.out.println("il contenuto è: "+Session.getIstance().getOperation()+ " sono nell'if-@mcpcomponent");
 			pc.getSendButton().addActionListener(new ActionListener() {
 
 				@Override
