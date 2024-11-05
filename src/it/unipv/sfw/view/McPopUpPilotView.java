@@ -2,6 +2,7 @@ package it.unipv.sfw.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.Font;
@@ -17,6 +18,7 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
@@ -53,7 +55,7 @@ public class McPopUpPilotView {
 		 * CREAZIONE 1 SEZIONE
 		 */
 
-		titleLabel = new JLabel("ADD DATA PILOT", SwingConstants.CENTER);
+		titleLabel = new JLabel("DATA PILOT", SwingConstants.CENTER);
 
 		titleLabel.setForeground(Color.WHITE);
 		titleLabel.setOpaque(true);
@@ -178,16 +180,39 @@ public class McPopUpPilotView {
 	public void show() {
 		frame.setVisible(true);
 	}
-
-	public void hide() {
-		surname.setEnabled(false);
-		surname.setVisible(false);
-	}
-
+	
 	public JTextField getName() {
 		return name;
 	}
+	
+	public void mex() {
+		mexLabel.setText("ERROR");
+		mexLabel.setForeground(Color.RED);
+	}
+	
+	public void mex1() {
+		mexLabel.setText("CORRECT INSERTION");
+		mexLabel.setForeground(Color.GREEN);
+	}
+	
+	public void mex2() {
+		mexLabel.setText("CORRECT REMOVE");
+		mexLabel.setForeground(Color.GREEN);
+	}
 
+	// Metodo per ripulire i JTextField e JLabel in un JPanel
+	public void clearComponents(JPanel panel) {
+		for (Component comp : panel.getComponents()) {
+			if (comp instanceof JTextField) {
+				((JTextField) comp).setText(""); // Pulisce il JTextField
+			} else if (comp instanceof JTextArea) {
+				((JTextArea) comp).setText("");
+			}
+		}
+		panel.revalidate(); // Rende il pannello nuovamente valido
+		panel.repaint(); // Ridisegna il pannello
+	}
+	
 	public void setName(JTextField name) {
 		this.name = name;
 	}
@@ -214,6 +239,14 @@ public class McPopUpPilotView {
 
 	public void setSendButton(JButton sendButton) {
 		this.sendButton = sendButton;
+	}
+
+	public JPanel getDataPanel() {
+		return dataPanel;
+	}
+
+	public void setDataPanel(JPanel dataPanel) {
+		this.dataPanel = dataPanel;
 	}
 
 }
