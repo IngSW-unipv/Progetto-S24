@@ -45,8 +45,6 @@ public class MeccanicoController extends AbsController {
 		
 		MeccanicoDAO md = new MeccanicoDAO();
 
-//		McPopUpComponentController pcc = new McPopUpComponentController();
-		McPopUpPilotController ppc = new McPopUpPilotController();
 		McPopUpRequestController prc = new McPopUpRequestController();
 		McPopUpVehicleController pvc = new McPopUpVehicleController(mv);
 
@@ -65,7 +63,7 @@ public class MeccanicoController extends AbsController {
 				// TODO Auto-generated method stub
 				Session.getIstance().setOperation("ADD");
 				McPopUpComponentController pcc = new McPopUpComponentController();
-				System.out.println("il contenuto è: "+Session.getIstance().getOperation()+ " @MECCANICO CONTROLLER");
+				System.out.println("il contenuto è: "+Session.getIstance().getOperation()+ " @MECCANICO CONTROLLER-ADD COMPONENT");
 				pcc.showWindow();
 				pcc.clear();
 			}
@@ -79,7 +77,7 @@ public class MeccanicoController extends AbsController {
 				// TODO Auto-generated method stub
 				Session.getIstance().setOperation("REMOVE");
 				McPopUpComponentController pcc = new McPopUpComponentController();
-				System.out.println("il contenuto è: "+Session.getIstance().getOperation()+ " @MECCANICO CONTROLLER");
+				System.out.println("il contenuto è: "+Session.getIstance().getOperation()+ " @MECCANICO CONTROLLER-REMOVE COMPONENT");
 				pcc.showWindow();
 			}
 
@@ -91,11 +89,9 @@ public class MeccanicoController extends AbsController {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				Session.getIstance().setOperation("ADD");
+				McPopUpPilotController ppc = new McPopUpPilotController();
+				System.out.println("il contenuto è: "+Session.getIstance().getOperation()+ " @MECCANICO CONTROLLER-ADD PILOT");
 				ppc.showWindow();
-				
-				// query per recuperare id pilota
-				Session.getIstance().setId_pilot(md.selectIdP());
-				mv.setId_p();
 			}
 
 		});
@@ -105,7 +101,9 @@ public class MeccanicoController extends AbsController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				McPopUpPilotController ppc = new McPopUpPilotController();
 				Session.getIstance().setOperation("REMOVE");
+				System.out.println("il contenuto è: "+Session.getIstance().getOperation()+ " @MECCANICO CONTROLLER-REMOVE PILOT");
 				ppc.showWindow();
 			}
 
