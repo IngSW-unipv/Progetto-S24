@@ -16,9 +16,10 @@ public class McPopUpPilotController {
 	public McPopUpPilotController() {
 		
 		pv = new McPopUpPilotView();
-		
+		md = new MeccanicoDAO();
+		System.out.println("il contenuto è: "+Session.getIstance().getOperation()+ " sono nell'if-@mcpPilot");
 		if(Session.getIstance().getOperation() == "ADD") {
-			
+			System.out.println("il contenuto è: "+Session.getIstance().getOperation()+ " sono nell'if-@mcpPilot");
 			pv.getSendButton().addActionListener(new ActionListener() {
 
 				@Override
@@ -35,10 +36,6 @@ public class McPopUpPilotController {
 			});
 			
 		}else {
-			
-			pv.hide();
-			pv.setName();
-			pv.setNumber();
 			
 			pv.getSendButton().addActionListener(new ActionListener() {
 
