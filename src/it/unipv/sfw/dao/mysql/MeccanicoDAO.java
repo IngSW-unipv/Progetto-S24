@@ -258,7 +258,7 @@ public class MeccanicoDAO {
 
 	}
 
-	public boolean removePilot(String msn, int idp) {
+	public boolean removePilot(String idp) {
 
 		SCHEMA = "vehicle";
 
@@ -270,13 +270,10 @@ public class MeccanicoDAO {
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
 
-			String query = "UPDATE " + SCHEMA + " SET ID_PILOT = NULL WHERE MSN = ?";
+			String query = "UPDATE " + SCHEMA + " SET ID_PILOT = NULL WHERE ID_PILOT = ?";
 			st1 = conn.prepareStatement(query);
 
-			st1.setString(1, msn);
-
-			String id = String.valueOf(idp);
-			st1.setString(2, id);
+			st1.setString(1, idp);
 
 			rs1 = st1.executeUpdate();
 
@@ -399,9 +396,9 @@ public class MeccanicoDAO {
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
 
-			String query = "SELECT * FROM " + SCHEMA + " WHERE ID  = ? ";
+			String query = "SELECT * FROM " + SCHEMA + " WHERE ID  = ?";
 			st1 = conn.prepareStatement(query);
-
+	
 			st1.setString(1, id_p);
 
 			rs1 = st1.executeQuery();
