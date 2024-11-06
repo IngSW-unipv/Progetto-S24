@@ -30,7 +30,7 @@ public class McPopUpComponentView extends JFrame {
 	private JLabel titleLabel, mexLabel;
 
 	// inserimento dati
-	private JTextField insertID_C, insertID_V, nameC, statusC;
+	private JTextField idC, IdV, nameC, statusC;
 
 	// bottoni per l'interazione: 1
 	private JButton sendButton;
@@ -78,16 +78,16 @@ public class McPopUpComponentView extends JFrame {
 		// Prima riga, prima colonna
 		gbc.gridx = 0;
 		gbc.gridy = 0;
-		insertID_C = new JTextField("ID COMPONENT");
-		insertID_C.setPreferredSize(dim);
-		dataPanel.add(insertID_C, gbc);
+		idC = new JTextField("ID COMPONENT");
+		idC.setPreferredSize(dim);
+		dataPanel.add(idC, gbc);
 
 		// Prima riga, seconda colonna
 		gbc.gridx = 1;
 		gbc.gridy = 0;
-		insertID_V = new JTextField("ID VEHICLE");
-		insertID_V.setPreferredSize(dim);
-		dataPanel.add(insertID_V, gbc);
+		IdV = new JTextField("ID VEHICLE");
+		IdV.setPreferredSize(dim);
+		dataPanel.add(IdV, gbc);
 
 		// Seconda riga, prima colonna
 		gbc.gridx = 0;
@@ -130,34 +130,34 @@ public class McPopUpComponentView extends JFrame {
 
 		frame.add(sendPanel, BorderLayout.CENTER);
 
-		insertID_C.addFocusListener(new FocusListener() {
+		idC.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent e) {
-				if (insertID_C.getText().equals("ID COMPONENT")) {
-					insertID_C.setText(""); // Rimuove il testo predefinito
+				if (idC.getText().equals("ID COMPONENT")) {
+					idC.setText(""); // Rimuove il testo predefinito
 				}
 			}
 
 			@Override
 			public void focusLost(FocusEvent e) {
-				if (insertID_C.getText().isEmpty()) {
-					insertID_C.setText("ID COMPONENT"); // Ripristina il testo predefinito se vuoto
+				if (idC.getText().isEmpty()) {
+					idC.setText("ID COMPONENT"); // Ripristina il testo predefinito se vuoto
 				}
 			}
 		});
 
-		insertID_V.addFocusListener(new FocusListener() {
+		IdV.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent e) {
-				if (insertID_V.getText().equals("ID VEHICLE")) {
-					insertID_V.setText(""); // Rimuove il testo predefinito
+				if (IdV.getText().equals("ID VEHICLE")) {
+					IdV.setText(""); // Rimuove il testo predefinito
 				}
 			}
 
 			@Override
 			public void focusLost(FocusEvent e) {
-				if (insertID_V.getText().isEmpty()) {
-					insertID_V.setText("ID VEHICLE"); // Ripristina il testo predefinito se vuoto
+				if (IdV.getText().isEmpty()) {
+					IdV.setText("ID VEHICLE"); // Ripristina il testo predefinito se vuoto
 				}
 			}
 		});
@@ -253,20 +253,20 @@ public class McPopUpComponentView extends JFrame {
 		mexLabel.setForeground(Color.GREEN);
 	}
 
-	public JTextField getInsertID_C() {
-		return insertID_C;
+	public JTextField getIdC() {
+		return idC;
 	}
 
-	public void setInsertID_C(JTextField insertID_C) {
-		this.insertID_C = insertID_C;
+	public void setIdC(JTextField insertID_C) {
+		this.idC = insertID_C;
 	}
 
-	public JTextField getInsertID_V() {
-		return insertID_V;
+	public JTextField getIdV() {
+		return IdV;
 	}
 
-	public void setInsertID_V(JTextField insertID_V) {
-		this.insertID_V = insertID_V;
+	public void setIdV(JTextField insertID_V) {
+		this.IdV = insertID_V;
 	}
 
 	public JTextField getNameC() {
