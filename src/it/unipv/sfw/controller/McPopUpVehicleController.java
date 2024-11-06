@@ -44,7 +44,7 @@ public class McPopUpVehicleController {
 
 					m.setMSN(msn);
 					Session.getIstance().setMsn(m.getMSN());
-					m.addVehicle();
+					Session.getIstance().setV(m.addVehicle());
 					vv.mex2();
 					
 					vv.clearComponents(vv.getDataPanel());
