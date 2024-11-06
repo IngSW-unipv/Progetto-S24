@@ -30,7 +30,7 @@ public class McPopUpComponentController {
 		pr = new McPopUpRequestView();
 		md = new MeccanicoDAO();
 		m = new Meccanico(Session.getIstance().getId_staff(), Session.getIstance().getPwd_staff());
-		v = new Vehicle(Session.getIstance().getMsn());
+//		v = new Vehicle(Session.getIstance().getMsn());
 		
 		if (Session.getIstance().getOperation() == "ADD") {
 			
@@ -62,7 +62,7 @@ public class McPopUpComponentController {
 					try {
 						System.out.println("Componente TROVATO");
 						n = m.addComponent(c, m.getMSN());
-						v.addComponent(c);
+						
 					} catch (WrongReplacementStatusException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
