@@ -2,6 +2,7 @@ package it.unipv.sfw.model.staff;
 
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Random;
 import java.util.Set;
 
@@ -23,45 +24,54 @@ public class Meccanico extends Staff {
 	 * veicolo del sostituto. non si utilizza una macchina unica per via delle
 	 * caratteristiche di guida diverse.
 	 */
-	protected Set<Vehicle> vehicles = new HashSet<>();
-	
+	protected Set<Vehicle> vehicles = new LinkedHashSet<>();
+
 	protected String tmePitStop;
 	protected ArrayList<String> allTimePitStop = new ArrayList<>();
 
 	public Meccanico(String id, String pwd) {
 		super(id, pwd);
-		
+
 	}
 
-	public void addVehicle() {
+	public Vehicle addVehicle() {
 
 		MSN = getMSN();
 		// String msn = MSN + vehicles.size() +1;
 		Vehicle v = new Vehicle(MSN);
-
+		
 		vehicles.add(v);
+		
+		Vehicle vec = null;
+		for (Vehicle vcl : vehicles) {
+			vec = vcl; // Alla fine del ciclo, avremo l'ultimo elemento
+			System.out.println(vcl);
+		}
+		
+		return vec;
 	}
 
 	public int addComponent(Components c, String MSN) throws WrongReplacementStatusException {
 
 		int mode = 0;
-		Vehicle v = new Vehicle(MSN);
+		Vehicle v = Session.getIstance().getV();
 		
 		return mode = v.addComponent(c);
 	}
 
 	public void removeComponent(Components c, String MSN) throws ComponentNotFoundException {
-		Vehicle v = new Vehicle(MSN);
-
+		
+		Vehicle v = Session.getIstance().getV();
+		
 		v.removeComponent(c);
 
 	}
 
 	public int wear(Components c, String MSN) {
 
-		Vehicle v = new Vehicle(MSN);
 		int w = 0;
-
+		Vehicle v = Session.getIstance().getV();
+		
 		return w = v.calcWear(c);
 
 	}
