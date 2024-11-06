@@ -252,6 +252,11 @@ public class McPopUpComponentView extends JFrame {
 		mexLabel.setText("COMPONENT SUCCESSFULLY  INSERTED");
 		mexLabel.setForeground(Color.GREEN);
 	}
+	
+	public void mex3() {
+		mexLabel.setText("COMPONENT SUCCESSFULLY  REMOVED");
+		mexLabel.setForeground(Color.GREEN);
+	}
 
 	public JTextField getIdC() {
 		return idC;
