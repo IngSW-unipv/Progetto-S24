@@ -18,7 +18,7 @@ public class McPopUpPilotController {
 		md = new MeccanicoDAO();
 
 		if (Session.getIstance().getOperation() == "ADD") {
-
+			
 			pv.getSendButton().addActionListener(new ActionListener() {
 
 				@Override
@@ -48,12 +48,8 @@ public class McPopUpPilotController {
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
 
-					String number = pv.getNumber().getText();
-
-					int n = Integer.parseInt(number);
-
-					if (md.checkPilot(number)) {
-						md.removePilot(pv.getName().getText(), n);
+					if (md.checkPilot(Session.getIstance().getId_pilot())) {
+						md.removePilot(Session.getIstance().getId_pilot());
 						pv.mex2();
 						pv.clearComponents(pv.getDataPanel());
 					}else {
