@@ -62,6 +62,7 @@ public class McPopUpComponentController {
 					try {
 						System.out.println("Componente TROVATO");
 						n = m.addComponent(c, m.getMSN());
+						v.addComponent(c);
 					} catch (WrongReplacementStatusException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
@@ -74,7 +75,7 @@ public class McPopUpComponentController {
 						// componente già inserito
 						pc.mex1();
 						pc.clearComponents(pc.getDataPanel());
-
+						clear();
 						break;
 
 					case 1:
@@ -85,6 +86,7 @@ public class McPopUpComponentController {
 							md.updateWear(c.getWear(), id);
 							pc.mex2();
 							pc.clearComponents(pc.getDataPanel());
+							clear();
 						}
 
 						break;
@@ -95,6 +97,7 @@ public class McPopUpComponentController {
 							md.updateWear(c.getWear(), id);
 							pc.mex2();
 							pc.clearComponents(pc.getDataPanel());
+							clear();
 						}
 
 						break;
@@ -120,6 +123,7 @@ public class McPopUpComponentController {
 								md.insertRequest(pr.getDesc().getText(), pr.getId_s().getText(), id_c,
 										pr.getId_v().getText());
 								
+								clear();
 							}
 						});
 
@@ -149,7 +153,12 @@ public class McPopUpComponentController {
 					
 					try {
 						m.removeComponent(c, m.getMSN());
+						v.removeComponent(c);
+						
 						md.removeComponent(id, pc.getIdV().getText());
+						
+						pc.mex3();
+						clear();
 					} catch (ComponentNotFoundException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
