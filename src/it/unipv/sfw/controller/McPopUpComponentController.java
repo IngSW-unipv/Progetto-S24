@@ -43,7 +43,7 @@ public class McPopUpComponentController {
 					
 					int n = 0, result = 0;
 
-					String id_compo = pc.getInsertID_C().getText();
+					String id_compo = pc.getIdC().getText();
 
 					int id = Integer.parseInt(id_compo);
 
@@ -80,7 +80,7 @@ public class McPopUpComponentController {
 					case 1:
 						
 						// componente inserito con successo
-						if (md.insertComponent(id, pc.getInsertID_V().getText())) {
+						if (md.insertComponent(id, pc.getIdV().getText())) {
 							System.out.println("WEAR = "+c.getWear()+"@mcpopupcomponent");
 							md.updateWear(c.getWear(), id);
 							pc.mex2();
@@ -91,7 +91,7 @@ public class McPopUpComponentController {
 
 					case 2:
 
-						if (md.insertComponent(id, pc.getInsertID_V().getText())) {
+						if (md.insertComponent(id, pc.getIdV().getText())) {
 							md.updateWear(c.getWear(), id);
 							pc.mex2();
 							pc.clearComponents(pc.getDataPanel());
@@ -104,8 +104,8 @@ public class McPopUpComponentController {
 						pc.hide();
 						pr.show();
 
-						pr.setId_c(pc.getInsertID_C());
-						pr.setId_v(pc.getInsertID_V());
+						pr.setId_c(pc.getIdC());
+						pr.setId_v(pc.getIdV());
 
 						pr.getSendButton().addActionListener(new ActionListener() {
 
@@ -140,14 +140,16 @@ public class McPopUpComponentController {
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
 
-					String id_comp = pc.getInsertID_C().getText();
+					String id_comp = pc.getIdC().getText();
 
 					int id = Integer.parseInt(id_comp);
 
 					c = new Components(id, pc.getNameC().getText(), pc.getStatusC().getText());
-
+					
+					
 					try {
 						m.removeComponent(c, m.getMSN());
+						md.removeComponent(id, pc.getIdV().getText());
 					} catch (ComponentNotFoundException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
