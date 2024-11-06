@@ -292,7 +292,7 @@ public class MeccanicoDAO {
 
 	}
 
-	public boolean removeComponent(int id_c, int id_v) {
+	public boolean removeComponent(int id_c, String id_v) {
 
 		SCHEMA = "component";
 
@@ -304,14 +304,13 @@ public class MeccanicoDAO {
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
 
-			String query = "UPDATE " + SCHEMA
-					+ " SET WAREHOUSE = 1 AND STATUS = 'USED'  WHERE ID = ? AND ID_VEHICLE = ?";
+			String query = "UPDATE " + SCHEMA + " SET WAREHOUSE = 1, STATUS = 'USED', ID_VEHICLE = NULL WHERE ID = ? AND ID_VEHICLE = ?";
 			st1 = conn.prepareStatement(query);
 
-			String n1 = String.valueOf(id_c), n2 = String.valueOf(id_v);
+			String n1 = String.valueOf(id_c);
 
 			st1.setString(1, n1);
-			st1.setString(2, n2);
+			st1.setString(2, id_v);
 
 			rs1 = st1.executeUpdate();
 
