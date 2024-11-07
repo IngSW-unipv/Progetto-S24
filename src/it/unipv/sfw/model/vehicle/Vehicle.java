@@ -39,8 +39,8 @@ public class Vehicle {
 			throw new WrongReplacementStatusException(cmp.getReplacementStatus());
 
 		cmp.setWear(calcWear(cmp));
-		System.out.println("wear =  "+cmp.getWear()+"@vehicle");
-		
+		System.out.println("wear =  " + cmp.getWear() + "@vehicle");
+
 		int cond = cmp.getWear();
 
 		if (cond == 100 || cond >= 80) {
@@ -50,9 +50,9 @@ public class Vehicle {
 			System.out.println("Componente inserito con successo");
 
 			System.out.println(component.toString());
-			
+
 			result = 1;
-			
+
 			return result;
 
 		} else if (cond > 80 || cond >= 50) {
@@ -63,7 +63,7 @@ public class Vehicle {
 			System.out.println(component.toString());
 
 			result = 2;
-			
+
 			return result;
 
 		} else {
@@ -75,13 +75,16 @@ public class Vehicle {
 
 	public void removeComponent(Components cmp) throws ComponentNotFoundException {
 
+		boolean found = false;
+		
 		for (Components comp : component) {
 			if (comp.getName().equalsIgnoreCase(cmp.getName()))
-				throw new ComponentNotFoundException(cmp.getName());
-
+				found = true;
+				component.remove(cmp);
 		}
 
-		component.remove(cmp);
+		if(!found)
+			throw new ComponentNotFoundException(cmp.getName());
 
 	}
 
@@ -126,6 +129,14 @@ public class Vehicle {
 		long milliseconds = tmeLp % 1000;
 
 		return timeLap = minutes + ":" + seconds + ":" + milliseconds;
+	}
+
+	public void showComponent() {
+		for(Components c : component) {
+			
+			System.out. println(" ID: "+c.getIdComponent()+ " NAME: "+ c.getName()+ " Replacement: "+c.getReplacementStatus()+" WEAR : "+c.getWear());
+			 
+		}
 	}
 
 	public String getTimeLap() {
