@@ -175,4 +175,12 @@ public class Session {
 		component.addAll(v.getComponents());
 	}
 
+	public Vehicle getV() {
+		return v;
+	}
+
+	public void setV(Vehicle v) {
+		this.v = v;
+	}
+
 }
