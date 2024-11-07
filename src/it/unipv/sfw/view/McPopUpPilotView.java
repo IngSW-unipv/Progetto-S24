@@ -64,7 +64,7 @@ public class McPopUpPilotView {
 		titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
 
 		frame.add(titleLabel);
-		
+
 		/*
 		 * CREAZIONE 2 SEZIONE
 		 */
@@ -98,9 +98,9 @@ public class McPopUpPilotView {
 		number = new JTextField("NUMBER");
 		number.setPreferredSize(dim);
 		dataPanel.add(number, gbc);
-		
+
 		frame.add(dataPanel);
-	
+
 		/*
 		 * CREAZIONE 3 SEZIONE
 		 */
@@ -126,13 +126,14 @@ public class McPopUpPilotView {
 		sendPanel.add(mexLabel, gbcSend);
 
 		frame.add(sendPanel, BorderLayout.CENTER);
-		
+
 		name.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent e) {
 				if (name.getText().equals("NAME")) {
 					name.setText(""); // Rimuove il testo predefinito
 				}
+				clearComponents(sendPanel);
 			}
 
 			@Override
@@ -149,6 +150,7 @@ public class McPopUpPilotView {
 				if (surname.getText().equals("SURNAME")) {
 					surname.setText(""); // Rimuove il testo predefinito
 				}
+				clearComponents(sendPanel);
 			}
 
 			@Override
@@ -165,6 +167,7 @@ public class McPopUpPilotView {
 				if (number.getText().equals("NUMBER")) {
 					number.setText(""); // Rimuove il testo predefinito
 				}
+				clearComponents(sendPanel);
 			}
 
 			@Override
@@ -180,24 +183,29 @@ public class McPopUpPilotView {
 	public void show() {
 		frame.setVisible(true);
 	}
-	
+
 	public JTextField getName() {
 		return name;
 	}
-	
+
 	public void mex() {
 		mexLabel.setText("ERROR");
 		mexLabel.setForeground(Color.RED);
 	}
-	
+
 	public void mex1() {
 		mexLabel.setText("CORRECT INSERTION");
 		mexLabel.setForeground(Color.GREEN);
 	}
-	
+
 	public void mex2() {
 		mexLabel.setText("CORRECT REMOVE");
 		mexLabel.setForeground(Color.GREEN);
+	}
+
+	public void mex3() {
+		mexLabel.setText("PILOT NOT IN COMPETION");
+		mexLabel.setForeground(Color.RED);
 	}
 
 	// Metodo per ripulire i JTextField e JLabel in un JPanel
@@ -205,14 +213,14 @@ public class McPopUpPilotView {
 		for (Component comp : panel.getComponents()) {
 			if (comp instanceof JTextField) {
 				((JTextField) comp).setText(""); // Pulisce il JTextField
-			} else if (comp instanceof JTextArea) {
-				((JTextArea) comp).setText("");
+			} else if (comp instanceof JLabel) {
+				((JLabel) comp).setText("");
 			}
 		}
 		panel.revalidate(); // Rende il pannello nuovamente valido
 		panel.repaint(); // Ridisegna il pannello
 	}
-	
+
 	public void setName(JTextField name) {
 		this.name = name;
 	}
@@ -247,6 +255,14 @@ public class McPopUpPilotView {
 
 	public void setDataPanel(JPanel dataPanel) {
 		this.dataPanel = dataPanel;
+	}
+
+	public JPanel getSendPanel() {
+		return sendPanel;
+	}
+
+	public void setSendPanel(JPanel sendPanel) {
+		this.sendPanel = sendPanel;
 	}
 
 }

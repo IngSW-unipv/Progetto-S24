@@ -136,6 +136,7 @@ public class McPopUpComponentView extends JFrame {
 				if (idC.getText().equals("ID COMPONENT")) {
 					idC.setText(""); // Rimuove il testo predefinito
 				}
+				clearComponents(sendPanel);
 			}
 
 			@Override
@@ -152,6 +153,7 @@ public class McPopUpComponentView extends JFrame {
 				if (IdV.getText().equals("ID VEHICLE")) {
 					IdV.setText(""); // Rimuove il testo predefinito
 				}
+				clearComponents(sendPanel);
 			}
 
 			@Override
@@ -168,6 +170,7 @@ public class McPopUpComponentView extends JFrame {
 				if (nameC.getText().equals("NAME COMPONENT")) {
 					nameC.setText(""); // Rimuove il testo predefinito
 				}
+				clearComponents(sendPanel);
 			}
 
 			@Override
@@ -184,6 +187,7 @@ public class McPopUpComponentView extends JFrame {
 				if (statusC.getText().equals("STATUS COMPONENT")) {
 					statusC.setText(""); // Rimuove il testo predefinito
 				}
+				clearComponents(sendPanel);
 			}
 
 			@Override
@@ -217,6 +221,8 @@ public class McPopUpComponentView extends JFrame {
 		for (Component comp : panel.getComponents()) {
 			if (comp instanceof JTextField) {
 				((JTextField) comp).setText(""); // Pulisce il JTextField
+			}else if (comp instanceof JLabel) {
+				((JLabel) comp).setText("");
 			}
 		}
 		panel.revalidate(); // Rende il pannello nuovamente valido
