@@ -61,7 +61,7 @@ public class McPopUpComponentController {
 
 					try {
 						System.out.println("Componente TROVATO");
-						n = m.addComponent(c, m.getMSN());
+						n = m.addComponent(c);
 						
 					} catch (WrongReplacementStatusException e1) {
 						// TODO Auto-generated catch block
@@ -152,8 +152,7 @@ public class McPopUpComponentController {
 					
 					
 					try {
-						m.removeComponent(c, m.getMSN());
-						v.removeComponent(c);
+						m.removeComponent(c);
 						
 						md.removeComponent(id, pc.getIdV().getText());
 						
