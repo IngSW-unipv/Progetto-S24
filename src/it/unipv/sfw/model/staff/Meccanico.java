@@ -51,19 +51,22 @@ public class Meccanico extends Staff {
 		return vec;
 	}
 
-	public int addComponent(Components c, String MSN) throws WrongReplacementStatusException {
+	public int addComponent(Components c) throws WrongReplacementStatusException {
 
 		int mode = 0;
-		Vehicle v = Session.getIstance().getV();
+
+		mode = Session.getIstance().getV().addComponent(c);
+
+		Session.getIstance().getV().showComponent();
 		
-		return mode = v.addComponent(c);
+		return mode;
 	}
 
-	public void removeComponent(Components c, String MSN) throws ComponentNotFoundException {
+	public void removeComponent(Components c) throws ComponentNotFoundException {
 		
-		Vehicle v = Session.getIstance().getV();
+		 Session.getIstance().getV().showComponent();
+		 Session.getIstance().getV().removeComponent(c);
 		
-		v.removeComponent(c);
 
 	}
 
