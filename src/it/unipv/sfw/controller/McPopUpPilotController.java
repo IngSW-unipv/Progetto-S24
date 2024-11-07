@@ -24,7 +24,8 @@ public class McPopUpPilotController {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
-
+			
+					
 					String number = pv.getNumber().getText();
 
 					int n = Integer.parseInt(number);
@@ -35,6 +36,7 @@ public class McPopUpPilotController {
 					} else {
 						pv.mex();
 						pv.clearComponents(pv.getDataPanel());
+						
 					}
 
 				}
@@ -47,13 +49,14 @@ public class McPopUpPilotController {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
-
+					
 					if (md.checkPilot(Session.getIstance().getId_pilot())) {
 						md.removePilot(Session.getIstance().getId_pilot());
 						pv.mex2();
 						pv.clearComponents(pv.getDataPanel());
 					}else {
 						pv.mex();
+						pv.clearComponents(pv.getDataPanel());
 					}
 
 				}
@@ -65,6 +68,10 @@ public class McPopUpPilotController {
 	// Metodo per mostrare la finestra
 	public void showWindow() {
 		pv.show();
+	}
+	
+	public void clear() {
+		pv.clearComponents(pv.getSendPanel());
 	}
 
 }
