@@ -92,6 +92,7 @@ public class MeccanicoController extends AbsController {
 				McPopUpPilotController ppc = new McPopUpPilotController();
 				System.out.println("il contenuto è: "+Session.getIstance().getOperation()+ " @MECCANICO CONTROLLER-ADD PILOT");
 				ppc.showWindow();
+				ppc.clear();
 			}
 
 		});
