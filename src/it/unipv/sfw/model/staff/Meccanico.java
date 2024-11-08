@@ -28,7 +28,6 @@ public class Meccanico extends Staff {
 	// è un set -> no duplicati, linked -> posso simulare un ordinamento
 	protected Set<Vehicle> vehicles = new LinkedHashSet<>();
 
-	protected String tmePitStop;
 	protected ArrayList<Integer> allTimePitStop = new ArrayList<>();
 
 	public Meccanico(String id, String pwd) {
@@ -85,7 +84,7 @@ public class Meccanico extends Staff {
 
 		Random random = new Random();
 
-		int  min = 2000, max = 60000, tmePs = 0;
+		int  min = 2000, max = 5000, tmePs = 0;
 
 		tmePs = random.nextInt((max - min) + 1) + min;
 
@@ -144,14 +143,6 @@ public class Meccanico extends Staff {
 
 	public void setVehicles(Set<Vehicle> vehicles) {
 		this.vehicles = vehicles;
-	}
-
-	public String getTmePitStop() {
-		return tmePitStop;
-	}
-
-	public void setTmePitStop(String tmePitStop) {
-		this.tmePitStop = tmePitStop;
 	}
 
 	public ArrayList<Integer> getAllTimePitStop() {
