@@ -15,16 +15,15 @@ public class Session {
 
 	private static Session istance = null;
 
-	private String operation = "",
-							msn = "";
-	
-	// settare id pilota da query -> meccanico controller -> meccanico view 
+	private String operation = "", msn = "";
+
+	// settare id pilota da query -> meccanico controller -> meccanico view
 	private String id_pilot;
 	private String id_staff;
 	private String pwd_staff;
-	
-	private ArrayList<String> tps;
-	private Set<Components> component;
+
+	// private ArrayList<String> tps;
+	// private Set<Components> component;
 
 	private Meccanico m;
 	private Vehicle v;
@@ -46,9 +45,10 @@ public class Session {
 	// session
 	private Session() {
 		currentUser = null;
-		component = new HashSet<>();
-		tps = new ArrayList<>();
+		// component = new HashSet<>();
+		// tps = new ArrayList<>();
 		v = new Vehicle(msn);
+		m = new Meccanico(id_staff, pwd_staff);
 	}
 
 	/**
@@ -65,11 +65,10 @@ public class Session {
 	 */
 
 	public void login(String id, char[] pwd) throws AccountNotFoundException, WrongPasswordException {
-		
+
 		id_staff = new String(id);
 		pwd_staff = new String(pwd);
-		
-		
+
 		Staff user = DAOFactory.createUserDAO().selectById(id);
 
 		if (user == null)
@@ -96,7 +95,7 @@ public class Session {
 
 		case "MAGAZZINIERE":
 			Magazziniere mg = (Magazziniere) user;
-			
+
 			this.setCurrentUser(user);
 
 			break;
@@ -146,7 +145,7 @@ public class Session {
 	public void setId_staff(String id_staff) {
 		this.id_staff = id_staff;
 	}
-	
+
 	public String getPwd_staff() {
 		return pwd_staff;
 	}
@@ -155,25 +154,24 @@ public class Session {
 		this.pwd_staff = pwd_staff;
 	}
 
-	public ArrayList<String> getTps() {
+	public void getTps() {
 		// inizializzo l'array
 		int i = 0;
 
 		for (i = 0; i < 8; i++)
-			tps.add(m.setTimePS());
+			m.setTimePS();
+		// il vettore ha 8 valori inseriti
 
-		// il vettore tps ha 8 valori inseriti
-		return tps;
 	}
-
-	public Set<Components> getC() {
-		return component;
-	}
-
-	public void setC() {
-		// TODO Auto-generated method stub
-		component.addAll(v.getComponents());
-	}
+//
+//	public Set<Components> getC() {
+//		return component;
+//	}
+//
+//	public void setC() {
+//		// TODO Auto-generated method stub
+//		component.addAll(v.getComponents());
+//	}
 
 	public Vehicle getV() {
 		return v;
@@ -181,6 +179,14 @@ public class Session {
 
 	public void setV(Vehicle v) {
 		this.v = v;
+	}
+
+	public Meccanico getM() {
+		return m;
+	}
+
+	public void setM(Meccanico m) {
+		this.m = m;
 	}
 
 }
