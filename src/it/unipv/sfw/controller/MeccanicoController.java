@@ -18,7 +18,7 @@ public class MeccanicoController extends AbsController {
 	protected Vehicle v;
 
 	// creo un SET per contenere tutti i componenti di cui è composta la vettura
-	//protected Set<Component> c = new HashSet<>();
+	// protected Set<Component> c = new HashSet<>();
 
 	@Override
 	public TypeController getType() {
@@ -29,33 +29,30 @@ public class MeccanicoController extends AbsController {
 	@Override
 	public void initialize() {
 		// TODO Auto-generated method stub
-		
+
 		//
 		try {
 
 			user = Session.getIstance().getCurrentUser();
 			m = (Meccanico) user;
-			
+
 		} catch (Exception e) {
 			System.out.println("Errore");
 		}
-		
+
 		MeccanicoView mv = new MeccanicoView();
-		
-		
+
 		MeccanicoDAO md = new MeccanicoDAO();
 
 		McPopUpRequestController prc = new McPopUpRequestController();
 		McPopUpVehicleController pvc = new McPopUpVehicleController(mv);
 
-		McGraphicTimePsController gtpc;
 		McGraphicAllComponentController gacc;
 
-		gtpc = new McGraphicTimePsController(m.getTime());
-		
-		Session.getIstance().setC();
+//		gtpc 
+
+		// Session.getIstance().setC();
 		gacc = new McGraphicAllComponentController();
-		
 
 		mv.getAddComponentButton().addActionListener(new ActionListener() {
 			@Override
@@ -63,7 +60,8 @@ public class MeccanicoController extends AbsController {
 				// TODO Auto-generated method stub
 				Session.getIstance().setOperation("ADD");
 				McPopUpComponentController pcc = new McPopUpComponentController();
-				System.out.println("il contenuto è: "+Session.getIstance().getOperation()+ " @MECCANICO CONTROLLER-ADD COMPONENT");
+				System.out.println("il contenuto è: " + Session.getIstance().getOperation()
+						+ " @MECCANICO CONTROLLER-ADD COMPONENT");
 				pcc.showWindow();
 				pcc.clear();
 			}
@@ -77,7 +75,8 @@ public class MeccanicoController extends AbsController {
 				// TODO Auto-generated method stub
 				Session.getIstance().setOperation("REMOVE");
 				McPopUpComponentController pcc = new McPopUpComponentController();
-				System.out.println("il contenuto è: "+Session.getIstance().getOperation()+ " @MECCANICO CONTROLLER-REMOVE COMPONENT");
+				System.out.println("il contenuto è: " + Session.getIstance().getOperation()
+						+ " @MECCANICO CONTROLLER-REMOVE COMPONENT");
 				pcc.showWindow();
 			}
 
@@ -90,7 +89,8 @@ public class MeccanicoController extends AbsController {
 				// TODO Auto-generated method stub
 				Session.getIstance().setOperation("ADD");
 				McPopUpPilotController ppc = new McPopUpPilotController();
-				System.out.println("il contenuto è: "+Session.getIstance().getOperation()+ " @MECCANICO CONTROLLER-ADD PILOT");
+				System.out.println(
+						"il contenuto è: " + Session.getIstance().getOperation() + " @MECCANICO CONTROLLER-ADD PILOT");
 				ppc.showWindow();
 				ppc.clear();
 			}
@@ -104,7 +104,8 @@ public class MeccanicoController extends AbsController {
 				// TODO Auto-generated method stub
 				McPopUpPilotController ppc = new McPopUpPilotController();
 				Session.getIstance().setOperation("REMOVE");
-				System.out.println("il contenuto è: "+Session.getIstance().getOperation()+ " @MECCANICO CONTROLLER-REMOVE PILOT");
+				System.out.println("il contenuto è: " + Session.getIstance().getOperation()
+						+ " @MECCANICO CONTROLLER-REMOVE PILOT");
 				ppc.showWindow();
 			}
 
@@ -126,11 +127,10 @@ public class MeccanicoController extends AbsController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
-				
+
 				pvc.showWindow();
 				pvc.clear();
-				
+
 			}
 
 		});
@@ -140,7 +140,9 @@ public class MeccanicoController extends AbsController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				gtpc.showWindow();
+				Session.getIstance().getTps();
+				McGraphicTimePsController gtpc = new McGraphicTimePsController(m.getAllTimePitStop());
+				 gtpc.showWindow();
 			}
 
 		});
@@ -155,10 +157,10 @@ public class MeccanicoController extends AbsController {
 			}
 
 		});
-		
+
 		mv.setVisible(true);
 		view = mv;
-		
+
 	}
 
 	@Override
@@ -166,5 +168,5 @@ public class MeccanicoController extends AbsController {
 		// TODO Auto-generated method stub
 		this.initialize();
 	}
-	
+
 }
