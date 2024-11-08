@@ -4,22 +4,40 @@ import java.util.ArrayList;
 
 import javax.swing.SwingUtilities;
 
+import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.view.McGraphicTimePsView;
 
 public class McGraphicTimePsController { 
-	private ArrayList<Integer> tmPs;
 	private ArrayList<String> labelTime;
 	
-	private McGraphicTimePsView gtpv  = new McGraphicTimePsView(tmPs, labelTime);
+	private McGraphicTimePsView gtpv  = new McGraphicTimePsView(Session.getIstance().getM().getAllTimePitStop(), labelTime);
 	
-	public McGraphicTimePsController(ArrayList<Integer> tmPs) {
-			this.tmPs = tmPs; 
+	public McGraphicTimePsController() {
 	}
 	
-	
-	public void createLabels(ArrayList<Integer> tp) {
+	public void initialize(){
 		
-		for(Integer time : tp) {
+		labelTime = new ArrayList<>();
+		
+		 for(Integer t : Session.getIstance().getM().getAllTimePitStop()) {
+			 
+			 System.out.println("tempo: " + t);
+			 
+		 }
+		createLabels();
+		showWindow();
+		
+	}
+	
+	public void createLabels() {
+		
+		 for(Integer t : Session.getIstance().getM().getAllTimePitStop()) {
+			 
+			 System.out.println("tempo @createLabels: " + t);
+			 
+		 }
+		
+		for(Integer time : Session.getIstance().getM().getAllTimePitStop()) {
 			labelTime.add(convertTime(time));	
 		}
 	}
@@ -35,8 +53,6 @@ public class McGraphicTimePsController {
 
 	public void showWindow() {
 		
-		createLabels(tmPs);
-		
 		/*
 		 *  Posticipa l'esecuzione del codice specificato
 		 *  fino a quando la GUI non è pronta. 
@@ -47,7 +63,7 @@ public class McGraphicTimePsController {
 			@Override
 			public void run() {
 				// TODO Auto-generated method stub
-				gtpv.createAndShowGui(tmPs, labelTime);
+				gtpv.createAndShowGui(Session.getIstance().getM().getAllTimePitStop(), labelTime);
 			}
 			
 		});
