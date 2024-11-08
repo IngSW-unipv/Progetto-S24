@@ -11,10 +11,8 @@ import java.awt.RenderingHints;
 import java.awt.Stroke;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
-import javax.swing.SwingUtilities;
 
 public class McGraphicTimePsView extends JPanel {
 
@@ -28,10 +26,12 @@ public class McGraphicTimePsView extends JPanel {
 	private static final Stroke GRAPH_STROKE = new BasicStroke(2f);
 	private int pointWidth = 8;
 	private int numberYDivisions = 10;
-	private List<Double> scores;
+	private ArrayList<Integer> scores;
+	private ArrayList<String> labelTime;
 
-	public McGraphicTimePsView(List<Double> scores) {
+	public McGraphicTimePsView(ArrayList<Integer> scores,  ArrayList<String> labelTime) {
 		this.scores = scores;
+		this.labelTime = labelTime;
 	}
 
 	@Override
@@ -121,18 +121,21 @@ public class McGraphicTimePsView extends JPanel {
 			int ovalW = pointWidth;
 			int ovalH = pointWidth;
 			g2.fillOval(x, y, ovalW, ovalH);
+			
+			// Disegna l'etichetta accanto al punto
+	        String label = labelTime.get(i); // Ottieni l'etichetta corrispondente
+	        FontMetrics metrics = g2.getFontMetrics();
+	        int labelWidth = metrics.stringWidth(label);
+	        g2.setColor(Color.WHITE);
+	        g2.drawString(label, x - labelWidth / 2, y - metrics.getHeight()); // Posiziona sopra il punto
+	        g2.setColor(pointColor);
 		}
 	}
-
-//        @Override
-//        public Dimension getPreferredSize() {
-//            return new Dimension(width, heigth);
-//        }
 
 	// SETTING ESTREMI MAX E MIN
 	private double getMinScore() {
 		double minScore = Double.MAX_VALUE;
-		for (Double score : scores) {
+		for (Integer score : scores) {
 			minScore = Math.min(minScore, score);
 		}
 		return minScore;
@@ -140,25 +143,25 @@ public class McGraphicTimePsView extends JPanel {
 
 	private double getMaxScore() {
 		double maxScore = Double.MIN_VALUE;
-		for (Double score : scores) {
+		for (Integer score : scores) {
 			maxScore = Math.max(maxScore, score);
 		}
 		return maxScore;
 	}
 
-	public void setScores(List<Double> scores) {
+	public void setScores(ArrayList<Integer> scores) {
 		this.scores = scores;
 		invalidate();
 		this.repaint();
 	}
 
-	public List<Double> getScores() {
+	public List<Integer> getScores() {
 		return scores;
 	}
 
-	public static void createAndShowGui(ArrayList<Double> scores) {
+	public static void createAndShowGui(ArrayList<Integer> scores, ArrayList<String> labelTime) {
 
-		McGraphicTimePsView mainPanel = new McGraphicTimePsView(scores);
+		McGraphicTimePsView mainPanel = new McGraphicTimePsView(scores, labelTime);
 		mainPanel.setPreferredSize(new Dimension(800, 600));
 		JFrame frame = new JFrame("DrawGraph");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
