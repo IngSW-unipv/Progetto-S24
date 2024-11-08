@@ -14,7 +14,7 @@ public class McGraphicAllComponentController {
 	
 	
 	public McGraphicAllComponentController() {
-		this.components = Session.getIstance().getC();
+		this.components = Session.getIstance().getV().getComponents();
 		this.gv = new McGraphicAllComponentView(components);
 			
 	}
