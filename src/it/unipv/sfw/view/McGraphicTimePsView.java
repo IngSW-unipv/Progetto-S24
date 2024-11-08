@@ -55,7 +55,7 @@ public class McGraphicTimePsView extends JPanel {
 		g2.setColor(Color.BLACK);
 		g2.fillRect(padding + labelPadding, padding, getWidth() - (2 * padding) - labelPadding,
 				getHeight() - 2 * padding - labelPadding);
-		g2.setColor(Color.WHITE);
+		g2.setColor(Color.BLACK);
 
 		// create hatch marks and grid lines for y axis.
 		for (int i = 0; i < numberYDivisions + 1; i++) {
@@ -126,8 +126,8 @@ public class McGraphicTimePsView extends JPanel {
 	        String label = labelTime.get(i); // Ottieni l'etichetta corrispondente
 	        FontMetrics metrics = g2.getFontMetrics();
 	        int labelWidth = metrics.stringWidth(label);
-	        g2.setColor(Color.WHITE);
-	        g2.drawString(label, x - labelWidth / 2, y - metrics.getHeight()); // Posiziona sopra il punto
+	        g2.setColor(Color.GREEN);
+	        g2.drawString(label,x - labelWidth, y + metrics.getHeight()); // Posiziona sopra il punto
 	        g2.setColor(pointColor);
 		}
 	}
@@ -163,20 +163,14 @@ public class McGraphicTimePsView extends JPanel {
 
 		McGraphicTimePsView mainPanel = new McGraphicTimePsView(scores, labelTime);
 		mainPanel.setPreferredSize(new Dimension(800, 600));
-		JFrame frame = new JFrame("DrawGraph");
+		JFrame frame = new JFrame("GRAFICO TEMPI PIT STOP");
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().add(mainPanel);
+		frame.getContentPane().setBackground(Color.BLACK);
 		frame.pack();
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 
 	}
-
-	/*
-	 * controller 
-	 * public static void main(String[] args) {
-	 * SwingUtilities.invokeLater(new Runnable() { public void run() {
-	 * createAndShowGui(); } }); };
-	 */
-
+	
 }
