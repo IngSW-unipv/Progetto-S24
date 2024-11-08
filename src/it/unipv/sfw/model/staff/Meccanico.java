@@ -24,10 +24,12 @@ public class Meccanico extends Staff {
 	 * veicolo del sostituto. non si utilizza una macchina unica per via delle
 	 * caratteristiche di guida diverse.
 	 */
+	
+	// è un set -> no duplicati, linked -> posso simulare un ordinamento
 	protected Set<Vehicle> vehicles = new LinkedHashSet<>();
 
 	protected String tmePitStop;
-	protected ArrayList<String> allTimePitStop = new ArrayList<>();
+	protected ArrayList<Integer> allTimePitStop = new ArrayList<>();
 
 	public Meccanico(String id, String pwd) {
 		super(id, pwd);
@@ -79,24 +81,20 @@ public class Meccanico extends Staff {
 
 	}
 
-	public String setTimePS() {
+	public int setTimePS() {
 
 		Random random = new Random();
 
-		int min = 2000, max = 60000, tmePs = 0;
+		int  min = 2000, max = 60000, tmePs = 0;
 
-		tmePs = random.nextInt((min - max) + 1) + min;
-
-		long minutes = tmePs / 60000;
-
-		long seconds = (tmePs % 60000) / 1000;
-
-		long milliseconds = tmePs % 1000;
+		tmePs = random.nextInt((max - min) + 1) + min;
 
 		checkPS(tmePs);
-
-		allTimePitStop.add(tmePitStop);
-		return tmePitStop = minutes + ":" + seconds + "." + milliseconds;
+		
+		// tmePitStop = minutes + ":" + seconds + "." + milliseconds;
+		allTimePitStop.add(tmePs);
+		
+		return tmePs;
 
 	}
 
@@ -111,15 +109,15 @@ public class Meccanico extends Staff {
 	}
 
 	// Ottenere tutti i tempi di pit stop convertiti in secondi
-	public ArrayList<Double> getTime() throws NumberFormatException {
-		ArrayList<Double> time = new ArrayList<>();
-
-		for (String tm : allTimePitStop) {
-			time.add(convertTime(tm));
-		}
-
-		return time;
-	}
+//	public ArrayList<Double> getTime() throws NumberFormatException {
+//		ArrayList<Double> time = new ArrayList<>();
+//
+//		for (String tm : allTimePitStop) {
+//			time.add(convertTime(tm));
+//		}
+//
+//		return time;
+//	}
 
 	// Metodo per convertire una stringa di tempo (mm:ss.SSS) in secondi decimali
 	public double convertTime(String tps) throws NumberFormatException {
@@ -156,11 +154,11 @@ public class Meccanico extends Staff {
 		this.tmePitStop = tmePitStop;
 	}
 
-	public ArrayList<String> getAllTimePitStop() {
+	public ArrayList<Integer> getAllTimePitStop() {
 		return allTimePitStop;
 	}
 
-	public void setAllTimePitStop(ArrayList<String> allTimePitStop) {
+	public void setAllTimePitStop(ArrayList<Integer> allTimePitStop) {
 		this.allTimePitStop = allTimePitStop;
 	}
 
