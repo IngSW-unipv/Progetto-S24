@@ -141,8 +141,9 @@ public class MeccanicoController extends AbsController {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				Session.getIstance().getTps();
-				McGraphicTimePsController gtpc = new McGraphicTimePsController(m.getAllTimePitStop());
-				 gtpc.showWindow();
+				McGraphicTimePsController gtpc = new McGraphicTimePsController();
+				 gtpc.initialize();
+				
 			}
 
 		});
