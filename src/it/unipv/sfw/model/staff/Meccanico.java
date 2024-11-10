@@ -84,7 +84,7 @@ public class Meccanico extends Staff {
 
 		Random random = new Random();
 
-		int  min = 2000, max = 5000, tmePs = 0;
+		int  min = 2000, max = 4000, tmePs = 0;
 
 		tmePs = random.nextInt((max - min) + 1) + min;
 
