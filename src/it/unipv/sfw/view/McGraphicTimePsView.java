@@ -3,17 +3,23 @@ package it.unipv.sfw.view;
 import java.awt.BasicStroke;
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.FontMetrics;
 import java.awt.Graphics;
 import java.awt.Graphics2D;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
 import java.awt.Point;
 import java.awt.RenderingHints;
 import java.awt.Stroke;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.swing.BoxLayout;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -23,7 +29,7 @@ import javax.swing.SwingConstants;
 public class McGraphicTimePsView extends JPanel {
 
 	private int width = 800;
-	private int height = 400;
+	private int height = 600;
 	private int padding = 25;
 	private int labelPadding = 25;
 	private Color lineColor = new Color(255, 255, 0, 180);
@@ -34,7 +40,7 @@ public class McGraphicTimePsView extends JPanel {
 	private int numberYDivisions = 10;
 	private ArrayList<Integer> scores;
 	private JFrame frame;
-	private JLabel messageLabel;
+	private JLabel messageLabel, tmeLabel;
 	private JPanel messagePanel;
 
 	public McGraphicTimePsView(ArrayList<Integer> scores, ArrayList<String> labelTime) {
@@ -44,13 +50,11 @@ public class McGraphicTimePsView extends JPanel {
 		frame = new JFrame("GRAFICO TEMPI PIT STOP");
 		frame.setPreferredSize(new Dimension(900,700));
 		frame.setResizable(false);
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		frame.getContentPane().add(this);
-		frame.pack();
-		frame.setLocationRelativeTo(null);
 		ImageIcon icona = new ImageIcon(getClass().getResource("/F1-Logo.png"));
 		frame.setIconImage(icona.getImage());
-		frame.setLayout(new GridLayout(2, 1));
+		frame.setLayout(new BorderLayout());
 
 		/*
 		 *  Creo un JPanel anonimo con il metodo paintComponent sovrascritto.
@@ -93,8 +97,7 @@ public class McGraphicTimePsView extends JPanel {
 						g2.drawLine(padding + labelPadding + 1 + pointWidth, y0, getWidth() - padding, y1);
 						g2.setColor(Color.BLACK);
 
-						double yValue = getMinScore()
-								+ (getMaxScore() - getMinScore()) * ((i * 1.0) / numberYDivisions);
+						double yValue = getMinScore() + (getMaxScore() - getMinScore()) * ((i * 1.0) / numberYDivisions);
 						yValue /= 1000.0;
 						String yLabel = String.format("%.3f", yValue);
 
@@ -127,10 +130,8 @@ public class McGraphicTimePsView extends JPanel {
 				}
 
 				// Disegna assi x e y
-				g2.drawLine(padding + labelPadding, getHeight() - padding - labelPadding, padding + labelPadding,
-						padding);
-				g2.drawLine(padding + labelPadding, getHeight() - padding - labelPadding, getWidth() - padding,
-						getHeight() - padding - labelPadding);
+				g2.drawLine(padding + labelPadding, getHeight() - padding - labelPadding, padding + labelPadding, padding);
+				g2.drawLine(padding + labelPadding, getHeight() - padding - labelPadding, getWidth() - padding, getHeight() - padding - labelPadding);
 
 				Stroke oldStroke = g2.getStroke();
 				g2.setColor(lineColor);
@@ -167,19 +168,30 @@ public class McGraphicTimePsView extends JPanel {
 		};
 
 		graphPanel.setPreferredSize(new Dimension(width, height));
-		this.add(graphPanel);
-		
-		// Pannello per il messaggio
-	    messagePanel = new JPanel();
-		messagePanel.setSize(new Dimension(80, 30));
-		
-		messageLabel = new JLabel("ABNORMAL PIT STOP TIMES: ", SwingConstants.LEFT);
-		messageLabel.setSize(new Dimension(80, 30));
-		
+		frame.add(graphPanel, BorderLayout.NORTH);
+	
+		// Crea un pannello con GridLayout per gestire il layout delle due etichette
+		messagePanel = new JPanel(new GridLayout(2, 1, 0, 5)); // Due righe per due etichette
+
+		// Crea la prima etichetta, centrata
+		messageLabel = new JLabel("ABNORMAL PIT STOP TIMES:", SwingConstants.CENTER);
+
+		// Aggiungi messageLabel (centrata nella sua cella)
 		messagePanel.add(messageLabel);
-		frame.add(messagePanel);
-		
-		frame.repaint();
+
+		// Crea la seconda etichetta, allineata a sinistra
+		tmeLabel = new JLabel("SONO QUI");
+		tmeLabel.setHorizontalAlignment(SwingConstants.LEFT);  // Allinea il testo a sinistra
+
+		// Aggiungi tmeLabel sotto messageLabel, allineata a sinistra
+		messagePanel.add(tmeLabel);
+
+		// Aggiungi messagePanel al frame, al centro
+		frame.add(messagePanel, BorderLayout.CENTER);
+
+		// Finalizza il frame
+		frame.pack();
+		frame.setLocationRelativeTo(null);
 		
 	}
 
