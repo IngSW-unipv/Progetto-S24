@@ -10,6 +10,7 @@ import it.unipv.sfw.view.McGraphicTimePsView;
 public class McGraphicTimePsController { 
 	
 	private ArrayList<String> labelTime = new ArrayList<>();
+	private ArrayList<String> anomalyLabelTime = new ArrayList<>();
 	
 	private McGraphicTimePsView gtpv  = new McGraphicTimePsView(Session.getIstance().getM().getAllTimePitStop(), labelTime);
 	
@@ -26,6 +27,7 @@ public class McGraphicTimePsController {
 		 }
 		 
 		createLabels();
+		gtpv.anomalyTime(anomalyLabelTime);
 		showWindow();
 		
 	}
@@ -34,6 +36,10 @@ public class McGraphicTimePsController {
 		
 		for(Integer time : Session.getIstance().getM().getAllTimePitStop()) {
 			labelTime.add(convertTime(time));	
+		}
+		
+		for(Integer  time : Session.getIstance().getM().getAnomalyTime()) {
+			anomalyLabelTime.add(convertTime(time));
 		}
 	}
 	
