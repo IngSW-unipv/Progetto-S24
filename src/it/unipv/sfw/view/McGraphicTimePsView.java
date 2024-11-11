@@ -209,5 +209,13 @@ public class McGraphicTimePsView extends JPanel {
 	public void show() {
 		frame.setVisible(true);
 	}
-
+	
+	public void anomalyTime(ArrayList<String> at) {
+		String time = "";
+        for (String s : at) {
+            time += s + "              ";
+        }
+		tmeLabel.setText("" + time);
+		tmeLabel.setForeground(Color.RED);
+	}
 }
