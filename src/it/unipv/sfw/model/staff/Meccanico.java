@@ -29,6 +29,7 @@ public class Meccanico extends Staff {
 	protected Set<Vehicle> vehicles = new LinkedHashSet<>();
 
 	protected ArrayList<Integer> allTimePitStop = new ArrayList<>();
+	protected ArrayList<Integer> anomalyTime = new ArrayList<>();
 
 	public Meccanico(String id, String pwd) {
 		super(id, pwd);
@@ -98,10 +99,12 @@ public class Meccanico extends Staff {
 	}
 
 	private void checkPS(int timePS) {
+		
 
 		if (timePS == 2000 || timePS < 3000) {
 			System.out.println("Tempo pit stop valido");
 		} else {
+			anomalyTime.add(timePS);
 			System.out.println("Tempo pit stop eccessivo --> verificata anomalia");
 		}
 
@@ -160,4 +163,13 @@ public class Meccanico extends Staff {
 	public void setMSN(String mSN) {
 		MSN = mSN;
 	}
+
+	public ArrayList<Integer> getAnomalyTime() {
+		return anomalyTime;
+	}
+
+	public void setAnomalyTime(ArrayList<Integer> anomalyTime) {
+		this.anomalyTime = anomalyTime;
+	}
+	
 }
