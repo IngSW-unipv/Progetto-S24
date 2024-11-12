@@ -32,11 +32,12 @@ public class McGraphicAllComponentView {
 		//this.components = components;
 
 		frame = new JFrame("COMPONENT");
-		frame.setSize(300, 200);
+		frame.setSize(500, 500);
 		frame.setBackground(Color.BLACK);
 		frame.setLayout(new BorderLayout());
 		frame.setLocationRelativeTo(null); // Questo centra la finestra sullo schermo
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setResizable(false);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		mainPanel = new JPanel();
         
