@@ -1,6 +1,7 @@
 package it.unipv.sfw.view;
 
 import java.awt.BorderLayout;
+import java.util.HashMap;
 import java.util.Set;
 
 import javax.swing.BoxLayout;
@@ -15,8 +16,6 @@ import it.unipv.sfw.model.request.Request;
 
 public class WhPopUpShowRequestView {
 	
-	private Set<Request> request;
-	
 	private JFrame frame;
 	
 	private JPanel mex;
@@ -25,8 +24,6 @@ public class WhPopUpShowRequestView {
 							  dataLabel;
 	
 	public WhPopUpShowRequestView(Set<Request> request){
-		
-		this.request = request;
 		
 		frame = new JFrame();
 		frame.setTitle("ALL REQUEST");
