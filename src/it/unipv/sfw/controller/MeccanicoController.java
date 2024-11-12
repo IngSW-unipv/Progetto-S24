@@ -47,13 +47,6 @@ public class MeccanicoController extends AbsController {
 		McPopUpRequestController prc = new McPopUpRequestController();
 		McPopUpVehicleController pvc = new McPopUpVehicleController(mv);
 
-		McGraphicAllComponentController gacc;
-
-//		gtpc 
-
-		// Session.getIstance().setC();
-		gacc = new McGraphicAllComponentController();
-
 		mv.getAddComponentButton().addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -153,6 +146,8 @@ public class MeccanicoController extends AbsController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+
+				McGraphicAllComponentController gacc  = new McGraphicAllComponentController();
 				gacc.showWindow();
 
 			}
