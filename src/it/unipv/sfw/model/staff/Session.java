@@ -1,14 +1,7 @@
 package it.unipv.sfw.model.staff;
-
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.Set;
-
 import it.unipv.sfw.dao.DAOFactory;
 import it.unipv.sfw.exceptions.AccountNotFoundException;
 import it.unipv.sfw.exceptions.WrongPasswordException;
-import it.unipv.sfw.model.component.Components;
 import it.unipv.sfw.model.vehicle.Vehicle;
 
 public class Session {
@@ -26,6 +19,7 @@ public class Session {
 	// private Set<Components> component;
 
 	private Meccanico m;
+	private Magazziniere wh;
 	private Vehicle v;
 
 	/**
@@ -49,6 +43,7 @@ public class Session {
 		// tps = new ArrayList<>();
 		v = new Vehicle(msn);
 		m = new Meccanico(id_staff, pwd_staff);
+		wh = new Magazziniere(id_staff, pwd_staff);
 	}
 
 	/**
