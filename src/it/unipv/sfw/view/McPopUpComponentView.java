@@ -39,7 +39,7 @@ public class McPopUpComponentView extends JFrame {
 
 		frame = new JFrame("ADD COMPONENT");
 
-		frame.setSize(500, 500);
+		frame.setSize(600, 600);
 		frame.setBackground(Color.BLACK);
 		frame.setLocationRelativeTo(null);
 		frame.setLayout(new BorderLayout());
