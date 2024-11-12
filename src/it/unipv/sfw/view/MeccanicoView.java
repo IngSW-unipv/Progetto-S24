@@ -39,7 +39,7 @@ public class MeccanicoView extends AbsView {
 	public MeccanicoView() {
 
 		frame = new JFrame("MECHANIC");
-		frame.setSize(900, 900);
+		frame.setSize(900, 800);
 		frame.setLocationRelativeTo(null);
 		frame.setBackground(Color.BLACK);
 		frame.setLayout(new BorderLayout());
