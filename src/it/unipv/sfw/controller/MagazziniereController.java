@@ -25,28 +25,31 @@ public class MagazziniereController extends AbsController {
 	public void initialize() {
 		// TODO Auto-generated method stub
 		
-		MagazziniereView mv = new MagazziniereView();
-		MagazziniereDAO md = new MagazziniereDAO();
-		
-		WhPopUpShowRequestController wsrc = new WhPopUpShowRequestController(m.getRequest());
-		WhPopUpDeleteRequestController wdrc = new WhPopUpDeleteRequestController();
-		WhPopUpUpdateComponentController wupc = new WhPopUpUpdateComponentController();
-		
 		// 
 		try {
 
 			user = Session.getIstance().getCurrentUser();
-
+			m = (Magazziniere) user;
+			
 		} catch (Exception e) {
 			System.out.println("Errore");
 		}
+
+		MagazziniereView mv = new MagazziniereView();
+		MagazziniereDAO md = new MagazziniereDAO();
+		
+		WhPopUpDeleteRequestController wdrc = new WhPopUpDeleteRequestController();
+		WhPopUpUpdateComponentController wupc = new WhPopUpUpdateComponentController();
+		
+		m.setRequest(md.selectAllRequest());
+		
 		
 		mv.getShowRequestButton().addActionListener( new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				m.setRequest(md.selectAllRequest());
+				WhPopUpShowRequestController wsrc = new WhPopUpShowRequestController(m.getRequest());
 				wsrc.showWindow();
 			}
 			
@@ -90,13 +93,14 @@ public class MagazziniereController extends AbsController {
 			
 		});
 		
+		mv.setVisible(true);
 		view = mv;
 	}
 	
 	@Override
 	public void onLoad() {
 		// TODO Auto-generated method stub
-		view.onLoad();
+		this.onLoad();
 	}
 
 }
