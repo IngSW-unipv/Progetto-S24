@@ -1,5 +1,6 @@
 package it.unipv.sfw.controller;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import it.unipv.sfw.model.request.Request;
@@ -11,7 +12,7 @@ public class WhPopUpShowRequestController {
 	private WhPopUpShowRequestView psr = new WhPopUpShowRequestView(request);
 
 	public  WhPopUpShowRequestController(Set<Request> r) {
-		this.request = r;		
+		request = new HashSet<>();
 	}
 
 	public void showWindow() {
