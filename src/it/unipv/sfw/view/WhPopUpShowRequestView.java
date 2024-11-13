@@ -27,8 +27,10 @@ public class WhPopUpShowRequestView {
 		frame = new JFrame();
 		frame.setTitle("ALL REQUEST");
 		frame.setSize(600, 400);
+		frame.setResizable(false);
+		frame.setLocationRelativeTo(null);
 		frame.setLayout(new BorderLayout());
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		mex = new JPanel();
 		mex.setLayout(new BoxLayout(mex, BoxLayout.Y_AXIS));
