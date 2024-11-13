@@ -30,7 +30,7 @@ public class MagazziniereView extends AbsView {
 
 	private JComboBox<String> comboBox;
 
-	private JLabel imgLabel, mex;
+	private JLabel imgLabel, dataLabel, mex;
 	
 	private ImageIcon imgUser;
 	
@@ -57,6 +57,7 @@ public class MagazziniereView extends AbsView {
 		titlePanel = new JPanel(new BorderLayout());
 		titlePanel.setPreferredSize(new Dimension(700, 200));
 		titlePanel.setBackground(Color.BLACK);
+		
 		try {
 
 			imgUser = new ImageIcon(this.getClass().getResource("/icon.png"));
@@ -69,6 +70,10 @@ public class MagazziniereView extends AbsView {
 		
 		imgLabel = new JLabel(imgUser);
 		titlePanel.add(imgLabel, BorderLayout.WEST);
+		
+		dataLabel = new JLabel();
+		dataLabel.setForeground(Color.WHITE);
+		titlePanel.add(dataLabel, BorderLayout.CENTER);
 		
 		/*
 		 * CREAZIONE 2 SEZIONE: 4 BOTTONI E FINESTRE POP UP
@@ -190,6 +195,11 @@ public class MagazziniereView extends AbsView {
 	public void setMex(JLabel mex) {
 		// aggiungere il valore da sessione.magazziniere
 		this.mex.setText("REQUEST TOTAL: ");
+	}
+	
+	public void data(String name, String surname) {
+		dataLabel.setText("NAME: "+ name +"           "+ "SURNAME: " + surname);
+		
 	}
 
 }
