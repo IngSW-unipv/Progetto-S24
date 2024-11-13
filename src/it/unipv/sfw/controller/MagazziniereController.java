@@ -41,15 +41,16 @@ public class MagazziniereController extends AbsController {
 		WhPopUpDeleteRequestController wdrc = new WhPopUpDeleteRequestController();
 		WhPopUpUpdateComponentController wupc = new WhPopUpUpdateComponentController();
 		
+		mv.data(Session.getIstance().getName(), Session.getIstance().getSurname());
 		m.setRequest(md.selectAllRequest());
-		
+		Session.getIstance().setReq(m.getRequest());
 		
 		mv.getShowRequestButton().addActionListener( new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				WhPopUpShowRequestController wsrc = new WhPopUpShowRequestController(m.getRequest());
+				WhPopUpShowRequestController wsrc = new WhPopUpShowRequestController();
 				wsrc.showWindow();
 			}
 			
