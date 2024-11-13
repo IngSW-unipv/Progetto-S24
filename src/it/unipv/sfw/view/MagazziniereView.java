@@ -15,6 +15,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.SwingConstants;
 
 import it.unipv.sfw.model.staff.Session;
 
@@ -34,7 +35,7 @@ public class MagazziniereView extends AbsView {
 	public MagazziniereView() {
 
 		frame = new JFrame("WAREHOUSEMAN");
-		frame.setSize(700, 600);
+		frame.setSize(800, 700);
 		frame.setLocationRelativeTo(null);
 		frame.setBackground(Color.BLACK);
 		frame.setLayout(new BorderLayout());
@@ -52,13 +53,14 @@ public class MagazziniereView extends AbsView {
 		 * CREAZIONE 1 SEZIONE : TITOLO
 		 */
 		titlePanel = new JPanel();
-
+		titlePanel.setPreferredSize(new Dimension(700, 200));
+		titlePanel.setBackground(Color.GREEN);
 		/*
 		 * CREAZIONE 2 SEZIONE: 4 BOTTONI E FINESTRE POP UP
 		 */
 		popUpPanel = new JPanel();
 		popUpPanel = new JPanel();
-		popUpPanel.setPreferredSize(new Dimension(700, 500));
+		popUpPanel.setPreferredSize(new Dimension(700, 200));
 		popUpPanel.setBackground(Color.BLACK);
 		popUpPanel.setLayout(new GridBagLayout());
 		popUpPanel.setOpaque(true);
@@ -73,8 +75,6 @@ public class MagazziniereView extends AbsView {
 		// Prima riga - Prima colonna (Insert Veichle)
 		gbc.gridx = 0;
 		gbc.gridy = 0;
-		gbc.gridwidth = 1; // Occupa solo una colonna
-		gbc.fill = GridBagConstraints.HORIZONTAL;
 
 		showRequestButton = new JButton("SHOW REQUESTS");
 		showRequestButton.setPreferredSize(dim);
@@ -99,9 +99,9 @@ public class MagazziniereView extends AbsView {
 		// Seconda riga - Seconda colonna (remove Component)
 		gbc.gridx = 1;
 		gbc.gridy = 1;
-		
-		String option[] = { "RUOTA ANTERIORE SX HARD", "RUOTA ANTERIORE DX HARD", "RUOTA POSTERIORE SX HARD",
-				"RUOTA POSTERIORE DX HARD",
+
+		String option[] = { "QUANTITA' COMPONENTI", "RUOTA ANTERIORE SX HARD", "RUOTA ANTERIORE DX HARD",
+				"RUOTA POSTERIORE SX HARD", "RUOTA POSTERIORE DX HARD",
 
 				"RUOTA ANTERIORE SX MEDIUM", "RUOTA ANTERIORE DX MEDIUM", "RUOTA POSTERIORE SX MEDIUM",
 				"RUOTA POSTERIORE DX MEDIUM",
@@ -117,9 +117,12 @@ public class MagazziniereView extends AbsView {
 		 */
 
 		mexPanel = new JPanel();
-		mexPanel.setBackground(Color.BLACK);
-		
+		mexPanel.setBackground(Color.WHITE);
+
 		mex = new JLabel();
+		mex.setText("sono qui");
+		mex.setHorizontalAlignment(SwingConstants.CENTER);
+		mex.setPreferredSize(new Dimension(700,200));
 
 		mexPanel.add(mex);
 
@@ -170,8 +173,8 @@ public class MagazziniereView extends AbsView {
 	}
 
 	public void setMex(JLabel mex) {
-		//aggiungere il valore da sessione.magazziniere
-		this.mex.setText("REQUEST TOTAL: " );
+		// aggiungere il valore da sessione.magazziniere
+		this.mex.setText("REQUEST TOTAL: ");
 	}
 
 }
