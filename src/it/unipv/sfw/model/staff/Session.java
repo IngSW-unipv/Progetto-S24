@@ -1,7 +1,11 @@
 package it.unipv.sfw.model.staff;
+import java.util.HashSet;
+import java.util.Set;
+
 import it.unipv.sfw.dao.DAOFactory;
 import it.unipv.sfw.exceptions.AccountNotFoundException;
 import it.unipv.sfw.exceptions.WrongPasswordException;
+import it.unipv.sfw.model.request.Request;
 import it.unipv.sfw.model.vehicle.Vehicle;
 
 public class Session {
@@ -12,6 +16,8 @@ public class Session {
 	private String id_pilot;
 	private String id_staff;
 	private String pwd_staff;
+
+	private Set<Request> req = new HashSet<>();
 
 	private String name = "", surname = "";
 	private Meccanico m;
@@ -145,6 +151,14 @@ public class Session {
 		this.pwd_staff = pwd_staff;
 	}
 
+	public Set<Request> getReq() {
+		return req;
+	}
+
+	public void setReq(Set<Request> req) {
+		this.req = req;
+	}
+
 	public String getName() {
 		return name;
 	}
@@ -186,5 +200,14 @@ public class Session {
 	public void setM(Meccanico m) {
 		this.m = m;
 	}
+
+	public Magazziniere getWh() {
+		return wh;
+	}
+
+	public void setWh(Magazziniere wh) {
+		this.wh = wh;
+	}
+	
 
 }
