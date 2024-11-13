@@ -9,15 +9,11 @@ public class Session {
 	private static Session istance = null;
 
 	private String operation = "", msn = "";
-
-	// settare id pilota da query -> meccanico controller -> meccanico view
 	private String id_pilot;
 	private String id_staff;
 	private String pwd_staff;
 
-	// private ArrayList<String> tps;
-	// private Set<Components> component;
-
+	private String name = "", surname = "";
 	private Meccanico m;
 	private Magazziniere wh;
 	private Vehicle v;
@@ -149,6 +145,22 @@ public class Session {
 		this.pwd_staff = pwd_staff;
 	}
 
+	public String getName() {
+		return name;
+	}
+
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	public String getSurname() {
+		return surname;
+	}
+
+	public void setSurname(String surname) {
+		this.surname = surname;
+	}
+
 	public void getTps() {
 		// inizializzo l'array
 		int i = 0;
@@ -158,15 +170,6 @@ public class Session {
 		// il vettore ha 8 valori inseriti
 
 	}
-//
-//	public Set<Components> getC() {
-//		return component;
-//	}
-//
-//	public void setC() {
-//		// TODO Auto-generated method stub
-//		component.addAll(v.getComponents());
-//	}
 
 	public Vehicle getV() {
 		return v;
