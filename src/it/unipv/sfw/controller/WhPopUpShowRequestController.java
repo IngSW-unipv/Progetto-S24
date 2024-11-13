@@ -4,15 +4,20 @@ import java.util.HashSet;
 import java.util.Set;
 
 import it.unipv.sfw.model.request.Request;
+import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.view.WhPopUpShowRequestView;
 
 public class WhPopUpShowRequestController {
-	
-	private Set<Request> request;
-	private WhPopUpShowRequestView psr = new WhPopUpShowRequestView(request);
+	protected Set<Request> request = Session.getIstance().getWh().getRequest();
+	private WhPopUpShowRequestView psr = new WhPopUpShowRequestView(	request);
 
-	public  WhPopUpShowRequestController(Set<Request> r) {
-		request = new HashSet<>();
+	public  WhPopUpShowRequestController() {
+	}
+	
+	public void initialie() {
+		
+		
+		
 	}
 
 	public void showWindow() {
