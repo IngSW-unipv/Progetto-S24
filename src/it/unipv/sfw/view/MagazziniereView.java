@@ -30,8 +30,10 @@ public class MagazziniereView extends AbsView {
 
 	private JComboBox<String> comboBox;
 
-	private JLabel mex;
-
+	private JLabel imgLabel, mex;
+	
+	private ImageIcon imgUser;
+	
 	public MagazziniereView() {
 
 		frame = new JFrame("WAREHOUSEMAN");
@@ -52,9 +54,22 @@ public class MagazziniereView extends AbsView {
 		/*
 		 * CREAZIONE 1 SEZIONE : TITOLO
 		 */
-		titlePanel = new JPanel();
+		titlePanel = new JPanel(new BorderLayout());
 		titlePanel.setPreferredSize(new Dimension(700, 200));
-		titlePanel.setBackground(Color.GREEN);
+		titlePanel.setBackground(Color.BLACK);
+		try {
+
+			imgUser = new ImageIcon(this.getClass().getResource("/icon.png"));
+			imgUser = new ImageIcon(imgUser.getImage().getScaledInstance(300, 350, java.awt.Image.SCALE_SMOOTH));
+			System.out.println("immagine user caricata");
+
+		} catch (Exception e) {
+			System.out.println(e);
+		}
+		
+		imgLabel = new JLabel(imgUser);
+		titlePanel.add(imgLabel, BorderLayout.WEST);
+		
 		/*
 		 * CREAZIONE 2 SEZIONE: 4 BOTTONI E FINESTRE POP UP
 		 */
