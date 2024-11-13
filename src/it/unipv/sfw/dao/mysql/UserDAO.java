@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 
 import it.unipv.sfw.model.staff.Magazziniere;
 import it.unipv.sfw.model.staff.Meccanico;
+import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.model.staff.Staff;
 import it.unipv.sfw.model.staff.Stratega;
 import it.unipv.sfw.model.staff.User;
@@ -36,19 +37,25 @@ public class UserDAO {
 				case "Meccanico":
 
 					result = new Meccanico(rs1.getString(1), rs1.getString(4));
-
+					Session.getIstance().setName(rs1.getString(2));
+					Session.getIstance().setSurname(rs1.getString(3));
+					
 					break;
 
 				case "Stratega":
 
 					result = new Stratega(rs1.getString(1), rs1.getString(4));
-
+					Session.getIstance().setName(rs1.getString(2));
+					Session.getIstance().setSurname(rs1.getString(3));
+					
 					break;
 
 				case "Magazziniere":
 
 					result = new Magazziniere(rs1.getString(1), rs1.getString(4));
-
+					Session.getIstance().setName(rs1.getString(2));
+					Session.getIstance().setSurname(rs1.getString(3));
+					
 					break;
 				}
 			}
