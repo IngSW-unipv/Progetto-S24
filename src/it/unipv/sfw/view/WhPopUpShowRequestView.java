@@ -45,7 +45,7 @@ public class WhPopUpShowRequestView {
 		// CREAZIONE DELLA TABELLA
 		String[] columns = { "ID", "DESCRIPTION", "ID STAFF", "ID COMPONENT", "ID VEHICLE" };
 
-		Object[][] data = new Object[request.size()][4];
+		Object[][] data = new Object[request.size()][5];
 
 		int row = 0;
 
