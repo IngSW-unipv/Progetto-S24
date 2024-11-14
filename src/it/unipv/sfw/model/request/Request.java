@@ -2,27 +2,22 @@ package it.unipv.sfw.model.request;
 
 public class Request {
 
-	protected String description,
-								  id_s,
-	   							  id_v;
-	
-	protected int id_r,
-						   id_c;
-	
+	protected String description, id_s, id_v;
+
+	protected int id_r, id_c;
+
 	public Request(int id_r, String description, String id_s, int id_c, String id_v) {
 		this.id_r = id_r;
 		this.description = description;
 		this.id_s = id_s;
 		this.id_c = id_c;
 		this.id_v = id_v;
-		
+
 	}
 
 	public int getId_r() {
 		return id_r;
 	}
-
-
 
 	public void setId_r(int id_r) {
 		this.id_r = id_r;
@@ -59,7 +54,5 @@ public class Request {
 	public void setId_v(String id_v) {
 		this.id_v = id_v;
 	}
-	
-	
 
 }
