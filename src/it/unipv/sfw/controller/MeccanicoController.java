@@ -17,9 +17,6 @@ public class MeccanicoController extends AbsController {
 	protected Meccanico m;
 	protected Vehicle v;
 
-	// creo un SET per contenere tutti i componenti di cui è composta la vettura
-	// protected Set<Component> c = new HashSet<>();
-
 	@Override
 	public TypeController getType() {
 		// TODO Auto-generated method stub
