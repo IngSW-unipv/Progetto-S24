@@ -4,6 +4,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import it.unipv.sfw.dao.mysql.MagazziniereDAO;
+import it.unipv.sfw.model.request.Request;
 import it.unipv.sfw.model.staff.Magazziniere;
 import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.model.staff.Staff;
@@ -17,7 +18,6 @@ public class MagazziniereController extends AbsController {
 	@Override
 	public TypeController getType() {
 		// TODO Auto-generated method stub
-
 		return TypeController.MAGAZZINIERE;
 	}
 
@@ -42,15 +42,23 @@ public class MagazziniereController extends AbsController {
 		WhPopUpUpdateComponentController wupc = new WhPopUpUpdateComponentController();
 		
 		mv.data(Session.getIstance().getName(), Session.getIstance().getSurname());
-		m.setRequest(md.selectAllRequest());
-		Session.getIstance().setReq(m.getRequest());
+		
 		
 		mv.getShowRequestButton().addActionListener( new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				Session.getIstance().getRequest();
 				WhPopUpShowRequestController wsrc = new WhPopUpShowRequestController();
+			
+				System.out.println(Session.getIstance().getWh().getRequest());
+				
+				for(Request r : m.getRequest()) {
+					System.out.println(r);
+					
+				}
+
 				wsrc.showWindow();
 			}
 			
