@@ -65,7 +65,7 @@ public class MagazziniereDAO {
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
 
-			String query = "DELETE  FROM " + SCHEMA + " WHERE ID = ?";
+			String query = "DELETE  FROM " + SCHEMA + " WHERE ID_COMPONENT = ?";
 
 			String convert = String.valueOf(id);
 
