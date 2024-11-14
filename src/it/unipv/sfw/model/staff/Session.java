@@ -1,11 +1,9 @@
 package it.unipv.sfw.model.staff;
-import java.util.HashSet;
-import java.util.Set;
 
 import it.unipv.sfw.dao.DAOFactory;
+import it.unipv.sfw.dao.mysql.MagazziniereDAO;
 import it.unipv.sfw.exceptions.AccountNotFoundException;
 import it.unipv.sfw.exceptions.WrongPasswordException;
-import it.unipv.sfw.model.request.Request;
 import it.unipv.sfw.model.vehicle.Vehicle;
 
 public class Session {
@@ -16,8 +14,7 @@ public class Session {
 	private String id_pilot;
 	private String id_staff;
 	private String pwd_staff;
-
-	private Set<Request> req = new HashSet<>();
+	private MagazziniereDAO md;
 
 	private String name = "", surname = "";
 	private Meccanico m;
@@ -41,8 +38,6 @@ public class Session {
 	// session
 	private Session() {
 		currentUser = null;
-		// component = new HashSet<>();
-		// tps = new ArrayList<>();
 		v = new Vehicle(msn);
 		m = new Meccanico(id_staff, pwd_staff);
 		wh = new Magazziniere(id_staff, pwd_staff);
@@ -92,7 +87,6 @@ public class Session {
 
 		case "MAGAZZINIERE":
 			Magazziniere mg = (Magazziniere) user;
-
 			this.setCurrentUser(user);
 
 			break;
@@ -151,14 +145,6 @@ public class Session {
 		this.pwd_staff = pwd_staff;
 	}
 
-	public Set<Request> getReq() {
-		return req;
-	}
-
-	public void setReq(Set<Request> req) {
-		this.req = req;
-	}
-
 	public String getName() {
 		return name;
 	}
@@ -183,6 +169,11 @@ public class Session {
 			m.setTimePS();
 		// il vettore ha 8 valori inseriti
 
+	}
+	
+	public void getRequest() {
+		md = new MagazziniereDAO();
+		wh.setRequest(md.selectAllRequest());
 	}
 
 	public Vehicle getV() {
