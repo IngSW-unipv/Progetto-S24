@@ -14,6 +14,7 @@ public class WhPopUpDeleteRequestController {
 	
 	public WhPopUpDeleteRequestController() {
 		pdr = new WhPopUpDeleteRequestView();
+		md = new MagazziniereDAO();
 		
 		pdr.getSendButton().addActionListener(new ActionListener() {
 
