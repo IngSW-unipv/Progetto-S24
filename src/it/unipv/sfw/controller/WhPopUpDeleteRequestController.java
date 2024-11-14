@@ -31,9 +31,11 @@ public class WhPopUpDeleteRequestController {
 				
 				if(res == 0) {
 					pdr.mex1();
+					pdr.clearComponents(pdr.getDataPanel());
 				}else {
 					md.removeRequest(idc);
 					pdr.mex2();
+					pdr.clearComponents(pdr.getDataPanel());
 				}
 				
 			}
@@ -46,5 +48,8 @@ public class WhPopUpDeleteRequestController {
 		// TODO Auto-generated method stub
 		pdr.show();
 	}
-
+	
+	public void clear() {
+		pdr.clearComponents(pdr.getSendPanel());
+	}
 }
