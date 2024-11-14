@@ -247,6 +247,8 @@ public class WhPopUpDeleteRequestView {
 		for (Component comp : panel.getComponents()) {
 			if (comp instanceof JTextField) {
 				((JTextField) comp).setText(""); // Pulisce il JTextField
+			}else if (comp instanceof JLabel) {
+				((JLabel) comp).setText("");
 			}
 		}
 		panel.revalidate(); // Rende il pannello nuovamente valido
