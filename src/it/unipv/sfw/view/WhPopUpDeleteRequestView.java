@@ -2,14 +2,23 @@ package it.unipv.sfw.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
@@ -18,134 +27,173 @@ public class WhPopUpDeleteRequestView {
 	private JFrame frame;
 
 	// contenitori delle 3 sezioni +1 main
-	private JPanel mainContainer, 
-							  titlePanel,
-							  dataPanel,
-							  sendPanel;
-	
-	// pannelli per non far espandere i bottoni nelle celle
-	private JPanel cellPanel1,
-							  cellPanel2,
-							  cellPanel3,
-							  cellPanel4;
-	
-	private JLabel textLabel,
-							  mexLabel;
+	private JPanel dataPanel, sendPanel;
+
+	private JLabel titleLabel, mexLabel;
 
 	// inserimento dati
-	private JTextField id_s,
-									id_c,
-									id_v;
+	private JTextField id_s, id_c, id_v;
 
 	// bottoni per l'interazione: 1
 	private JButton sendButton;
-	
-	public WhPopUpDeleteRequestView(){
 
-	frame=new JFrame("DELETE REQUEST");
+	public WhPopUpDeleteRequestView() {
 
-	frame.setSize(300,200);frame.setBackground(Color.BLACK);
-	frame.setLayout(new BorderLayout());
-	frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frame = new JFrame("DELETE REQUEST");
 
-	mainContainer=new JPanel();
+		frame.setSize(450, 405);
+		frame.setBackground(Color.BLACK);
+		frame.setLocationRelativeTo(null);
+		frame.setLayout(new BorderLayout());
+		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+		frame.setResizable(false);
+		ImageIcon icona = new ImageIcon(getClass().getResource("/F1-Logo.png"));
+		frame.setIconImage(icona.getImage());
+		frame.setLayout(new GridLayout(3, 1));
+		
+		/*
+		 * CREAZIONE 1 SEZIONE
+		 */
 
-	mainContainer.setLayout(new BorderLayout());
+		titleLabel = new JLabel("DELETE REQUEST", SwingConstants.CENTER);
 
-	/*
-	 * CREAZIONE 1 SEZIONE
-	 */
+		titleLabel.setForeground(Color.WHITE);
+		titleLabel.setOpaque(true);
+		titleLabel.setBackground(Color.BLACK);
+		titleLabel.setForeground(Color.WHITE);
+		titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
 
-	titlePanel=new JPanel();
+		frame.add(titleLabel);
 
-	titlePanel.setBackground(Color.BLACK);
-	titlePanel.setLayout(new BorderLayout());
+		/*
+		 * CREAZIONE 2 SEZIONE
+		 */
 
-	textLabel=new JLabel("REQUEST",SwingConstants.CENTER);
+		dataPanel = new JPanel();
+		dataPanel.setBackground(Color.BLACK);
 
-	textLabel.setForeground(Color.WHITE);
-	textLabel.setHorizontalAlignment(SwingConstants.CENTER);
-	textLabel.setVerticalAlignment(SwingConstants.CENTER);
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.insets = new Insets(10, 20, 10, 20);
 
-	titlePanel.add(textLabel,BorderLayout.CENTER);
+		Dimension dim = new Dimension(130, 30);
+		// Prima riga, prima colonna
+		gbc.gridx = 0;
+		gbc.gridy = 0;
 
-	/*
-	 * CREAZIONE 2 SEZIONE
-	 */
+		id_s = new JTextField("ID STAFF");
+		id_s.setPreferredSize(dim);
+		dataPanel.add(id_s, gbc);
 
-	dataPanel = new JPanel(new FlowLayout(FlowLayout.CENTER,20,20));
-	cellPanel1 = new JPanel(new FlowLayout(FlowLayout.CENTER));
-	cellPanel2 = new JPanel(new FlowLayout(FlowLayout.CENTER));
-	cellPanel3 = new JPanel(new FlowLayout(FlowLayout.CENTER));
+		// Prima riga, seconda colonna
+		gbc.gridx = 1;
+		gbc.gridy = 0;
+		
+		id_c = new JTextField("ID COMPONENT");
+		id_c.setPreferredSize(dim);
+		dataPanel.add(id_c, gbc);
 
-	dataPanel.setBackground(Color.BLACK);
-	dataPanel.setLayout(new GridLayout(1,3,10,10));
+		// Prima riga, terza colonna
+		gbc.gridx = 2;
+		gbc.gridy = 0;
+		
+		id_v = new JTextField("ID VEHICLE");
+		id_v.setPreferredSize(dim);
+		dataPanel.add(id_v, gbc);
+		
+		frame.add(dataPanel);
+		
+		/*
+		 * CREAZIONE 3 SEZIONE
+		 */
 
-	id_s = new JTextField("ID STAFF");
-	id_c = new JTextField("ID COMPONENT");
-	id_v = new JTextField("ID VEHICLE");
+		sendPanel = new JPanel();
+		sendPanel.setLayout(new GridBagLayout());
+		sendPanel.setBackground(Color.BLACK);
 
-	Dimension dim = new Dimension(100, 100);
+		GridBagConstraints gbcSend = new GridBagConstraints();
+		gbcSend.insets = new Insets(10, 0, 10, 0); // Margini per centrare il bottone e il messaggio
 
-	id_s.setPreferredSize(dim);
-	id_c.setPreferredSize(dim);
-	id_v.setPreferredSize(dim);
+		gbcSend.gridx = 0;
+		gbcSend.gridy = 0;
+		
+		sendButton = new JButton("SEND");
+		sendButton.setPreferredSize(new Dimension(150, 30));
+		sendPanel.add(sendButton, gbcSend);
 
-	cellPanel1.add(id_s);
-	cellPanel2.add(id_c);
-	cellPanel3.add(id_v);
-	
-	dataPanel.add(cellPanel1);
-	dataPanel.add(cellPanel2);
-	dataPanel.add(cellPanel3);
+		mexLabel = new JLabel();
 
-	/*
-	 * CREAZIONE 3 SEZIONE
-	 */
+		gbcSend.gridy = 1; // Sposta il messaggio sotto il bottone
+		mexLabel = new JLabel("", SwingConstants.CENTER);
+		mexLabel.setForeground(Color.WHITE);
+		sendPanel.add(mexLabel, gbcSend);
 
-	sendPanel=new JPanel(new FlowLayout(FlowLayout.CENTER,20,20));
-	cellPanel4 = new JPanel(new FlowLayout(FlowLayout.CENTER));
-	
-	sendPanel.setBackground(Color.BLACK);
-	sendPanel.setLayout(new GridLayout(2,1,10,10));
+		frame.add(sendPanel);
 
-	sendButton=new JButton("DELETE");
+		id_s.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				if (id_s.getText().equals("ID STAFF")) {
+					id_s.setText(""); // Rimuove il testo predefinito
+				}
+			}
 
-	sendButton.setPreferredSize(dim);
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (id_s.getText().isEmpty()) {
+					id_s.setText("ID STAFF"); // Ripristina il testo predefinito se vuoto
+				}
+			}
+		});
 
-	cellPanel4.add(sendButton);
-	
-	mexLabel=new JLabel();
+		id_c.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				if (id_c.getText().equals("ID COMPONENT")) {
+					id_c.setText(""); // Rimuove il testo predefinito
+				}
+			}
 
-	mexLabel.setForeground(Color.WHITE);
-	mexLabel.setHorizontalAlignment(SwingConstants.CENTER);
-	mexLabel.setVerticalAlignment(SwingConstants.CENTER);
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (id_c.getText().isEmpty()) {
+					id_c.setText("ID COMPONENT"); // Ripristina il testo predefinito se vuoto
+				}
+			}
+		});
 
-	sendPanel.add(cellPanel4);
-	sendPanel.add(mexLabel,BorderLayout.WEST);
+		id_v.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				if (id_v.getText().equals("ID VEHICLE")) {
+					id_v.setText(""); // Rimuove il testo predefinito
+				}
+			}
 
-	mainContainer.add(titlePanel);
-	mainContainer.add(dataPanel);
-	mainContainer.add(sendPanel);
-
-	frame.add(mainContainer);
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (id_v.getText().isEmpty()) {
+					id_v.setText("ID VEHICLE"); // Ripristina il testo predefinito se vuoto
+				}
+			}
+		});
 
 	}
 
 	public void show() {
 		frame.setVisible(true);
 	}
-	
+
 	public void mex1() {
 		mexLabel.setText("ERROR");
 		mexLabel.setForeground(Color.RED);
 	}
-	
+
 	public void mex2() {
 		mexLabel.setText("SUCCESS");
 		mexLabel.setForeground(Color.GREEN);
-	}	
-	
+	}
+
 	public JTextField getId_s() {
 		return id_s;
 	}
@@ -178,4 +226,31 @@ public class WhPopUpDeleteRequestView {
 		this.sendButton = sendButton;
 	}
 	
+	public JPanel getDataPanel() {
+		return dataPanel;
+	}
+
+	public void setDataPanel(JPanel dataPanel) {
+		this.dataPanel = dataPanel;
+	}
+
+	public JPanel getSendPanel() {
+		return sendPanel;
+	}
+
+	public void setSendPanel(JPanel sendPanel) {
+		this.sendPanel = sendPanel;
+	}
+
+	// Metodo per ripulire i JTextField e JLabel in un JPanel
+	public void clearComponents(JPanel panel) {
+		for (Component comp : panel.getComponents()) {
+			if (comp instanceof JTextField) {
+				((JTextField) comp).setText(""); // Pulisce il JTextField
+			}
+		}
+		panel.revalidate(); // Rende il pannello nuovamente valido
+		panel.repaint(); // Ridisegna il pannello
+	}
+
 }
