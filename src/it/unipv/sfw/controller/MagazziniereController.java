@@ -95,10 +95,10 @@ public class MagazziniereController extends AbsController {
 				if(select.equals("- ALL")) {
 					md.countElement();
 					
-				}else {		
-					md.countElementBySelect(select);
+				}else if(!select.equals("QUANTITA' COMPONENTI")){		
+					mv.mexCombo(md.countElementBySelect(select));
 				}
-				
+
 			}
 			
 		});
