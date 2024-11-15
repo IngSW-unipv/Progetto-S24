@@ -8,6 +8,8 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -15,6 +17,7 @@ import javax.swing.JComboBox;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
 import it.unipv.sfw.model.staff.Session;
@@ -31,9 +34,11 @@ public class MagazziniereView extends AbsView {
 	private JComboBox<String> comboBox;
 
 	private JLabel imgLabel, dataLabel, mex;
-	
+
 	private ImageIcon imgUser;
-	
+
+	private JTextField placeholder;
+
 	public MagazziniereView() {
 
 		frame = new JFrame("WAREHOUSEMAN");
@@ -57,7 +62,7 @@ public class MagazziniereView extends AbsView {
 		titlePanel = new JPanel(new BorderLayout());
 		titlePanel.setPreferredSize(new Dimension(700, 200));
 		titlePanel.setBackground(Color.BLACK);
-		
+
 		try {
 
 			imgUser = new ImageIcon(this.getClass().getResource("/icon.png"));
@@ -67,14 +72,14 @@ public class MagazziniereView extends AbsView {
 		} catch (Exception e) {
 			System.out.println(e);
 		}
-		
+
 		imgLabel = new JLabel(imgUser);
 		titlePanel.add(imgLabel, BorderLayout.WEST);
-		
+
 		dataLabel = new JLabel();
 		dataLabel.setForeground(Color.WHITE);
 		titlePanel.add(dataLabel, BorderLayout.CENTER);
-		
+
 		/*
 		 * CREAZIONE 2 SEZIONE: 4 BOTTONI E FINESTRE POP UP
 		 */
@@ -120,16 +125,46 @@ public class MagazziniereView extends AbsView {
 		gbc.gridx = 1;
 		gbc.gridy = 1;
 
-		String option[] = { "QUANTITA' COMPONENTI", "RUOTA ANTERIORE SX HARD", "RUOTA ANTERIORE DX HARD",
-				"RUOTA POSTERIORE SX HARD", "RUOTA POSTERIORE DX HARD",
-
-				"RUOTA ANTERIORE SX MEDIUM", "RUOTA ANTERIORE DX MEDIUM", "RUOTA POSTERIORE SX MEDIUM",
-				"RUOTA POSTERIORE DX MEDIUM",
-
-				"ALA ANTERIORE", "DRS", "MOTORE TERMICO", "ERS", "- ALL" };
+		String option[] = { "RUOTA ANTERIORE SX HARD", 
+									   "RUOTA ANTERIORE DX HARD", 
+				                       "RUOTA POSTERIORE SX HARD",
+				                       "RUOTA POSTERIORE DX HARD",
+				                       "RUOTA ANTERIORE SX MEDIUM", 
+				                       "RUOTA ANTERIORE DX MEDIUM", 
+				                       "RUOTA POSTERIORE SX MEDIUM",
+				                       "RUOTA POSTERIORE DX MEDIUM",
+				                       "ALA ANTERIORE", 
+				                       "DRS", 
+				                       "MOTORE TERMICO", 
+				                       "ERS",
+				                       "- ALL" };
 
 		comboBox = new JComboBox<>(option);
 		comboBox.setPreferredSize(dim);
+		comboBox.setEditable(true);
+		placeholder = (JTextField) comboBox.getEditor().getEditorComponent();
+		placeholder.setText("QUANTITA' COMPONENTI");
+
+		comboBox.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				// Rimuove il placeholder quando l'utente clicca sul campo
+				if (placeholder.getText().equals("QUANTITA' COMPONENTI")) {
+					placeholder.setText("");
+				}
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				// Reset al placeholder quando il focus è perso
+				if (comboBox.getSelectedIndex() >= 0) {
+					placeholder.setText("QUANTITA' COMPONENTI");
+				}
+				// Ripristina la selezione del JComboBox al primo elemento (opzionale)
+				comboBox.setSelectedIndex(-1); // Deseleziona tutte le opzioni
+			}
+		});
+
 		popUpPanel.add(comboBox, gbc);
 
 		/*
@@ -137,12 +172,12 @@ public class MagazziniereView extends AbsView {
 		 */
 
 		mexPanel = new JPanel();
-		mexPanel.setBackground(Color.WHITE);
+		mexPanel.setBackground(Color.BLACK);
 
 		mex = new JLabel();
-		mex.setText("sono qui");
 		mex.setHorizontalAlignment(SwingConstants.CENTER);
-		mex.setPreferredSize(new Dimension(700,200));
+		mex.setPreferredSize(new Dimension(700, 200));
+		mex.setBackground(Color.BLACK);
 
 		mexPanel.add(mex);
 
@@ -196,10 +231,16 @@ public class MagazziniereView extends AbsView {
 		// aggiungere il valore da sessione.magazziniere
 		this.mex.setText("REQUEST TOTAL: ");
 	}
-	
+
 	public void data(String name, String surname) {
-		dataLabel.setText("NAME: "+ name +"           "+ "SURNAME: " + surname);
-		
+		dataLabel.setText("NAME: " + name + "           " + "SURNAME: " + surname);
+
+	}
+
+	public void mexCombo(int quantity) {
+		String currentText = placeholder.getText();
+		mex.setText("NAME COMPONENT:  " + currentText + "             QUANTITY:  " + quantity);
+		mex.setForeground(Color.YELLOW);
 	}
 
 }
