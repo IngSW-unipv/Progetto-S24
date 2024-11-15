@@ -87,6 +87,8 @@ public class MagazziniereDAO {
 	}
 
 	public boolean updateComponent(int id, int wear, String status) {
+		
+		SCHEMA = "component";
 
 		PreparedStatement st1;
 		int rs1;
@@ -98,14 +100,14 @@ public class MagazziniereDAO {
 
 			String query = "UPDATE " + SCHEMA + " SET WEAR = ?, STATUS = ? WHERE ID = ?";
 			st1 = conn.prepareStatement(query);
-
-			String c1 = String.valueOf(id);
+			
+			String c1 = String.valueOf(wear);
 			st1.setString(1, c1);
-
-			String c2 = String.valueOf(wear);
-			st1.setString(2, c2);
-
-			st1.setString(3, status);
+			
+			st1.setString(2, status);
+			
+			String c2 = String.valueOf(id);
+			st1.setString(3, c2);
 
 			rs1 = st1.executeUpdate();
 
@@ -200,8 +202,8 @@ public class MagazziniereDAO {
 
 			rs1 = st1.executeQuery();
 
-			if (rs1.next()) { // Spostati alla prima riga del risultato
-				result = rs1.getInt(1); // Ottieni il valore di COUNT(*)
+			if (rs1.next()) { // mi sposto alla prima riga del risultato
+				result = rs1.getInt(1); // Ottengo il valore di COUNT(*)
 			}
 
 
@@ -233,7 +235,9 @@ public class MagazziniereDAO {
 
 			rs1 = st1.executeQuery();
 
-			result = rs1.getInt(result);
+			if (rs1.next()) { // mi sposto alla prima riga del risultato
+				result = rs1.getInt(1); // Ottengo il valore di COUNT(*)
+			}
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
