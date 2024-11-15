@@ -139,7 +139,9 @@ public class MagazziniereDAO {
 
 			rs1 = st1.executeQuery();
 
-			result = rs1.getInt(result);
+			if (rs1.next()) { // mi sposto alla prima riga del risultato
+				result = rs1.getInt(1); // Ottengo il valore di COUNT(*)
+			}
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -161,7 +163,7 @@ public class MagazziniereDAO {
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
 			// ATTENZIONE ALL'ACCENTO
-			String query = "SELECT NAME, COUNT(*) AS QUANTITA' FROM " + SCHEMA
+			String query = "SELECT COUNT(*) FROM " + SCHEMA
 					+ " WHERE  NAME = ?  AND WAREHOUSE = 1  GROUP BY NAME";
 			st1 = conn.prepareStatement(query);
 
@@ -169,7 +171,9 @@ public class MagazziniereDAO {
 
 			rs1 = st1.executeQuery();
 
-			result = rs1.getInt(result);
+			if (rs1.next()) { // mi sposto alla prima riga del risultato
+				result = rs1.getInt(1); // Ottengo il valore di COUNT(*)
+			}
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
