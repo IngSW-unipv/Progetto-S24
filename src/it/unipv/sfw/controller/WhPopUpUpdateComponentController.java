@@ -13,9 +13,10 @@ public class WhPopUpUpdateComponentController {
 	
 	public WhPopUpUpdateComponentController() {
 		puc = new WhPopUpUpdateComponentView();
+		md = new MagazziniereDAO();
 		
 		puc.getSendButton().addActionListener( new ActionListener() {
-
+			
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
@@ -32,9 +33,11 @@ public class WhPopUpUpdateComponentController {
 				
 				if(res == 0) {
 					puc.mex1();
+					puc.clearComponents(puc.getDataPanel());
 				}else {
 					md.updateComponent(id, nw, puc.getStatus().getText());
 					puc.mex2();
+					puc.clearComponents(puc.getDataPanel());
 				}
 				
 			}
