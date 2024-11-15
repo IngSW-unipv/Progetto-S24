@@ -2,10 +2,17 @@ package it.unipv.sfw.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
-import java.awt.FlowLayout;
+import java.awt.Font;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Insets;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
 
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -18,143 +25,178 @@ public class WhPopUpUpdateComponentView {
 	private JFrame frame;
 
 	// contenitori delle 3 sezioni +1 main
-	private JPanel mainContainer, titlePanel, dataPanel, sendPanel;
+	private JPanel dataPanel, sendPanel;
 
-	private JLabel textLabel, mexLabel;
+	private JLabel titleLabel, mexLabel;
 
 	// inserimento dati
-	private JTextField  id_c, wear, status;
-
-	// pannelli per non far espandere i bottoni nelle celle
-	private JPanel cellPanel1, cellPanel2, cellPanel3, cellPanel4;
+	private JTextField id_c, wear, status;
 
 	// bottoni per l'interazione: 1
 	private JButton sendButton;
 
 	public WhPopUpUpdateComponentView() {
 
-		frame = new JFrame("UPDATE COMPONENT");
+		frame = new JFrame("UPDATE REQUEST");
 
-		frame.setSize(300, 200);
+		frame.setSize(450, 405);
 		frame.setBackground(Color.BLACK);
+		frame.setLocationRelativeTo(null);
 		frame.setLayout(new BorderLayout());
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
-		mainContainer = new JPanel();
-
-		mainContainer.setLayout(new BorderLayout());
+		frame.setResizable(false);
+		ImageIcon icona = new ImageIcon(getClass().getResource("/F1-Logo.png"));
+		frame.setIconImage(icona.getImage());
+		frame.setLayout(new GridLayout(3, 1));
 
 		/*
 		 * CREAZIONE 1 SEZIONE
 		 */
 
-		titlePanel = new JPanel();
+		titleLabel = new JLabel("UPDATE REQUEST", SwingConstants.CENTER);
 
-		titlePanel.setBackground(Color.BLACK);
-		titlePanel.setLayout(new BorderLayout());
+		titleLabel.setForeground(Color.WHITE);
+		titleLabel.setOpaque(true);
+		titleLabel.setBackground(Color.BLACK);
+		titleLabel.setForeground(Color.WHITE);
+		titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
 
-		textLabel = new JLabel("UPDATE WEAR", SwingConstants.CENTER);
-
-		textLabel.setForeground(Color.WHITE);
-		textLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		textLabel.setVerticalAlignment(SwingConstants.CENTER);
-
-		titlePanel.add(textLabel, BorderLayout.CENTER);
+		frame.add(titleLabel);
 
 		/*
 		 * CREAZIONE 2 SEZIONE
 		 */
 
 		dataPanel = new JPanel();
-		dataPanel.setLayout(new GridLayout(1, 3, 10, 10));
-		cellPanel1 = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		cellPanel2 = new JPanel(new FlowLayout(FlowLayout.CENTER));
-		cellPanel3 = new JPanel(new FlowLayout(FlowLayout.CENTER));
-
 		dataPanel.setBackground(Color.BLACK);
 
+		GridBagConstraints gbc = new GridBagConstraints();
+		gbc.fill = GridBagConstraints.HORIZONTAL;
+		gbc.insets = new Insets(10, 20, 10, 20);
+
+		Dimension dim = new Dimension(130, 30);
+		// Prima riga, prima colonna
+		gbc.gridx = 0;
+		gbc.gridy = 0;
+
 		id_c = new JTextField("ID COMPONENT");
-		wear = new JTextField("WEAR");
-		status = new JTextField("STATUS");
-
-		Dimension dim = new Dimension(100, 100);
-
 		id_c.setPreferredSize(dim);
+		dataPanel.add(id_c, gbc);
+
+		// Prima riga, seconda colonna
+		gbc.gridx = 1;
+		gbc.gridy = 0;
+
+		wear = new JTextField("WEAR");
 		wear.setPreferredSize(dim);
+		dataPanel.add(wear, gbc);
+
+		// Prima riga, terza colonna
+		gbc.gridx = 2;
+		gbc.gridy = 0;
+
+		status = new JTextField("STATUS");
 		status.setPreferredSize(dim);
+		dataPanel.add(status, gbc);
 
-		cellPanel1.add(id_c);
-		cellPanel2.add(wear);
-		cellPanel3.add(status);
+		frame.add(dataPanel);
 
-		dataPanel.add(cellPanel1);
-		dataPanel.add(cellPanel2);
-		dataPanel.add(cellPanel3);
-		
 		/*
 		 * CREAZIONE 3 SEZIONE
 		 */
 
-		sendPanel = new JPanel(new FlowLayout(FlowLayout.CENTER, 20, 20));
-		cellPanel4 = new JPanel(new FlowLayout(FlowLayout.CENTER));
-
+		sendPanel = new JPanel();
+		sendPanel.setLayout(new GridBagLayout());
 		sendPanel.setBackground(Color.BLACK);
-		sendPanel.setLayout(new GridLayout(2, 1, 10, 10));
+
+		GridBagConstraints gbcSend = new GridBagConstraints();
+		gbcSend.insets = new Insets(10, 0, 10, 0); // Margini per centrare il bottone e il messaggio
+
+		gbcSend.gridx = 0;
+		gbcSend.gridy = 0;
 
 		sendButton = new JButton("SEND");
-
-		sendButton.setPreferredSize(dim);
-
-		cellPanel4.add(sendButton);
+		sendButton.setPreferredSize(new Dimension(150, 30));
+		sendPanel.add(sendButton, gbcSend);
 
 		mexLabel = new JLabel();
 
+		gbcSend.gridy = 1; // Sposta il messaggio sotto il bottone
+		mexLabel = new JLabel("", SwingConstants.CENTER);
 		mexLabel.setForeground(Color.WHITE);
-		mexLabel.setHorizontalAlignment(SwingConstants.CENTER);
-		mexLabel.setVerticalAlignment(SwingConstants.CENTER);
+		sendPanel.add(mexLabel, gbcSend);
 
-		sendPanel.add(cellPanel4);
-		sendPanel.add(mexLabel, BorderLayout.WEST);
+		frame.add(sendPanel);
 
-		mainContainer.add(titlePanel);
-		mainContainer.add(dataPanel);
-		mainContainer.add(sendPanel);
+		id_c.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				if (id_c.getText().equals("ID COMPONENT")) {
+					id_c.setText(""); // Rimuove il testo predefinito
+				}
+			}
 
-		frame.add(mainContainer);
-		
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (id_c.getText().isEmpty()) {
+					id_c.setText("ID COMPONENT"); // Ripristina il testo predefinito se vuoto
+				}
+			}
+		});
+
+		wear.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				if (wear.getText().equals("WEAR")) {
+					wear.setText(""); // Rimuove il testo predefinito
+				}
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (wear.getText().isEmpty()) {
+					wear.setText("WEAR"); // Ripristina il testo predefinito se vuoto
+				}
+			}
+		});
+
+		status.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				if (status.getText().equals("STATUS")) {
+					status.setText(""); // Rimuove il testo predefinito
+				}
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (status.getText().isEmpty()) {
+					status.setText("STATUS"); // Ripristina il testo predefinito se vuoto
+				}
+			}
+		});
+
 	}
-	
+
 	public void show() {
 		frame.setVisible(true);
 	}
-	
-	
+
 	public void mex1() {
 		mexLabel.setText("ERROR");
 		mexLabel.setForeground(Color.RED);
-	}	
-	
+	}
+
 	public void mex2() {
 		mexLabel.setText("SUCCESS");
 		mexLabel.setForeground(Color.GREEN);
 	}
 
-	public JPanel getSendPanel() {
-		return sendPanel;
-	}
 
-	public void setSendPanel(JPanel sendPanel) {
-		this.sendPanel = sendPanel;
+	public JTextField getWear() {
+		return wear;
 	}
-
-	public JLabel getMexLabel() {
-		return mexLabel;
-	}
-
-	public void setMexLabel(JLabel mexLabel) {
-		this.mexLabel = mexLabel;
-	}
-
+	
 	public JTextField getId_c() {
 		return id_c;
 	}
@@ -163,14 +205,10 @@ public class WhPopUpUpdateComponentView {
 		this.id_c = id_c;
 	}
 	
-	public JTextField getWear() {
-		return wear;
-	}
-
 	public void setWear(JTextField wear) {
 		this.wear = wear;
 	}
-	
+
 	public JTextField getStatus() {
 		return status;
 	}
@@ -186,6 +224,34 @@ public class WhPopUpUpdateComponentView {
 	public void setSendButton(JButton sendButton) {
 		this.sendButton = sendButton;
 	}
-	
-	
+
+	public JPanel getDataPanel() {
+		return dataPanel;
+	}
+
+	public void setDataPanel(JPanel dataPanel) {
+		this.dataPanel = dataPanel;
+	}
+
+	public JPanel getSendPanel() {
+		return sendPanel;
+	}
+
+	public void setSendPanel(JPanel sendPanel) {
+		this.sendPanel = sendPanel;
+	}
+
+	// Metodo per ripulire i JTextField e JLabel in un JPanel
+	public void clearComponents(JPanel panel) {
+		for (Component comp : panel.getComponents()) {
+			if (comp instanceof JTextField) {
+				((JTextField) comp).setText(""); // Pulisce il JTextField
+			} else if (comp instanceof JLabel) {
+				((JLabel) comp).setText("");
+			}
+		}
+		panel.revalidate(); // Rende il pannello nuovamente valido
+		panel.repaint(); // Ridisegna il pannello
+	}
+
 }
