@@ -6,10 +6,9 @@ import java.awt.Dimension;
 import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
-import java.awt.GridLayout;
 import java.awt.Insets;
+import java.awt.event.FocusAdapter;
 import java.awt.event.FocusEvent;
-import java.awt.event.FocusListener;
 
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -19,8 +18,6 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
-
-import it.unipv.sfw.model.staff.Session;
 
 public class MagazziniereView extends AbsView {
 
@@ -84,7 +81,6 @@ public class MagazziniereView extends AbsView {
 		 * CREAZIONE 2 SEZIONE: 4 BOTTONI E FINESTRE POP UP
 		 */
 		popUpPanel = new JPanel();
-		popUpPanel = new JPanel();
 		popUpPanel.setPreferredSize(new Dimension(700, 200));
 		popUpPanel.setBackground(Color.BLACK);
 		popUpPanel.setLayout(new GridBagLayout());
@@ -125,45 +121,16 @@ public class MagazziniereView extends AbsView {
 		gbc.gridx = 1;
 		gbc.gridy = 1;
 
-		String option[] = { "RUOTA ANTERIORE SX HARD", 
-									   "RUOTA ANTERIORE DX HARD", 
-				                       "RUOTA POSTERIORE SX HARD",
-				                       "RUOTA POSTERIORE DX HARD",
-				                       "RUOTA ANTERIORE SX MEDIUM", 
-				                       "RUOTA ANTERIORE DX MEDIUM", 
-				                       "RUOTA POSTERIORE SX MEDIUM",
-				                       "RUOTA POSTERIORE DX MEDIUM",
-				                       "ALA ANTERIORE", 
-				                       "DRS", 
-				                       "MOTORE TERMICO", 
-				                       "ERS",
-				                       "- ALL" };
+		String option[] = { "RUOTA ANTERIORE SX HARD", "RUOTA ANTERIORE DX HARD", "RUOTA POSTERIORE SX HARD",
+				"RUOTA POSTERIORE DX HARD", "RUOTA ANTERIORE SX MEDIUM", "RUOTA ANTERIORE DX MEDIUM",
+				"RUOTA POSTERIORE SX MEDIUM", "RUOTA POSTERIORE DX MEDIUM", "ALA ANTERIORE", "DRS", "MOTORE TERMICO",
+				"ERS", "- ALL" };
 
 		comboBox = new JComboBox<>(option);
 		comboBox.setPreferredSize(dim);
 		comboBox.setEditable(true);
 		placeholder = (JTextField) comboBox.getEditor().getEditorComponent();
 		placeholder.setText("QUANTITA' COMPONENTI");
-
-		comboBox.addFocusListener(new FocusListener() {
-			@Override
-			public void focusGained(FocusEvent e) {
-				// Rimuove il placeholder quando l'utente clicca sul campo
-				if (placeholder.getText().equals("QUANTITA' COMPONENTI")) {
-					placeholder.setText("");
-				}
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				// Reset al placeholder quando il focus è perso
-				if (comboBox.getSelectedIndex() >= 0) {
-					placeholder.setText("QUANTITA' COMPONENTI");
-				}
-				// Ripristina la selezione del JComboBox al primo elemento (opzionale)
-				comboBox.setSelectedIndex(-1); // Deseleziona tutte le opzioni
-			}
-		});
 
 		popUpPanel.add(comboBox, gbc);
 
@@ -174,7 +141,7 @@ public class MagazziniereView extends AbsView {
 		mexPanel = new JPanel();
 		mexPanel.setBackground(Color.BLACK);
 
-		mex = new JLabel();
+		mex = new JLabel("SELECT A COMPONENT FROM THE MENU");
 		mex.setHorizontalAlignment(SwingConstants.CENTER);
 		mex.setPreferredSize(new Dimension(700, 200));
 		mex.setBackground(Color.BLACK);
@@ -223,17 +190,14 @@ public class MagazziniereView extends AbsView {
 		this.comboBox = combobox;
 	}
 
-	public JLabel getMex() {
-		return mex;
+	public void setMex() {
+		placeholder.setText("QUANTITA' COMPONENTI");
+		mex.setText("SELECT A COMPONENT FROM THE MENU");
+		mex.setForeground(Color.GRAY);
 	}
 
-	public void setMex(JLabel mex) {
-		// aggiungere il valore da sessione.magazziniere
-		this.mex.setText("REQUEST TOTAL: ");
-	}
-
-	public void data(String name, String surname) {
-		dataLabel.setText("NAME: " + name + "           " + "SURNAME: " + surname);
+	public void data(String name, String surname, int total) {
+		dataLabel.setText("NAME: " + name + "           " + "SURNAME: " + surname + "           " + "TOTAL REQUEST: " + total);
 
 	}
 
@@ -242,5 +206,4 @@ public class MagazziniereView extends AbsView {
 		mex.setText("NAME COMPONENT:  " + currentText + "             QUANTITY:  " + quantity);
 		mex.setForeground(Color.YELLOW);
 	}
-
 }
