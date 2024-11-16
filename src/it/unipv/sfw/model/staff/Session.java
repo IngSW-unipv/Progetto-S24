@@ -38,6 +38,7 @@ public class Session {
 	// session
 	private Session() {
 		currentUser = null;
+		md = new MagazziniereDAO();
 		v = new Vehicle(msn);
 		m = new Meccanico(id_staff, pwd_staff);
 		wh = new Magazziniere(id_staff, pwd_staff);
@@ -172,7 +173,6 @@ public class Session {
 	}
 	
 	public void getRequest() {
-		md = new MagazziniereDAO();
 		wh.setRequest(md.selectAllRequest());
 	}
 
