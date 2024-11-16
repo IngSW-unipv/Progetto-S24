@@ -26,5 +26,9 @@ public class Magazziniere extends Staff{
 	public void setRequest(Set<Request> request) {
 		this.request = request;
 	}
+	
+	public int totalRequest() {
+		return request.size();
+	}
 
 }
