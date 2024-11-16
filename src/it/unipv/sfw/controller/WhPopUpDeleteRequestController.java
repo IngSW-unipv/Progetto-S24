@@ -4,15 +4,17 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import it.unipv.sfw.dao.mysql.MagazziniereDAO;
+import it.unipv.sfw.model.staff.Session;
+import it.unipv.sfw.view.MagazziniereView;
 import it.unipv.sfw.view.WhPopUpDeleteRequestView;
 
 public class WhPopUpDeleteRequestController {
 	
 	private WhPopUpDeleteRequestView pdr;
-	private MagazziniereDAO md; 
+	private MagazziniereDAO md	;
 	
 	
-	public WhPopUpDeleteRequestController() {
+	public WhPopUpDeleteRequestController(MagazziniereView wh) {
 		pdr = new WhPopUpDeleteRequestView();
 		md = new MagazziniereDAO();
 		
@@ -36,6 +38,8 @@ public class WhPopUpDeleteRequestController {
 					md.removeRequest(idc);
 					pdr.mex2();
 					pdr.clearComponents(pdr.getDataPanel());
+					Session.getIstance().getRequest();
+					wh.data(Session.getIstance().getName(), Session.getIstance().getSurname(), Session.getIstance().getWh().totalRequest());
 				}
 				
 			}
