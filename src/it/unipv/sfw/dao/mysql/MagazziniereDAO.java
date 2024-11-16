@@ -134,7 +134,7 @@ public class MagazziniereDAO {
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
 			// ATTENZIONE ALL'ACCENTO
-			String query = "SELECT NAME, COUNT(*) AS QUANTITA' FROM " + SCHEMA + " WHERE WAREHOUSE = 1 GROUP BY NAME";
+			String query = "SELECT COUNT(*)  FROM " + SCHEMA + " WHERE WAREHOUSE = 1";
 			st1 = conn.prepareStatement(query);
 
 			rs1 = st1.executeQuery();
