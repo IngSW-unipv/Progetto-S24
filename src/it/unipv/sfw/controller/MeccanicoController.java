@@ -38,7 +38,6 @@ public class MeccanicoController extends AbsController {
 		}
 
 		MeccanicoView mv = new MeccanicoView();
-
 		MeccanicoDAO md = new MeccanicoDAO();
 
 		McPopUpRequestController prc = new McPopUpRequestController();
