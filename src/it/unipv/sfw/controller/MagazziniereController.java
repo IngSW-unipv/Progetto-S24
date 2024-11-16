@@ -38,10 +38,11 @@ public class MagazziniereController extends AbsController {
 		MagazziniereView mv = new MagazziniereView();
 		MagazziniereDAO md = new MagazziniereDAO();
 		
-		WhPopUpDeleteRequestController wdrc = new WhPopUpDeleteRequestController();
+		WhPopUpDeleteRequestController wdrc = new WhPopUpDeleteRequestController(mv);
 		WhPopUpUpdateComponentController wupc = new WhPopUpUpdateComponentController();
 		
-		mv.data(Session.getIstance().getName(), Session.getIstance().getSurname());
+		Session.getIstance().getRequest();
+		mv.data(Session.getIstance().getName(), Session.getIstance().getSurname(), Session.getIstance().getWh().totalRequest());
 		
 		
 		mv.getShowRequestButton().addActionListener( new ActionListener() {
@@ -49,7 +50,6 @@ public class MagazziniereController extends AbsController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				Session.getIstance().getRequest();
 				WhPopUpShowRequestController wsrc = new WhPopUpShowRequestController();
 			
 				System.out.println(Session.getIstance().getWh().getRequest());
@@ -60,6 +60,7 @@ public class MagazziniereController extends AbsController {
 				}
 
 				wsrc.showWindow();
+				mv.setMex();
 			}
 			
 		});
@@ -71,6 +72,7 @@ public class MagazziniereController extends AbsController {
 				// TODO Auto-generated method stub	
 				wdrc.showWindow();	
 				wdrc.clear();
+				mv.setMex();
 			}
 			
 		});
@@ -81,6 +83,7 @@ public class MagazziniereController extends AbsController {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				wupc.showWindow();
+				mv.setMex();
 			}
 			
 		});
@@ -93,9 +96,9 @@ public class MagazziniereController extends AbsController {
 				String select = (String) mv.getCombobox().getSelectedItem();
 				
 				if(select.equals("- ALL")) {
-					md.countElement();
+					mv.mexCombo(md.countElement());
 					
-				}else if(!select.equals("QUANTITA' COMPONENTI")){		
+				}else {	
 					mv.mexCombo(md.countElementBySelect(select));
 				}
 
