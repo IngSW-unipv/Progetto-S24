@@ -61,7 +61,7 @@ public class ControllerManager {
 		this.addController(new LoginController());
 		
 		this.addController(new MeccanicoController());
-//		this.addController(new StrategaController());
+		this.addController(new StrategistController());
 		this.addController(new MagazziniereController());
 		
 		currentController = null;
