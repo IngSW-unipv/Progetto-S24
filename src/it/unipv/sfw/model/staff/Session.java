@@ -10,7 +10,7 @@ public class Session {
 
 	private static Session istance = null;
 
-	private String operation = "", msn = "";
+	private String operation = "";
 	private String id_pilot;
 	private String id_staff;
 	private String pwd_staff;
@@ -19,6 +19,7 @@ public class Session {
 	private String name = "", surname = "";
 	private Meccanico m;
 	private Magazziniere wh;
+	private Stratega s;
 	private Vehicle v;
 
 	/**
@@ -39,9 +40,10 @@ public class Session {
 	private Session() {
 		currentUser = null;
 		md = new MagazziniereDAO();
-		v = new Vehicle(msn);
 		m = new Meccanico(id_staff, pwd_staff);
+		v = new Vehicle(m.getMSN());
 		wh = new Magazziniere(id_staff, pwd_staff);
+		s = new Stratega(id_staff, pwd_staff);
 	}
 
 	/**
@@ -114,14 +116,6 @@ public class Session {
 		this.operation = operation;
 	}
 
-	public String getMsn() {
-		return msn;
-	}
-
-	public void setMsn(String msn) {
-		this.msn = msn;
-	}
-
 	public String getId_pilot() {
 		return id_pilot;
 	}
@@ -176,6 +170,10 @@ public class Session {
 		wh.setRequest(md.selectAllRequest());
 	}
 
+	public void getTS() {
+		v.setTimeSect();
+	}
+	
 	public Vehicle getV() {
 		return v;
 	}
