@@ -1,10 +1,7 @@
 package it.unipv.sfw.model.staff;
 
-import it.unipv.sfw.model.vehicle.Vehicle;
 
 public class Stratega extends Staff{
-	
-	protected Vehicle vehicle;
 	
 	protected long timeLap;
 	
