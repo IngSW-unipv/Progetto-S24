@@ -13,7 +13,7 @@ public class Vehicle {
 	/*
 	 * il tempo è considerato in millisecondi
 	 */
-	protected long timeSect1, timeSect2, timeSect3;
+	protected int timeSect1 = 0, timeSect2 = 0, timeSect3 = 0;
 
 	protected String timeLap;
 
@@ -108,27 +108,16 @@ public class Vehicle {
 		}
 	}
 
-	public String setTimeLap() {
+	public void setTimeSect() {
 
 		Random random = new Random();
 
 		int min = 25000, max = 30000;
 
-		long tmeLp = 0;
+		timeSect1 = random.nextInt((max - min) + 1) + min;
+		timeSect2 = random.nextInt((max - min) + 1) + min;
+		timeSect3 = random.nextInt((max - min) + 1) + min;
 
-		timeSect1 = random.nextInt((min - max) + 1) + min;
-		timeSect2 = random.nextInt((min - max) + 1) + min;
-		timeSect3 = random.nextInt((min - max) + 1) + min;
-
-		tmeLp = timeSect1 + timeSect2 + timeSect3;
-
-		long minutes = tmeLp / 60000;
-
-		long seconds = (tmeLp % 60000) / 1000;
-
-		long milliseconds = tmeLp % 1000;
-
-		return timeLap = minutes + ":" + seconds + ":" + milliseconds;
 	}
 
 	public void showComponent() {
@@ -139,19 +128,27 @@ public class Vehicle {
 		}
 	}
 
+	public String getMSN() {
+		return MSN;
+	}
+
+	public void setMSN(String mSN) {
+		MSN = mSN;
+	}
+
 	public String getTimeLap() {
 		return timeLap;
 	}
 
-	public long getTimeSect1() {
+	public int getTimeSect1() {
 		return timeSect1;
 	}
 
-	public long getTimeSect2() {
+	public int getTimeSect2() {
 		return timeSect2;
 	}
 
-	public long getTimeSect3() {
+	public int getTimeSect3() {
 		return timeSect3;
 	}
 
