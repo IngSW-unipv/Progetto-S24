@@ -16,7 +16,6 @@ public class Meccanico extends Staff {
 	/*
 	 * MSN è il numero di serie dell'autovettura
 	 */
-
 	private String MSN;
 	/*
 	 * il team dei meccanici si suddividono in 2 squadre (1 per pilota), ma nel caso
@@ -39,7 +38,6 @@ public class Meccanico extends Staff {
 	public Vehicle addVehicle() {
 
 		MSN = getMSN();
-		// String msn = MSN + vehicles.size() +1;
 		Vehicle v = new Vehicle(MSN);
 		
 		vehicles.add(v);
@@ -91,7 +89,6 @@ public class Meccanico extends Staff {
 
 		checkPS(tmePs);
 		
-		// tmePitStop = minutes + ":" + seconds + "." + milliseconds;
 		allTimePitStop.add(tmePs);
 		
 		return tmePs;
@@ -109,17 +106,6 @@ public class Meccanico extends Staff {
 		}
 
 	}
-
-	// Ottenere tutti i tempi di pit stop convertiti in secondi
-//	public ArrayList<Double> getTime() throws NumberFormatException {
-//		ArrayList<Double> time = new ArrayList<>();
-//
-//		for (String tm : allTimePitStop) {
-//			time.add(convertTime(tm));
-//		}
-//
-//		return time;
-//	}
 
 	// Metodo per convertire una stringa di tempo (mm:ss.SSS) in secondi decimali
 	public double convertTime(String tps) throws NumberFormatException {
