@@ -43,7 +43,7 @@ public class McGraphicTimePsController {
 		}
 	}
 	
-    // Metodo per convertire i millisecondi in un formato "minuti:secondi.millisecondi"
+    // Metodo per convertire i millisecondi in un formato "secondi.millisecondi"
     private String convertTime(int millis) {
         int seconds = (millis / 1000) % 60;
         int milliseconds = millis % 1000;

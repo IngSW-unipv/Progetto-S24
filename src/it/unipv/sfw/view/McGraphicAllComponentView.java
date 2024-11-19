@@ -17,8 +17,6 @@ import it.unipv.sfw.model.component.Components;
 
 public class McGraphicAllComponentView {
 
-	//private Set<Components> components;
-
 	private JFrame frame;
 	
 	private JPanel mainPanel;
@@ -28,8 +26,6 @@ public class McGraphicAllComponentView {
 	private JTable table;
 
 	public McGraphicAllComponentView(Set<Components> components) {
-
-		//this.components = components;
 
 		frame = new JFrame("COMPONENT");
 		frame.setSize(500, 500);

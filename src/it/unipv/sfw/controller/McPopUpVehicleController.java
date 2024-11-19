@@ -28,7 +28,7 @@ public class McPopUpVehicleController {
 				// TODO Auto-generated method stub
 				
 				String id_pilot = vv.getId_p().getText(), 
-							msn = vv.getMsn().getText();
+						   msn = vv.getMsn().getText();
 
 				boolean check = md.checkPilot(id_pilot);
 				
@@ -43,7 +43,7 @@ public class McPopUpVehicleController {
 					md.insertMeccOnVehicle(msn, id);
 
 					m.setMSN(msn);
-					Session.getIstance().setMsn(m.getMSN());
+					Session.getIstance().getV().setMSN((msn));
 					Session.getIstance().setV(m.addVehicle());
 					vv.mex2();
 					
