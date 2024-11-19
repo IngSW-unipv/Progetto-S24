@@ -12,14 +12,15 @@ import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTable;
 import javax.swing.SwingConstants;
+import javax.swing.table.DefaultTableModel;
 
 public class StrategistView extends AbsView {
-	
+
 	private JFrame frame;
 
-	// decidere un titolo o una immagine
-	private JPanel mainContainer, titlePanel, timePanel, buttonPanel;
+	private JPanel mainContainer, titlePanel, statusPanel, timePanel, buttonPanel;
 
 	private JButton componentStatusButton, getTimeButton, createStrategyButton;
 
@@ -27,10 +28,12 @@ public class StrategistView extends AbsView {
 
 	private ImageIcon imgWeather, imgCircuit;
 	
+	private DefaultTableModel  tabTime;
+
 	public StrategistView() {
 
-		frame = new JFrame("WAREHOUSEMAN");
-		frame.setSize(900, 700);
+		frame = new JFrame("STRATEGIST");
+		frame.setSize(900, 800);
 		frame.setLocationRelativeTo(null);
 		frame.setBackground(Color.BLACK);
 		frame.setLayout(new BorderLayout());
@@ -56,9 +59,9 @@ public class StrategistView extends AbsView {
 			imgWeather = new ImageIcon(this.getClass().getResource("/meteo.png"));
 			imgWeather = new ImageIcon(imgWeather.getImage().getScaledInstance(250, 250, java.awt.Image.SCALE_SMOOTH));
 			System.out.println("immagine user caricata");
-			
+
 			// immagine del circuito
-			
+
 		} catch (Exception e) {
 			System.out.println(e);
 		}
@@ -66,23 +69,53 @@ public class StrategistView extends AbsView {
 		imgWeatherLabel = new JLabel(imgWeather);
 		titlePanel.add(imgWeatherLabel, BorderLayout.WEST);
 
-		dataLabel = new JLabel();
-		dataLabel.setForeground(Color.BLACK);
-		dataLabel.setLayout(new BorderLayout());
-		
+		statusPanel = new JPanel();
+		statusPanel.setPreferredSize(new Dimension(250, 250));
+		statusPanel.setLayout(new GridBagLayout());
+		statusPanel.setBackground(Color.BLACK);
+		statusPanel.setOpaque(true);
+		GridBagConstraints gbcs = new GridBagConstraints();
+
+		// Spaziatura interna
+		gbcs.insets = new Insets(20, 20, 60, 20);
+		gbcs.anchor = GridBagConstraints.CENTER;
+
+		Dimension dims = new Dimension(300, 200);
+
+		// Prima riga - Prima colonna (Insert Veichle)
+		gbcs.gridx = 0;
+		gbcs.gridy = 0;
+
+		dataLabel = new JLabel("SONO QUI");
+		dataLabel.setForeground(Color.WHITE);
+		dataLabel.setBackground(Color.BLACK);
+		statusPanel.add(dataLabel, gbcs);
+
+		// Prima riga - Seconda colonna (insert Request)
+		gbcs.gridx = 0;
+		gbcs.gridy = 1;
+
 		componentStatusButton = new JButton("MORE DETAILS");
-		componentStatusButton.setPreferredSize(new Dimension(300,200));
-		dataLabel.add(componentStatusButton, BorderLayout.SOUTH);
-		
-		titlePanel.add(dataLabel, BorderLayout.EAST);
-		
+		componentStatusButton.setPreferredSize(dims);
+		statusPanel.add(componentStatusButton, gbcs);
+
+		titlePanel.add(statusPanel, BorderLayout.EAST);
+
 		/*
 		 * CREAZIONE 2 SEZIONE: 4 BOTTONI E FINESTRE POP UP
 		 */
 		timePanel = new JPanel();
 		timePanel.setPreferredSize(new Dimension(700, 200));
 		timePanel.setBackground(Color.BLACK);
-
+		
+		String[] column = {"TIME SECTOR 1","TIME SECTOR 2","TIME SECTOR 3","TIME LAP"};
+		
+		// Object[] columnNames, int rowCount
+		tabTime = new DefaultTableModel(column,0);
+		
+		JTable tab = new JTable(tabTime);
+		
+		timePanel.add(tab);
 
 		/*
 		 * CREAZIONE 3 SEZIONE: LABEL PER MEX
@@ -90,8 +123,8 @@ public class StrategistView extends AbsView {
 
 		buttonPanel = new JPanel();
 		buttonPanel.setBackground(Color.BLACK);
-		
-		buttonPanel.setPreferredSize(new Dimension(700, 200));
+
+		buttonPanel.setPreferredSize(new Dimension(700, 100));
 		buttonPanel.setBackground(Color.BLACK);
 		buttonPanel.setLayout(new GridBagLayout());
 		buttonPanel.setOpaque(true);
@@ -129,4 +162,73 @@ public class StrategistView extends AbsView {
 		frame.repaint();
 	}
 
+	public void addRow(String t1, String t2, String t3, String t4) {
+		Object[] newRow = {t1,t2,t3,t4};
+		tabTime.addRow(newRow);
+	}
+	
+	public JPanel getTitlePanel() {
+		return titlePanel;
+	}
+
+	public void setTitlePanel(JPanel titlePanel) {
+		this.titlePanel = titlePanel;
+	}
+
+	public JPanel getStatusPanel() {
+		return statusPanel;
+	}
+
+	public void setStatusPanel(JPanel statusPanel) {
+		this.statusPanel = statusPanel;
+	}
+
+	public JPanel getTimePanel() {
+		return timePanel;
+	}
+
+	public void setTimePanel(JPanel timePanel) {
+		this.timePanel = timePanel;
+	}
+
+	public JPanel getButtonPanel() {
+		return buttonPanel;
+	}
+
+	public void setButtonPanel(JPanel buttonPanel) {
+		this.buttonPanel = buttonPanel;
+	}
+
+	public JButton getComponentStatusButton() {
+		return componentStatusButton;
+	}
+
+	public void setComponentStatusButton(JButton componentStatusButton) {
+		this.componentStatusButton = componentStatusButton;
+	}
+
+	public JButton getGetTimeButton() {
+		return getTimeButton;
+	}
+
+	public void setGetTimeButton(JButton getTimeButton) {
+		this.getTimeButton = getTimeButton;
+	}
+
+	public JButton getCreateStrategyButton() {
+		return createStrategyButton;
+	}
+
+	public void setCreateStrategyButton(JButton createStrategyButton) {
+		this.createStrategyButton = createStrategyButton;
+	}
+
+	public JLabel getDataLabel() {
+		return dataLabel;
+	}
+
+	public void setDataLabel(JLabel dataLabel) {
+		this.dataLabel = dataLabel;
+	}
+	
 }
