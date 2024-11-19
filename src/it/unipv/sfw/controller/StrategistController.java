@@ -69,11 +69,14 @@ public class StrategistController extends AbsController {
 		sv.addRow(t1,t2,t3,t4);
 	}
 
-// Metodo per convertire i millisecondi in un formato "secondi.millisecondi"
+	// Metodo per convertire i millisecondi in un formato "minuti:secondi.millisecondi"
 	private String convertTime(int millis) {
-		int seconds = (millis / 1000) % 60;
-		int milliseconds = millis % 1000;
+	    int minutes = (millis / 1000) / 60; // Calcolo dei minuti
+	    int seconds = (millis / 1000) % 60; // Calcolo dei secondi
+	    int milliseconds = millis % 1000;  // Calcolo dei millisecondi
 
-		return String.format("%02d.%03d", seconds, milliseconds);
+	    // Formatta il tempo in "mm:ss.SSS"
+	    return String.format("%02d:%02d.%03d", minutes, seconds, milliseconds);
 	}
+
 }
