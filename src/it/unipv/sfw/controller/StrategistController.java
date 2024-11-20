@@ -48,7 +48,8 @@ public class StrategistController extends AbsController {
 				// TODO Auto-generated method stub
 
 				Session.getIstance().getTS();
-				createLabels(sv);
+				createTable(sv);
+
 				vd.timeSector(Session.getIstance().getV());
 			}
 
@@ -58,25 +59,60 @@ public class StrategistController extends AbsController {
 		view = sv;
 	}
 
-	public void createLabels(StrategistView sv) {
+	public void createTable(StrategistView sv) {
+		
+		int minT1 = 0, 
+			    minT2 = 0, 
+			    minT3 = 0, 
+			    timeLap = 0;
 
-		String t1 = convertTime(Session.getIstance().getV().getTimeSect1());
-		String t2 = convertTime(Session.getIstance().getV().getTimeSect2());
-		String t3 = convertTime(Session.getIstance().getV().getTimeSect3());
-		int timeLap = Session.getIstance().getV().getTimeSect1()+Session.getIstance().getV().getTimeSect2()+Session.getIstance().getV().getTimeSect3();
-		String t4 = convertTime(timeLap);
+			// Valori generati casualmente provenienti da Session
+			int app1 = Session.getIstance().getV().getTimeSect1(); // Settore 1
+			int app2 = Session.getIstance().getV().getTimeSect2(); // Settore 2
+			int app3 = Session.getIstance().getV().getTimeSect3(); // Settore 3
+			int app4 = app1 + app2 + app3; // Tempo totale del giro
+
+			// Inizializza i minimi solo se sono 0 (primo set di valori)
+			if (minT1 == 0 && minT2 == 0 && minT3 == 0 && timeLap == 0) {
+			    minT1 = app1;
+			    minT2 = app2;
+			    minT3 = app3;
+			    timeLap = app4;
+			}
+
+			// Confronta e aggiorna i minimi
+			if (app1 < minT1) {
+			    minT1 = app1;
+			}
+			if (app2 < minT2) {
+			    minT2 = app2;
+			}
+			if (app3 < minT3) {
+			    minT3 = app3;
+			}
+			if (app4 < timeLap) {
+			    timeLap = app4;
+			}
+
+
+		String t1 = convertTime(app1);
+		String t2 = convertTime(app2);
+		String t3 = convertTime(app3);
+		String t4 = convertTime(app4);
 		
 		sv.addRow(t1,t2,t3,t4);
+		sv.colorCell(minT1, minT2, minT3, timeLap);
 	}
 
-	// Metodo per convertire i millisecondi in un formato "minuti:secondi.millisecondi"
+	// Metodo per convertire i millisecondi in un formato
+	// "minuti:secondi.millisecondi"
 	private String convertTime(int millis) {
-	    int minutes = (millis / 1000) / 60; // Calcolo dei minuti
-	    int seconds = (millis / 1000) % 60; // Calcolo dei secondi
-	    int milliseconds = millis % 1000;  // Calcolo dei millisecondi
+		int minutes = (millis / 1000) / 60; // Calcolo dei minuti
+		int seconds = (millis / 1000) % 60; // Calcolo dei secondi
+		int milliseconds = millis % 1000; // Calcolo dei millisecondi
 
-	    // Formatta il tempo in "mm:ss.SSS"
-	    return String.format("%02d:%02d.%03d", minutes, seconds, milliseconds);
+		// Formatta il tempo in "mm:ss.SSS"
+		return String.format("%02d:%02d.%03d", minutes, seconds, milliseconds);
 	}
 
 }
