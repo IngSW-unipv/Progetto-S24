@@ -16,7 +16,11 @@ public class StrategistController extends AbsController {
 	private Staff user;
 
 	protected Stratega st;
-
+	private int 	minT1, 
+		    minT2, 
+		    minT3, 
+		    timeLap;
+	
 	@Override
 	public TypeController getType() {
 		// TODO Auto-generated method stub
@@ -56,15 +60,18 @@ public class StrategistController extends AbsController {
 		});
 
 		sv.setVisible(true);
+		
+		
+		 	this.minT1 = 0; 
+		 	this.minT2 = 0; 
+		 	this.minT3 = 0; 
+		 	this.timeLap = 0;
+	
+		 
 		view = sv;
 	}
 
 	public void createTable(StrategistView sv) {
-		
-		int minT1 = 0, 
-			    minT2 = 0, 
-			    minT3 = 0, 
-			    timeLap = 0;
 
 			// Valori generati casualmente provenienti da Session
 			int app1 = Session.getIstance().getV().getTimeSect1(); // Settore 1
@@ -94,14 +101,13 @@ public class StrategistController extends AbsController {
 			    timeLap = app4;
 			}
 
-
 		String t1 = convertTime(app1);
 		String t2 = convertTime(app2);
 		String t3 = convertTime(app3);
 		String t4 = convertTime(app4);
 		
 		sv.addRow(t1,t2,t3,t4);
-		sv.colorCell(minT1, minT2, minT3, timeLap);
+		sv.colorCell(minT1, minT2, minT3);
 	}
 
 	// Metodo per convertire i millisecondi in un formato
