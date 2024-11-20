@@ -21,7 +21,7 @@ public class VehicleDAO {
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
 
-			String query = "UPDATE " + SCHEMA + "SET TIME_SECTOR1 = ?, TIME_SECTOR2 = ?, TIME_SECTOR3 = ? WHERE MSN = ?";
+			String query = "UPDATE " + SCHEMA + " SET TIME_SECTOR1 = ?, TIME_SECTOR2 = ?, TIME_SECTOR3 = ? WHERE MSN = 'SF24-001' ";
 			st1 = conn.prepareStatement(query);
 			
 			String c1 = String.valueOf(v.getTimeSect1());
@@ -33,8 +33,8 @@ public class VehicleDAO {
 			String c3 = String.valueOf(v.getTimeSect3());
 			st1.setString(3, c3);
 			
-			String c4 = String.valueOf(v.getMSN());
-			st1.setString(4, c4);
+//			String c4 = String.valueOf(v.getMSN());
+//			st1.setString(4, c4);
 			
 			rs1 = st1.executeUpdate();
 			
