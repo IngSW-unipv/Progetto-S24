@@ -70,7 +70,7 @@ public class StrategistView extends AbsView {
 
         gbcs.gridx = 0;
         gbcs.gridy = 0;
-        dataLabel = new JLabel("SONO QUI");
+        dataLabel = new JLabel("STATUS VEHICLE");
         dataLabel.setForeground(Color.WHITE);
         dataLabel.setBackground(Color.BLACK);
         statusPanel.add(dataLabel, gbcs);
@@ -141,7 +141,8 @@ public class StrategistView extends AbsView {
         
     }
 
-    public void colorCell(int thresholdSector1, int thresholdSector2, int thresholdSector3, int thresholdTimeLap) {
+    public void colorCell(int thresholdSector1, int thresholdSector2, int thresholdSector3) {
+    	
         tab.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override
             public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
@@ -157,29 +158,25 @@ public class StrategistView extends AbsView {
                         int totalMillis = (minutes * 60 * 1000) + (seconds * 1000) + milliseconds;
 
                         // Controlla se è l'ultima riga della tabella
-                        if (row == table.getRowCount() - 1) {
+                        
                             // Applica la logica in base alla colonna
-                            if (column == 0 && totalMillis < thresholdSector1) {
+                            if (column == 0 && totalMillis <= thresholdSector1) {
                                 cell.setBackground(Color.MAGENTA);
                                 cell.setForeground(Color.WHITE);
-                            } else if (column == 1 && totalMillis < thresholdSector2) {
+                            } else if (column == 1 && totalMillis <= thresholdSector2) {
                                 cell.setBackground(Color.MAGENTA);
                                 cell.setForeground(Color.WHITE);
-                            } else if (column == 2 && totalMillis < thresholdSector3) {
+                            } else if (column == 2 && totalMillis <= thresholdSector3) {
                                 cell.setBackground(Color.MAGENTA);
                                 cell.setForeground(Color.WHITE);
-                            } else if (column == 3 && totalMillis < thresholdTimeLap) {
-                                cell.setBackground(Color.MAGENTA);
+                            } else if (column == 3 ) {
+                                cell.setBackground(Color.GRAY);
                                 cell.setForeground(Color.WHITE);
                             } else {
                                 cell.setBackground(Color.BLACK);
                                 cell.setForeground(Color.WHITE);
                             }
-                        } else {
-                            // Celle non sull'ultima riga
-                            cell.setBackground(Color.BLACK);
-                            cell.setForeground(Color.WHITE);
-                        }
+                       
                     } catch (Exception e) {
                         // Celle vuote o non valide
                         cell.setBackground(Color.BLACK);
