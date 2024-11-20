@@ -2,233 +2,262 @@ package it.unipv.sfw.view;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
 import javax.swing.JTable;
-import javax.swing.SwingConstants;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.DefaultTableCellRenderer;
 
 public class StrategistView extends AbsView {
 
-	private JFrame frame;
+    private JFrame frame;
+    private JPanel mainContainer, titlePanel, statusPanel, timePanel, buttonPanel;
+    private JButton componentStatusButton, getTimeButton, createStrategyButton;
+    private JLabel imgWeatherLabel, imgCircuitLabel, dataLabel;
+    private ImageIcon imgWeather, imgCircuit;
+    private DefaultTableModel tabTime;
+    private JTable tab;
+    
+    public StrategistView() {
+        // Setup base components
+        frame = new JFrame("STRATEGIST");
+        frame.setSize(900, 800);
+        frame.setLocationRelativeTo(null);
+        frame.setBackground(Color.BLACK);
+        frame.setLayout(new BorderLayout());
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setResizable(false);
+        ImageIcon icona = new ImageIcon(getClass().getResource("/F1-Logo.png"));
+        frame.setIconImage(icona.getImage());
 
-	private JPanel mainContainer, titlePanel, statusPanel, timePanel, buttonPanel;
+        mainContainer = new JPanel();
+        mainContainer.setLayout(new BorderLayout());
+        mainContainer.setBackground(Color.BLACK);
 
-	private JButton componentStatusButton, getTimeButton, createStrategyButton;
+        // METEO E STATUS
+        titlePanel = new JPanel(new BorderLayout());
+        titlePanel.setPreferredSize(new Dimension(700, 200));
+        titlePanel.setBackground(Color.BLACK);
 
-	private JLabel imgWeatherLabel, imgCircuitLabel, dataLabel;
+        try {
+            imgWeather = new ImageIcon(this.getClass().getResource("/meteo.png"));
+            imgWeather = new ImageIcon(imgWeather.getImage().getScaledInstance(250, 250, java.awt.Image.SCALE_SMOOTH));
+        } catch (Exception e) {
+            System.out.println(e);
+        }
 
-	private ImageIcon imgWeather, imgCircuit;
-	
-	private DefaultTableModel  tabTime;
+        imgWeatherLabel = new JLabel(imgWeather);
+        titlePanel.add(imgWeatherLabel, BorderLayout.WEST);
 
-	public StrategistView() {
+        statusPanel = new JPanel();
+        statusPanel.setPreferredSize(new Dimension(250, 250));
+        statusPanel.setLayout(new GridBagLayout());
+        statusPanel.setBackground(Color.BLACK);
+        statusPanel.setOpaque(true);
+        GridBagConstraints gbcs = new GridBagConstraints();
+        gbcs.insets = new Insets(20, 20, 60, 20);
+        gbcs.anchor = GridBagConstraints.CENTER;
+        Dimension dims = new Dimension(300, 200);
 
-		frame = new JFrame("STRATEGIST");
-		frame.setSize(900, 800);
-		frame.setLocationRelativeTo(null);
-		frame.setBackground(Color.BLACK);
-		frame.setLayout(new BorderLayout());
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setResizable(false);
-		ImageIcon icona = new ImageIcon(getClass().getResource("/F1-Logo.png"));
-		frame.setIconImage(icona.getImage());
+        gbcs.gridx = 0;
+        gbcs.gridy = 0;
+        dataLabel = new JLabel("SONO QUI");
+        dataLabel.setForeground(Color.WHITE);
+        dataLabel.setBackground(Color.BLACK);
+        statusPanel.add(dataLabel, gbcs);
 
-		mainContainer = new JPanel();
+        gbcs.gridx = 0;
+        gbcs.gridy = 1;
+        componentStatusButton = new JButton("MORE DETAILS");
+        componentStatusButton.setPreferredSize(dims);
+        statusPanel.add(componentStatusButton, gbcs);
+        titlePanel.add(statusPanel, BorderLayout.EAST);
 
-		mainContainer.setLayout(new BorderLayout());
-		mainContainer.setBackground(Color.BLACK);
+        // TABELLA TEMPO
+        timePanel = new JPanel();
+        timePanel.setLayout(new BorderLayout());
+        timePanel.setPreferredSize(new Dimension(700, 200));
+        timePanel.setBackground(Color.BLACK);
 
-		/*
-		 * CREAZIONE 1 SEZIONE : meteo+circuito+data/bottone
-		 */
-		titlePanel = new JPanel(new BorderLayout());
-		titlePanel.setPreferredSize(new Dimension(700, 200));
-		titlePanel.setBackground(Color.BLACK);
+        String[] column = {"TIME SECTOR 1", "TIME SECTOR 2", "TIME SECTOR 3", "TIME LAP"};
+        tabTime = new DefaultTableModel(column, 0);
+         tab = new JTable(tabTime);
+        JScrollPane scroll = new JScrollPane(tab);
+        scroll.getViewport().setBackground(Color.BLACK);
+        scroll.setBackground(Color.BLACK);
 
-		try {
+        timePanel.add(scroll, BorderLayout.CENTER);
 
-			imgWeather = new ImageIcon(this.getClass().getResource("/meteo.png"));
-			imgWeather = new ImageIcon(imgWeather.getImage().getScaledInstance(250, 250, java.awt.Image.SCALE_SMOOTH));
-			System.out.println("immagine user caricata");
+        // PANNELLO DEI BOTTONI
+        buttonPanel = new JPanel();
+        buttonPanel.setBackground(Color.BLACK);
+        buttonPanel.setPreferredSize(new Dimension(700, 100));
+        buttonPanel.setLayout(new GridBagLayout());
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(20, 20, 50, 20);
+        gbc.anchor = GridBagConstraints.CENTER;
 
-			// immagine del circuito
+        Dimension dim = new Dimension(700, 200);
 
-		} catch (Exception e) {
-			System.out.println(e);
-		}
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        getTimeButton = new JButton("GET TIME");
+        getTimeButton.setPreferredSize(dim);
+        buttonPanel.add(getTimeButton, gbc);
 
-		imgWeatherLabel = new JLabel(imgWeather);
-		titlePanel.add(imgWeatherLabel, BorderLayout.WEST);
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        createStrategyButton = new JButton("CREATE STRATEGY");
+        createStrategyButton.setPreferredSize(dim);
+        buttonPanel.add(createStrategyButton, gbc);
 
-		statusPanel = new JPanel();
-		statusPanel.setPreferredSize(new Dimension(250, 250));
-		statusPanel.setLayout(new GridBagLayout());
-		statusPanel.setBackground(Color.BLACK);
-		statusPanel.setOpaque(true);
-		GridBagConstraints gbcs = new GridBagConstraints();
+        mainContainer.add(titlePanel, BorderLayout.NORTH);
+        mainContainer.add(timePanel, BorderLayout.CENTER);
+        mainContainer.add(buttonPanel, BorderLayout.SOUTH);
 
-		// Spaziatura interna
-		gbcs.insets = new Insets(20, 20, 60, 20);
-		gbcs.anchor = GridBagConstraints.CENTER;
+        frame.add(mainContainer);
+        frame.setVisible(true);
+        frame.validate();
+        frame.repaint();
+    }
 
-		Dimension dims = new Dimension(300, 200);
+ // Metodo per aggiungere righe
+    public void addRow(String t1, String t2, String t3, String t4) {
+        Object[] newRow = { t1, t2, t3, t4 };
+        tabTime.addRow(newRow);
 
-		// Prima riga - Prima colonna (Insert Veichle)
-		gbcs.gridx = 0;
-		gbcs.gridy = 0;
+        tab.revalidate(); // Ricalcola la struttura della tabella
+        tab.repaint();    // Ridisegna la tabella
+        
+        
+    }
 
-		dataLabel = new JLabel("SONO QUI");
-		dataLabel.setForeground(Color.WHITE);
-		dataLabel.setBackground(Color.BLACK);
-		statusPanel.add(dataLabel, gbcs);
+    public void colorCell(int thresholdSector1, int thresholdSector2, int thresholdSector3, int thresholdTimeLap) {
+        tab.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
+            @Override
+            public Component getTableCellRendererComponent(JTable table, Object value, boolean isSelected, boolean hasFocus, int row, int column) {
+                Component cell = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
-		// Prima riga - Seconda colonna (insert Request)
-		gbcs.gridx = 0;
-		gbcs.gridy = 1;
+                if (value != null) {
+                    try {
+                        // Converte il formato "00:00.000" in millisecondi
+                        String[] parts = value.toString().split("[:.]");
+                        int minutes = Integer.parseInt(parts[0]);
+                        int seconds = Integer.parseInt(parts[1]);
+                        int milliseconds = Integer.parseInt(parts[2]);
+                        int totalMillis = (minutes * 60 * 1000) + (seconds * 1000) + milliseconds;
 
-		componentStatusButton = new JButton("MORE DETAILS");
-		componentStatusButton.setPreferredSize(dims);
-		statusPanel.add(componentStatusButton, gbcs);
+                        // Controlla se è l'ultima riga della tabella
+                        if (row == table.getRowCount() - 1) {
+                            // Applica la logica in base alla colonna
+                            if (column == 0 && totalMillis < thresholdSector1) {
+                                cell.setBackground(Color.MAGENTA);
+                                cell.setForeground(Color.WHITE);
+                            } else if (column == 1 && totalMillis < thresholdSector2) {
+                                cell.setBackground(Color.MAGENTA);
+                                cell.setForeground(Color.WHITE);
+                            } else if (column == 2 && totalMillis < thresholdSector3) {
+                                cell.setBackground(Color.MAGENTA);
+                                cell.setForeground(Color.WHITE);
+                            } else if (column == 3 && totalMillis < thresholdTimeLap) {
+                                cell.setBackground(Color.MAGENTA);
+                                cell.setForeground(Color.WHITE);
+                            } else {
+                                cell.setBackground(Color.BLACK);
+                                cell.setForeground(Color.WHITE);
+                            }
+                        } else {
+                            // Celle non sull'ultima riga
+                            cell.setBackground(Color.BLACK);
+                            cell.setForeground(Color.WHITE);
+                        }
+                    } catch (Exception e) {
+                        // Celle vuote o non valide
+                        cell.setBackground(Color.BLACK);
+                        cell.setForeground(Color.WHITE);
+                    }
+                } else {
+                    cell.setBackground(Color.BLACK);
+                    cell.setForeground(Color.WHITE);
+                }
 
-		titlePanel.add(statusPanel, BorderLayout.EAST);
+                return cell;
+            }
+        });
 
-		/*
-		 * CREAZIONE 2 SEZIONE: 4 BOTTONI E FINESTRE POP UP
-		 */
-		timePanel = new JPanel();
-		timePanel.setPreferredSize(new Dimension(700, 200));
-		timePanel.setBackground(Color.BLACK);
-		
-		String[] column = {"TIME SECTOR 1","TIME SECTOR 2","TIME SECTOR 3","TIME LAP"};
-		
-		// Object[] columnNames, int rowCount
-		tabTime = new DefaultTableModel(column,0);
-		
-		JTable tab = new JTable(tabTime);
-		
-		timePanel.add(tab);
+    }
 
-		/*
-		 * CREAZIONE 3 SEZIONE: LABEL PER MEX
-		 */
+    // Getter e Setter
+    public JPanel getTitlePanel() {
+        return titlePanel;
+    }
 
-		buttonPanel = new JPanel();
-		buttonPanel.setBackground(Color.BLACK);
+    public void setTitlePanel(JPanel titlePanel) {
+        this.titlePanel = titlePanel;
+    }
 
-		buttonPanel.setPreferredSize(new Dimension(700, 100));
-		buttonPanel.setBackground(Color.BLACK);
-		buttonPanel.setLayout(new GridBagLayout());
-		buttonPanel.setOpaque(true);
-		GridBagConstraints gbc = new GridBagConstraints();
+    public JPanel getStatusPanel() {
+        return statusPanel;
+    }
 
-		// Spaziatura interna
-		gbc.insets = new Insets(20, 20, 50, 20);
-		gbc.anchor = GridBagConstraints.CENTER;
+    public void setStatusPanel(JPanel statusPanel) {
+        this.statusPanel = statusPanel;
+    }
 
-		Dimension dim = new Dimension(700, 200);
+    public JPanel getTimePanel() {
+        return timePanel;
+    }
 
-		// Prima riga - Prima colonna (Insert Veichle)
-		gbc.gridx = 0;
-		gbc.gridy = 0;
+    public void setTimePanel(JPanel timePanel) {
+        this.timePanel = timePanel;
+    }
 
-		getTimeButton = new JButton("GET TIME");
-		getTimeButton.setPreferredSize(dim);
-		buttonPanel.add(getTimeButton, gbc);
+    public JPanel getButtonPanel() {
+        return buttonPanel;
+    }
 
-		// Prima riga - Seconda colonna (insert Request)
-		gbc.gridx = 1;
-		gbc.gridy = 0;
+    public void setButtonPanel(JPanel buttonPanel) {
+        this.buttonPanel = buttonPanel;
+    }
 
-		createStrategyButton = new JButton("CREATE STRATEGY");
-		createStrategyButton.setPreferredSize(dim);
-		buttonPanel.add(createStrategyButton, gbc);
+    public JButton getComponentStatusButton() {
+        return componentStatusButton;
+    }
 
-		mainContainer.add(titlePanel, BorderLayout.NORTH);
-		mainContainer.add(timePanel, BorderLayout.CENTER);
-		mainContainer.add(buttonPanel, BorderLayout.SOUTH);
+    public void setComponentStatusButton(JButton componentStatusButton) {
+        this.componentStatusButton = componentStatusButton;
+    }
 
-		frame.add(mainContainer);
-		frame.setVisible(true);
-		frame.validate();
-		frame.repaint();
-	}
+    public JButton getGetTimeButton() {
+        return getTimeButton;
+    }
 
-	public void addRow(String t1, String t2, String t3, String t4) {
-		Object[] newRow = {t1,t2,t3,t4};
-		tabTime.addRow(newRow);
-	}
-	
-	public JPanel getTitlePanel() {
-		return titlePanel;
-	}
+    public void setGetTimeButton(JButton getTimeButton) {
+        this.getTimeButton = getTimeButton;
+    }
 
-	public void setTitlePanel(JPanel titlePanel) {
-		this.titlePanel = titlePanel;
-	}
+    public JButton getCreateStrategyButton() {
+        return createStrategyButton;
+    }
 
-	public JPanel getStatusPanel() {
-		return statusPanel;
-	}
+    public void setCreateStrategyButton(JButton createStrategyButton) {
+        this.createStrategyButton = createStrategyButton;
+    }
 
-	public void setStatusPanel(JPanel statusPanel) {
-		this.statusPanel = statusPanel;
-	}
+    public JLabel getDataLabel() {
+        return dataLabel;
+    }
 
-	public JPanel getTimePanel() {
-		return timePanel;
-	}
-
-	public void setTimePanel(JPanel timePanel) {
-		this.timePanel = timePanel;
-	}
-
-	public JPanel getButtonPanel() {
-		return buttonPanel;
-	}
-
-	public void setButtonPanel(JPanel buttonPanel) {
-		this.buttonPanel = buttonPanel;
-	}
-
-	public JButton getComponentStatusButton() {
-		return componentStatusButton;
-	}
-
-	public void setComponentStatusButton(JButton componentStatusButton) {
-		this.componentStatusButton = componentStatusButton;
-	}
-
-	public JButton getGetTimeButton() {
-		return getTimeButton;
-	}
-
-	public void setGetTimeButton(JButton getTimeButton) {
-		this.getTimeButton = getTimeButton;
-	}
-
-	public JButton getCreateStrategyButton() {
-		return createStrategyButton;
-	}
-
-	public void setCreateStrategyButton(JButton createStrategyButton) {
-		this.createStrategyButton = createStrategyButton;
-	}
-
-	public JLabel getDataLabel() {
-		return dataLabel;
-	}
-
-	public void setDataLabel(JLabel dataLabel) {
-		this.dataLabel = dataLabel;
-	}
-	
+    public void setDataLabel(JLabel dataLabel) {
+        this.dataLabel = dataLabel;
+    }
 }
