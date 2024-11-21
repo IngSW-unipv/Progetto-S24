@@ -40,7 +40,7 @@ public class StrategistController extends AbsController {
 		}
 
 		StrategistView sv = new StrategistView();
-		StrategaDAO sd = new StrategaDAO();
+		StPopUpCreateStrategyController scs = new StPopUpCreateStrategyController();
 		VehicleDAO vd = new VehicleDAO();
 
 		sv.getGetTimeButton().addActionListener(new ActionListener() {
@@ -56,14 +56,23 @@ public class StrategistController extends AbsController {
 			}
 
 		});
+		
+		sv.getCreateStrategyButton().addActionListener(new ActionListener(){
 
-		sv.setVisible(true);
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+				scs.showWindow();
+			}
+			
+		});
 
 		this.minT1 = 0;
 		this.minT2 = 0;
 		this.minT3 = 0;
 		this.timeLap = 0;
-
+		
+		sv.setVisible(true);
 		view = sv;
 	}
 
