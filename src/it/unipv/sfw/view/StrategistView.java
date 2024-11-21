@@ -66,7 +66,6 @@ public class StrategistView extends AbsView {
         GridBagConstraints gbcs = new GridBagConstraints();
         gbcs.insets = new Insets(20, 20, 60, 20);
         gbcs.anchor = GridBagConstraints.CENTER;
-        Dimension dims = new Dimension(300, 200);
 
         gbcs.gridx = 0;
         gbcs.gridy = 0;
