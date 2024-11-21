@@ -131,7 +131,7 @@ public class MagazziniereView extends AbsView {
 		comboBox.setEditable(true);
 		placeholder = (JTextField) comboBox.getEditor().getEditorComponent();
 		placeholder.setText("QUANTITA' COMPONENTI");
-
+		
 		popUpPanel.add(comboBox, gbc);
 
 		/*
@@ -191,7 +191,6 @@ public class MagazziniereView extends AbsView {
 	}
 
 	public void setMex() {
-		placeholder.setText("QUANTITA' COMPONENTI");
 		mex.setText("SELECT A COMPONENT FROM THE MENU");
 		mex.setForeground(Color.GRAY);
 	}
