@@ -204,4 +204,12 @@ public class StPopUpCreateStrategyView {
 		this.componentLabel2 = componentLabel2;
 	}
 
+	public JLabel getStrategyLabel2() {
+		return strategyLabel2;
+	}
+
+	public void setStrategyLabel2(JLabel strategyLabel2) {
+		this.strategyLabel2 = strategyLabel2;
+	}
+
 }
