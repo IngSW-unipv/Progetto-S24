@@ -20,9 +20,9 @@ import javax.swing.table.DefaultTableCellRenderer;
 public class StrategistView extends AbsView {
 
     private JFrame frame;
-    private JPanel mainContainer, titlePanel, statusPanel, timePanel, buttonPanel;
-    private JButton componentStatusButton, getTimeButton, createStrategyButton;
-    private JLabel imgWeatherLabel, imgCircuitLabel, dataLabel;
+    private JPanel mainContainer, titlePanel, lapPanel, timePanel, buttonPanel;
+    private JButton getTimeButton, createStrategyButton;
+    private JLabel countLapLabel, imgWeatherLabel, imgCircuitLabel, dataLabel;
     private ImageIcon imgWeather, imgCircuit;
     private DefaultTableModel tabTime;
     private JTable tab;
@@ -43,7 +43,7 @@ public class StrategistView extends AbsView {
         mainContainer.setLayout(new BorderLayout());
         mainContainer.setBackground(Color.BLACK);
 
-        // METEO E STATUS
+        // METEO E LAP
         titlePanel = new JPanel(new BorderLayout());
         titlePanel.setPreferredSize(new Dimension(700, 200));
         titlePanel.setBackground(Color.BLACK);
@@ -58,11 +58,11 @@ public class StrategistView extends AbsView {
         imgWeatherLabel = new JLabel(imgWeather);
         titlePanel.add(imgWeatherLabel, BorderLayout.WEST);
 
-        statusPanel = new JPanel();
-        statusPanel.setPreferredSize(new Dimension(250, 250));
-        statusPanel.setLayout(new GridBagLayout());
-        statusPanel.setBackground(Color.BLACK);
-        statusPanel.setOpaque(true);
+        lapPanel = new JPanel();
+        lapPanel.setPreferredSize(new Dimension(250, 250));
+        lapPanel.setLayout(new GridBagLayout());
+        lapPanel.setBackground(Color.BLACK);
+        lapPanel.setOpaque(true);
         GridBagConstraints gbcs = new GridBagConstraints();
         gbcs.insets = new Insets(20, 20, 60, 20);
         gbcs.anchor = GridBagConstraints.CENTER;
@@ -70,17 +70,19 @@ public class StrategistView extends AbsView {
 
         gbcs.gridx = 0;
         gbcs.gridy = 0;
-        dataLabel = new JLabel("STATUS VEHICLE");
+        dataLabel = new JLabel("TOTAL LAP");
         dataLabel.setForeground(Color.WHITE);
         dataLabel.setBackground(Color.BLACK);
-        statusPanel.add(dataLabel, gbcs);
+        lapPanel.add(dataLabel, gbcs);
 
         gbcs.gridx = 0;
         gbcs.gridy = 1;
-        componentStatusButton = new JButton("MORE DETAILS");
-        componentStatusButton.setPreferredSize(dims);
-        statusPanel.add(componentStatusButton, gbcs);
-        titlePanel.add(statusPanel, BorderLayout.EAST);
+        countLapLabel = new JLabel();
+        countLapLabel.setForeground(Color.WHITE);
+        countLapLabel.setBackground(Color.BLACK);
+        lapPanel.add(countLapLabel, gbcs);
+        
+        titlePanel.add(lapPanel, BorderLayout.EAST);
 
         // TABELLA TEMPO
         timePanel = new JPanel();
@@ -202,15 +204,15 @@ public class StrategistView extends AbsView {
         this.titlePanel = titlePanel;
     }
 
-    public JPanel getStatusPanel() {
-        return statusPanel;
-    }
+    public JPanel getLapPanel() {
+		return lapPanel;
+	}
 
-    public void setStatusPanel(JPanel statusPanel) {
-        this.statusPanel = statusPanel;
-    }
+	public void setLapPanel(JPanel lapPanel) {
+		this.lapPanel = lapPanel;
+	}
 
-    public JPanel getTimePanel() {
+	public JPanel getTimePanel() {
         return timePanel;
     }
 
@@ -226,15 +228,17 @@ public class StrategistView extends AbsView {
         this.buttonPanel = buttonPanel;
     }
 
-    public JButton getComponentStatusButton() {
-        return componentStatusButton;
-    }
+    public JLabel getCountLapLabel() {
+		return countLapLabel;
+	}
 
-    public void setComponentStatusButton(JButton componentStatusButton) {
-        this.componentStatusButton = componentStatusButton;
-    }
+	public void setCountLapLabel(JLabel countLapLabel) {
+		int cLap = tab.getRowCount();
+		String c = String.valueOf(cLap);
+		countLapLabel.setText(c);
+	}
 
-    public JButton getGetTimeButton() {
+	public JButton getGetTimeButton() {
         return getTimeButton;
     }
 
