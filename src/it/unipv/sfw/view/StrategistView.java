@@ -260,4 +260,13 @@ public class StrategistView extends AbsView {
     public void setDataLabel(JLabel dataLabel) {
         this.dataLabel = dataLabel;
     }
+
+	public JTable getTab() {
+		return tab;
+	}
+
+	public void setTab(JTable tab) {
+		this.tab = tab;
+	}
+    
 }
