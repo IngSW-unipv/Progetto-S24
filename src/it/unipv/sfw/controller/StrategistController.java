@@ -4,7 +4,6 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import it.unipv.sfw.controller.AbsController.TypeController;
-import it.unipv.sfw.dao.mysql.StrategaDAO;
 import it.unipv.sfw.dao.mysql.VehicleDAO;
 import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.model.staff.Staff;
@@ -47,7 +46,6 @@ public class StrategistController extends AbsController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-
 				Session.getIstance().getTS();
 				createTable(sv);
 
