@@ -174,7 +174,7 @@ public class McGraphicTimePsView extends JPanel {
 		messagePanel.add(messageLabel);
 
 		// Crea la seconda etichetta, allineata a sinistra
-		tmeLabel = new JLabel("SONO QUI");
+		tmeLabel = new JLabel();
 		tmeLabel.setHorizontalAlignment(SwingConstants.LEFT);  // Allinea il testo a sinistra
 
 		// Aggiungi tmeLabel sotto messageLabel, allineata a sinistra
