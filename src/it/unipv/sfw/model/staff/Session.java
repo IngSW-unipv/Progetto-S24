@@ -11,6 +11,7 @@ public class Session {
 	private static Session istance = null;
 
 	private String operation = "";
+	private String strategy = "";
 	private String id_pilot;
 	private String id_staff;
 	private String pwd_staff;
@@ -196,6 +197,22 @@ public class Session {
 
 	public void setWh(Magazziniere wh) {
 		this.wh = wh;
+	}
+
+	public Stratega getS() {
+		return s;
+	}
+
+	public void setS(Stratega s) {
+		this.s = s;
+	}
+
+	public String getStrategy() {
+		return strategy;
+	}
+
+	public void setStrategy(String strategy) {
+		this.strategy = strategy;
 	}
 	
 
