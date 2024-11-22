@@ -17,7 +17,7 @@ public class StrategistController extends AbsController {
 
 	protected Stratega st;
 
-	private int minT1, minT2, minT3, timeLap;
+	private int minT1, minT2, minT3, timeLap = Session.getIstance().getS().getTimeLap();
 
 	@Override
 	public TypeController getType() {
@@ -29,7 +29,7 @@ public class StrategistController extends AbsController {
 	public void initialize() {
 		// TODO Auto-generated method stub
 
-		//
+		//s
 		try {
 
 			user = Session.getIstance().getCurrentUser();
@@ -40,7 +40,6 @@ public class StrategistController extends AbsController {
 		}
 
 		StrategistView sv = new StrategistView();
-		StPopUpCreateStrategyController scs = new StPopUpCreateStrategyController();
 		VehicleDAO vd = new VehicleDAO();
 
 		sv.getGetTimeButton().addActionListener(new ActionListener() {
@@ -62,6 +61,7 @@ public class StrategistController extends AbsController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				StPopUpCreateStrategyController scs = new StPopUpCreateStrategyController(sv.getTab().getRowCount(),timeLap);
 				scs.showWindow();
 			}
 			
@@ -70,7 +70,6 @@ public class StrategistController extends AbsController {
 		this.minT1 = 0;
 		this.minT2 = 0;
 		this.minT3 = 0;
-		this.timeLap = 0;
 		
 		sv.setVisible(true);
 		view = sv;
@@ -82,14 +81,15 @@ public class StrategistController extends AbsController {
 		int app1 = Session.getIstance().getV().getTimeSect1(); // Settore 1
 		int app2 = Session.getIstance().getV().getTimeSect2(); // Settore 2
 		int app3 = Session.getIstance().getV().getTimeSect3(); // Settore 3
-		int app4 = app1 + app2 + app3; // Tempo totale del giro
-
+		timeLap = app1 + app2 + app3; // Tempo totale del giro
+		
+		Session.getIstance().getS().setTimeLap(timeLap);
+		
 		// Inizializza i minimi solo se sono 0 (primo set di valori)
-		if (minT1 == 0 && minT2 == 0 && minT3 == 0 && timeLap == 0) {
+		if (minT1 == 0 && minT2 == 0 && minT3 == 0) {
 			minT1 = app1;
 			minT2 = app2;
-			minT3 = app3;
-			timeLap = app4;
+			minT3 = app3;	
 		}
 
 		// Confronta e aggiorna i minimi
@@ -102,14 +102,11 @@ public class StrategistController extends AbsController {
 		if (app3 < minT3) {
 			minT3 = app3;
 		}
-		if (app4 < timeLap) {
-			timeLap = app4;
-		}
 
 		String t1 = convertTime(app1);
 		String t2 = convertTime(app2);
 		String t3 = convertTime(app3);
-		String t4 = convertTime(app4);
+		String t4 = convertTime(timeLap);
 
 		sv.addRow(t1, t2, t3, t4);
 		sv.colorCell(minT1, minT2, minT3);
