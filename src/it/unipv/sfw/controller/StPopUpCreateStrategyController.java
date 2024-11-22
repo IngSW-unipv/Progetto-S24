@@ -4,21 +4,21 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import it.unipv.sfw.dao.mysql.StrategaDAO;
 import it.unipv.sfw.model.staff.Session;
+import it.unipv.sfw.view.StGraphicDetailsView;
 import it.unipv.sfw.view.StPopUpCreateStrategyView;
 
 public class StPopUpCreateStrategyController {
 
 	private StPopUpCreateStrategyView pcs;
-	private StrategaDAO sd;
+	private StGraphicDetailsView gdv;
+	
 	private final int setPoint = 81000;
 
 	
 	public StPopUpCreateStrategyController(int rc, int tmeLap) {
 
 		pcs = new StPopUpCreateStrategyView();
-		sd = new StrategaDAO();
 		
 		if(rc == 0) {
 			pcs.getMexLabel().setText("SELECTED A STRATEGY");
@@ -37,7 +37,9 @@ public class StPopUpCreateStrategyController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-
+				//Session.getIstance().getV().getComponents();
+				gdv = new StGraphicDetailsView(Session.getIstance().getV().getComponents());
+				gdv.show();
 			}
 
 		});
