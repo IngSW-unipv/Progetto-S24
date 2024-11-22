@@ -4,6 +4,7 @@ import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import it.unipv.sfw.model.component.Components;
 import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.view.StGraphicDetailsView;
 import it.unipv.sfw.view.StPopUpCreateStrategyView;
@@ -14,12 +15,29 @@ public class StPopUpCreateStrategyController {
 	private StGraphicDetailsView gdv;
 	
 	private final int setPoint = 81000;
-
+	private int average = 0;
 	
 	public StPopUpCreateStrategyController(int rc, int tmeLap) {
 
 		pcs = new StPopUpCreateStrategyView();
 		
+		for(Components c : Session.getIstance().getV().getComponents()) {
+			average += c.getWear();
+		}
+		
+		average = average/Session.getIstance().getV().getComponents().size();
+		
+		if(average > 70) {
+			pcs.getComponentLabel1().setText("DEGRADATION OF COMPONENTS: " + average);
+			pcs.getComponentLabel1().setForeground(Color.GREEN);
+		}else if(average >= 50 && average < 70){
+			pcs.getComponentLabel1().setText("DEGRADATION OF COMPONENTS: " + average);
+			pcs.getComponentLabel1().setForeground(Color.ORANGE);
+		}else {
+			pcs.getComponentLabel1().setText("DEGRADATION OF COMPONENTS: " + average);
+			pcs.getComponentLabel1().setForeground(Color.RED);
+		}
+		 
 		if(rc == 0) {
 			pcs.getMexLabel().setText("SELECTED A STRATEGY");
 			pcs.getMexLabel().setForeground(Color.YELLOW);
