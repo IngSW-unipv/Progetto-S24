@@ -16,6 +16,8 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+import it.unipv.sfw.model.staff.Session;
+
 public class StPopUpCreateStrategyView {
 	private JFrame frame;
 	private JPanel mainContainer, componentPanel, strategyPanel, mexPanel;
@@ -92,7 +94,7 @@ public class StPopUpCreateStrategyView {
 		// Secondo elemento: Label "STANDARD" (1, 0)
 		gbcs_2.gridx = 1;
 		gbcs_2.gridy = 0;
-		strategyLabel2 = new JLabel("STANDARD");
+		strategyLabel2 = new JLabel(Session.getIstance().getStrategy());
 		strategyLabel2.setForeground(Color.WHITE);
 		strategyPanel.add(strategyLabel2, gbcs_2);
 
@@ -122,7 +124,6 @@ public class StPopUpCreateStrategyView {
 		mexPanel.setBackground(Color.BLACK);
 		mexPanel.setPreferredSize(new Dimension(600, 100));
 		mexPanel.setOpaque(true);
-		// Puoi aggiungere ulteriori componenti a mexPanel come desiderato
 
 
 		mexPanel = new JPanel();
@@ -178,6 +179,14 @@ public class StPopUpCreateStrategyView {
 
 	public void setMexPanel(JPanel mexPanel) {
 		this.mexPanel = mexPanel;
+	}
+
+	public JLabel getMexLabel() {
+		return mexLabel;
+	}
+
+	public void setMexLabel(JLabel mexLabel) {
+		this.mexLabel = mexLabel;
 	}
 
 	public JComboBox<String> getBox() {
