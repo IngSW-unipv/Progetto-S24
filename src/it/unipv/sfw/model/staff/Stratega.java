@@ -3,7 +3,7 @@ package it.unipv.sfw.model.staff;
 
 public class Stratega extends Staff{
 	
-	protected long timeLap;
+	protected int timeLap = 0;
 	
 	public Stratega(String id, String pwd) {
 		super(id, pwd);
@@ -13,5 +13,14 @@ public class Stratega extends Staff{
 	public TypeController getType() {
 		return Staff.TypeController.STRATEGA;
 	}
+
+	public int getTimeLap() {
+		return timeLap;
+	}
+
+	public void setTimeLap(int timeLap) {
+		this.timeLap = timeLap;
+	}
+	
 
 }
