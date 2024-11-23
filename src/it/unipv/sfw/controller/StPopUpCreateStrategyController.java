@@ -28,13 +28,13 @@ public class StPopUpCreateStrategyController {
 		average = average/Session.getIstance().getV().getComponents().size();
 		
 		if(average > 70) {
-			pcs.getComponentLabel1().setText("DEGRADATION OF COMPONENTS: " + average);
+			pcs.getComponentLabel1().setText("DEGRADATION OF COMPONENTS:              " + average);
 			pcs.getComponentLabel1().setForeground(Color.GREEN);
-		}else if(average >= 50 && average < 70){
-			pcs.getComponentLabel1().setText("DEGRADATION OF COMPONENTS: " + average);
+		}else if(average >= 50 && average <= 70){
+			pcs.getComponentLabel1().setText("DEGRADATION OF COMPONENTS:              " + average);
 			pcs.getComponentLabel1().setForeground(Color.ORANGE);
 		}else {
-			pcs.getComponentLabel1().setText("DEGRADATION OF COMPONENTS: " + average);
+			pcs.getComponentLabel1().setText("DEGRADATION OF COMPONENTS:              " + average);
 			pcs.getComponentLabel1().setForeground(Color.RED);
 		}
 		 
