@@ -5,9 +5,12 @@ import java.awt.event.ActionListener;
 
 import it.unipv.sfw.controller.AbsController.TypeController;
 import it.unipv.sfw.dao.mysql.VehicleDAO;
+import it.unipv.sfw.exceptions.WrongReplacementStatusException;
+import it.unipv.sfw.model.component.Components;
 import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.model.staff.Staff;
 import it.unipv.sfw.model.staff.Stratega;
+import it.unipv.sfw.model.vehicle.Vehicle;
 import it.unipv.sfw.view.StrategistView;
 
 public class StrategistController extends AbsController {
@@ -28,6 +31,33 @@ public class StrategistController extends AbsController {
 	public void initialize() {
 		// TODO Auto-generated method stub
 
+//		//inizializzare una macchina per controllare le funzioni di create strategy
+//		Vehicle v = new Vehicle("SF24-001");
+//		Components c1 = new Components(1,"MOTORE TERMICO","USED");
+//		Components c2 = new Components(2,"ERS","USED");
+//		Components c3 = new Components(3,"ALA ANTERIORE","USED");
+//		
+//		Session.getIstance().setV(v);
+//		try {
+//			
+//			c1.setWear(50);
+//			c2.setWear(60);
+//			c3.setWear(60);
+//			
+//			v.addComponent(c1);
+//			v.addComponent(c2);
+//			v.addComponent(c3);
+//			
+//			
+//		} catch (WrongReplacementStatusException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		
+		 for (Components c : Session.getIstance().getV().getComponents()) {
+	            System.out.println("ID: " + c.getIdComponent() + ", NAME: " + c.getName() + ", Status: " + c.getReplacementStatus());
+	        }
+		 
 		//s
 		try {
 
