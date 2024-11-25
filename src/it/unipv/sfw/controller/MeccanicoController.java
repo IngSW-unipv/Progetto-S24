@@ -3,6 +3,8 @@ package it.unipv.sfw.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JOptionPane;
+
 import it.unipv.sfw.dao.mysql.MeccanicoDAO;
 import it.unipv.sfw.model.staff.Meccanico;
 import it.unipv.sfw.model.staff.Session;
@@ -15,7 +17,6 @@ public class MeccanicoController extends AbsController {
 	private Staff user;
 
 	protected Meccanico m;
-	protected Vehicle v;
 
 	@Override
 	public TypeController getType() {
@@ -27,7 +28,7 @@ public class MeccanicoController extends AbsController {
 
 	public void initialize() {
 		// TODO Auto-generated method stub
-
+		
 		//
 		try {
 
@@ -43,35 +44,88 @@ public class MeccanicoController extends AbsController {
 
 		McPopUpRequestController prc = new McPopUpRequestController();
 		McPopUpVehicleController pvc = new McPopUpVehicleController(mv);
+		
+		 // Controllo lo stato di V nella sessione
+	    boolean isVehiclePresent = (Session.getIstance().getV() != null);
 
-		mv.getAddComponentButton().addActionListener(new ActionListener() {
+	    // Abilita o disabilita bottoni basati sul valore di V
+	    mv.getInsertRequestButton().setEnabled(isVehiclePresent);
+	    mv.getInsertRequestButton().setVisible(false);
+	    
+	    mv.getAddComponentButton().setEnabled(isVehiclePresent);
+	    mv.getAddComponentButton().setVisible(false);
+	    
+	    mv.getRemoveComponentButton().setEnabled(isVehiclePresent);
+	    mv.getRemoveComponentButton().setVisible(false);
+	    
+	    mv.getVisualTimePsButton().setEnabled(isVehiclePresent);
+	    mv.getVisualTimePsButton().setVisible(false);
+
+		// ADD VEHICLE
+		mv.getInsertVehicleButton().addActionListener(new ActionListener() {
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				Session.getIstance().setOperation("ADD");
-				McPopUpComponentController pcc = new McPopUpComponentController();
-				System.out.println("il contenuto è: " + Session.getIstance().getOperation()
-						+ " @MECCANICO CONTROLLER-ADD COMPONENT");
-				pcc.showWindow();
-				pcc.clear();
+
+				pvc.showWindow();
+				pvc.clear();
+				
 			}
 
 		});
 
+		// INSERT REQUEST
+		mv.getInsertRequestButton().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+
+					prc.showWindow();
+					prc.clear();
+
+			}
+
+		});
+
+		// ADD COMPONENT
+		mv.getAddComponentButton().addActionListener(new ActionListener() {
+
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
+
+					Session.getIstance().setOperation("ADD");
+					McPopUpComponentController pcc = new McPopUpComponentController();
+					System.out.println("il contenuto è: " + Session.getIstance().getOperation()
+							+ " @MECCANICO CONTROLLER-ADD COMPONENT");
+					pcc.showWindow();
+					pcc.clear();
+
+			}
+
+		});
+
+		// REMOVE COMPONENT
 		mv.getRemoveComponentButton().addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				Session.getIstance().setOperation("REMOVE");
-				McPopUpComponentController pcc = new McPopUpComponentController();
-				System.out.println("il contenuto è: " + Session.getIstance().getOperation()
-						+ " @MECCANICO CONTROLLER-REMOVE COMPONENT");
-				pcc.showWindow();
+				// TODO Auto-generated method
+				
+					Session.getIstance().setOperation("REMOVE");
+					McPopUpComponentController pcc = new McPopUpComponentController();
+					System.out.println("il contenuto è: " + Session.getIstance().getOperation()
+							+ " @MECCANICO CONTROLLER-REMOVE COMPONENT");
+					pcc.showWindow();
+				
+
 			}
 
 		});
 
+		// ADD PILOT
 		mv.getAddPilotButton().addActionListener(new ActionListener() {
 
 			@Override
@@ -87,6 +141,7 @@ public class MeccanicoController extends AbsController {
 
 		});
 
+		// REMOVE PILOT
 		mv.getRemovePilotButton().addActionListener(new ActionListener() {
 
 			@Override
@@ -101,39 +156,20 @@ public class MeccanicoController extends AbsController {
 
 		});
 
-		mv.getInsertRequestButton().addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				prc.showWindow();
-				prc.clear();
-			}
-
-		});
-
-		mv.getInsertVehicleButton().addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-
-				pvc.showWindow();
-				pvc.clear();
-
-			}
-
-		});
-
 		mv.getVisualTimePsButton().addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				Session.getIstance().getTps();
-				McGraphicTimePsController gtpc = new McGraphicTimePsController();
-				 gtpc.initialize();
-				
+				if (Session.getIstance().getV() == null) {
+					JOptionPane.showMessageDialog(mv, "INSERT BEFORE A VEHICLE");
+
+				} else {
+					Session.getIstance().getTps();
+					McGraphicTimePsController gtpc = new McGraphicTimePsController();
+					gtpc.initialize();
+				}
+
 			}
 
 		});
@@ -144,7 +180,7 @@ public class MeccanicoController extends AbsController {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 
-				McGraphicAllComponentController gacc  = new McGraphicAllComponentController();
+				McGraphicAllComponentController gacc = new McGraphicAllComponentController();
 				gacc.showWindow();
 
 			}
