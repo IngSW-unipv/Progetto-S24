@@ -39,12 +39,14 @@ public class Meccanico extends Staff {
 
 		MSN = getMSN();
 		Vehicle v = new Vehicle(MSN);
+		Session.getIstance().setV(v);
 		
 		vehicles.add(v);
 		
+		// Funzione per restituire l'ultimo elemento del vettore vehicles
 		Vehicle vec = null;
 		for (Vehicle vcl : vehicles) {
-			vec = vcl; // Alla fine del ciclo, avremo l'ultimo elemento
+			vec = vcl; // Alla fine del ciclo, avrò l'ultimo elemento
 			System.out.println(vcl);
 		}
 		
