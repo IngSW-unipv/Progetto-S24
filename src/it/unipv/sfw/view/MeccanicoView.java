@@ -7,7 +7,6 @@ import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
 
-
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -39,7 +38,7 @@ public class MeccanicoView extends AbsView {
 	public MeccanicoView() {
 
 		frame = new JFrame("MECHANIC");
-		frame.setSize(900, 900);
+		frame.setSize(800, 800);
 		frame.setLocationRelativeTo(null);
 		frame.setBackground(Color.BLACK);
 		frame.setLayout(new BorderLayout());
@@ -47,7 +46,7 @@ public class MeccanicoView extends AbsView {
 		frame.setResizable(false);
 		ImageIcon icona = new ImageIcon(getClass().getResource("/F1-Logo.png"));
 		frame.setIconImage(icona.getImage());
-		
+
 		mainContainer = new JPanel();
 
 		/*
@@ -57,7 +56,7 @@ public class MeccanicoView extends AbsView {
 		try {
 
 			imgVec = new ImageIcon(this.getClass().getResource("/Foto-MacchinaF1.jpg"));
-			imgVec = new ImageIcon(imgVec.getImage().getScaledInstance(900, 400, java.awt.Image.SCALE_SMOOTH));
+			imgVec = new ImageIcon(imgVec.getImage().getScaledInstance(800, 400, java.awt.Image.SCALE_SMOOTH));
 			System.out.println("immagine macchina caricata");
 
 		} catch (Exception e) {
@@ -69,13 +68,13 @@ public class MeccanicoView extends AbsView {
 
 		// CREAZIONE OVERLAY
 		overlayPanel = new JLayeredPane();
-		overlayPanel.setPreferredSize(new Dimension(900,400));
-		
+		overlayPanel.setPreferredSize(new Dimension(800, 300));
+
 		imgLabel = new JLabel(imgVec);
-		imgLabel.setBounds(0,0,900,400);
-		
+		imgLabel.setBounds(0, 15, 800, 300);
+
 		overlayPanel.add(imgLabel, Integer.valueOf(1));
-	
+
 		mex = new JLabel("ID PILOT :");
 		mex.setForeground(Color.WHITE);
 		mex.setBounds(20, 20, 100, 30);
@@ -91,24 +90,24 @@ public class MeccanicoView extends AbsView {
 
 		overlayPanel.add(mex, Integer.valueOf(2));
 		overlayPanel.add(id_p, Integer.valueOf(2));
-		
+
 		/*
 		 * CREAZIONE 2 SEZIONE: 6 BOTTONI E FINESTRE POP UP
 		 */
 
 		// Pannello con i bottoni in una griglia 3x2
 		popUpPanel = new JPanel();
-		popUpPanel.setPreferredSize(new Dimension(900, 500));
+		popUpPanel.setPreferredSize(new Dimension(800, 100));
 		popUpPanel.setBackground(Color.BLACK);
 		popUpPanel.setLayout(new GridBagLayout());
 		popUpPanel.setOpaque(true);
 		GridBagConstraints gbc = new GridBagConstraints();
 
 		// Spaziatura interna
-		gbc.insets = new Insets(20, 20, 50, 20);
+		gbc.insets = new Insets(25, 20, 50, 20);
 		gbc.anchor = GridBagConstraints.CENTER;
-		
-		Dimension dim = new Dimension(700, 200);
+
+		Dimension dim = new Dimension(800, 200);
 
 		// Prima riga - Prima colonna (Insert Veichle)
 		gbc.gridx = 0;
@@ -166,14 +165,14 @@ public class MeccanicoView extends AbsView {
 		 */
 
 		graphicPanel = new JPanel();
-		graphicPanel.setPreferredSize(new Dimension(900,200));
+		graphicPanel.setPreferredSize(new Dimension(800, 100));
 		graphicPanel.setBackground(Color.BLACK);
 		graphicPanel.setLayout(new GridBagLayout());
-		
-		Dimension dimBtn = new Dimension(900, 300);
-		
+
+		Dimension dimBtn = new Dimension(800, 300);
+
 		// Spaziatura interna
-		gbc.insets = new Insets(50, 50, 25, 50);
+		gbc.insets = new Insets(25, 50, 25, 50);
 		gbc.anchor = GridBagConstraints.CENTER;
 
 		// Prima riga - Prima colonna (Insert Veichle)
@@ -183,14 +182,14 @@ public class MeccanicoView extends AbsView {
 
 		visualTimePsButton = new JButton("VISUAL TIME PIT STOP");
 		visualTimePsButton.setPreferredSize(dimBtn);
-		graphicPanel.add(visualTimePsButton,gbc);
-		
-		gbc.gridx = 0;
-		gbc.gridy = 1;
-		
+		graphicPanel.add(visualTimePsButton, gbc);	
+
+		gbc.gridx = 1;
+		gbc.gridy = 0;
+
 		visualStatusComponentButton = new JButton("VISUAL STATUS COMPONENT");
 		visualStatusComponentButton.setPreferredSize(dimBtn);
-		graphicPanel.add(visualStatusComponentButton,gbc);
+		graphicPanel.add(visualStatusComponentButton, gbc);
 
 		// AGGIUNGO I PANNELLI AL MAIN PANEL
 		mainContainer.add(overlayPanel, BorderLayout.NORTH);
