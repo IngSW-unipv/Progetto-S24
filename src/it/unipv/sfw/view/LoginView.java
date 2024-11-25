@@ -28,22 +28,22 @@ import it.unipv.sfw.frame.Frame;
 public class LoginView extends AbsView {
 
 	private JPanel mainContainer, logoPanel, loginPanel, btnPanel, errorPanel;
-	
+
 	private JTextField username;
-	
+
 	private JPasswordField pwd;
-	
+
 	private JLabel imgBackgroundLabel, imgLogoLabel, userLabel, pwdLabel, errLabel;
-	
+
 	private JButton loginBtn;
-	
+
 	private ImageIcon imgBackground, imgLogo;
 
 	public LoginView() {
 
 		Font mediumFont = new Font("Arial", Font.BOLD, 16);
 		System.out.println("ora sono qui - @LOGINVIEW");
-		
+
 		try {
 
 			imgBackground = new ImageIcon(this.getClass().getResource("/wallpaperLogin2.jpg"));
@@ -52,9 +52,9 @@ public class LoginView extends AbsView {
 		} catch (Exception e) {
 			System.out.println(e);
 		}
-		
+
 		imgBackgroundLabel = new JLabel(imgBackground);
-		
+
 		// Inizializzazione JPanel
 		mainContainer = new JPanel() {
 			@Override
@@ -66,7 +66,7 @@ public class LoginView extends AbsView {
 		};
 		mainContainer.setLayout(new BorderLayout());
 		mainContainer.add(imgBackgroundLabel);
-	
+
 		// PRIMA SEZIONE - LOGO PANEL
 		logoPanel = new JPanel();
 		logoPanel.setOpaque(false);
@@ -141,7 +141,7 @@ public class LoginView extends AbsView {
 
 		btnPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
 		btnPanel.setOpaque(false);
-		
+
 		Dimension dimBtn = new Dimension(100, 40);
 
 		loginBtn = new JButton("LOGIN");
@@ -230,6 +230,5 @@ public class LoginView extends AbsView {
 		errorPanel.setVisible(true);
 		mainContainer.repaint();
 	}
-	
 
 }
