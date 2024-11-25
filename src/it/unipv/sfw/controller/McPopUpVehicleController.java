@@ -46,7 +46,7 @@ public class McPopUpVehicleController {
 					Session.getIstance().getV().setMSN((msn));
 					Session.getIstance().setV(m.addVehicle());
 					vv.mex2();
-					
+					updateButtonStates(mv);
 					vv.clearComponents(vv.getDataPanel());
 					
 				} else {
@@ -60,7 +60,22 @@ public class McPopUpVehicleController {
 		});
 
 	}
-
+	
+	private void updateButtonStates(MeccanicoView mv) {
+	    boolean isVehiclePresent = (Session.getIstance().getV() != null);
+	    mv.getInsertRequestButton().setEnabled(isVehiclePresent);
+	    mv.getInsertRequestButton().setVisible(true);
+	    
+	    mv.getAddComponentButton().setEnabled(isVehiclePresent);
+	    mv.getAddComponentButton().setVisible(true);
+	    
+	    mv.getRemoveComponentButton().setEnabled(isVehiclePresent);
+	    mv.getRemoveComponentButton().setVisible(true);
+	    
+	    mv.getVisualTimePsButton().setEnabled(isVehiclePresent);
+	    mv.getVisualTimePsButton().setVisible(true);
+	}
+	
 	// Metodo per mostrare la finestra
 	public void showWindow() {
 		vv.show();
