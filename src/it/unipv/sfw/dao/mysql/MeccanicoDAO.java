@@ -6,6 +6,9 @@ import java.sql.ResultSet;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.ArrayList;
 
+import it.unipv.sfw.exceptions.ComponentNotFoundException;
+import it.unipv.sfw.exceptions.PilotNotFoundException;
+import it.unipv.sfw.exceptions.VehicleNotFoundException;
 import it.unipv.sfw.model.component.Components;
 import it.unipv.sfw.model.pilot.Pilota;
 
@@ -384,14 +387,12 @@ public class MeccanicoDAO {
 		return idp;
 	}
 
-	public boolean checkPilot(String id_p) {
+	public void checkPilot(String id_p) throws PilotNotFoundException{
 
 		SCHEMA = "pilot";
 
 		PreparedStatement st1;
 		ResultSet rs1;
-
-		boolean esito = false;
 
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
@@ -404,10 +405,9 @@ public class MeccanicoDAO {
 			rs1 = st1.executeQuery();
 
 			// Verifica se ci sono risultati
-			if (rs1.next()) {
+			if (!rs1.next()) {
 				// Accedi ai dati solo dopo rs.next()
-				System.out.println("PILOTA TROVATO");
-				return esito = true;
+				throw new PilotNotFoundException(id_p);
 			}
 
 		} catch (Exception e) {
@@ -415,71 +415,66 @@ public class MeccanicoDAO {
 			e.printStackTrace();
 		}
 
-		return esito; // Nessun risultato trovato
 	}
 
-	public int checkCompo(int id_c) {
+	public void checkCompo(int id_c) throws ComponentNotFoundException{
 
 		SCHEMA = "component";
 
 		PreparedStatement st1;
 		ResultSet rs1;
-
-		int result = 0;
+		
+		String idc = String.valueOf(id_c);
 
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
 
-			String query = "SELECT COUNT(*) FROM " + SCHEMA + " WHERE ID = ?";
+			String query = "SELECT * FROM " + SCHEMA + " WHERE ID  = ?";
 			st1 = conn.prepareStatement(query);
-
-			String idc = String.valueOf(id_c);
-
+	
 			st1.setString(1, idc);
 
 			rs1 = st1.executeQuery();
 
-			if (rs1.next()) { // Spostati alla prima riga del risultato
-				result = rs1.getInt(1); // Ottieni il valore di COUNT(*)
+			// Verifica se ci sono risultati
+			if (!rs1.next()) {
+				// Accedi ai dati solo dopo rs.next()
+				throw new ComponentNotFoundException(idc);
 			}
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		return result;
 	}
 
-	public int checkVehicle(String msn) {
+	public void checkVehicle(String msn) throws VehicleNotFoundException{
 
 		SCHEMA = "vehicle";
 
 		PreparedStatement st1;
 		ResultSet rs1;
 
-		int result = 0;
-
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
 
-			String query = "SELECT COUNT(*) FROM " + SCHEMA + " WHERE MSN = ?";
+			String query = "SELECT * FROM " + SCHEMA + " WHERE ID  = ?";
 			st1 = conn.prepareStatement(query);
-
+	
 			st1.setString(1, msn);
 
 			rs1 = st1.executeQuery();
 
-			if (rs1.next()) { // Spostati alla prima riga del risultato
-				result = rs1.getInt(1); // Ottieni il valore di COUNT(*)
+			// Verifica se ci sono risultati
+			if (!rs1.next()) {
+				// Accedi ai dati solo dopo rs.next()
+				throw new VehicleNotFoundException(msn);
 			}
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		return result;
 	}
 
 	public int checkStaff(String id) {
