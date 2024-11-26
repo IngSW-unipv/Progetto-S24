@@ -7,12 +7,9 @@ import it.unipv.sfw.dao.mysql.MeccanicoDAO;
 import it.unipv.sfw.exceptions.ComponentNotFoundException;
 import it.unipv.sfw.exceptions.WrongReplacementStatusException;
 import it.unipv.sfw.model.component.Components;
-import it.unipv.sfw.model.staff.Meccanico;
 import it.unipv.sfw.model.staff.Session;
-import it.unipv.sfw.model.vehicle.Vehicle;
 import it.unipv.sfw.view.McPopUpComponentView;
 import it.unipv.sfw.view.McPopUpRequestView;
-import it.unipv.sfw.view.MeccanicoView;
 
 public class McPopUpComponentController {
 
@@ -20,17 +17,13 @@ public class McPopUpComponentController {
 	private McPopUpRequestView pr;
 	private MeccanicoDAO md;
 
-	private Meccanico m;
 	private Components c;
-	private Vehicle v;
 
 	public McPopUpComponentController() {
 
 		pc = new McPopUpComponentView();
 		pr = new McPopUpRequestView();
 		md = new MeccanicoDAO();
-		m = new Meccanico(Session.getIstance().getId_staff(), Session.getIstance().getPwd_staff());
-//		v = new Vehicle(Session.getIstance().getMsn());
 		
 		if (Session.getIstance().getOperation() == "ADD") {
 			
@@ -61,7 +54,7 @@ public class McPopUpComponentController {
 
 					try {
 						System.out.println("Componente TROVATO");
-						n = m.addComponent(c);
+						n = Session.getIstance().getM().addComponent(Session.getIstance().getV(), c);
 						
 					} catch (WrongReplacementStatusException e1) {
 						// TODO Auto-generated catch block
@@ -148,7 +141,7 @@ public class McPopUpComponentController {
 					
 					
 					try {
-						m.removeComponent(c);
+						Session.getIstance().getM().removeComponent(Session.getIstance().getV(), c);
 						
 						md.removeComponent(id, pc.getIdV().getText());
 						

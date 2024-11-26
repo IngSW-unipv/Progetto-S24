@@ -28,7 +28,7 @@ public class MeccanicoController extends AbsController {
 
 	public void initialize() {
 		// TODO Auto-generated method stub
-		
+
 		//
 		try {
 
@@ -44,22 +44,20 @@ public class MeccanicoController extends AbsController {
 
 		McPopUpRequestController prc = new McPopUpRequestController();
 		McPopUpVehicleController pvc = new McPopUpVehicleController(mv);
-		
-		 // Controllo lo stato di V nella sessione
-	    boolean isVehiclePresent = (Session.getIstance().getV() != null);
 
-	    // Abilita o disabilita bottoni basati sul valore di V
-	    mv.getInsertRequestButton().setEnabled(isVehiclePresent);
-	    mv.getInsertRequestButton().setVisible(false);
-	    
-	    mv.getAddComponentButton().setEnabled(isVehiclePresent);
-	    mv.getAddComponentButton().setVisible(false);
-	    
-	    mv.getRemoveComponentButton().setEnabled(isVehiclePresent);
-	    mv.getRemoveComponentButton().setVisible(false);
-	    
-	    mv.getVisualTimePsButton().setEnabled(isVehiclePresent);
-	    mv.getVisualTimePsButton().setVisible(false);
+		// Controllo lo stato di V nella sessione
+		boolean isVehiclePresent = (Session.getIstance().getV() != null);
+
+		// Abilita o disabilita bottoni basati sul valore di V
+
+		mv.getAddComponentButton().setEnabled(isVehiclePresent);
+		mv.getAddComponentButton().setVisible(false);
+
+		mv.getRemoveComponentButton().setEnabled(isVehiclePresent);
+		mv.getRemoveComponentButton().setVisible(false);
+
+		mv.getVisualTimePsButton().setEnabled(isVehiclePresent);
+		mv.getVisualTimePsButton().setVisible(false);
 
 		// ADD VEHICLE
 		mv.getInsertVehicleButton().addActionListener(new ActionListener() {
@@ -70,7 +68,7 @@ public class MeccanicoController extends AbsController {
 
 				pvc.showWindow();
 				pvc.clear();
-				
+
 			}
 
 		});
@@ -82,8 +80,8 @@ public class MeccanicoController extends AbsController {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 
-					prc.showWindow();
-					prc.clear();
+				prc.showWindow();
+				prc.clear();
 
 			}
 
@@ -96,12 +94,12 @@ public class MeccanicoController extends AbsController {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 
-					Session.getIstance().setOperation("ADD");
-					McPopUpComponentController pcc = new McPopUpComponentController();
-					System.out.println("il contenuto è: " + Session.getIstance().getOperation()
-							+ " @MECCANICO CONTROLLER-ADD COMPONENT");
-					pcc.showWindow();
-					pcc.clear();
+				Session.getIstance().setOperation("ADD");
+				McPopUpComponentController pcc = new McPopUpComponentController();
+				System.out.println("il contenuto è: " + Session.getIstance().getOperation()
+						+ " @MECCANICO CONTROLLER-ADD COMPONENT");
+				pcc.showWindow();
+				pcc.clear();
 
 			}
 
@@ -113,13 +111,12 @@ public class MeccanicoController extends AbsController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method
-				
-					Session.getIstance().setOperation("REMOVE");
-					McPopUpComponentController pcc = new McPopUpComponentController();
-					System.out.println("il contenuto è: " + Session.getIstance().getOperation()
-							+ " @MECCANICO CONTROLLER-REMOVE COMPONENT");
-					pcc.showWindow();
-				
+
+				Session.getIstance().setOperation("REMOVE");
+				McPopUpComponentController pcc = new McPopUpComponentController();
+				System.out.println("il contenuto è: " + Session.getIstance().getOperation()
+						+ " @MECCANICO CONTROLLER-REMOVE COMPONENT");
+				pcc.showWindow();
 
 			}
 
@@ -161,14 +158,10 @@ public class MeccanicoController extends AbsController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				if (Session.getIstance().getV() == null) {
-					JOptionPane.showMessageDialog(mv, "INSERT BEFORE A VEHICLE");
 
-				} else {
-					Session.getIstance().getTps();
-					McGraphicTimePsController gtpc = new McGraphicTimePsController();
-					gtpc.initialize();
-				}
+				Session.getIstance().getTps();
+				McGraphicTimePsController gtpc = new McGraphicTimePsController();
+				gtpc.initialize();
 
 			}
 

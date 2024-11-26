@@ -13,13 +13,11 @@ public class McPopUpVehicleController {
 	
 	private McPopUpVehicleView vv;
 	private MeccanicoDAO md;
-	private Meccanico m;
 
 	public McPopUpVehicleController(MeccanicoView mv) {
 		
 		vv = new McPopUpVehicleView();
 		md = new MeccanicoDAO();
-		m = new Meccanico(Session.getIstance().getId_staff(), Session.getIstance().getPwd_staff());
 		
 		vv.getSendButton().addActionListener(new ActionListener() {
 
@@ -41,12 +39,15 @@ public class McPopUpVehicleController {
 					
 					String id = Session.getIstance().getId_staff();
 					md.insertMeccOnVehicle(msn, id);
-
-					m.setMSN(msn);
-					Session.getIstance().getV().setMSN((msn));
-					Session.getIstance().setV(m.addVehicle());
+					
+					Session.getIstance().getM().setMSN(msn);
+					
+					Session.getIstance().getV().setMSN(msn);
+					Session.getIstance().setV(Session.getIstance().getM().addVehicle());
+					
 					vv.mex2();
 					updateButtonStates(mv);
+					
 					vv.clearComponents(vv.getDataPanel());
 					
 				} else {
@@ -63,8 +64,6 @@ public class McPopUpVehicleController {
 	
 	private void updateButtonStates(MeccanicoView mv) {
 	    boolean isVehiclePresent = (Session.getIstance().getV() != null);
-	    mv.getInsertRequestButton().setEnabled(isVehiclePresent);
-	    mv.getInsertRequestButton().setVisible(true);
 	    
 	    mv.getAddComponentButton().setEnabled(isVehiclePresent);
 	    mv.getAddComponentButton().setVisible(true);
