@@ -1,7 +1,6 @@
 package it.unipv.sfw.model.staff;
 
 import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.LinkedHashSet;
 import java.util.Random;
 import java.util.Set;
@@ -17,6 +16,7 @@ public class Meccanico extends Staff {
 	 * MSN è il numero di serie dell'autovettura
 	 */
 	private String MSN;
+	
 	/*
 	 * il team dei meccanici si suddividono in 2 squadre (1 per pilota), ma nel caso
 	 * un pilota non potesse gareggiare per un imprevisto il meccanico aggiunge il
@@ -39,7 +39,6 @@ public class Meccanico extends Staff {
 
 		MSN = getMSN();
 		Vehicle v = new Vehicle(MSN);
-		Session.getIstance().setV(v);
 		
 		vehicles.add(v);
 		
@@ -53,29 +52,26 @@ public class Meccanico extends Staff {
 		return vec;
 	}
 
-	public int addComponent(Components c) throws WrongReplacementStatusException {
+	public int addComponent(Vehicle v, Components c) throws WrongReplacementStatusException {
 
 		int mode = 0;
 
-		mode = Session.getIstance().getV().addComponent(c);
+		mode = v.addComponent(c);
 
-		Session.getIstance().getV().showComponent();
+		//v.showComponent();
 		
 		return mode;
 	}
 
-	public void removeComponent(Components c) throws ComponentNotFoundException {
+	public void removeComponent(Vehicle v, Components c) throws ComponentNotFoundException {
+		 
+		 v.removeComponent(c);
 		
-		 Session.getIstance().getV().showComponent();
-		 Session.getIstance().getV().removeComponent(c);
-		
-
 	}
 
-	public int wear(Components c, String MSN) {
+	public int wear(Vehicle v, Components c, String MSN) {
 
 		int w = 0;
-		Vehicle v = Session.getIstance().getV();
 		
 		return w = v.calcWear(c);
 
