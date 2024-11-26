@@ -4,6 +4,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import it.unipv.sfw.dao.mysql.MeccanicoDAO;
+import it.unipv.sfw.exceptions.ComponentNotFoundException;
+import it.unipv.sfw.exceptions.VehicleNotFoundException;
+import it.unipv.sfw.exceptions.WrongIDException;
 import it.unipv.sfw.view.McPopUpRequestView;
 
 public class McPopUpRequestController {
@@ -32,18 +35,23 @@ public class McPopUpRequestController {
 				
 				int id_c = Integer.parseInt(idc);
 				
-				resS = md.checkStaff(ids);
-				resC = md.checkCompo(id_c);
-				resV = md.checkVehicle(idv);
-				
-				if(resS != 0 && resC != 0 && resV != 0) {
+				 
+				 try {
+					md.checkCompo(id_c);
+					md.checkStaff(ids);
+					md.checkVehicle(idv);
+					
 					md.insertRequest(pr.getDesc().getText(), pr.getId_s().getText(), id_c, pr.getId_v().getText());
 					pr.clearComponents(pr.getDataPanel());
 					pr.mex1();
-				}else {
+					
+				} catch (ComponentNotFoundException |  WrongIDException | VehicleNotFoundException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
 					pr.clearComponents(pr.getDataPanel());
 					pr.mex();
-				}
 				
 			}
 		});

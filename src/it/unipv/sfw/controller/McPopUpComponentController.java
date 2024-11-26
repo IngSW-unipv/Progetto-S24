@@ -34,7 +34,7 @@ public class McPopUpComponentController {
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
 					
-					int n = 0, result = 0;
+					int n = 0;
 
 					String id_compo = pc.getIdC().getText();
 
@@ -42,23 +42,13 @@ public class McPopUpComponentController {
 
 					c = new Components(id, pc.getNameC().getText(), pc.getStatusC().getText());
 
-					result = md.checkCompo(id);
-
-					// Se inserisco un valore sbagliato
-					if (result == 0) {
-						System.out.println("Componente inesistente");
-						pc.mex();
-						pc.clearComponents(pc.getSendPanel());
-						return;
-					}
-
 					try {
-						System.out.println("Componente TROVATO");
+						md.checkCompo(id);
 						n = Session.getIstance().getM().addComponent(Session.getIstance().getV(), c);
-						
-					} catch (WrongReplacementStatusException e1) {
+					} catch (ComponentNotFoundException | WrongReplacementStatusException e1) {
 						// TODO Auto-generated catch block
 						e1.printStackTrace();
+						pc.mex();
 					}
 
 					switch (n) {
