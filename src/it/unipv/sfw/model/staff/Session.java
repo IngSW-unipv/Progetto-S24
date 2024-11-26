@@ -2,6 +2,7 @@ package it.unipv.sfw.model.staff;
 
 import it.unipv.sfw.dao.DAOFactory;
 import it.unipv.sfw.dao.mysql.MagazziniereDAO;
+import it.unipv.sfw.dao.mysql.MeccanicoDAO;
 import it.unipv.sfw.exceptions.AccountNotFoundException;
 import it.unipv.sfw.exceptions.WrongPasswordException;
 import it.unipv.sfw.model.vehicle.Vehicle;
@@ -15,7 +16,8 @@ public class Session {
 	private String id_pilot;
 	private String id_staff;
 	private String pwd_staff;
-	private MagazziniereDAO md;
+	private MeccanicoDAO md;
+	private MagazziniereDAO mgd;
 
 	private String name = "", surname = "";
 	private Meccanico m;
@@ -40,7 +42,8 @@ public class Session {
 	// session
 	private Session() {
 		currentUser = null;
-		md = new MagazziniereDAO();
+		md = new MeccanicoDAO();
+		mgd = new MagazziniereDAO();
 		m = new Meccanico(id_staff, pwd_staff);
 		v = new Vehicle(m.getMSN());
 		wh = new Magazziniere(id_staff, pwd_staff);
@@ -121,8 +124,8 @@ public class Session {
 		return id_pilot;
 	}
 
-	public void setId_pilot(String id_pilot) {
-		this.id_pilot = id_pilot;
+	public void setId_pilot() {
+		this.id_pilot = md.selectIdP();
 	}
 
 	public String getId_staff() {
@@ -168,7 +171,7 @@ public class Session {
 	}
 	
 	public void getRequest() {
-		wh.setRequest(md.selectAllRequest());
+		wh.setRequest(mgd.selectAllRequest());
 	}
 
 	public void getTS() {
