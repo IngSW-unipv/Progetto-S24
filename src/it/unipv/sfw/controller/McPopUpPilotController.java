@@ -29,9 +29,9 @@ public class McPopUpPilotController {
 
 				int n = Integer.parseInt(number);
 
-				if (md.insertPilot(pv.getId().getText(), pv.getName().getText(), pv.getSurname().getText(), n)) {
+				if (md.insertPilot(pv.getId().getText(), pv.getName().getText().toUpperCase(), pv.getSurname().getText().toUpperCase(), n)) {
 					
-					md.insertPilotOnVehicle(pv.getId().getText(), Session.getIstance().getV().getMSN());
+					md.insertPilotOnVehicle(pv.getId().getText(), Session.getIstance().getV().getMSN().toUpperCase());
 					pv.mex1();
 					pv.clearComponents(pv.getDataPanel());
 					
