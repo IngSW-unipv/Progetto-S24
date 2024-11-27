@@ -83,8 +83,7 @@ public class MeccanicoView extends AbsView {
 		mex.setHorizontalAlignment(SwingConstants.CENTER);
 
 		id_p = new JLabel("NO PILOT");
-
-		id_p.setForeground(Color.WHITE);
+		id_p.setForeground(Color.RED);
 		id_p.setHorizontalAlignment(SwingConstants.CENTER);
 		id_p.setBounds(120, 20, 100, 30);
 
@@ -272,6 +271,7 @@ public class MeccanicoView extends AbsView {
 
 	public void setId_p() {
 		this.id_p.setText(Session.getIstance().getId_pilot());
+		id_p.setForeground(Color.GREEN);
 		frame.validate();
 	}
 
