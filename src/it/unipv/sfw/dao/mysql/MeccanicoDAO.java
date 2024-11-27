@@ -9,7 +9,7 @@ import java.util.ArrayList;
 import it.unipv.sfw.exceptions.ComponentNotFoundException;
 import it.unipv.sfw.exceptions.PilotNotFoundException;
 import it.unipv.sfw.exceptions.VehicleNotFoundException;
-import it.unipv.sfw.model.component.Components;
+import it.unipv.sfw.exceptions.WrongIDException;
 import it.unipv.sfw.model.pilot.Pilota;
 
 //INSERT PILOTI, SELECT PILOTA, INSERT REQUEST, SELECT STATO COMPONENTI, REMOVE PILOTA
@@ -56,7 +56,7 @@ public class MeccanicoDAO {
 
 	}
 
-	public boolean insertPilot(String name, String surname, int n) {
+	public boolean insertPilot(String id, String name, String surname, int n) {
 
 		SCHEMA = "pilot";
 
@@ -68,15 +68,16 @@ public class MeccanicoDAO {
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
 
-			String query = "INSERT INTO " + SCHEMA + " (NAME, SURNAME, NUMBER) VALUES(?,?,?)";
+			String query = "INSERT INTO " + SCHEMA + " (ID, NAME, SURNAME, NUMBER) VALUES(?,?,?,?)";
 			st1 = conn.prepareStatement(query);
 
-			st1.setString(1, name);
-			st1.setString(2, surname);
+			st1.setString(1, id);
+			st1.setString(2, name);
+			st1.setString(3, surname);
 
 			String convert = String.valueOf(n);
 
-			st1.setString(3, convert);
+			st1.setString(4, convert);
 
 			rs1 = st1.executeUpdate();
 
@@ -225,41 +226,6 @@ public class MeccanicoDAO {
 
 	}
 
-	public ArrayList<Pilota> selectAllPilot() {
-
-		SCHEMA = "pilot";
-
-		ArrayList<Pilota> result = new ArrayList<>();
-
-		PreparedStatement st1;
-		ResultSet rs1;
-
-		try (DBConnection db = new DBConnection(SCHEMA)) {
-			Connection conn = db.getConnection();
-
-			String query = "SELECT * FROM " + SCHEMA;
-
-			st1 = conn.prepareStatement(query);
-			rs1 = st1.executeQuery();
-
-			while (rs1.next()) {
-
-				String number = rs1.getString(4);
-
-				int n1 = Integer.parseInt(number);
-
-				Pilota p = new Pilota(rs1.getString(2), rs1.getString(3), n1);
-				result.add(p);
-
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-
-		return result;
-
-	}
 
 	public boolean removePilot(String idp) {
 
@@ -372,9 +338,9 @@ public class MeccanicoDAO {
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
 
-			String query = "SELECT ID FROM " + SCHEMA;
+			String query = "SELECT * FROM " + SCHEMA;
 			st1 = conn.prepareStatement(query);
-
+			
 			rs1 = st1.executeQuery();
 
 			idp = rs1.getString(1);
@@ -392,7 +358,8 @@ public class MeccanicoDAO {
 		SCHEMA = "pilot";
 
 		PreparedStatement st1;
-		ResultSet rs1;
+		ResultSet rs1;   
+		
 
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
@@ -408,8 +375,9 @@ public class MeccanicoDAO {
 			if (!rs1.next()) {
 				// Accedi ai dati solo dopo rs.next()
 				throw new PilotNotFoundException(id_p);
+				
 			}
-
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -458,7 +426,7 @@ public class MeccanicoDAO {
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
 
-			String query = "SELECT * FROM " + SCHEMA + " WHERE ID  = ?";
+			String query = "SELECT * FROM " + SCHEMA + " WHERE MSN = ?";
 			st1 = conn.prepareStatement(query);
 	
 			st1.setString(1, msn);
@@ -477,14 +445,12 @@ public class MeccanicoDAO {
 		}
 	}
 
-	public int checkStaff(String id) {
+	public void checkStaff(String id) throws WrongIDException{
 
 		SCHEMA = "staff";
 
 		PreparedStatement st1;
 		ResultSet rs1;
-
-		int result = 0;
 
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
@@ -496,15 +462,46 @@ public class MeccanicoDAO {
 
 			rs1 = st1.executeQuery();
 
-			if (rs1.next()) { // Spostati alla prima riga del risultato
-				result = rs1.getInt(1); // Ottieni il valore di COUNT(*)
+			if (!rs1.next()) { // Spostati alla prima riga del risultato
+				throw new WrongIDException();
 			}
-
+			
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
+	}
+	
+	public boolean checkPilotOnVehicle(String idp){
+		
+		SCHEMA = "vehicle";
+
+		PreparedStatement st1;
+		ResultSet rs1;
+		boolean result = false;
+		
+		try (DBConnection db = new DBConnection(SCHEMA)) {
+			Connection conn = db.getConnection();
+
+			String query = "SELECT * FROM " + SCHEMA + " WHERE ID_PILOT  = ?";
+			st1 = conn.prepareStatement(query);
+	
+			st1.setString(1, idp);
+			
+			rs1 = st1.executeQuery();
+
+			// Verifica se ci sono risultati
+			if (rs1.next()) {
+				// Accedi ai dati solo dopo rs.next()
+				return result = true;
+			}
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		
 		return result;
 	}
 
