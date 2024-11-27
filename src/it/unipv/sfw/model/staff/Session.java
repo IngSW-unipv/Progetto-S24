@@ -124,8 +124,8 @@ public class Session {
 		return id_pilot;
 	}
 
-	public void setId_pilot() {
-		this.id_pilot = md.selectIdP();
+	public void setId_pilot(String id_pilot) {
+		this.id_pilot = id_pilot;
 	}
 
 	public String getId_staff() {
