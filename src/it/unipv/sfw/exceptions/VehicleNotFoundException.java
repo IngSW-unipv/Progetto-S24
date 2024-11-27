@@ -7,7 +7,7 @@ public class VehicleNotFoundException extends Exception{
 	 * @param id Identificativo del pilota richiesto ma inesistente.
 	 */
 	public VehicleNotFoundException(String msn) {
-		super("Il pilota " +msn+ " è inesistente");
+		super("La vettura " +msn+ " è inesistente");
 		msnV = msn;
 	}
 
