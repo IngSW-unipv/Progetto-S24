@@ -134,19 +134,19 @@ public class McPopUpPilotView {
 
 		frame.add(sendPanel, BorderLayout.CENTER);
 		
-		name.addFocusListener(new FocusListener() {
+		id.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent e) {
-				if (name.getText().equals("ID")) {
-					name.setText(""); // Rimuove il testo predefinito
+				if (id.getText().equals("ID")) {
+					id.setText(""); // Rimuove il testo predefinito
 				}
 				clearComponents(sendPanel);
 			}
 
 			@Override
 			public void focusLost(FocusEvent e) {
-				if (name.getText().isEmpty()) {
-					name.setText("ID"); // Ripristina il testo predefinito se vuoto
+				if (id.getText().isEmpty()) {
+					id.setText("ID"); // Ripristina il testo predefinito se vuoto
 				}
 			}
 		});
