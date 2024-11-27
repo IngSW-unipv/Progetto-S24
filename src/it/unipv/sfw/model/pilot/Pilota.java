@@ -2,12 +2,13 @@ package it.unipv.sfw.model.pilot;
 
 public class Pilota {
 	
-	protected String name,
+	protected String id_pilot,
+								 name,
 								 surname;
 	protected int number;
 	
-	public Pilota(String name, String surname, int number) {
-		
+	public Pilota(String id_pilot, String name, String surname, int number) {
+		this.id_pilot = id_pilot;
 		this.name = name;
 		this.surname = surname;
 		this.number = number;
