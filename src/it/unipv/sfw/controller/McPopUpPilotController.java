@@ -7,70 +7,45 @@ import it.unipv.sfw.dao.mysql.MeccanicoDAO;
 import it.unipv.sfw.exceptions.PilotNotFoundException;
 import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.view.McPopUpPilotView;
+import it.unipv.sfw.view.MeccanicoView;
 
 public class McPopUpPilotController {
 
 	private McPopUpPilotView pv;
 	private MeccanicoDAO md;
 
-	public McPopUpPilotController() {
+	public McPopUpPilotController(MeccanicoView mv) {
 
 		pv = new McPopUpPilotView();
 		md = new MeccanicoDAO();
-		
-		Session.getIstance().setId_pilot();
 
-		if (Session.getIstance().getOperation() == "ADD") {
+		pv.getSendButton().addActionListener(new ActionListener() {
 
-			pv.getSendButton().addActionListener(new ActionListener() {
+			@Override
+			public void actionPerformed(ActionEvent e) {
+				// TODO Auto-generated method stub
 
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					// TODO Auto-generated method stub
+				String number = pv.getNumber().getText();
 
-					String number = pv.getNumber().getText();
+				int n = Integer.parseInt(number);
 
-					int n = Integer.parseInt(number);
-
-					if (md.insertPilot(pv.getName().getText(), pv.getSurname().getText(), n)) {
-						pv.mex1();
-						pv.clearComponents(pv.getDataPanel());
-					} else {
-						pv.mex();
-						pv.clearComponents(pv.getDataPanel());
-
-					}
-
-				}
-			});
-
-		} else {
-
-			pv.getSendButton().addActionListener(new ActionListener() {
-
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					// TODO Auto-generated method stub
-
-					try {
-						md.checkPilot(Session.getIstance().getId_pilot());
-						
-						if(md.checkPilotOnVehicle(Session.getIstance().getId_pilot())) {
-							md.removePilot(Session.getIstance().getId_pilot());
-							pv.mex2();
-						}else {
-							pv.mex3();
-						}
-
-					} catch (PilotNotFoundException ep) {
-						pv.mex();
-						pv.clearComponents(pv.getDataPanel());
-					}
+				if (md.insertPilot(pv.getId().getText(), pv.getName().getText(), pv.getSurname().getText(), n)) {
+					
+					md.insertPilotOnVehicle(pv.getId().getText(), Session.getIstance().getV().getMSN());
+					pv.mex1();
+					pv.clearComponents(pv.getDataPanel());
+					
+					Session.getIstance().setId_pilot(pv.getId().getText());
+					mv.setId_p();
+					
+				} else {
+					pv.mex();
+					pv.clearComponents(pv.getDataPanel());
 
 				}
-			});
 
-		}
+			}
+		});
 
 	}
 

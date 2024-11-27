@@ -35,7 +35,7 @@ public class McPopUpVehicleController {
 					
 					md.insertPilotOnVehicle(id_pilot, msn);
 					Session.getIstance().setId_pilot(id_pilot);
-
+					System.out.println("id: " +Session.getIstance().getId_pilot());
 					mv.setId_p();
 
 					String id = Session.getIstance().getId_staff();
@@ -46,13 +46,12 @@ public class McPopUpVehicleController {
 					Session.getIstance().getV().setMSN(msn);
 					Session.getIstance().setV(Session.getIstance().getM().addVehicle());
 
-					vv.mex2();
 					updateButtonStates(mv);
-
-					vv.clearComponents(vv.getDataPanel());
 					
+					mv.getInsertVehicleButton().setEnabled(false);
+					vv.close();
 				}catch(PilotNotFoundException | VehicleNotFoundException ev) {
-					vv.mex1();
+					vv.mex();
 				}
 
 			}
@@ -67,6 +66,12 @@ public class McPopUpVehicleController {
 		mv.getAddComponentButton().setEnabled(isVehiclePresent);
 		mv.getAddComponentButton().setVisible(true);
 
+		mv.getAddPilotButton().setEnabled(isVehiclePresent);
+		mv.getAddPilotButton().setVisible(true);
+		
+		mv.getRemovePilotButton().setEnabled(isVehiclePresent);
+		mv.getRemovePilotButton().setVisible(true);
+		
 		mv.getRemoveComponentButton().setEnabled(isVehiclePresent);
 		mv.getRemoveComponentButton().setVisible(true);
 
