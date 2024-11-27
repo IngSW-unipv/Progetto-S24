@@ -32,7 +32,7 @@ public class McPopUpPilotView {
 	private JLabel titleLabel, mexLabel;
 
 	// inserimento dati
-	private JTextField name, surname, number;
+	private JTextField id, name, surname, number;
 
 	// bottoni per l'interazione: 1
 	private JButton sendButton;
@@ -76,24 +76,31 @@ public class McPopUpPilotView {
 		gbc.fill = GridBagConstraints.HORIZONTAL;
 		gbc.insets = new Insets(10, 20, 10, 20);
 
-		Dimension dim = new Dimension(130, 30);
-
+		Dimension dim = new Dimension(110, 30);
+		
 		// Prima riga, prima colonna
 		gbc.gridx = 0;
+		gbc.gridy = 0;
+		id = new JTextField("ID");
+		id.setPreferredSize(dim);
+		dataPanel.add(id, gbc);
+		
+		// Prima riga, prima colonna
+		gbc.gridx = 1;
 		gbc.gridy = 0;
 		name = new JTextField("NAME");
 		name.setPreferredSize(dim);
 		dataPanel.add(name, gbc);
 
 		// Prima riga, seconda colonna
-		gbc.gridx = 1;
+		gbc.gridx = 2;
 		gbc.gridy = 0;
 		surname = new JTextField("SURNAME");
 		surname.setPreferredSize(dim);
 		dataPanel.add(surname, gbc);
 
 		// Prima riga, terza colonna
-		gbc.gridx = 2;
+		gbc.gridx = 3;
 		gbc.gridy = 0;
 		number = new JTextField("NUMBER");
 		number.setPreferredSize(dim);
@@ -126,7 +133,24 @@ public class McPopUpPilotView {
 		sendPanel.add(mexLabel, gbcSend);
 
 		frame.add(sendPanel, BorderLayout.CENTER);
+		
+		name.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				if (name.getText().equals("ID")) {
+					name.setText(""); // Rimuove il testo predefinito
+				}
+				clearComponents(sendPanel);
+			}
 
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (name.getText().isEmpty()) {
+					name.setText("ID"); // Ripristina il testo predefinito se vuoto
+				}
+			}
+		});
+		
 		name.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent e) {
@@ -198,16 +222,6 @@ public class McPopUpPilotView {
 		mexLabel.setForeground(Color.GREEN);
 	}
 
-	public void mex2() {
-		mexLabel.setText("CORRECT REMOVE");
-		mexLabel.setForeground(Color.GREEN);
-	}
-
-	public void mex3() {
-		mexLabel.setText("PILOT NOT IN COMPETION");
-		mexLabel.setForeground(Color.RED);
-	}
-
 	// Metodo per ripulire i JTextField e JLabel in un JPanel
 	public void clearComponents(JPanel panel) {
 		for (Component comp : panel.getComponents()) {
@@ -219,6 +233,14 @@ public class McPopUpPilotView {
 		}
 		panel.revalidate(); // Rende il pannello nuovamente valido
 		panel.repaint(); // Ridisegna il pannello
+	}
+
+	public JTextField getId() {
+		return id;
+	}
+
+	public void setId(JTextField id) {
+		this.id = id;
 	}
 
 	public void setName(JTextField name) {
