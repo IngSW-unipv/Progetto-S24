@@ -44,18 +44,25 @@ public class MeccanicoController extends AbsController {
 
 		McPopUpRequestController prc = new McPopUpRequestController();
 		McPopUpVehicleController pvc = new McPopUpVehicleController(mv);
+		McPopUpPilotController ppc = new McPopUpPilotController(mv);
 
 		// Controllo lo stato di V nella sessione
 		boolean isVehiclePresent = (Session.getIstance().getV() != null);
-
+		
 		// Abilita o disabilita bottoni basati sul valore di V
 
 		mv.getAddComponentButton().setEnabled(isVehiclePresent);
 		mv.getAddComponentButton().setVisible(false);
-
+		
+		mv.getAddPilotButton().setEnabled(isVehiclePresent);
+		mv.getAddPilotButton().setVisible(false);
+		
+		mv.getRemovePilotButton().setEnabled(isVehiclePresent);
+		mv.getRemovePilotButton().setVisible(false);
+		
 		mv.getRemoveComponentButton().setEnabled(isVehiclePresent);
 		mv.getRemoveComponentButton().setVisible(false);
-
+		
 		mv.getVisualTimePsButton().setEnabled(isVehiclePresent);
 		mv.getVisualTimePsButton().setVisible(false);
 
@@ -67,7 +74,6 @@ public class MeccanicoController extends AbsController {
 				// TODO Auto-generated method stub
 
 				pvc.showWindow();
-				pvc.clear();
 
 			}
 
@@ -128,12 +134,19 @@ public class MeccanicoController extends AbsController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				Session.getIstance().setOperation("ADD");
-				McPopUpPilotController ppc = new McPopUpPilotController();
-				System.out.println(
-						"il contenuto è: " + Session.getIstance().getOperation() + " @MECCANICO CONTROLLER-ADD PILOT");
-				ppc.showWindow();
-				ppc.clear();
+				boolean isPilotPresent = (Session.getIstance().getId_pilot() != null);
+				
+				if(isPilotPresent == false) {
+					
+					Session.getIstance().setOperation("ADD");
+					System.out.println(
+							"il contenuto è: " + Session.getIstance().getOperation() + " @MECCANICO CONTROLLER-ADD PILOT");
+					ppc.showWindow();
+					ppc.clear();
+				}else {
+					// messaggio pop up che avverte di rimuovere prima di aggiungere
+				}
+
 			}
 
 		});
@@ -144,11 +157,14 @@ public class MeccanicoController extends AbsController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				McPopUpPilotController ppc = new McPopUpPilotController();
+				
 				Session.getIstance().setOperation("REMOVE");
 				System.out.println("il contenuto è: " + Session.getIstance().getOperation()
 						+ " @MECCANICO CONTROLLER-REMOVE PILOT");
-				ppc.showWindow();
+				
+				md.removePilot(Session.getIstance().getId_pilot());
+				Session.getIstance().setId_pilot(null);
+				mv.setId_p();
 			}
 
 		});
