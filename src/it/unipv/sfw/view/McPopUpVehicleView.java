@@ -147,11 +147,11 @@ public class McPopUpVehicleView {
 		});
 
 	}
-	
+
 	public JPanel getDataPanel() {
 		return dataPanel;
 	}
-	
+
 	public void setDataPanel(JPanel dataPanel) {
 		this.dataPanel = dataPanel;
 	}
@@ -166,32 +166,31 @@ public class McPopUpVehicleView {
 
 	// Metodo per ripulire i JTextField e JLabel in un JPanel
 	public void clearComponents(JPanel panel) {
-	    for (Component comp : panel.getComponents()) {
-	        if (comp instanceof JTextField) {
-	            ((JTextField) comp).setText(""); // Pulisce il JTextField
-	        } 
-	    }
-	    panel.revalidate(); // Rende il pannello nuovamente valido
-	    panel.repaint(); // Ridisegna il pannello
+		for (Component comp : panel.getComponents()) {
+			if (comp instanceof JTextField) {
+				((JTextField) comp).setText(""); // Pulisce il JTextField
+			}
+		}
+		panel.revalidate(); // Rende il pannello nuovamente valido
+		panel.repaint(); // Ridisegna il pannello
 	}
 
 	public void show() {
 		frame.setVisible(true);
 	}
 
-	public void hide() {
-		frame.setVisible(false);
-		frame.setEnabled(false);
+//	public void hide() {
+//		frame.setVisible(false);
+//		frame.setEnabled(false);
+//	}
+
+	public void close() {
+		frame.dispose();
 	}
 
-	public void mex1() {
+	public void mex() {
 		mexLabel.setText("WRONG INSERTION");
 		mexLabel.setForeground(Color.RED);
-	}
-
-	public void mex2() {
-		mexLabel.setText("CORRECT INSERTION");
-		mexLabel.setForeground(Color.GREEN);
 	}
 
 	public JTextField getMsn() {
