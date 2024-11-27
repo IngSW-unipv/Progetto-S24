@@ -27,7 +27,6 @@ public class McPopUpComponentController {
 		
 		if (Session.getIstance().getOperation() == "ADD") {
 			
-			System.out.println("il contenuto è: "+Session.getIstance().getOperation()+ " sono nell'if-@mcpcomponent");
 			pc.getSendButton().addActionListener(new ActionListener() {
 
 				@Override
@@ -40,13 +39,14 @@ public class McPopUpComponentController {
 
 					int id = Integer.parseInt(id_compo);
 
-					c = new Components(id, pc.getNameC().getText(), pc.getStatusC().getText());
+					c = new Components(id, pc.getNameC().getText().toUpperCase(), pc.getStatusC().getText().toUpperCase());
 
 					try {
 						md.checkCompo(id);
 						n = Session.getIstance().getM().addComponent(Session.getIstance().getV(), c);
 					} catch (ComponentNotFoundException | WrongReplacementStatusException e1) {
 						// TODO Auto-generated catch block
+						
 						e1.printStackTrace();
 						pc.mex();
 					}
@@ -63,8 +63,8 @@ public class McPopUpComponentController {
 					case 1:
 						
 						// componente inserito con successo
-						if (md.insertComponent(id, pc.getIdV().getText())) {
-							System.out.println("WEAR = "+c.getWear()+"@mcpopupcomponent");
+						if (md.insertComponent(id, pc.getIdV().getText().toUpperCase())) {
+							
 							md.updateWear(c.getWear(), id);
 							pc.mex2();
 							pc.clearComponents(pc.getDataPanel());
@@ -74,7 +74,7 @@ public class McPopUpComponentController {
 
 					case 2:
 
-						if (md.insertComponent(id, pc.getIdV().getText())) {
+						if (md.insertComponent(id, pc.getIdV().getText().toUpperCase())) {
 							md.updateWear(c.getWear(), id);
 							pc.mex2();
 							pc.clearComponents(pc.getDataPanel());
@@ -100,8 +100,8 @@ public class McPopUpComponentController {
 
 								int id_c = Integer.parseInt(idc);
 
-								md.insertRequest(pr.getDesc().getText(), pr.getId_s().getText(), id_c,
-										pr.getId_v().getText());
+								md.insertRequest(pr.getDesc().getText(), pr.getId_s().getText().toUpperCase(), id_c,
+										pr.getId_v().getText().toUpperCase());
 								
 							}
 						});
@@ -115,7 +115,6 @@ public class McPopUpComponentController {
 		} else {
 
 			pc.hideField();
-			System.out.println("il contenuto è: "+Session.getIstance().getOperation()+ " sono nell'else");
 
 			pc.getSendButton().addActionListener(new ActionListener() {
 
@@ -127,13 +126,13 @@ public class McPopUpComponentController {
 
 					int id = Integer.parseInt(id_comp);
 
-					c = new Components(id, pc.getNameC().getText(), pc.getStatusC().getText());
+					c = new Components(id, pc.getNameC().getText().toUpperCase(), pc.getStatusC().getText().toUpperCase());
 					
 					
 					try {
 						Session.getIstance().getM().removeComponent(Session.getIstance().getV(), c);
 						
-						md.removeComponent(id, pc.getIdV().getText());
+						md.removeComponent(id, pc.getIdV().getText().toUpperCase());
 						
 						pc.mex3();
 					} catch (ComponentNotFoundException e1) {

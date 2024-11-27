@@ -27,15 +27,15 @@ public class McPopUpVehicleController {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 
-				String id_pilot = vv.getId_p().getText(), msn = vv.getMsn().getText();
-				
+				String id_pilot = vv.getId_p().getText(), msn = vv.getMsn().getText().toUpperCase();
+
 				try {
 					md.checkPilot(id_pilot);
 					md.checkVehicle(msn);
-					
+
 					md.insertPilotOnVehicle(id_pilot, msn);
 					Session.getIstance().setId_pilot(id_pilot);
-					System.out.println("id: " +Session.getIstance().getId_pilot());
+
 					mv.setId_p();
 
 					String id = Session.getIstance().getId_staff();
@@ -47,10 +47,10 @@ public class McPopUpVehicleController {
 					Session.getIstance().setV(Session.getIstance().getM().addVehicle());
 
 					updateButtonStates(mv);
-					
+
 					mv.getInsertVehicleButton().setEnabled(false);
 					vv.close();
-				}catch(PilotNotFoundException | VehicleNotFoundException ev) {
+				} catch (PilotNotFoundException | VehicleNotFoundException ev) {
 					vv.mex();
 				}
 
@@ -68,10 +68,10 @@ public class McPopUpVehicleController {
 
 		mv.getAddPilotButton().setEnabled(isVehiclePresent);
 		mv.getAddPilotButton().setVisible(true);
-		
+
 		mv.getRemovePilotButton().setEnabled(isVehiclePresent);
 		mv.getRemovePilotButton().setVisible(true);
-		
+
 		mv.getRemoveComponentButton().setEnabled(isVehiclePresent);
 		mv.getRemoveComponentButton().setVisible(true);
 

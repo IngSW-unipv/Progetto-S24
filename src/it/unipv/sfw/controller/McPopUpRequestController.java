@@ -25,13 +25,9 @@ public class McPopUpRequestController {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				
-				int resS = 0,
-				     resC = 0,
-					 resV = 0;
-				
-				String ids = pr.getId_s().getText();
+				String ids = pr.getId_s().getText().toUpperCase();
 				String idc = pr.getId_c().getText();
-				String idv = pr.getId_v().getText();
+				String idv = pr.getId_v().getText().toUpperCase();
 				
 				int id_c = Integer.parseInt(idc);
 				
@@ -41,7 +37,7 @@ public class McPopUpRequestController {
 					md.checkStaff(ids);
 					md.checkVehicle(idv);
 					
-					md.insertRequest(pr.getDesc().getText(), pr.getId_s().getText(), id_c, pr.getId_v().getText());
+					md.insertRequest(pr.getDesc().getText(), pr.getId_s().getText().toUpperCase(), id_c, pr.getId_v().getText().toUpperCase());
 					pr.clearComponents(pr.getDataPanel());
 					pr.mex1();
 					
