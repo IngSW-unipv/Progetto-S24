@@ -31,7 +31,7 @@ public class McPopUpPilotController {
 				
 				
 				try {
-					md.checkPilot(pv.getId().getText());
+					md.selectP(pv.getId().getText(), pv.getName().getText().toUpperCase(), pv.getSurname().getText().toUpperCase(), number);
 					md.insertPilotOnVehicle(pv.getId().getText(), Session.getIstance().getV().getMSN().toUpperCase());
 
 					Session.getIstance().setId_pilot(pv.getId().getText());
