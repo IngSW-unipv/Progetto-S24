@@ -145,7 +145,7 @@ public class MeccanicoController extends AbsController {
 					ppc.clear();
 				}else {
 					// messaggio pop up che avverte di rimuovere prima di aggiungere
-					JOptionPane.showMessageDialog(null, "REMOVE THE PILOT BEFORE TO ADD", "ERROR", JOptionPane.INFORMATION_MESSAGE);
+					JOptionPane.showMessageDialog(null, "REMOVE THE PILOT BEFORE TO ADD", "ERROR", JOptionPane.ERROR_MESSAGE);
 				}
 
 			}
