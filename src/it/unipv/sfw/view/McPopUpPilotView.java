@@ -217,9 +217,8 @@ public class McPopUpPilotView {
 		mexLabel.setForeground(Color.RED);
 	}
 
-	public void mex1() {
-		mexLabel.setText("CORRECT INSERTION");
-		mexLabel.setForeground(Color.GREEN);
+	public void close() {
+		frame.dispose();
 	}
 
 	// Metodo per ripulire i JTextField e JLabel in un JPanel
