@@ -19,45 +19,27 @@ public class DBConnection implements AutoCloseable {
 	 * Funzione interna che viene chiamata solo la prima volta che viene creata una
 	 * class DBConnection.
 	 */
-//	private static void init() {
-//		Properties p = new Properties(System.getProperties());
-//		try {
-//			System.out.println("problema qui - @DBCONNECTION");
-//			p.load(DBConnection.class.getClassLoader().getResourceAsStream("properties.properties"));
-//			dbDriver = p.getProperty(PROPERTYDBDRIVER);
-//			dbURL = p.getProperty(PROPERTYDBURL);
-//
-//			isInit = true;
-//		} catch (Exception e) {
-//			e.printStackTrace();
-//		}
-//	}
+
 	private static void init() {
 	    Properties p = new Properties();
-	    
-	    try {
-	        // Debugging per verificare se la risorsa viene trovata
-	        InputStream inStream = DBConnection.class.getClassLoader().getResourceAsStream("properties.properties");
+
+	    try (InputStream inStream = DBConnection.class.getClassLoader().getResourceAsStream("properties.properties")) {
 	        if (inStream == null) {
-	            System.out.println("Errore: Il file properties/properties.properties non è stato trovato!");
-	        } else {
-	            System.out.println("File trovato, caricamento in corso...");
-	            p.load(inStream);
+	            throw new RuntimeException("Errore: Il file properties.properties non è stato trovato!");
 	        }
 
-	        // Verifica se le proprietà sono caricate correttamente
+	        p.load(inStream);
+
 	        dbDriver = p.getProperty(PROPERTYDBDRIVER);
 	        dbURL = p.getProperty(PROPERTYDBURL);
 
 	        if (dbDriver == null || dbURL == null) {
-	            System.out.println("Errore: Le proprietà DBDRIVER o DBURL non sono state caricate correttamente!");
-	        } else {
-	            System.out.println("Proprietà caricate con successo!");
+	            throw new RuntimeException("Errore: Le proprietà DBDRIVER o DBURL non sono state caricate correttamente!");
 	        }
 
 	        isInit = true;
 	    } catch (Exception e) {
-	        e.printStackTrace();
+	        throw new RuntimeException("Errore durante l'inizializzazione della connessione al database.", e);
 	    }
 	}
 
@@ -69,7 +51,7 @@ public class DBConnection implements AutoCloseable {
 	 *
 	 * @param schema Stringa che rappresenta uno schema valido del database.
 	 */
-	public DBConnection(String schema) {
+	public DBConnection(String schema) throws SQLException{
 		if (!isInit)
 			init();
 		
@@ -92,7 +74,7 @@ public class DBConnection implements AutoCloseable {
 	}
 
 	@Override
-	public void close() throws Exception {
+	public void close() throws SQLException {
 		if (conn == null)
 			return;
 
