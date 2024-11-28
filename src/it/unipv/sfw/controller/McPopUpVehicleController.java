@@ -51,7 +51,8 @@ public class McPopUpVehicleController {
 					mv.getInsertVehicleButton().setEnabled(false);
 					vv.close();
 				} catch (PilotNotFoundException | VehicleNotFoundException ev) {
-					vv.mex();
+					ev.printStackTrace();
+					return;
 				}
 
 			}
