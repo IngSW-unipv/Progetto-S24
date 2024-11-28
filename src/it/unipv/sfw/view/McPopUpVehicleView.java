@@ -179,18 +179,13 @@ public class McPopUpVehicleView {
 		frame.setVisible(true);
 	}
 
-//	public void hide() {
-//		frame.setVisible(false);
-//		frame.setEnabled(false);
-//	}
-
-	public void close() {
-		frame.dispose();
-	}
-
 	public void mex() {
 		mexLabel.setText("WRONG INSERTION");
 		mexLabel.setForeground(Color.RED);
+	}
+
+	public void close() {
+		frame.dispose();
 	}
 
 	public JTextField getMsn() {
