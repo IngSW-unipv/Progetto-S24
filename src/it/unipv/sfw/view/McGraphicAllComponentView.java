@@ -6,6 +6,7 @@ import java.awt.Component;
 import java.util.HashSet;
 import java.util.Set;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JOptionPane;
 import javax.swing.JPanel;
@@ -33,6 +34,8 @@ public class McGraphicAllComponentView {
 		frame.setLayout(new BorderLayout());
 		frame.setLocationRelativeTo(null); // Questo centra la finestra sullo schermo
 		frame.setResizable(false);
+		ImageIcon icona = new ImageIcon(getClass().getResource("/F1-Logo.png"));
+		frame.setIconImage(icona.getImage());
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 
 		mainPanel = new JPanel();
