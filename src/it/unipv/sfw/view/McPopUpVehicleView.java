@@ -167,8 +167,8 @@ public class McPopUpVehicleView {
 	// Metodo per ripulire i JTextField e JLabel in un JPanel
 	public void clearComponents(JPanel panel) {
 		for (Component comp : panel.getComponents()) {
-			if (comp instanceof JTextField) {
-				((JTextField) comp).setText(""); // Pulisce il JTextField
+			if (comp instanceof JLabel) {
+				((JLabel) comp).setText(""); // Pulisce il JTextField
 			}
 		}
 		panel.revalidate(); // Rende il pannello nuovamente valido
