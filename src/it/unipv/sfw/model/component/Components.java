@@ -15,14 +15,12 @@ public class Components {
 	
 	protected int wear;
 	
-	public Components(int id_c,String name, String replacementStatus) {
+	public Components(int id_c,String name) {
 		this.idComponent = id_c;
 		this.name = name;
-		this.replacementStatus = replacementStatus;
 		
 	}
 	
-	//può chiamarlo solo il meccanico e lo stratega
 	public int calculateWear(String replacementStatus){
 			
 		Random random = new Random();
