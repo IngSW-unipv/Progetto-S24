@@ -73,7 +73,7 @@ public class Vehicle {
 
 	}
 
-	public void removeComponent(Components cmp) throws ComponentNotFoundException {
+	public void removeComponent(Components cmp) {
 
 		boolean found = false;
 		
@@ -82,9 +82,6 @@ public class Vehicle {
 				found = true;
 				component.remove(cmp);
 		}
-
-		if(!found)
-			throw new ComponentNotFoundException(cmp.getName());
 
 	}
 
@@ -96,7 +93,7 @@ public class Vehicle {
 
 	}
 
-	public void getComponentByName(String name) throws ComponentNotFoundException {
+	public void getComponentByName(String name){
 
 		for (Components c : component) {
 			if (c.getName().equalsIgnoreCase(name)) {
