@@ -25,7 +25,7 @@ public class McPopUpComponentController {
 		pr = new McPopUpRequestView();
 		md = new MeccanicoDAO();
 		
-		if (!Session.getIstance().getOperation().equals("ADD")) {
+		if (Session.getIstance().getOperation().equals("ADD")) {
 			
 			pc.getSendButton().addActionListener(new ActionListener() {
 
@@ -39,7 +39,8 @@ public class McPopUpComponentController {
 						
 						md.checkCompo(pc.getIdC().getText(), pc.getNameC().getText().toUpperCase());
 						idc = Integer.parseInt(pc.getIdC().getText());
-						c = new Components(idc, pc.getNameC().getText().toUpperCase(), pc.getStatusC().getText().toUpperCase());
+						c = new Components(idc, pc.getNameC().getText().toUpperCase());
+						c.setReplacementStatus(pc.getStatusC().getText().toUpperCase());
 						n = Session.getIstance().getM().addComponent(Session.getIstance().getV(), c);
 
 						switch (n) {
@@ -114,23 +115,23 @@ public class McPopUpComponentController {
 				@Override
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
-
-					String id_comp = pc.getIdC().getText();
-
-					int id = Integer.parseInt(id_comp);
-
-					c = new Components(id, pc.getNameC().getText().toUpperCase(), pc.getStatusC().getText().toUpperCase());
-					
-					
+				
 					try {
+						md.checkCompo(pc.getIdC().getText().toUpperCase(), pc.getNameC().getText().toUpperCase());				
+						md.removeComponent(pc.getIdC().getText().toUpperCase(), Session.getIstance().getV().getMSN());
+						
+						// lo stato devo recuperarlo dal database oppure devo modificare la classe del component
+						
+						int id = Integer.parseInt( pc.getIdC().getText());
+						
+						c = new Components(id, pc.getNameC().getText().toUpperCase());
+						
 						Session.getIstance().getM().removeComponent(Session.getIstance().getV(), c);
 						
-						md.removeComponent(id, Session.getIstance().getV().getMSN());
-						
 						pc.mex3();
-					} catch (ComponentNotFoundException e1) {
+					} catch (ComponentNotFoundException err) {
 						// TODO Auto-generated catch block
-						e1.printStackTrace();
+						System.out.println(err);
 					}
 					
 					pc.clearComponents(pc.getDataPanel());
