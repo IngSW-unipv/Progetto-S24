@@ -73,15 +73,14 @@ public class Vehicle {
 
 	}
 
-	public void removeComponent(Components cmp) {
-
-		boolean found = false;
+	public void removeComponent(Components cmp)  throws ComponentNotFoundException{
 		
 		for (Components comp : component) {
-			if (comp.getName().equalsIgnoreCase(cmp.getName()))
-				found = true;
+			if (comp.getName().equals(cmp.getName()))
 				component.remove(cmp);
 		}
+		
+		System.out.println(component);
 
 	}
 
@@ -149,12 +148,12 @@ public class Vehicle {
 		return timeSect3;
 	}
 
-	public Set<Components> getComponents() {
+	public Set<Components> getComponent() {
 		return component;
 	}
 
-	public void setComponents(Set<Components> components) {
-		this.component = components;
+	public void setComponents(Set<Components> component) {
+		this.component = component;
 	}
 
 }
