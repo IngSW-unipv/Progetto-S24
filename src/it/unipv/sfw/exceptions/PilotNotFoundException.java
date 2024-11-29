@@ -7,7 +7,7 @@ public class PilotNotFoundException extends Exception{
 	 * @param id Identificativo del pilota richiesto ma inesistente.
 	 */
 	public PilotNotFoundException(String id) {
-		super("Il pilota" + id + " è inesistente.");
+		super("Il pilota " + id + " è inesistente.");
 		pilotId = id;
 	}
 
