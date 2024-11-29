@@ -284,7 +284,7 @@ public class MeccanicoDAO {
 
 	// CHECK COMPO
 
-	public void checkCompo(int id_c) throws ComponentNotFoundException {
+	public void checkCompo(String id_c, String name) throws ComponentNotFoundException {
 
 		SCHEMA = "component";
 
@@ -296,10 +296,11 @@ public class MeccanicoDAO {
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
 
-			String query = "SELECT * FROM " + SCHEMA + " WHERE ID  = ?";
+			String query = "SELECT * FROM " + SCHEMA + " WHERE ID  = ? AND NAME = ?";
 			st1 = conn.prepareStatement(query);
 
 			st1.setString(1, idc);
+			st1.setString(2, name);
 
 			rs1 = st1.executeQuery();
 
@@ -314,10 +315,43 @@ public class MeccanicoDAO {
 			e.printStackTrace();
 		}
 	}
+	
+	// CHECK ID COMPO
 
+		public void checkIdCompo(String id_c) throws ComponentNotFoundException {
+
+			SCHEMA = "component";
+
+			PreparedStatement st1;
+			ResultSet rs1;
+
+			String idc = String.valueOf(id_c);
+
+			try (DBConnection db = new DBConnection(SCHEMA)) {
+				Connection conn = db.getConnection();
+
+				String query = "SELECT * FROM " + SCHEMA + " WHERE ID  = ?";
+				st1 = conn.prepareStatement(query);
+
+				st1.setString(1, idc);
+
+				rs1 = st1.executeQuery();
+
+				// Verifica se ci sono risultati
+				if (!rs1.next()) {
+					// Accedi ai dati solo dopo rs.next()
+					throw new ComponentNotFoundException(idc);
+				}
+
+			} catch (SQLException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
 	// INSERT COMPO
 
-	public boolean insertComponent(int id, String msn) {
+	public boolean insertComponent(String id, String msn) {
 
 		SCHEMA = "component";
 
@@ -332,10 +366,8 @@ public class MeccanicoDAO {
 			String query = "UPDATE " + SCHEMA + " SET WAREHOUSE = 0, STATUS = 'USED',  ID_VEHICLE = ? WHERE ID = ?";
 			st1 = conn.prepareStatement(query);
 
-			String convert = String.valueOf(id);
-
 			st1.setString(1, msn);
-			st1.setString(2, convert);
+			st1.setString(2, id);
 
 			rs1 = st1.executeUpdate();
 
@@ -353,7 +385,7 @@ public class MeccanicoDAO {
 
 	// UPDATE WEAR
 
-	public boolean updateWear(int wear, int id) {
+	public boolean updateWear(int wear, String id) {
 
 		SCHEMA = "component";
 
@@ -427,7 +459,7 @@ public class MeccanicoDAO {
 
 	// INSERT REQUEST
 
-	public boolean insertRequest(String desc, String id_s, int id_c, String id_v) {
+	public boolean insertRequest(String desc, String id_s, String id_c, String id_v) {
 
 		SCHEMA = "request";
 
@@ -447,8 +479,7 @@ public class MeccanicoDAO {
 
 			st1.setString(2, id_s);
 
-			String idc = String.valueOf(id_c);
-			st1.setString(3, idc);
+			st1.setString(3, id_c);
 
 			st1.setString(4, id_v);
 
