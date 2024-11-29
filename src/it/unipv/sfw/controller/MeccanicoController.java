@@ -45,7 +45,6 @@ public class MeccanicoController extends AbsController {
 		McPopUpRequestController prc = new McPopUpRequestController();
 		McPopUpVehicleController pvc = new McPopUpVehicleController(mv);
 		McPopUpPilotController ppc = new McPopUpPilotController(mv);
-		McPopUpComponentController pcc = new McPopUpComponentController();
 
 		// Controllo lo stato di V nella sessione
 		boolean isVehiclePresent = (Session.getIstance().getV() != null);
@@ -100,10 +99,11 @@ public class MeccanicoController extends AbsController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-
+				McPopUpComponentController pcc = new McPopUpComponentController();
 				Session.getIstance().setOperation("ADD");
 				System.out.println("il contenuto è: " + Session.getIstance().getOperation()
 						+ " @MECCANICO CONTROLLER-ADD COMPONENT");
+				
 				pcc.showWindow();
 				pcc.clear();
 
@@ -117,12 +117,12 @@ public class MeccanicoController extends AbsController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method
-
+				McPopUpComponentController pcc = new McPopUpComponentController();
 				Session.getIstance().setOperation("REMOVE");
 				System.out.println("il contenuto è: " + Session.getIstance().getOperation()
 						+ " @MECCANICO CONTROLLER-REMOVE COMPONENT");
 				pcc.showWindow();
-
+				pcc.clear();
 			}
 
 		});

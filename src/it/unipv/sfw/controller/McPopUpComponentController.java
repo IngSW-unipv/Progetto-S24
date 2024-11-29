@@ -25,7 +25,7 @@ public class McPopUpComponentController {
 		pr = new McPopUpRequestView();
 		md = new MeccanicoDAO();
 		
-		if (Session.getIstance().getOperation() == "ADD") {
+		if (!Session.getIstance().getOperation().equals("ADD")) {
 			
 			pc.getSendButton().addActionListener(new ActionListener() {
 
@@ -33,16 +33,14 @@ public class McPopUpComponentController {
 				public void actionPerformed(ActionEvent e) {
 					// TODO Auto-generated method stub
 					
-					int n = 0;
-
-					String id_compo = pc.getIdC().getText();
-
-					int id = Integer.parseInt(id_compo);
-
-					c = new Components(id, pc.getNameC().getText().toUpperCase(), pc.getStatusC().getText().toUpperCase());
+					int n = 0,
+						 idc = Integer.parseInt(pc.getIdC().getText());
+					
+					c = new Components(idc, pc.getNameC().getText().toUpperCase(), pc.getStatusC().getText().toUpperCase());
 
 					try {
-						md.checkCompo(id);
+						
+						md.checkCompo(pc.getIdC().getText(), pc.getNameC().getText().toUpperCase());
 						n = Session.getIstance().getM().addComponent(Session.getIstance().getV(), c);
 					} catch (ComponentNotFoundException | WrongReplacementStatusException e1) {
 						// TODO Auto-generated catch block
@@ -63,19 +61,19 @@ public class McPopUpComponentController {
 					case 1:
 						
 						// componente inserito con successo
-						if (md.insertComponent(id, pc.getIdV().getText().toUpperCase())) {
+						if (md.insertComponent(pc.getIdC().getText(), Session.getIstance().getV().getMSN())) {
 							
-							md.updateWear(c.getWear(), id);
+							md.updateWear(c.getWear(),pc.getIdC().getText() );
 							pc.mex2();
 							pc.clearComponents(pc.getDataPanel());
 						}
 
-						break;
+						break; 
 
 					case 2:
 
-						if (md.insertComponent(id, pc.getIdV().getText().toUpperCase())) {
-							md.updateWear(c.getWear(), id);
+						if (md.insertComponent(pc.getIdC().getText(), Session.getIstance().getV().getMSN())) {
+							md.updateWear(c.getWear(), pc.getIdC().getText());
 							pc.mex2();
 							pc.clearComponents(pc.getDataPanel());
 						}
@@ -88,7 +86,6 @@ public class McPopUpComponentController {
 						pr.show();
 
 						pr.setId_c(pc.getIdC());
-						pr.setId_v(pc.getIdV());
 
 						pr.getSendButton().addActionListener(new ActionListener() {
 
@@ -96,11 +93,7 @@ public class McPopUpComponentController {
 							public void actionPerformed(ActionEvent e) {
 								// TODO Auto-generated method stub
 
-								String idc = pr.getId_c().getText();
-
-								int id_c = Integer.parseInt(idc);
-
-								md.insertRequest(pr.getDesc().getText(), pr.getId_s().getText().toUpperCase(), id_c,
+								md.insertRequest(pr.getDesc().getText(), pr.getId_s().getText().toUpperCase(), pc.getIdC().getText(),
 										pr.getId_v().getText().toUpperCase());
 								
 							}
@@ -132,7 +125,7 @@ public class McPopUpComponentController {
 					try {
 						Session.getIstance().getM().removeComponent(Session.getIstance().getV(), c);
 						
-						md.removeComponent(id, pc.getIdV().getText().toUpperCase());
+						md.removeComponent(id, Session.getIstance().getV().getMSN());
 						
 						pc.mex3();
 					} catch (ComponentNotFoundException e1) {

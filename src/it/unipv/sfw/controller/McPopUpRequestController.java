@@ -7,6 +7,7 @@ import it.unipv.sfw.dao.mysql.MeccanicoDAO;
 import it.unipv.sfw.exceptions.ComponentNotFoundException;
 import it.unipv.sfw.exceptions.VehicleNotFoundException;
 import it.unipv.sfw.exceptions.WrongIDException;
+import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.view.McPopUpRequestView;
 
 public class McPopUpRequestController {
@@ -24,20 +25,13 @@ public class McPopUpRequestController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
-				String ids = pr.getId_s().getText().toUpperCase();
-				String idc = pr.getId_c().getText();
-				String idv = pr.getId_v().getText().toUpperCase();
-				
-				int id_c = Integer.parseInt(idc);
-				
 				 
 				 try {
-					md.checkCompo(id_c);
-					md.checkStaff(ids);
-					md.checkVehicle(idv);
+					md.checkIdCompo(pr.getId_c().getText());
+					md.checkStaff(Session.getIstance().getId_staff());
+					md.checkVehicle(Session.getIstance().getV().getMSN());
 					
-					md.insertRequest(pr.getDesc().getText(), pr.getId_s().getText().toUpperCase(), id_c, pr.getId_v().getText().toUpperCase());
+					md.insertRequest(pr.getDesc().getText(), pr.getId_s().getText().toUpperCase(), pr.getId_c().getText(), pr.getId_v().getText().toUpperCase());
 					pr.clearComponents(pr.getDataPanel());
 					pr.mex1();
 					
