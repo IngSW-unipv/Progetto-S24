@@ -9,7 +9,7 @@ import it.unipv.sfw.view.McGraphicAllComponentView;
 
 public class McGraphicAllComponentController {
 	
-	private Set<Components> components = Session.getIstance().getV().getComponents();
+	private Set<Components> components = Session.getIstance().getV().getComponent();
 	private McGraphicAllComponentView gv = new McGraphicAllComponentView(components);
 	
 	
