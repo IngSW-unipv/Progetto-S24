@@ -58,7 +58,7 @@ public class Meccanico extends Staff {
 
 		mode = v.addComponent(c);
 
-		//v.showComponent();
+		v.showComponent();
 		
 		return mode;
 	}
