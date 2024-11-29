@@ -422,15 +422,13 @@ public class MeccanicoDAO {
 
 	// REMOVE COMPO
 
-	public boolean removeComponent(int id_c, String id_v) {
+	public void removeComponent(String id_c, String id_v){
 
 		SCHEMA = "component";
 
 		PreparedStatement st1;
 		int rs1 = 0;
-
-		boolean esito = true;
-
+		
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
 
@@ -438,22 +436,14 @@ public class MeccanicoDAO {
 					+ " SET WAREHOUSE = 1, STATUS = 'USED', ID_VEHICLE = NULL WHERE ID = ? AND ID_VEHICLE = ?";
 			st1 = conn.prepareStatement(query);
 
-			String n1 = String.valueOf(id_c);
-
-			st1.setString(1, n1);
+			st1.setString(1, id_c);
 			st1.setString(2, id_v);
 
 			rs1 = st1.executeUpdate();
 
 		} catch (SQLException e) {
-			esito = false;
-
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		return esito;
 
 	}
 
