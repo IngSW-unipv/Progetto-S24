@@ -30,7 +30,7 @@ public class McPopUpComponentView extends JFrame {
 	private JLabel titleLabel, mexLabel;
 
 	// inserimento dati
-	private JTextField idC, IdV, nameC, statusC;
+	private JTextField idC, nameC, statusC;
 
 	// bottoni per l'interazione: 1
 	private JButton sendButton;
@@ -82,23 +82,16 @@ public class McPopUpComponentView extends JFrame {
 		idC.setPreferredSize(dim);
 		dataPanel.add(idC, gbc);
 
-		// Prima riga, seconda colonna
+		// Seconda riga, prima colonna
 		gbc.gridx = 1;
 		gbc.gridy = 0;
-		IdV = new JTextField("ID VEHICLE");
-		IdV.setPreferredSize(dim);
-		dataPanel.add(IdV, gbc);
-
-		// Seconda riga, prima colonna
-		gbc.gridx = 0;
-		gbc.gridy = 1;
 		nameC = new JTextField("NAME COMPONENT");
 		nameC.setPreferredSize(dim);
 		dataPanel.add(nameC, gbc);
 
 		// Seconda riga, seconda colonna
-		gbc.gridx = 1;
-		gbc.gridy = 1;
+		gbc.gridx = 2;
+		gbc.gridy = 0;
 		statusC = new JTextField("STATUS COMPONENT");
 		statusC.setPreferredSize(dim);
 		dataPanel.add(statusC, gbc);
@@ -143,23 +136,6 @@ public class McPopUpComponentView extends JFrame {
 			public void focusLost(FocusEvent e) {
 				if (idC.getText().isEmpty()) {
 					idC.setText("ID COMPONENT"); // Ripristina il testo predefinito se vuoto
-				}
-			}
-		});
-
-		IdV.addFocusListener(new FocusListener() {
-			@Override
-			public void focusGained(FocusEvent e) {
-				if (IdV.getText().equals("ID VEHICLE")) {
-					IdV.setText(""); // Rimuove il testo predefinito
-				}
-				clearComponents(sendPanel);
-			}
-
-			@Override
-			public void focusLost(FocusEvent e) {
-				if (IdV.getText().isEmpty()) {
-					IdV.setText("ID VEHICLE"); // Ripristina il testo predefinito se vuoto
 				}
 			}
 		});
@@ -270,14 +246,6 @@ public class McPopUpComponentView extends JFrame {
 
 	public void setIdC(JTextField insertID_C) {
 		this.idC = insertID_C;
-	}
-
-	public JTextField getIdV() {
-		return IdV;
-	}
-
-	public void setIdV(JTextField insertID_V) {
-		this.IdV = insertID_V;
 	}
 
 	public JTextField getNameC() {
