@@ -54,7 +54,7 @@ public class StrategistController extends AbsController {
 //			e.printStackTrace();
 //		}
 //		
-		 for (Components c : Session.getIstance().getV().getComponents()) {
+		 for (Components c : Session.getIstance().getV().getComponent()) {
 	            System.out.println("ID: " + c.getIdComponent() + ", NAME: " + c.getName() + ", Status: " + c.getReplacementStatus());
 	        }
 		 

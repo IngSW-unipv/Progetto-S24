@@ -21,11 +21,11 @@ public class StPopUpCreateStrategyController {
 
 		pcs = new StPopUpCreateStrategyView();
 		
-		for(Components c : Session.getIstance().getV().getComponents()) {
+		for(Components c : Session.getIstance().getV().getComponent()) {
 			average += c.getWear();
 		}
 		
-		average = average/Session.getIstance().getV().getComponents().size();
+		average = average/Session.getIstance().getV().getComponent().size();
 		
 		if(average > 70) {
 			pcs.getComponentLabel1().setText("DEGRADATION OF COMPONENTS:              " + average);
@@ -56,7 +56,7 @@ public class StPopUpCreateStrategyController {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				//Session.getIstance().getV().getComponents();
-				gdv = new StGraphicDetailsView(Session.getIstance().getV().getComponents());
+				gdv = new StGraphicDetailsView(Session.getIstance().getV().getComponent());
 				gdv.show();
 			}
 
