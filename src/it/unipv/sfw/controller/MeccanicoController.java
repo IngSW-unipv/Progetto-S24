@@ -99,8 +99,9 @@ public class MeccanicoController extends AbsController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				McPopUpComponentController pcc = new McPopUpComponentController();
+				
 				Session.getIstance().setOperation("ADD");
+				McPopUpComponentController pcc = new McPopUpComponentController();
 				System.out.println("il contenuto è: " + Session.getIstance().getOperation()
 						+ " @MECCANICO CONTROLLER-ADD COMPONENT");
 				
@@ -117,8 +118,9 @@ public class MeccanicoController extends AbsController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method
-				McPopUpComponentController pcc = new McPopUpComponentController();
+				
 				Session.getIstance().setOperation("REMOVE");
+				McPopUpComponentController pcc = new McPopUpComponentController();
 				System.out.println("il contenuto è: " + Session.getIstance().getOperation()
 						+ " @MECCANICO CONTROLLER-REMOVE COMPONENT");
 				pcc.showWindow();
