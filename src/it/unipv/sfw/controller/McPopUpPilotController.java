@@ -25,13 +25,8 @@ public class McPopUpPilotController {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 
-				String number = pv.getNumber().getText();
-				
-				int n = Integer.parseInt(number);
-				
-				
 				try {
-					md.selectP(pv.getId().getText(), pv.getName().getText().toUpperCase(), pv.getSurname().getText().toUpperCase(), number);
+					md.selectP(pv.getId().getText(), pv.getName().getText().toUpperCase(), pv.getSurname().getText().toUpperCase(), pv.getNumber().getText());
 					md.insertPilotOnVehicle(pv.getId().getText(), Session.getIstance().getV().getMSN().toUpperCase());
 
 					Session.getIstance().setId_pilot(pv.getId().getText());
@@ -40,9 +35,9 @@ public class McPopUpPilotController {
 					mv.setId_p();
 					pv.close();
 					
-				} catch (PilotNotFoundException e1) {
+				} catch (PilotNotFoundException err) {
 					// TODO Auto-generated catch block
-					e1.printStackTrace();
+					System.out.println(err);
 					pv.mex();
 					pv.clearComponents(pv.getDataPanel());
 				}
