@@ -74,7 +74,7 @@ public class MeccanicoController extends AbsController {
 				// TODO Auto-generated method stub
 
 				pvc.showWindow();
-
+				pvc.clear();
 			}
 
 		});
