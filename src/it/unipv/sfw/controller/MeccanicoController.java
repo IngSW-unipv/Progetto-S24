@@ -37,31 +37,32 @@ public class MeccanicoController extends AbsController {
 		} catch (Exception e) {
 			System.out.println("Errore");
 		}
-
+		
+		boolean isVehiclePresent = (Session.getIstance().getV() != null);
+		
 		MeccanicoView mv = new MeccanicoView();
 		MeccanicoDAO md = new MeccanicoDAO();
 
-		McPopUpRequestController prc = new McPopUpRequestController();
 		McPopUpVehicleController pvc = new McPopUpVehicleController(mv);
 		McPopUpPilotController ppc = new McPopUpPilotController(mv);
 
 		// Controllo lo stato di V nella sessione
-		boolean isVehiclePresent = (Session.getIstance().getV() != null);
 		
-		// Abilita o disabilita bottoni basati sul valore di V
 
+		// Abilita o disabilita bottoni basati sul valore di V
+		System.out.println("veicolo: "+isVehiclePresent);
 		mv.getAddComponentButton().setEnabled(isVehiclePresent);
 		mv.getAddComponentButton().setVisible(false);
-		
+
 		mv.getAddPilotButton().setEnabled(isVehiclePresent);
 		mv.getAddPilotButton().setVisible(false);
-		
+
 		mv.getRemovePilotButton().setEnabled(isVehiclePresent);
 		mv.getRemovePilotButton().setVisible(false);
-		
+
 		mv.getRemoveComponentButton().setEnabled(isVehiclePresent);
 		mv.getRemoveComponentButton().setVisible(false);
-		
+
 		mv.getVisualTimePsButton().setEnabled(isVehiclePresent);
 		mv.getVisualTimePsButton().setVisible(false);
 
@@ -84,7 +85,13 @@ public class MeccanicoController extends AbsController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-
+	
+				if (isVehiclePresent) {
+					Session.getIstance().setOperation("NO_V");
+				} else {
+					Session.getIstance().setOperation("YES_V");
+				}
+				McPopUpRequestController prc = new McPopUpRequestController();
 				prc.showWindow();
 				prc.clear();
 
@@ -98,12 +105,12 @@ public class MeccanicoController extends AbsController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
+
 				Session.getIstance().setOperation("ADD");
 				McPopUpComponentController pcc = new McPopUpComponentController();
 				System.out.println("il contenuto è: " + Session.getIstance().getOperation()
 						+ " @MECCANICO CONTROLLER-ADD COMPONENT");
-				
+
 				pcc.showWindow();
 				pcc.clear();
 
@@ -117,7 +124,7 @@ public class MeccanicoController extends AbsController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method
-				
+
 				Session.getIstance().setOperation("REMOVE");
 				McPopUpComponentController pcc = new McPopUpComponentController();
 				System.out.println("il contenuto è: " + Session.getIstance().getOperation()
@@ -134,19 +141,20 @@ public class MeccanicoController extends AbsController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
+
 				boolean isPilotPresent = (Session.getIstance().getId_pilot() != null);
-				
-				if(isPilotPresent == false) {
-					
+
+				if (isPilotPresent == false) {
+
 					Session.getIstance().setOperation("ADD");
-					System.out.println(
-							"il contenuto è: " + Session.getIstance().getOperation() + " @MECCANICO CONTROLLER-ADD PILOT");
+					System.out.println("il contenuto è: " + Session.getIstance().getOperation()
+							+ " @MECCANICO CONTROLLER-ADD PILOT");
 					ppc.showWindow();
 					ppc.clear();
-				}else {
+				} else {
 					// messaggio pop up che avverte di rimuovere prima di aggiungere
-					JOptionPane.showMessageDialog(null, "REMOVE THE PILOT BEFORE TO ADD", "ERROR", JOptionPane.ERROR_MESSAGE);
+					JOptionPane.showMessageDialog(null, "REMOVE THE PILOT BEFORE TO ADD", "ERROR",
+							JOptionPane.ERROR_MESSAGE);
 				}
 
 			}
@@ -159,11 +167,11 @@ public class MeccanicoController extends AbsController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
+
 				Session.getIstance().setOperation("REMOVE");
 				System.out.println("il contenuto è: " + Session.getIstance().getOperation()
 						+ " @MECCANICO CONTROLLER-REMOVE PILOT");
-				
+
 				md.removePilot(Session.getIstance().getId_pilot());
 				Session.getIstance().setId_pilot(null);
 				mv.setId_p();
