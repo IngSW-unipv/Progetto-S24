@@ -11,50 +11,115 @@ import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.view.McPopUpRequestView;
 
 public class McPopUpRequestController {
-	
-	private McPopUpRequestView pr; 
+
+	private McPopUpRequestView pr;
 	private MeccanicoDAO md;
-	
+
 	public McPopUpRequestController() {
-		
+
 		pr = new McPopUpRequestView();
 		md = new MeccanicoDAO();
-		
-		pr.getSendButton().addActionListener(new ActionListener() {
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				 
-				 try {
-					md.checkIdCompo(pr.getId_c().getText());
-					md.checkStaff(Session.getIstance().getId_staff());
-					md.checkVehicle(Session.getIstance().getV().getMSN());
-					
-					md.insertRequest(pr.getDesc().getText(), pr.getId_s().getText().toUpperCase(), pr.getId_c().getText(), pr.getId_v().getText().toUpperCase());
-					pr.clearComponents(pr.getDataPanel());
-					pr.mex1();
-					
-				} catch (ComponentNotFoundException |  WrongIDException | VehicleNotFoundException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+		if (Session.getIstance().getOperation().equals("NO_V")) {
+			
+			pr.hide();
+
+			pr.getSendButton().addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+
+					try {
+						if (pr.getId_s().getText().toUpperCase().equals(Session.getIstance().getId_staff()))
+							throw new WrongIDException();
+
+					} catch (WrongIDException err) {
+						pr.mex();
+						System.out.println(err);
+						return;
+
+					}
+
+					try {
+						md.checkIdCompo(pr.getId_c().getText());
+
+						md.insertRequest(pr.getDesc().getText(), pr.getId_s().getText().toUpperCase(),
+								pr.getId_c().getText(), pr.getId_v().getText().toUpperCase());
+						pr.clearComponents(pr.getDataPanel());
+						pr.mex1();
+
+					} catch (ComponentNotFoundException err) {
+						// TODO Auto-generated catch block
+						pr.mex();
+						System.out.println(err);
+					}
 
 					pr.clearComponents(pr.getDataPanel());
 					pr.mex();
-				
-			}
-		});
-	
+
+				}
+			});
+
+		} else {
+
+			pr.getSendButton().addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+
+					try {
+						if (pr.getId_s().getText().toUpperCase().equals(Session.getIstance().getId_staff()))
+							throw new WrongIDException();
+
+					} catch (WrongIDException err) {
+						pr.mex();
+						System.out.println(err);
+						return;
+
+					}
+
+					try {
+						if (pr.getId_v().getText().toUpperCase().equals(Session.getIstance().getV().getMSN()))
+							throw new VehicleNotFoundException(pr.getId_v().getText());
+
+					} catch (VehicleNotFoundException err) {
+						pr.mex();
+						System.out.println(err);
+						return;
+
+					}
+
+					try {
+						md.checkIdCompo(pr.getId_c().getText());
+
+						md.insertRequest(pr.getDesc().getText(), pr.getId_s().getText().toUpperCase(),
+								pr.getId_c().getText(), pr.getId_v().getText().toUpperCase());
+						pr.clearComponents(pr.getDataPanel());
+						pr.mex1();
+
+					} catch (ComponentNotFoundException err) {
+						// TODO Auto-generated catch block
+						pr.mex();
+						System.out.println(err);
+					}
+
+					pr.clearComponents(pr.getDataPanel());
+
+				}
+			});
+		}
+
 	}
-	
+
 	// Metodo per mostrare la finestra
-    public void showWindow() {
-        pr.show();
-    }
-    
-    public void clear() {
-    	pr.clearComponents(pr.getSendPanel());
-    }
-    
+	public void showWindow() {
+		pr.show();
+	}
+
+	public void clear() {
+		pr.clearComponents(pr.getSendPanel());
+	}
+
 }
