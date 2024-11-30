@@ -1,6 +1,7 @@
 package it.unipv.sfw.model.vehicle;
 
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Random;
 import java.util.Set;
 
@@ -73,16 +74,26 @@ public class Vehicle {
 
 	}
 
-	public void removeComponent(Components cmp)  throws ComponentNotFoundException{
-		
-		for (Components comp : component) {
-			if (comp.getName().equals(cmp.getName()))
-				component.remove(cmp);
-		}
-		
-		System.out.println(component);
+	public void removeComponent(Components cmp) throws ComponentNotFoundException {
+	    System.out.println("SONO QUI - @VEHICLE");
 
+	    boolean found = false;
+	    Iterator<Components> iterator = component.iterator();
+
+	    while (iterator.hasNext()) {
+	        Components comp = iterator.next();
+	        if (comp.getName().equals(cmp.getName())) {
+	            iterator.remove(); // Rimuove l'elemento corrente
+	            found = true;
+	            break; // Interrompe la ricerca dopo la rimozione
+	        }
+	    }
+
+	    if (!found) {
+	        throw new ComponentNotFoundException(cmp.getName());
+	    }
 	}
+
 
 	public int calcWear(Components c) {
 
