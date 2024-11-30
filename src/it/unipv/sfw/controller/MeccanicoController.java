@@ -9,7 +9,6 @@ import it.unipv.sfw.dao.mysql.MeccanicoDAO;
 import it.unipv.sfw.model.staff.Meccanico;
 import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.model.staff.Staff;
-import it.unipv.sfw.model.vehicle.Vehicle;
 import it.unipv.sfw.view.MeccanicoView;
 
 public class MeccanicoController extends AbsController {
