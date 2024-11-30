@@ -14,7 +14,7 @@ public class PilotNotFoundException extends Exception{
 	/**
 	 * @return id identificativo del pilota richiesto ma inesistente.
 	 */
-	public String getAccountIdl() {
+	public String getPilotId() {
 		return pilotId;
 	}
 }

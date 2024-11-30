@@ -3,14 +3,11 @@ package it.unipv.sfw.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import it.unipv.sfw.controller.AbsController.TypeController;
 import it.unipv.sfw.dao.mysql.VehicleDAO;
-import it.unipv.sfw.exceptions.WrongReplacementStatusException;
 import it.unipv.sfw.model.component.Components;
 import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.model.staff.Staff;
 import it.unipv.sfw.model.staff.Stratega;
-import it.unipv.sfw.model.vehicle.Vehicle;
 import it.unipv.sfw.view.StrategistView;
 
 public class StrategistController extends AbsController {
