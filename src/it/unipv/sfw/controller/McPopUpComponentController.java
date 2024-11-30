@@ -5,7 +5,7 @@ import java.awt.event.ActionListener;
 
 import it.unipv.sfw.dao.mysql.MeccanicoDAO;
 import it.unipv.sfw.exceptions.ComponentNotFoundException;
-import it.unipv.sfw.exceptions.WrongReplacementStatusException;
+import it.unipv.sfw.exceptions.DuplicateComponentException;
 import it.unipv.sfw.model.component.Components;
 import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.view.McPopUpComponentView;
@@ -37,7 +37,7 @@ public class McPopUpComponentController {
 
 					try {
 						
-						md.checkCompo(pc.getIdC().getText(), pc.getNameC().getText().toUpperCase());
+						md.checkCompo(pc.getIdC().getText(), pc.getNameC().getText().toUpperCase(), pc.getStatusC().getText().toUpperCase());
 						idc = Integer.parseInt(pc.getIdC().getText());
 						c = new Components(idc, pc.getNameC().getText().toUpperCase());
 						c.setReplacementStatus(pc.getStatusC().getText().toUpperCase());
@@ -95,11 +95,16 @@ public class McPopUpComponentController {
 
 							break;
 						}
-					} catch (ComponentNotFoundException | WrongReplacementStatusException err) {
+					} catch (ComponentNotFoundException err) {
 						// TODO Auto-generated catch block
-						
+		
 						System.out.println(err);
 						pc.mex();
+						
+					}catch (DuplicateComponentException err) {
+						
+						System.out.println(err);
+						pc.mex1();
 					}
 
 				}
@@ -117,7 +122,7 @@ public class McPopUpComponentController {
 					// TODO Auto-generated method stub
 				
 					try {
-						md.checkCompo(pc.getIdC().getText().toUpperCase(), pc.getNameC().getText().toUpperCase());				
+						md.checkCompo(pc.getIdC().getText().toUpperCase(), pc.getNameC().getText().toUpperCase(), "USED");				
 						md.removeComponent(pc.getIdC().getText().toUpperCase(), Session.getIstance().getV().getMSN());
 						
 						int id = Integer.parseInt( pc.getIdC().getText());
@@ -129,6 +134,7 @@ public class McPopUpComponentController {
 						pc.mex3();
 					} catch (ComponentNotFoundException err) {
 						// TODO Auto-generated catch block
+						pc.mex();
 						System.out.println(err);
 					}
 					
