@@ -6,7 +6,7 @@ import java.util.Random;
 import java.util.Set;
 
 import it.unipv.sfw.exceptions.ComponentNotFoundException;
-import it.unipv.sfw.exceptions.WrongReplacementStatusException;
+import it.unipv.sfw.exceptions.DuplicateComponentException;
 import it.unipv.sfw.model.component.Components;
 import it.unipv.sfw.model.vehicle.Vehicle;
 
@@ -52,7 +52,7 @@ public class Meccanico extends Staff {
 		return vec;
 	}
 
-	public int addComponent(Vehicle v, Components c) throws WrongReplacementStatusException {
+	public int addComponent(Vehicle v, Components c) throws DuplicateComponentException {
 
 		int mode = 0;
 
@@ -67,14 +67,6 @@ public class Meccanico extends Staff {
 		
 		 v.removeComponent(c);
 		
-	}
-
-	public int wear(Vehicle v, Components c, String MSN) {
-
-		int w = 0;
-		
-		return w = v.calcWear(c);
-
 	}
 
 	public int setTimePS() {
