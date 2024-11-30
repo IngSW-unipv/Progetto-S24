@@ -6,7 +6,7 @@ import java.util.Random;
 import java.util.Set;
 
 import it.unipv.sfw.exceptions.ComponentNotFoundException;
-import it.unipv.sfw.exceptions.WrongReplacementStatusException;
+import it.unipv.sfw.exceptions.DuplicateComponentException;
 import it.unipv.sfw.model.component.Components;
 
 public class Vehicle {
@@ -26,56 +26,50 @@ public class Vehicle {
 	public Vehicle(String MSN) {
 		this.MSN = MSN;
 		component = new HashSet<>();
+	} 
+
+	public int addComponent(Components cmp) throws DuplicateComponentException {
+	    int result = 0;
+
+	    // Controllo preliminare per nomi duplicati
+	    for (Components existingComponent : component) {
+	        if (existingComponent.getName().equals(cmp.getName())) {
+	            throw new DuplicateComponentException("Component with name '" + cmp.getName() + "' already exists.");
+	        }
+	    }
+
+	    // stringhe per debug
+	    System.out.println(component.toString());
+	    System.out.println("" + cmp.getIdComponent() + "- " + cmp.getName() + "- STATUS " + cmp.getReplacementStatus());
+
+	    cmp.setWear(cmp.calculateWear(MSN));
+
+	    System.out.println("wear =  " + cmp.getWear() + "@vehicle");
+
+	    int cond = cmp.getWear();
+
+	    if (cond == 100 || cond >= 80) {
+	        component.add(cmp);
+	        System.out.println("Componente ottime condizioni");
+	        System.out.println("Componente inserito con successo");
+	        System.out.println(component.toString());
+	        result = 1;
+	    } else if (cond > 80 || cond >= 50) {
+	        System.out.println("Componente buone condizioni");
+	        System.out.println("Componente inserito con successo");
+	        component.add(cmp);
+	        System.out.println(component.toString());
+	        result = 2;
+	    } else {
+	        System.out.println("Componente usurato --> NON UTILIZZABILE DA SMONTARE");
+	        result = 3;
+	    }
+
+	    return result;
 	}
 
-	public int addComponent(Components cmp) throws WrongReplacementStatusException {
-
-		int result = 0;
-
-		// stringhe per debug
-		System.out.println(component.toString());
-		System.out.println("" + cmp.getIdComponent() + "- " + cmp.getName() + "- STATUS " + cmp.getReplacementStatus());
-
-		if (!cmp.getReplacementStatus().equals("NEW") && !cmp.getReplacementStatus().equals("USED"))
-			throw new WrongReplacementStatusException(cmp.getReplacementStatus());
-
-		cmp.setWear(calcWear(cmp));
-		System.out.println("wear =  " + cmp.getWear() + "@vehicle");
-
-		int cond = cmp.getWear();
-
-		if (cond == 100 || cond >= 80) {
-
-			component.add(cmp);
-			System.out.println("Componente ottime condizioni");
-			System.out.println("Componente inserito con successo");
-
-			System.out.println(component.toString());
-
-			result = 1;
-
-			return result;
-
-		} else if (cond > 80 || cond >= 50) {
-			System.out.println("Componente buone condizioni");
-			System.out.println("Componente inserito con successo");
-
-			component.add(cmp);
-			System.out.println(component.toString());
-
-			result = 2;
-
-			return result;
-
-		} else {
-			System.out.println("Componente usurato --> NON UTILIZZABILE DA SMONTARE");
-			return 3;
-		}
-
-	}
 
 	public void removeComponent(Components cmp) throws ComponentNotFoundException {
-	    System.out.println("SONO QUI - @VEHICLE");
 
 	    boolean found = false;
 	    Iterator<Components> iterator = component.iterator();
@@ -92,15 +86,6 @@ public class Vehicle {
 	    if (!found) {
 	        throw new ComponentNotFoundException(cmp.getName());
 	    }
-	}
-
-
-	public int calcWear(Components c) {
-
-		int wear = 0;
-
-		return wear = c.calculateWear(c.getReplacementStatus());
-
 	}
 
 	public void getComponentByName(String name){
