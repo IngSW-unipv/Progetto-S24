@@ -120,8 +120,6 @@ public class McPopUpComponentController {
 						md.checkCompo(pc.getIdC().getText().toUpperCase(), pc.getNameC().getText().toUpperCase());				
 						md.removeComponent(pc.getIdC().getText().toUpperCase(), Session.getIstance().getV().getMSN());
 						
-						// lo stato devo recuperarlo dal database oppure devo modificare la classe del component
-						
 						int id = Integer.parseInt( pc.getIdC().getText());
 						
 						c = new Components(id, pc.getNameC().getText().toUpperCase());
