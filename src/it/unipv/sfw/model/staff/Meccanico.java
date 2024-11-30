@@ -64,7 +64,7 @@ public class Meccanico extends Staff {
 	}
 
 	public void removeComponent(Vehicle v, Components c) throws ComponentNotFoundException {
-		 
+		
 		 v.removeComponent(c);
 		
 	}
