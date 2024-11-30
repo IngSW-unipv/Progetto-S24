@@ -284,7 +284,7 @@ public class MeccanicoDAO {
 
 	// CHECK COMPO
 
-	public void checkCompo(String id_c, String name) throws ComponentNotFoundException {
+	public void checkCompo(String id_c, String name, String status) throws ComponentNotFoundException {
 
 		SCHEMA = "component";
 
@@ -296,11 +296,12 @@ public class MeccanicoDAO {
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
 
-			String query = "SELECT * FROM " + SCHEMA + " WHERE ID  = ? AND NAME = ?";
+			String query = "SELECT * FROM " + SCHEMA + " WHERE ID  = ? AND NAME = ? AND STATUS = ?";
 			st1 = conn.prepareStatement(query);
 
 			st1.setString(1, idc);
 			st1.setString(2, name);
+			st1.setString(3, status);
 
 			rs1 = st1.executeQuery();
 
