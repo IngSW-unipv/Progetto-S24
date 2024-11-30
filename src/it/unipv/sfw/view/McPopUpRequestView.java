@@ -217,6 +217,11 @@ public class McPopUpRequestView {
 		mexLabel.setText("SUCCESSFULLY  INSERTED");
 		mexLabel.setForeground(Color.GREEN);
 	}
+	
+	public void hide() {
+		id_v.setVisible(false);
+		id_v.setEnabled(false);
+	}
 
 	public JPanel getDataPanel() {
 		return dataPanel;
