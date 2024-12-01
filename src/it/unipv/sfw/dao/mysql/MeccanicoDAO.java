@@ -1,5 +1,7 @@
 package it.unipv.sfw.dao.mysql;
 
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -12,6 +14,7 @@ import it.unipv.sfw.exceptions.PilotNotFoundException;
 import it.unipv.sfw.exceptions.VehicleNotFoundException;
 import it.unipv.sfw.exceptions.WrongIDException;
 import it.unipv.sfw.model.pilot.Pilota;
+import it.unipv.sfw.model.staff.Session;
 
 //INSERT PILOTI, SELECT PILOTA, INSERT REQUEST, SELECT STATO COMPONENTI, REMOVE PILOTA
 public class MeccanicoDAO {
