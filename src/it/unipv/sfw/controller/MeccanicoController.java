@@ -38,8 +38,6 @@ public class MeccanicoController extends AbsController {
 			System.out.println("Errore");
 		}
 		
-		boolean isVehiclePresent = (Session.getIstance().getV() != null);
-		
 		MeccanicoView mv = new MeccanicoView();
 		MeccanicoDAO md = new MeccanicoDAO();
 
@@ -50,20 +48,20 @@ public class MeccanicoController extends AbsController {
 		
 
 		// Abilita o disabilita bottoni basati sul valore di V
-		System.out.println("veicolo: "+isVehiclePresent);
-		mv.getAddComponentButton().setEnabled(isVehiclePresent);
+		
+		mv.getAddComponentButton().setEnabled(false);
 		mv.getAddComponentButton().setVisible(false);
 
-		mv.getAddPilotButton().setEnabled(isVehiclePresent);
+		mv.getAddPilotButton().setEnabled(false);
 		mv.getAddPilotButton().setVisible(false);
 
-		mv.getRemovePilotButton().setEnabled(isVehiclePresent);
+		mv.getRemovePilotButton().setEnabled(false);
 		mv.getRemovePilotButton().setVisible(false);
 
-		mv.getRemoveComponentButton().setEnabled(isVehiclePresent);
+		mv.getRemoveComponentButton().setEnabled(false);
 		mv.getRemoveComponentButton().setVisible(false);
 
-		mv.getVisualTimePsButton().setEnabled(isVehiclePresent);
+		mv.getVisualTimePsButton().setEnabled(false);
 		mv.getVisualTimePsButton().setVisible(false);
 
 		// ADD VEHICLE
@@ -85,8 +83,11 @@ public class MeccanicoController extends AbsController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-	
-				if (isVehiclePresent) {
+				
+
+				boolean isVehiclePresent = (Session.getIstance().getId_pilot() != null);
+
+				if (isVehiclePresent == false) {
 					Session.getIstance().setOperation("NO_V");
 				} else {
 					Session.getIstance().setOperation("YES_V");
