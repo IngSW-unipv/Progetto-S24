@@ -20,9 +20,9 @@ public class McPopUpRequestController {
 		pr = new McPopUpRequestView();
 		md = new MeccanicoDAO();
 
+		System.out.println("OPERATION: " + Session.getIstance().getOperation());
+
 		if (Session.getIstance().getOperation().equals("NO_V")) {
-			
-			pr.hide();
 
 			pr.getSendButton().addActionListener(new ActionListener() {
 
@@ -31,7 +31,7 @@ public class McPopUpRequestController {
 					// TODO Auto-generated method stub
 
 					try {
-						if (pr.getId_s().getText().toUpperCase().equals(Session.getIstance().getId_staff()))
+						if (!pr.getId_s().getText().equals(Session.getIstance().getId_staff()))
 							throw new WrongIDException();
 
 					} catch (WrongIDException err) {
@@ -42,47 +42,8 @@ public class McPopUpRequestController {
 					}
 
 					try {
-						md.checkIdCompo(pr.getId_c().getText());
 
-						md.insertRequest(pr.getDesc().getText(), pr.getId_s().getText().toUpperCase(),
-								pr.getId_c().getText(), pr.getId_v().getText().toUpperCase());
-						pr.clearComponents(pr.getDataPanel());
-						pr.mex1();
-
-					} catch (ComponentNotFoundException err) {
-						// TODO Auto-generated catch block
-						pr.mex();
-						System.out.println(err);
-					}
-
-					pr.clearComponents(pr.getDataPanel());
-					pr.mex();
-
-				}
-			});
-
-		} else {
-
-			pr.getSendButton().addActionListener(new ActionListener() {
-
-				@Override
-				public void actionPerformed(ActionEvent e) {
-					// TODO Auto-generated method stub
-
-					try {
-						if (pr.getId_s().getText().toUpperCase().equals(Session.getIstance().getId_staff()))
-							throw new WrongIDException();
-
-					} catch (WrongIDException err) {
-						pr.mex();
-						System.out.println(err);
-						return;
-
-					}
-
-					try {
-						if (pr.getId_v().getText().toUpperCase().equals(Session.getIstance().getV().getMSN()))
-							throw new VehicleNotFoundException(pr.getId_v().getText());
+						md.checkVehicle(pr.getId_v().getText().toUpperCase());
 
 					} catch (VehicleNotFoundException err) {
 						pr.mex();
@@ -103,10 +64,50 @@ public class McPopUpRequestController {
 						// TODO Auto-generated catch block
 						pr.mex();
 						System.out.println(err);
+
 					}
 
 					pr.clearComponents(pr.getDataPanel());
+					pr.mex1();
 
+				}
+			});
+
+		} else {
+
+			pr.hide();
+
+			pr.getSendButton().addActionListener(new ActionListener() {
+
+				@Override
+				public void actionPerformed(ActionEvent e) {
+					// TODO Auto-generated method stub
+
+					try {
+						if (!pr.getId_s().getText().equals(Session.getIstance().getId_staff()))
+							throw new WrongIDException();
+
+					} catch (WrongIDException err) {
+						pr.mex();
+						System.out.println(err);
+						return;
+
+					}
+
+					try {
+						md.checkIdCompo(pr.getId_c().getText());
+
+						md.insertRequest(pr.getDesc().getText(), pr.getId_s().getText().toUpperCase(),
+								pr.getId_c().getText(), pr.getId_v().getText().toUpperCase());
+						pr.clearComponents(pr.getDataPanel());
+						pr.mex1();
+
+					} catch (ComponentNotFoundException err) {
+						// TODO Auto-generated catch block
+						pr.mex();
+						System.out.println(err);
+
+					}
 				}
 			});
 		}
