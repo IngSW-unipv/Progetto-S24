@@ -27,11 +27,10 @@ public class WhPopUpDeleteRequestController {
 
 				try {
 					md.checkRequest(pdr.getId_s().getText(), pdr.getId_c().getText(), pdr.getId_v().getText().toUpperCase());
-					pdr.mex1();
 					pdr.clearComponents(pdr.getDataPanel());
 				} catch (RequestNotFoundException err) {
+					pdr.mex1();
 					System.out.println(err);
-
 				}
 
 				try {
@@ -42,6 +41,7 @@ public class WhPopUpDeleteRequestController {
 					wh.data(Session.getIstance().getName(), Session.getIstance().getSurname(),
 							Session.getIstance().getWh().totalRequest());
 				}catch(SQLException err) {
+					pdr.mex1();
 					err.printStackTrace();
 				}
 					

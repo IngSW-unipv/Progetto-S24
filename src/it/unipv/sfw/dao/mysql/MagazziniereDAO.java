@@ -55,7 +55,7 @@ public class MagazziniereDAO {
 
 	}
 
-	public void removeRequest(String idc) {
+	public void removeRequest(String idc) throws SQLException {
 
 		SCHEMA = "request";
 
@@ -76,9 +76,6 @@ public class MagazziniereDAO {
 		} catch (SQLException e) {
 			e.printStackTrace();
 
-		} catch (Exception e) {
-
-			e.printStackTrace();
 		}
 
 	}
