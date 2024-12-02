@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.Set;
 
 import javax.swing.BoxLayout;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -28,6 +29,8 @@ public class WhPopUpShowRequestView {
 		frame.setTitle("ALL REQUEST");
 		frame.setSize(600, 400);
 		frame.setResizable(false);
+		ImageIcon icona = new ImageIcon(getClass().getResource("/F1-Logo.png"));
+		frame.setIconImage(icona.getImage());
 		frame.setLocationRelativeTo(null);
 		frame.setLayout(new BorderLayout());
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
