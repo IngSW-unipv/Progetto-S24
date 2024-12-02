@@ -96,9 +96,9 @@ public class McPopUpRequestController {
 
 					try {
 						md.checkIdCompo(pr.getId_c().getText());
-
+						
 						md.insertRequest(pr.getDesc().getText(), pr.getId_s().getText().toUpperCase(),
-								pr.getId_c().getText(), pr.getId_v().getText().toUpperCase());
+								pr.getId_c().getText(), Session.getIstance().getV().getMSN());
 						pr.clearComponents(pr.getDataPanel());
 						pr.mex1();
 
