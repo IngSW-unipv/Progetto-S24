@@ -4,7 +4,7 @@ public class ComponentNotFoundException  extends Exception {
 	String nameCompo;
 	
 	public ComponentNotFoundException(String name) {
-			super("Componente "+name+ "non trovato, riprovare");
+			super("Componente "+name+ " non trovato, riprovare");
 			nameCompo = name;
 		}
 	
