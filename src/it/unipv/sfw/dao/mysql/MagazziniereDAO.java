@@ -3,10 +3,12 @@ package it.unipv.sfw.dao.mysql;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.HashSet;
 import java.util.Set;
 
+import it.unipv.sfw.exceptions.RequestNotFoundException;
 import it.unipv.sfw.model.request.Request;
 
 //STAMPARE LA LISTA DELLE RICHIESTE, RIMUOVERE RICHIESTE, AGGIORNARE VALORE WEAR
@@ -53,41 +55,36 @@ public class MagazziniereDAO {
 
 	}
 
-	public boolean removeRequest(int id) {
+	public void removeRequest(String idc) {
 
 		SCHEMA = "request";
 
 		PreparedStatement st1;
 		int rs1;
 
-		boolean esito = true;
-
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
 
 			String query = "DELETE  FROM " + SCHEMA + " WHERE ID_COMPONENT = ?";
 
-			String convert = String.valueOf(id);
-
 			st1 = conn.prepareStatement(query);
 
-			st1.setString(1, convert);
+			st1.setString(1, idc);
 
 			rs1 = st1.executeUpdate();
 
-		} catch (SQLIntegrityConstraintViolationException e) {
-			esito = false;
+		} catch (SQLException e) {
+			e.printStackTrace();
 
 		} catch (Exception e) {
 
 			e.printStackTrace();
 		}
 
-		return esito;
 	}
 
 	public boolean updateComponent(int id, int wear, String status) {
-		
+
 		SCHEMA = "component";
 
 		PreparedStatement st1;
@@ -100,12 +97,12 @@ public class MagazziniereDAO {
 
 			String query = "UPDATE " + SCHEMA + " SET WEAR = ?, STATUS = ? WHERE ID = ?";
 			st1 = conn.prepareStatement(query);
-			
+
 			String c1 = String.valueOf(wear);
 			st1.setString(1, c1);
-			
+
 			st1.setString(2, status);
-			
+
 			String c2 = String.valueOf(id);
 			st1.setString(3, c2);
 
@@ -163,8 +160,7 @@ public class MagazziniereDAO {
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
 			// ATTENZIONE ALL'ACCENTO
-			String query = "SELECT COUNT(*) FROM " + SCHEMA
-					+ " WHERE  NAME = ?  AND WAREHOUSE = 1  GROUP BY NAME";
+			String query = "SELECT COUNT(*) FROM " + SCHEMA + " WHERE  NAME = ?  AND WAREHOUSE = 1  GROUP BY NAME";
 			st1 = conn.prepareStatement(query);
 
 			st1.setString(1, select);
@@ -183,19 +179,18 @@ public class MagazziniereDAO {
 		return result;
 	}
 
-	public int checkRequest(String id_s, int id_c, String id_v) {
+	public void checkRequest(String id_s, String id_c, String id_v) throws RequestNotFoundException{
 
 		SCHEMA = "request";
 
 		PreparedStatement st1;
 		ResultSet rs1;
 
-		int result = 0;
-
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
 
-			String query = "SELECT  COUNT(*) FROM " + SCHEMA + " WHERE ID_STAFF = ? AND ID_COMPONENT = ? AND ID_VEHICLE = ?";
+			String query = "SELECT  COUNT(*) FROM " + SCHEMA
+					+ " WHERE ID_STAFF = ? AND ID_COMPONENT = ? AND ID_VEHICLE = ?";
 			st1 = conn.prepareStatement(query);
 
 			String idc = String.valueOf(id_c);
@@ -206,17 +201,14 @@ public class MagazziniereDAO {
 
 			rs1 = st1.executeQuery();
 
-			if (rs1.next()) { // mi sposto alla prima riga del risultato
-				result = rs1.getInt(1); // Ottengo il valore di COUNT(*)
+			if (!rs1.next()) { // mi sposto alla prima riga del risultato
+				throw new RequestNotFoundException();
 			}
-
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		return result;
 	}
 
 	public int checkCompo(int id) {
