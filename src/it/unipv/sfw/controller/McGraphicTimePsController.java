@@ -2,8 +2,6 @@ package it.unipv.sfw.controller;
 
 import java.util.ArrayList;
 
-import javax.swing.SwingUtilities;
-
 import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.view.McGraphicTimePsView;
 

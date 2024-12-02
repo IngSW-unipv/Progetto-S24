@@ -44,8 +44,8 @@ public class MeccanicoController extends AbsController {
 		McPopUpVehicleController pvc = new McPopUpVehicleController(mv);
 		McPopUpPilotController ppc = new McPopUpPilotController(mv);
 
-		// Controllo lo stato di V nella sessione
-		
+		// Inizializzazione dei tempi di PIT STOP
+		Session.getIstance().getTps();
 
 		// Abilita o disabilita bottoni basati sul valore di V
 		
@@ -186,7 +186,6 @@ public class MeccanicoController extends AbsController {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 
-				Session.getIstance().getTps();
 				McGraphicTimePsController gtpc = new McGraphicTimePsController();
 				gtpc.initialize();
 
