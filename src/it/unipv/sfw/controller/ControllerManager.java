@@ -53,7 +53,7 @@ public class ControllerManager {
 		DAOFactory.createInstance(DAOFactory.DbType.MYSQL);
 	
 		//init frame
-		frame = new Frame(900,600);
+		frame = new Frame(560,600);
 		
 		//init controller
 		controllers = new HashMap<>(AbsController.TypeController.values().length);
