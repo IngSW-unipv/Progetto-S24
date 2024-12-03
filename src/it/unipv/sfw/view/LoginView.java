@@ -46,7 +46,7 @@ public class LoginView extends AbsView {
 
 		try {
 
-			imgBackground = new ImageIcon(this.getClass().getResource("/wallpaperLogin2.jpg"));
+			imgBackground = new ImageIcon(this.getClass().getResource("/f1_login.jpg"));
 			System.out.println("immagine wallpaper caricata");
 
 		} catch (Exception e) {
@@ -70,6 +70,7 @@ public class LoginView extends AbsView {
 		// PRIMA SEZIONE - LOGO PANEL
 		logoPanel = new JPanel();
 		logoPanel.setOpaque(false);
+		logoPanel.setBackground(Color.blue);
 
 		// TRY CATCH PER DEBUG
 		try {
@@ -99,16 +100,6 @@ public class LoginView extends AbsView {
 
 		Dimension dimField = new Dimension(250, 50);
 
-		// Prima riga - Prima colonna (userLabel)
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		gbc.gridwidth = 1; // Occupa solo una colonna
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-
-		userLabel = new JLabel("ID");
-		userLabel.setForeground(Color.YELLOW);
-		loginPanel.add(userLabel, gbc);
-
 		// Prima riga - Seconda colonna (username)
 		gbc.gridx = 1;
 		gbc.gridy = 0;
@@ -116,14 +107,6 @@ public class LoginView extends AbsView {
 		username = new JTextField("Insert ID");
 		username.setPreferredSize(dimField);
 		loginPanel.add(username, gbc);
-
-		// Seconda riga - Prima colonna (pwdLabel)
-		gbc.gridx = 0;
-		gbc.gridy = 1;
-
-		pwdLabel = new JLabel("Password");
-		pwdLabel.setForeground(Color.YELLOW);
-		loginPanel.add(pwdLabel, gbc);
 
 		// Seconda riga - Seconda colonna (pwd)
 		gbc.gridx = 1;
@@ -157,9 +140,6 @@ public class LoginView extends AbsView {
 		errorPanel.add(errLabel);
 		errorPanel.setVisible(false);
 		errorPanel.setBackground(Color.BLACK);
-
-		userLabel.setFont(mediumFont);
-		pwdLabel.setFont(mediumFont);
 
 		// Aggiunta dei FocusListener per i campi di testo
 		// FocusListener per il campo username (JTextField)
