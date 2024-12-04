@@ -39,6 +39,8 @@ public class WhPopUpDeleteRequestController {
 				} catch (RequestNotFoundException err) {
 					System.out.println(err);
 					pdr.mex1();
+					pdr.clearComponents(pdr.getDataPanel());
+					return;
 					
 				}
 					
