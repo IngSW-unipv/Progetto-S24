@@ -9,6 +9,7 @@ import it.unipv.sfw.exceptions.ComponentNotFoundException;
 import it.unipv.sfw.exceptions.PilotNotFoundException;
 import it.unipv.sfw.exceptions.VehicleNotFoundException;
 import it.unipv.sfw.exceptions.WrongIDException;
+import it.unipv.sfw.exceptions.WrongRequestException;
 
 //INSERT PILOTI, SELECT PILOTA, INSERT REQUEST, SELECT STATO COMPONENTI, REMOVE PILOTA
 public class MeccanicoDAO {
@@ -223,7 +224,7 @@ public class MeccanicoDAO {
 
 			String query = "SELECT * FROM " + SCHEMA + " WHERE ID = ? AND NAME = ? AND SURNAME = ? AND NUMBER = ?";
 			st1 = conn.prepareStatement(query);
-			
+
 			st1.setString(1, id);
 			st1.setString(2, name);
 			st1.setString(3, surname);
@@ -313,40 +314,40 @@ public class MeccanicoDAO {
 			e.printStackTrace();
 		}
 	}
-	
+
 	// CHECK ID COMPO
 
-		public void checkIdCompo(String id_c) throws ComponentNotFoundException {
+	public void checkIdCompo(String id_c) throws ComponentNotFoundException {
 
-			SCHEMA = "component";
+		SCHEMA = "component";
 
-			PreparedStatement st1;
-			ResultSet rs1;
+		PreparedStatement st1;
+		ResultSet rs1;
 
-			String idc = String.valueOf(id_c);
+		String idc = String.valueOf(id_c);
 
-			try (DBConnection db = new DBConnection(SCHEMA)) {
-				Connection conn = db.getConnection();
+		try (DBConnection db = new DBConnection(SCHEMA)) {
+			Connection conn = db.getConnection();
 
-				String query = "SELECT * FROM " + SCHEMA + " WHERE ID  = ?";
-				st1 = conn.prepareStatement(query);
+			String query = "SELECT * FROM " + SCHEMA + " WHERE ID  = ?";
+			st1 = conn.prepareStatement(query);
 
-				st1.setString(1, idc);
+			st1.setString(1, idc);
 
-				rs1 = st1.executeQuery();
+			rs1 = st1.executeQuery();
 
-				// Verifica se ci sono risultati
-				if (!rs1.next()) {
-					// Accedi ai dati solo dopo rs.next()
-					throw new ComponentNotFoundException(idc);
-				}
-
-			} catch (SQLException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
+			// Verifica se ci sono risultati
+			if (!rs1.next()) {
+				// Accedi ai dati solo dopo rs.next()
+				throw new ComponentNotFoundException(idc);
 			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
-		
+	}
+
 	// INSERT COMPO
 
 	public boolean insertComponent(String id, String msn) {
@@ -420,13 +421,13 @@ public class MeccanicoDAO {
 
 	// REMOVE COMPO
 
-	public void removeComponent(String id_c, String id_v){
+	public void removeComponent(String id_c, String id_v) {
 
 		SCHEMA = "component";
 
 		PreparedStatement st1;
 		int rs1 = 0;
-		
+
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
 
@@ -483,6 +484,39 @@ public class MeccanicoDAO {
 
 		return esito;
 
+	}
+
+	// CHECK REQUEST
+
+	public void checkRequest(String id_c) throws WrongRequestException {
+
+		SCHEMA = "request";
+
+		PreparedStatement st1;
+		ResultSet rs1;
+
+		String idc = String.valueOf(id_c);
+
+		try (DBConnection db = new DBConnection(SCHEMA)) {
+			Connection conn = db.getConnection();
+
+			String query = "SELECT * FROM " + SCHEMA + " WHERE ID_COMPONENT  = ?";
+			st1 = conn.prepareStatement(query);
+
+			st1.setString(1, idc);
+
+			rs1 = st1.executeQuery();
+
+			// Verifica se ci sono risultati
+			if (rs1.next()) {
+				// Accedi ai dati solo dopo rs.next()
+				throw new WrongRequestException(idc);
+			}
+
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 
 }
