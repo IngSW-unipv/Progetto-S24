@@ -4,6 +4,7 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -32,59 +33,67 @@ public class MagazziniereView extends AbsView {
 
 	private JLabel imgLabel, dataLabel, mex;
 
-	private ImageIcon imgUser;
+	private ImageIcon imgUser, imgWllp2;
 
 	private JTextField placeholder;
 
 	public MagazziniereView() {
 
 		frame = new JFrame("WAREHOUSEMAN");
-		frame.setSize(800, 700);
+		frame.setSize(718, 800);
 		frame.setLocationRelativeTo(null);
-		frame.setBackground(Color.BLACK);
 		frame.setLayout(new BorderLayout());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 		ImageIcon icona = new ImageIcon(getClass().getResource("/F1-Logo.png"));
 		frame.setIconImage(icona.getImage());
 
-		mainContainer = new JPanel();
-
-		mainContainer.setLayout(new BorderLayout());
-		mainContainer.setBackground(Color.BLACK);
-
 		/*
 		 * CREAZIONE 1 SEZIONE : TITOLO
 		 */
 		titlePanel = new JPanel(new BorderLayout());
-		titlePanel.setPreferredSize(new Dimension(700, 200));
-		titlePanel.setBackground(Color.BLACK);
+		titlePanel.setPreferredSize(new Dimension(718, 200));
 
 		try {
 
+			imgWllp2 = new ImageIcon(this.getClass().getResource("/wllp2.jpg"));
+			imgWllp2 = new ImageIcon(imgWllp2.getImage().getScaledInstance(718, 400, java.awt.Image.SCALE_SMOOTH));
+
 			imgUser = new ImageIcon(this.getClass().getResource("/icon.png"));
-			imgUser = new ImageIcon(imgUser.getImage().getScaledInstance(300, 350, java.awt.Image.SCALE_SMOOTH));
+			imgUser = new ImageIcon(imgUser.getImage().getScaledInstance(320, 370, java.awt.Image.SCALE_SMOOTH));
 			System.out.println("immagine user caricata");
 
 		} catch (Exception e) {
 			System.out.println(e);
 		}
-
+		
+		// imposto l'immagine di sfondo
+		mainContainer = new JPanel() {
+			@Override
+			protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				// Disegna l'immagine di sfondo
+				g.drawImage(imgWllp2.getImage(), 0, 0, getWidth(), getHeight(), this);
+			}
+		};
+		
+		mainContainer.setLayout(new BorderLayout());
+		
 		imgLabel = new JLabel(imgUser);
 		titlePanel.add(imgLabel, BorderLayout.WEST);
-
+		titlePanel.setOpaque(false);
+		
 		dataLabel = new JLabel();
-		dataLabel.setForeground(Color.WHITE);
+		dataLabel.setForeground(Color.BLACK);
 		titlePanel.add(dataLabel, BorderLayout.CENTER);
 
 		/*
 		 * CREAZIONE 2 SEZIONE: 4 BOTTONI E FINESTRE POP UP
 		 */
 		popUpPanel = new JPanel();
-		popUpPanel.setPreferredSize(new Dimension(700, 200));
-		popUpPanel.setBackground(Color.BLACK);
+		popUpPanel.setPreferredSize(new Dimension(718, 200));
 		popUpPanel.setLayout(new GridBagLayout());
-		popUpPanel.setOpaque(true);
+		popUpPanel.setOpaque(false);
 		GridBagConstraints gbc = new GridBagConstraints();
 
 		// Spaziatura interna
@@ -131,7 +140,7 @@ public class MagazziniereView extends AbsView {
 		comboBox.setEditable(true);
 		placeholder = (JTextField) comboBox.getEditor().getEditorComponent();
 		placeholder.setText("QUANTITA' COMPONENTI");
-		
+
 		popUpPanel.add(comboBox, gbc);
 
 		/*
@@ -139,11 +148,11 @@ public class MagazziniereView extends AbsView {
 		 */
 
 		mexPanel = new JPanel();
-		mexPanel.setBackground(Color.BLACK);
-
-		mex = new JLabel("SELECT A COMPONENT FROM THE MENU");
+		mexPanel.setOpaque(false);
+		
+		mex = new JLabel("SELECT A COMPONENT FROM THE MENU");	
 		mex.setHorizontalAlignment(SwingConstants.CENTER);
-		mex.setPreferredSize(new Dimension(700, 200));
+		mex.setPreferredSize(new Dimension(718, 200));
 		mex.setBackground(Color.BLACK);
 
 		mexPanel.add(mex);
@@ -196,13 +205,14 @@ public class MagazziniereView extends AbsView {
 	}
 
 	public void data(String name, String surname, int total) {
-		dataLabel.setText("NAME: " + name + "           " + "SURNAME: " + surname + "           " + "TOTAL REQUEST: " + total);
+		dataLabel.setText(
+				"NAME: " + name + "           " + "SURNAME: " + surname + "           " + "TOTAL REQUEST: " + total);
 
 	}
 
 	public void mexCombo(int quantity) {
 		String currentText = placeholder.getText();
 		mex.setText("NAME COMPONENT:  " + currentText + "             QUANTITY:  " + quantity);
-		mex.setForeground(Color.YELLOW);
+		mex.setForeground(Color.BLACK);
 	}
 }
