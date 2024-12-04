@@ -24,25 +24,22 @@ public class WhPopUpDeleteRequestController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-
+				System.out.println("ID STAFF: "+pdr.getId_c().getText());
+				System.out.println("ID COMPONENT: "+pdr.getId_c().getText());
+				System.out.println("ID VEHICLE: "+pdr.getId_c().getText());
+				
 				try {
 					md.checkRequest(pdr.getId_s().getText(), pdr.getId_c().getText(), pdr.getId_v().getText().toUpperCase());
-					pdr.clearComponents(pdr.getDataPanel());
-				} catch (RequestNotFoundException err) {
-					pdr.mex1();
-					System.out.println(err);
-				}
-
-				try {
 					md.removeRequest(pdr.getId_c().getText());
-					pdr.mex2();
 					pdr.clearComponents(pdr.getDataPanel());
 					Session.getIstance().getRequest();
 					wh.data(Session.getIstance().getName(), Session.getIstance().getSurname(),
 							Session.getIstance().getWh().totalRequest());
-				}catch(SQLException err) {
+					pdr.mex2();
+				} catch (RequestNotFoundException err) {
+					System.out.println(err);
 					pdr.mex1();
-					err.printStackTrace();
+					
 				}
 					
 
