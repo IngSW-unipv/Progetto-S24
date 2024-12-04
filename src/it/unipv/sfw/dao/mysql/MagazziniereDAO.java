@@ -9,6 +9,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 import it.unipv.sfw.exceptions.RequestNotFoundException;
+import it.unipv.sfw.exceptions.WrongIDException;
 import it.unipv.sfw.model.request.Request;
 
 //STAMPARE LA LISTA DELLE RICHIESTE, RIMUOVERE RICHIESTE, AGGIORNARE VALORE WEAR
@@ -55,7 +56,7 @@ public class MagazziniereDAO {
 
 	}
 
-	public void removeRequest(String idc) throws SQLException {
+	public void removeRequest(String idc){
 
 		SCHEMA = "request";
 
@@ -186,19 +187,17 @@ public class MagazziniereDAO {
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
 
-			String query = "SELECT  COUNT(*) FROM " + SCHEMA
+			String query = "SELECT * FROM " + SCHEMA
 					+ " WHERE ID_STAFF = ? AND ID_COMPONENT = ? AND ID_VEHICLE = ?";
 			st1 = conn.prepareStatement(query);
 
-			String idc = String.valueOf(id_c);
-
 			st1.setString(1, id_s);
-			st1.setString(2, idc);
+			st1.setString(2, id_c);
 			st1.setString(3, id_v);
 
 			rs1 = st1.executeQuery();
 
-			if (!rs1.next()) { // mi sposto alla prima riga del risultato
+			if (!rs1.next()) { // Spostati alla prima riga del risultato
 				throw new RequestNotFoundException();
 			}
 
