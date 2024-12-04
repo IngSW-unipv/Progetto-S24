@@ -3,6 +3,7 @@ package it.unipv.sfw.view;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.Graphics;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.Insets;
@@ -19,59 +20,61 @@ import it.unipv.sfw.model.staff.Session;
 
 public class MeccanicoView extends AbsView {
 
-	// frame generale
-	private JFrame frame;
+    private JFrame frame;
+    private JPanel mainContainer, popUpPanel, graphicPanel;
+    private JLayeredPane overlayPanel;
+    private JLabel imgLabel,mex, id_p;
+    private JButton addComponentButton, addPilotButton, insertVehicleButton, insertRequestButton, removeComponentButton,
+            removePilotButton, visualTimePsButton, visualStatusComponentButton;
+    private ImageIcon imgVec, imgWllp1;
 
-	// contenitori delle 3 sezioni +1 main
-	private JPanel mainContainer, popUpPanel, graphicPanel;
-
-	private JLayeredPane overlayPanel;
-
-	private JLabel imgLabel, mex, id_p;
-
-	// bottoni per l'interazione: 6
-	private JButton addComponentButton, addPilotButton, insertVehicleButton, insertRequestButton, removeComponentButton,
-			removePilotButton, visualTimePsButton, visualStatusComponentButton;
-
-	private ImageIcon imgVec;
-
-	public MeccanicoView() {
+    public MeccanicoView() {
 
 		frame = new JFrame("MECHANIC");
-		frame.setSize(800, 800);
+		frame.setSize(718, 800);
 		frame.setLocationRelativeTo(null);
-		frame.setBackground(Color.BLACK);
 		frame.setLayout(new BorderLayout());
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.setResizable(false);
 		ImageIcon icona = new ImageIcon(getClass().getResource("/F1-Logo.png"));
 		frame.setIconImage(icona.getImage());
 
-		mainContainer = new JPanel();
-
 		/*
 		 * CREAZIONE 1 SEZIONE: IMMAGINE VETTURA + OVERLAY
 		 */
 
 		try {
-
-			imgVec = new ImageIcon(this.getClass().getResource("/Foto-MacchinaF1.jpg"));
-			imgVec = new ImageIcon(imgVec.getImage().getScaledInstance(800, 400, java.awt.Image.SCALE_SMOOTH));
-			System.out.println("immagine macchina caricata");
+			
+			imgWllp1 = new ImageIcon(this.getClass().getResource("/wllp1.jpg"));
+			imgWllp1 = new ImageIcon(imgWllp1.getImage().getScaledInstance(718, 400, java.awt.Image.SCALE_SMOOTH));
+			
+			imgVec = new ImageIcon(this.getClass().getResource("/vehicleF1.png"));
+			imgVec = new ImageIcon(imgVec.getImage().getScaledInstance(718, 400, java.awt.Image.SCALE_SMOOTH));
+			System.out.println("immagini caricate");
 
 		} catch (Exception e) {
 			System.out.println(e);
 		}
 
+		//imposto l'immagine di sfondo
+		mainContainer = new JPanel(){
+			@Override
+			protected void paintComponent(Graphics g) {
+				super.paintComponent(g);
+				// Disegna l'immagine di sfondo
+				g.drawImage(imgWllp1.getImage(), 0, 0, getWidth(), getHeight(), this);
+			}
+		};
+		
+		
 		mainContainer.setLayout(new BorderLayout());
-		mainContainer.setBackground(Color.BLACK);
-
+		
 		// CREAZIONE OVERLAY
 		overlayPanel = new JLayeredPane();
 		overlayPanel.setPreferredSize(new Dimension(800, 300));
-
+		
 		imgLabel = new JLabel(imgVec);
-		imgLabel.setBounds(0, 15, 800, 300);
+		imgLabel.setBounds(0, 15, 700, 300);
 
 		overlayPanel.add(imgLabel, Integer.valueOf(1));
 
@@ -83,7 +86,7 @@ public class MeccanicoView extends AbsView {
 		mex.setHorizontalAlignment(SwingConstants.CENTER);
 
 		id_p = new JLabel("NO PILOT");
-		id_p.setForeground(Color.RED);
+		id_p.setForeground(Color.BLACK);
 		id_p.setHorizontalAlignment(SwingConstants.CENTER);
 		id_p.setBounds(120, 20, 100, 30);
 
@@ -97,9 +100,9 @@ public class MeccanicoView extends AbsView {
 		// Pannello con i bottoni in una griglia 3x2
 		popUpPanel = new JPanel();
 		popUpPanel.setPreferredSize(new Dimension(800, 100));
-		popUpPanel.setBackground(Color.BLACK);
 		popUpPanel.setLayout(new GridBagLayout());
-		popUpPanel.setOpaque(true);
+		popUpPanel.setOpaque(false);
+		
 		GridBagConstraints gbc = new GridBagConstraints();
 
 		// Spaziatura interna
@@ -165,7 +168,7 @@ public class MeccanicoView extends AbsView {
 
 		graphicPanel = new JPanel();
 		graphicPanel.setPreferredSize(new Dimension(800, 100));
-		graphicPanel.setBackground(Color.BLACK);
+		graphicPanel.setOpaque(false);
 		graphicPanel.setLayout(new GridBagLayout());
 
 		Dimension dimBtn = new Dimension(800, 300);
@@ -201,78 +204,46 @@ public class MeccanicoView extends AbsView {
 		frame.repaint();
 	}
 
-	public JButton getAddComponentButton() {
-		return addComponentButton;
-	}
+    // Getter e setter per i bottoni
+    public JButton getAddComponentButton() {
+        return addComponentButton;
+    }
 
-	public void setAddComponentButton(JButton addComponentButton) {
-		this.addComponentButton = addComponentButton;
-	}
+    public JButton getAddPilotButton() {
+        return addPilotButton;
+    }
 
-	public JButton getAddPilotButton() {
-		return addPilotButton;
-	}
+    public JButton getRemoveComponentButton() {
+        return removeComponentButton;
+    }
 
-	public void setAddPilotButton(JButton addPilotButton) {
-		this.addPilotButton = addPilotButton;
-	}
+    public JButton getRemovePilotButton() {
+        return removePilotButton;
+    }
 
-	public JButton getRemoveComponentButton() {
-		return removeComponentButton;
-	}
+    public JButton getVisualTimePsButton() {
+        return visualTimePsButton;
+    }
 
-	public void setRemoveComponentButton(JButton removeComponentButton) {
-		this.removeComponentButton = removeComponentButton;
-	}
+    public JButton getVisualStatusComponentButton() {
+        return visualStatusComponentButton;
+    }
 
-	public JButton getRemovePilotButton() {
-		return removePilotButton;
-	}
+    public JButton getInsertRequestButton() {
+        return insertRequestButton;
+    }
 
-	public void setRemovePilotButton(JButton removePilotButton) {
-		this.removePilotButton = removePilotButton;
-	}
+    public JButton getInsertVehicleButton() {
+        return insertVehicleButton;
+    }
 
-	public JButton getVisualTimePsButton() {
-		return visualTimePsButton;
-	}
+    public JLabel getId_p() {
+        return id_p;
+    }
 
-	public void setVisualTimePsButton(JButton visualTimePsButton) {
-		this.visualTimePsButton = visualTimePsButton;
-	}
-
-	public JButton getVisualStatusComponentButton() {
-		return visualStatusComponentButton;
-	}
-
-	public void setVisualStatusComponentButton(JButton visualStatusComponentButton) {
-		this.visualStatusComponentButton = visualStatusComponentButton;
-	}
-
-	public JButton getInsertRequestButton() {
-		return insertRequestButton;
-	}
-
-	public void setInsertRequestButton(JButton insertRequest) {
-		this.insertRequestButton = insertRequest;
-	}
-
-	public JButton getInsertVehicleButton() {
-		return insertVehicleButton;
-	}
-
-	public void setInsertVehicleButton(JButton insertVehicleButton) {
-		this.insertVehicleButton = insertVehicleButton;
-	}
-
-	public JLabel getId_p() {
-		return id_p;
-	}
-
-	public void setId_p() {
-		this.id_p.setText(Session.getIstance().getId_pilot());
-		id_p.setForeground(Color.GREEN);
-		frame.validate();
-	}
-
+    public void setId_p() {
+        this.id_p.setText(Session.getIstance().getId_pilot());
+        id_p.setForeground(Color.BLACK);
+        frame.validate();
+    }
 }
