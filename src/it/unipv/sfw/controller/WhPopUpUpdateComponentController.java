@@ -2,15 +2,17 @@ package it.unipv.sfw.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.sql.SQLException;
 
 import it.unipv.sfw.dao.mysql.MagazziniereDAO;
+import it.unipv.sfw.exceptions.ComponentNotFoundException;
 import it.unipv.sfw.view.WhPopUpUpdateComponentView;
 
 public class WhPopUpUpdateComponentController {
-	
+
 	private WhPopUpUpdateComponentView puc;
 	private MagazziniereDAO md;
-	
+
 	public WhPopUpUpdateComponentController() {
 		puc = new WhPopUpUpdateComponentView();
 		md = new MagazziniereDAO();
@@ -20,35 +22,30 @@ public class WhPopUpUpdateComponentController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				
-				int res = 0;
-				
-				String id_c = puc.getId_c().getText(),
-							wear = puc.getWear().getText();
-				
-				int id = Integer.parseInt(id_c),
-					 nw = Integer.parseInt(wear);
-				
-				res = md.checkCompo(id);
-				
-				if(res == 0) {
-					puc.mex1();
-					puc.clearComponents(puc.getDataPanel());
-				}else {
-					md.updateComponent(id, nw, puc.getStatus().getText());
+
+				try {
+					md.checkCompo(puc.getId_c().getText());
+					md.updateComponent(puc.getId_c().getText(), puc.getWear().getText() ,puc.getStatus().getText().toUpperCase());
 					puc.mex2();
-					puc.clearComponents(puc.getDataPanel());
+					
+				} catch (ComponentNotFoundException err) {
+					// TODO Auto-generated catch block
+					System.out.println(err);
+					puc.mex1();
 				}
 				
-			}
+				puc.clearComponents(puc.getDataPanel());
+				}
+				
+			
 			
 		});
-		
-	}
-	
+
+}
+
 	public void showWindow() {
 		// TODO Auto-generated method stub
 		puc.show();
 	}
-	
+
 }

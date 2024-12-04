@@ -8,6 +8,7 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.HashSet;
 import java.util.Set;
 
+import it.unipv.sfw.exceptions.ComponentNotFoundException;
 import it.unipv.sfw.exceptions.RequestNotFoundException;
 import it.unipv.sfw.exceptions.WrongIDException;
 import it.unipv.sfw.model.request.Request;
@@ -81,7 +82,7 @@ public class MagazziniereDAO {
 
 	}
 
-	public boolean updateComponent(int id, int wear, String status) {
+	public boolean updateComponent(String id, String wear, String status) {
 
 		SCHEMA = "component";
 
@@ -106,7 +107,7 @@ public class MagazziniereDAO {
 
 			rs1 = st1.executeUpdate();
 
-		} catch (SQLIntegrityConstraintViolationException e) {
+		} catch (SQLException e) {
 			esito = false;
 
 		} catch (Exception e) {
@@ -201,43 +202,41 @@ public class MagazziniereDAO {
 				throw new RequestNotFoundException();
 			}
 
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
 
-	public int checkCompo(int id) {
+	public void checkCompo(String id_c) throws ComponentNotFoundException {
 
 		SCHEMA = "component";
 
 		PreparedStatement st1;
 		ResultSet rs1;
 
-		int result = 0;
+		String idc = String.valueOf(id_c);
 
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
 
-			String query = "SELECT  COUNT(*) FROM " + SCHEMA + " WHERE ID = ?";
+			String query = "SELECT * FROM " + SCHEMA + " WHERE ID  = ? ";
 			st1 = conn.prepareStatement(query);
 
-			String c1 = String.valueOf(id);
-			st1.setString(1, c1);
+			st1.setString(1, idc);
 
 			rs1 = st1.executeQuery();
 
-			if (rs1.next()) { // mi sposto alla prima riga del risultato
-				result = rs1.getInt(1); // Ottengo il valore di COUNT(*)
+			// Verifica se ci sono risultati
+			if (!rs1.next()) {
+				// Accedi ai dati solo dopo rs.next()
+				throw new ComponentNotFoundException(idc);
 			}
 
-		} catch (Exception e) {
+		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-
-		return result;
-
 	}
 
 }
