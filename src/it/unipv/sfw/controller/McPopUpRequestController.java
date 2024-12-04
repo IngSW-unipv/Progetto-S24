@@ -7,6 +7,7 @@ import it.unipv.sfw.dao.mysql.MeccanicoDAO;
 import it.unipv.sfw.exceptions.ComponentNotFoundException;
 import it.unipv.sfw.exceptions.VehicleNotFoundException;
 import it.unipv.sfw.exceptions.WrongIDException;
+import it.unipv.sfw.exceptions.WrongRequestException;
 import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.view.McPopUpRequestView;
 
@@ -54,13 +55,14 @@ public class McPopUpRequestController {
 
 					try {
 						md.checkIdCompo(pr.getId_c().getText());
+						md.checkRequest(pr.getId_c().getText());
 
 						md.insertRequest(pr.getDesc().getText(), pr.getId_s().getText().toUpperCase(),
 								pr.getId_c().getText(), pr.getId_v().getText().toUpperCase());
 						pr.clearComponents(pr.getDataPanel());
 						pr.mex1();
 
-					} catch (ComponentNotFoundException err) {
+					} catch (ComponentNotFoundException | WrongRequestException err) {
 						// TODO Auto-generated catch block
 						pr.mex();
 						System.out.println(err);
@@ -68,7 +70,6 @@ public class McPopUpRequestController {
 					}
 
 					pr.clearComponents(pr.getDataPanel());
-					pr.mex1();
 
 				}
 			});
@@ -96,13 +97,14 @@ public class McPopUpRequestController {
 
 					try {
 						md.checkIdCompo(pr.getId_c().getText());
+						md.checkRequest(pr.getId_c().getText());
 						
 						md.insertRequest(pr.getDesc().getText(), pr.getId_s().getText().toUpperCase(),
 								pr.getId_c().getText(), Session.getIstance().getV().getMSN());
 						pr.clearComponents(pr.getDataPanel());
 						pr.mex1();
 
-					} catch (ComponentNotFoundException err) {
+					} catch (ComponentNotFoundException | WrongRequestException err) {
 						// TODO Auto-generated catch block
 						pr.mex();
 						System.out.println(err);
