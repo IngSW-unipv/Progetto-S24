@@ -37,7 +37,7 @@ public class WhPopUpUpdateComponentView {
 
 	public WhPopUpUpdateComponentView() {
 
-		frame = new JFrame("UPDATE REQUEST");
+		frame = new JFrame("UPDATE COMPONENT");
 
 		frame.setSize(450, 405);
 		frame.setBackground(Color.BLACK);
@@ -53,7 +53,7 @@ public class WhPopUpUpdateComponentView {
 		 * CREAZIONE 1 SEZIONE
 		 */
 
-		titleLabel = new JLabel("UPDATE REQUEST", SwingConstants.CENTER);
+		titleLabel = new JLabel("UPDATE COMPONENT", SwingConstants.CENTER);
 
 		titleLabel.setForeground(Color.WHITE);
 		titleLabel.setOpaque(true);
