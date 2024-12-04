@@ -61,7 +61,15 @@ public class MeccanicoView extends AbsView {
 			System.out.println(e);
 		}
 
-
+		// imposto l'immagine di sfondo
+				mainContainer = new JPanel() {
+					@Override
+					protected void paintComponent(Graphics g) {
+						super.paintComponent(g);
+						// Disegna l'immagine di sfondo
+						g.drawImage(imgWllp1.getImage(), 0, 0, getWidth(), getHeight(), this);
+					}
+				};
 
 		mainContainer.setLayout(new BorderLayout());
 
