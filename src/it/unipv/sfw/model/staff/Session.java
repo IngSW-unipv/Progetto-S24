@@ -24,7 +24,7 @@ public class Session {
 	private Vehicle v;
 
 	/**
-	 * @return L'istanza corrente di {@link Sessione}, nel caso non esista la crea.
+	 * @return L'istanza corrente di {@link Session}, nel caso non esista la crea.
 	 */
 	public static Session getIstance() {
 
