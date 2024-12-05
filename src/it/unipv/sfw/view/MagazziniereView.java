@@ -53,7 +53,7 @@ public class MagazziniereView extends AbsView {
 
 		try {
 
-			imgWllp2 = new ImageIcon(this.getClass().getResource("/wllp2.jpg"));
+			imgWllp2 = new ImageIcon(this.getClass().getResource("/wallpaper.jpg"));
 			imgWllp2 = new ImageIcon(imgWllp2.getImage().getScaledInstance(718, 400, java.awt.Image.SCALE_SMOOTH));
 
 			imgUser = new ImageIcon(this.getClass().getResource("/icon.png"));
@@ -150,7 +150,7 @@ public class MagazziniereView extends AbsView {
 		mex = new JLabel("SELECT A COMPONENT FROM THE MENU");	
 		mex.setHorizontalAlignment(SwingConstants.CENTER);
 		mex.setPreferredSize(new Dimension(718, 200));
-		mex.setBackground(Color.BLACK);
+		mex.setForeground(Color.BLACK);
 
 		mexPanel.add(mex);
 
@@ -198,7 +198,7 @@ public class MagazziniereView extends AbsView {
 
 	public void setMex() {
 		mex.setText("SELECT A COMPONENT FROM THE MENU");
-		mex.setForeground(Color.GRAY);
+		mex.setForeground(Color.BLACK);
 	}
 
 	public void data(String name, String surname, int total) {

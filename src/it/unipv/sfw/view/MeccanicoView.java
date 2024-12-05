@@ -50,7 +50,7 @@ public class MeccanicoView extends AbsView {
 
 		try {
 
-			imgWllp1 = new ImageIcon(this.getClass().getResource("/wallpaper3.jpg"));
+			imgWllp1 = new ImageIcon(this.getClass().getResource("/wallpaper.jpg"));
 			imgWllp1 = new ImageIcon(imgWllp1.getImage().getScaledInstance(718, 400, java.awt.Image.SCALE_SMOOTH));
 
 			imgVec = new ImageIcon(this.getClass().getResource("/vehicleF1.png"));
