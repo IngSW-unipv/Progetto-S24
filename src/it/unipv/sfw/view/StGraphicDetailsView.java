@@ -5,6 +5,7 @@ import java.awt.Color;
 import java.awt.Component;
 import java.util.Set;
 
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
@@ -31,7 +32,9 @@ public class StGraphicDetailsView {
 		frame.setLocationRelativeTo(null); // Questo centra la finestra sullo schermo
 		frame.setResizable(false);
 		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-
+		ImageIcon icona = new ImageIcon(getClass().getResource("/F1-Logo.png"));
+		frame.setIconImage(icona.getImage());
+		
 		mainPanel = new JPanel();
         
 		String[] column = { "ID", "NAME", "WEAR" };

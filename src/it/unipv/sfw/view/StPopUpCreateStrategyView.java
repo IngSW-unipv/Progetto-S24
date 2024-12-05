@@ -29,7 +29,7 @@ public class StPopUpCreateStrategyView {
 	public StPopUpCreateStrategyView() {
 		// Setup base components
 		frame = new JFrame("CREATE STRATEGY");
-		frame.setSize(800, 700);
+		frame.setSize(600, 700);
 		frame.setLocationRelativeTo(null);
 		frame.setBackground(Color.BLACK);
 		frame.setLayout(new BorderLayout());
@@ -76,7 +76,6 @@ public class StPopUpCreateStrategyView {
 		strategyPanel = new JPanel();
 		strategyPanel.setPreferredSize(new Dimension(600, 300));
 		strategyPanel.setBackground(Color.BLACK);
-		strategyPanel.setOpaque(true);
 
 		// Impostiamo GridBagLayout
 		strategyPanel.setLayout(new GridBagLayout());
