@@ -1,7 +1,6 @@
 package it.unipv.sfw.view;
 
 import java.awt.BorderLayout;
-import java.util.HashMap;
 import java.util.Set;
 
 import javax.swing.BoxLayout;

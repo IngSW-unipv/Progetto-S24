@@ -6,7 +6,6 @@ import java.awt.event.ActionListener;
 import it.unipv.sfw.dao.mysql.MeccanicoDAO;
 import it.unipv.sfw.exceptions.PilotNotFoundException;
 import it.unipv.sfw.exceptions.VehicleNotFoundException;
-import it.unipv.sfw.model.staff.Meccanico;
 import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.view.McPopUpVehicleView;
 import it.unipv.sfw.view.MeccanicoView;

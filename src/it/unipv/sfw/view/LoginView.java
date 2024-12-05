@@ -19,8 +19,6 @@ import javax.swing.JPanel;
 import javax.swing.JPasswordField;
 import javax.swing.JTextField;
 
-import it.unipv.sfw.frame.Frame;
-
 /**
  * Classe che crea la view della pagina di login usata dagli utenti per accedere
  * al sistema.
@@ -33,7 +31,7 @@ public class LoginView extends AbsView {
 
 	private JPasswordField pwd;
 
-	private JLabel imgBackgroundLabel, imgLogoLabel, userLabel, pwdLabel, errLabel;
+	private JLabel imgBackgroundLabel, imgLogoLabel, errLabel;
 
 	private JButton loginBtn;
 
@@ -41,7 +39,6 @@ public class LoginView extends AbsView {
 
 	public LoginView() {
 
-		Font mediumFont = new Font("Arial", Font.BOLD, 16);
 		System.out.println("ora sono qui - @LOGINVIEW");
 
 		try {

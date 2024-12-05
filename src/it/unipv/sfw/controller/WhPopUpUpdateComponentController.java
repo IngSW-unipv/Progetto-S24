@@ -2,7 +2,6 @@ package it.unipv.sfw.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
-import java.sql.SQLException;
 
 import it.unipv.sfw.dao.mysql.MagazziniereDAO;
 import it.unipv.sfw.exceptions.ComponentNotFoundException;
