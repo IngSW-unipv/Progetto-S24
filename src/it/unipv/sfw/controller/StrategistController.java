@@ -4,10 +4,12 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
 import it.unipv.sfw.dao.mysql.VehicleDAO;
+import it.unipv.sfw.exceptions.DuplicateComponentException;
 import it.unipv.sfw.model.component.Components;
 import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.model.staff.Staff;
 import it.unipv.sfw.model.staff.Stratega;
+import it.unipv.sfw.model.vehicle.Vehicle;
 import it.unipv.sfw.view.StrategistView;
 
 public class StrategistController extends AbsController {
@@ -28,34 +30,28 @@ public class StrategistController extends AbsController {
 	public void initialize() {
 		// TODO Auto-generated method stub
 
-//		//inizializzare una macchina per controllare le funzioni di create strategy
-//		Vehicle v = new Vehicle("SF24-001");
-//		Components c1 = new Components(1,"MOTORE TERMICO","USED");
-//		Components c2 = new Components(2,"ERS","USED");
-//		Components c3 = new Components(3,"ALA ANTERIORE","USED");
-//		
-//		Session.getIstance().setV(v);
-//		try {
-//			
-//			c1.setWear(50);
-//			c2.setWear(60);
-//			c3.setWear(60);
-//			
-//			v.addComponent(c1);
-//			v.addComponent(c2);
-//			v.addComponent(c3);
-//			
-//			
-//		} catch (WrongReplacementStatusException e) {
-//			// TODO Auto-generated catch block
-//			e.printStackTrace();
-//		}
-//		
-		 for (Components c : Session.getIstance().getV().getComponent()) {
-	            System.out.println("ID: " + c.getIdComponent() + ", NAME: " + c.getName() + ", Status: " + c.getReplacementStatus());
-	        }
-		 
-		//s
+		// inizializzare una macchina per controllare le funzioni di create strategy
+		Vehicle v = new Vehicle("SF24-001");
+		Components c1 = new Components(1, "MOTORE TERMICO");
+		Components c2 = new Components(2, "ERS");
+		Components c3 = new Components(3, "ALA ANTERIORE");
+
+		Session.getIstance().setV(v);
+
+		c1.setReplacementStatus("USED");
+		c2.setReplacementStatus("USED");
+		c3.setReplacementStatus("USED");
+		
+		try {
+			v.addComponent(c1);
+			v.addComponent(c2);
+			v.addComponent(c3);
+		} catch (DuplicateComponentException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+		// s
 		try {
 
 			user = Session.getIstance().getCurrentUser();
@@ -80,22 +76,23 @@ public class StrategistController extends AbsController {
 			}
 
 		});
-		
-		sv.getCreateStrategyButton().addActionListener(new ActionListener(){
+
+		sv.getCreateStrategyButton().addActionListener(new ActionListener() {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				StPopUpCreateStrategyController scs = new StPopUpCreateStrategyController(sv.getTab().getRowCount(),timeLap);
+				StPopUpCreateStrategyController scs = new StPopUpCreateStrategyController(sv.getTab().getRowCount(),
+						timeLap);
 				scs.showWindow();
 			}
-			
+
 		});
 
 		this.minT1 = 0;
 		this.minT2 = 0;
 		this.minT3 = 0;
-		
+
 		sv.setVisible(true);
 		view = sv;
 	}
@@ -107,14 +104,14 @@ public class StrategistController extends AbsController {
 		int app2 = Session.getIstance().getV().getTimeSect2(); // Settore 2
 		int app3 = Session.getIstance().getV().getTimeSect3(); // Settore 3
 		timeLap = app1 + app2 + app3; // Tempo totale del giro
-		
+
 		Session.getIstance().getS().setTimeLap(timeLap);
-		
+
 		// Inizializza i minimi solo se sono 0 (primo set di valori)
 		if (minT1 == 0 && minT2 == 0 && minT3 == 0) {
 			minT1 = app1;
 			minT2 = app2;
-			minT3 = app3;	
+			minT3 = app3;
 		}
 
 		// Confronta e aggiorna i minimi
