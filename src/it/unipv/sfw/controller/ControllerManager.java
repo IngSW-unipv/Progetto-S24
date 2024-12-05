@@ -69,7 +69,7 @@ public class ControllerManager {
         // Ottieni il controller dalla cache
         currentController = controllers.get(controllerType);
         currentController.initialize();
-        currentController.onLoad();
+       // currentController.onLoad();
 
         // Carica la view del controller nel frame
         frame.loadView(currentController.getView());
