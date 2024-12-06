@@ -221,6 +221,10 @@ public class McPopUpRequestView {
 		id_v.setVisible(false);
 		id_v.setEnabled(false);
 	}
+	
+	public void title() {
+		frame.setTitle("REMOVE COMPONENT");
+	}
 
 	public JPanel getDataPanel() {
 		return dataPanel;
