@@ -1,9 +1,7 @@
 package it.unipv.sfw.model.staff;
 
 import java.util.ArrayList;
-import java.util.LinkedHashSet;
 import java.util.Random;
-import java.util.Set;
 
 import it.unipv.sfw.exceptions.ComponentNotFoundException;
 import it.unipv.sfw.exceptions.DuplicateComponentException;
@@ -17,15 +15,7 @@ public class Meccanico extends Staff {
 	 */
 	private String MSN;
 	
-	/*
-	 * il team dei meccanici si suddividono in 2 squadre (1 per pilota), ma nel caso
-	 * un pilota non potesse gareggiare per un imprevisto il meccanico aggiunge il
-	 * veicolo del sostituto. non si utilizza una macchina unica per via delle
-	 * caratteristiche di guida diverse.
-	 */
-	
-	// è un set -> no duplicati, linked -> posso simulare un ordinamento
-	protected Set<Vehicle> vehicles = new LinkedHashSet<>();
+	private Vehicle vehicles;
 
 	protected ArrayList<Integer> allTimePitStop = new ArrayList<>();
 	protected ArrayList<Integer> anomalyTime = new ArrayList<>();
@@ -40,16 +30,8 @@ public class Meccanico extends Staff {
 		MSN = getMSN();
 		Vehicle v = new Vehicle(MSN);
 		
-		vehicles.add(v);
+		return vehicles = v;
 		
-		// Funzione per restituire l'ultimo elemento del vettore vehicles
-		Vehicle vec = null;
-		for (Vehicle vcl : vehicles) {
-			vec = vcl; // Alla fine del ciclo, avrò l'ultimo elemento
-			System.out.println(vcl);
-		}
-		
-		return vec;
 	}
 
 	public int addComponent(Vehicle v, Components c) throws DuplicateComponentException {
@@ -116,11 +98,11 @@ public class Meccanico extends Staff {
 		return Staff.TypeController.MECCANICO;
 	}
 
-	public Set<Vehicle> getVehicles() {
+	public Vehicle getVehicles() {
 		return vehicles;
 	}
 
-	public void setVehicles(Set<Vehicle> vehicles) {
+	public void setVehicles(Vehicle vehicles) {
 		this.vehicles = vehicles;
 	}
 
