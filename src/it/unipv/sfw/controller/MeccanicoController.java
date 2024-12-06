@@ -125,13 +125,24 @@ public class MeccanicoController extends AbsController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method
+					
+				boolean isComponentPresent = (Session.getIstance().getV().getComponent().isEmpty());
+				
+				if(isComponentPresent) {
+					
+					// messaggio pop up che avverte di rimuovere prima di aggiungere
+					JOptionPane.showMessageDialog(null, "INSERT A COMPONENT BEFORE TO REMOVING", "INFORMATION",
+							JOptionPane.INFORMATION_MESSAGE);
+				}else {
+					
+					Session.getIstance().setOperation("REMOVE");
+					McPopUpComponentController pcc = new McPopUpComponentController();
+					System.out.println("il contenuto è: " + Session.getIstance().getOperation()
+							+ " @MECCANICO CONTROLLER-REMOVE COMPONENT");
+					pcc.showWindow();
+					pcc.clear();
+				}
 
-				Session.getIstance().setOperation("REMOVE");
-				McPopUpComponentController pcc = new McPopUpComponentController();
-				System.out.println("il contenuto è: " + Session.getIstance().getOperation()
-						+ " @MECCANICO CONTROLLER-REMOVE COMPONENT");
-				pcc.showWindow();
-				pcc.clear();
 			}
 
 		});
