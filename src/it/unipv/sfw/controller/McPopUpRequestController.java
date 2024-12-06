@@ -43,17 +43,6 @@ public class McPopUpRequestController {
 					}
 
 					try {
-
-						md.checkVehicle(pr.getId_v().getText().toUpperCase());
-
-					} catch (VehicleNotFoundException err) {
-						pr.mex();
-						System.out.println(err);
-						return;
-
-					}
-
-					try {
 						md.checkIdCompo(pr.getId_c().getText());
 						md.checkRequest(pr.getId_c().getText());
 
@@ -68,6 +57,17 @@ public class McPopUpRequestController {
 						System.out.println(err);
 
 					}
+					
+					try {
+
+						md.checkVehicle(pr.getId_v().getText().toUpperCase());
+
+					} catch (VehicleNotFoundException err) {
+						pr.mex();
+						System.out.println(err);
+						return;
+
+					}
 
 					pr.clearComponents(pr.getDataPanel());
 
@@ -77,7 +77,8 @@ public class McPopUpRequestController {
 		} else {
 
 			pr.hide();
-
+			pr.title();
+			
 			pr.getSendButton().addActionListener(new ActionListener() {
 
 				@Override
