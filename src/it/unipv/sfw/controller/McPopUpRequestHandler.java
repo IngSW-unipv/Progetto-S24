@@ -11,12 +11,12 @@ import it.unipv.sfw.exceptions.WrongRequestException;
 import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.view.McPopUpRequestView;
 
-public class McPopUpRequestController {
+public class McPopUpRequestHandler {
 
 	private McPopUpRequestView pr;
 	private MeccanicoDAO md;
 
-	public McPopUpRequestController() {
+	public McPopUpRequestHandler() {
 
 		pr = new McPopUpRequestView();
 		md = new MeccanicoDAO();

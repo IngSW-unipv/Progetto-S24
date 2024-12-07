@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JOptionPane;
 
+import it.unipv.sfw.controller.AbsController.TypeController;
 import it.unipv.sfw.dao.mysql.MeccanicoDAO;
 import it.unipv.sfw.model.staff.Meccanico;
 import it.unipv.sfw.model.staff.Session;
@@ -21,6 +22,12 @@ public class MeccanicoController extends AbsController {
 	public TypeController getType() {
 		// TODO Auto-generated method stub
 		return TypeController.MECCANICO;
+	}
+	
+	public enum Controller{
+		
+		VEHICLE, PILOT, COMPONENT, REQUEST, PITSTOP, STATUS_COMPO;
+		
 	}
 
 	@Override
@@ -40,9 +47,9 @@ public class MeccanicoController extends AbsController {
 		
 		MeccanicoView mv = new MeccanicoView();
 		MeccanicoDAO md = new MeccanicoDAO();
-
-		McPopUpVehicleController pvc = new McPopUpVehicleController(mv);
-		McPopUpPilotController ppc = new McPopUpPilotController(mv);
+		
+		McPopUpVehicleHandler pvc = new McPopUpVehicleHandler(mv);
+		McPopUpPilotHandler ppc = new McPopUpPilotHandler(mv);
 
 		// Inizializzazione dei tempi di PIT STOP
 		Session.getIstance().getTps();
@@ -92,7 +99,7 @@ public class MeccanicoController extends AbsController {
 				} else {
 					Session.getIstance().setOperation("YES_V");
 				}
-				McPopUpRequestController prc = new McPopUpRequestController();
+				McPopUpRequestHandler prc = new McPopUpRequestHandler();
 				prc.showWindow();
 				prc.clear();
 
@@ -108,7 +115,7 @@ public class MeccanicoController extends AbsController {
 				// TODO Auto-generated method stub
 
 				Session.getIstance().setOperation("ADD");
-				McPopUpComponentController pcc = new McPopUpComponentController();
+				McPopUpComponentHandler pcc = new McPopUpComponentHandler();
 				System.out.println("il contenuto è: " + Session.getIstance().getOperation()
 						+ " @MECCANICO CONTROLLER-ADD COMPONENT");
 
@@ -136,7 +143,7 @@ public class MeccanicoController extends AbsController {
 				}else {
 					
 					Session.getIstance().setOperation("REMOVE");
-					McPopUpComponentController pcc = new McPopUpComponentController();
+					McPopUpComponentHandler pcc = new McPopUpComponentHandler();
 					System.out.println("il contenuto è: " + Session.getIstance().getOperation()
 							+ " @MECCANICO CONTROLLER-REMOVE COMPONENT");
 					pcc.showWindow();
@@ -197,7 +204,7 @@ public class MeccanicoController extends AbsController {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 
-				McGraphicTimePsController gtpc = new McGraphicTimePsController();
+				McGraphicTimePsHandler gtpc = new McGraphicTimePsHandler();
 				gtpc.initialize();
 
 			}
@@ -210,7 +217,7 @@ public class MeccanicoController extends AbsController {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 
-				McGraphicAllComponentController gacc = new McGraphicAllComponentController();
+				McGraphicAllComponentHandler gacc = new McGraphicAllComponentHandler();
 				gacc.showWindow();
 
 			}
@@ -227,5 +234,6 @@ public class MeccanicoController extends AbsController {
 		// TODO Auto-generated method stub
 		this.initialize();
 	}
+	
 
 }

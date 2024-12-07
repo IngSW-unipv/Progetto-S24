@@ -11,7 +11,7 @@ import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.view.McPopUpComponentView;
 import it.unipv.sfw.view.McPopUpRequestView;
 
-public class McPopUpComponentController {
+public class McPopUpComponentHandler {
 
 	private McPopUpComponentView pc;
 	private McPopUpRequestView pr;
@@ -19,7 +19,7 @@ public class McPopUpComponentController {
 
 	private Components c;
 
-	public McPopUpComponentController() {
+	public McPopUpComponentHandler() {
 
 		pc = new McPopUpComponentView();
 		pr = new McPopUpRequestView();

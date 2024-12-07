@@ -5,14 +5,14 @@ import java.util.ArrayList;
 import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.view.McGraphicTimePsView;
 
-public class McGraphicTimePsController { 
+public class McGraphicTimePsHandler { 
 	
 	private ArrayList<String> labelTime = new ArrayList<>();
 	private ArrayList<String> anomalyLabelTime = new ArrayList<>();
 	
 	private McGraphicTimePsView gtpv  = new McGraphicTimePsView(Session.getIstance().getM().getAllTimePitStop(), labelTime);
 	
-	public McGraphicTimePsController() {
+	public McGraphicTimePsHandler() {
 
 	}
 	

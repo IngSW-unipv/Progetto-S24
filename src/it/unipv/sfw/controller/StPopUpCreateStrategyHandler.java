@@ -9,7 +9,7 @@ import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.view.StGraphicDetailsView;
 import it.unipv.sfw.view.StPopUpCreateStrategyView;
 
-public class StPopUpCreateStrategyController {
+public class StPopUpCreateStrategyHandler {
 
 	private StPopUpCreateStrategyView pcs;
 	private StGraphicDetailsView gdv;
@@ -17,7 +17,7 @@ public class StPopUpCreateStrategyController {
 	private final int setPoint = 81000;
 	private int average = 0;
 	
-	public StPopUpCreateStrategyController(int rc, int tmeLap) {
+	public StPopUpCreateStrategyHandler(int rc, int tmeLap) {
 
 		pcs = new StPopUpCreateStrategyView();
 		

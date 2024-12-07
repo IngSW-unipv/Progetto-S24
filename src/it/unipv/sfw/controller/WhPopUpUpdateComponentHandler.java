@@ -7,12 +7,12 @@ import it.unipv.sfw.dao.mysql.MagazziniereDAO;
 import it.unipv.sfw.exceptions.ComponentNotFoundException;
 import it.unipv.sfw.view.WhPopUpUpdateComponentView;
 
-public class WhPopUpUpdateComponentController {
+public class WhPopUpUpdateComponentHandler {
 
 	private WhPopUpUpdateComponentView puc;
 	private MagazziniereDAO md;
 
-	public WhPopUpUpdateComponentController() {
+	public WhPopUpUpdateComponentHandler() {
 		puc = new WhPopUpUpdateComponentView();
 		md = new MagazziniereDAO();
 		

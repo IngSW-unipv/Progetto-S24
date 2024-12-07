@@ -3,11 +3,11 @@ package it.unipv.sfw.controller;
 import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.view.WhPopUpShowRequestView;
 
-public class WhPopUpShowRequestController {
+public class WhPopUpShowRequestHandler {
 
 	private WhPopUpShowRequestView psr = new WhPopUpShowRequestView(Session.getIstance().getWh().getRequest());
 
-	public  WhPopUpShowRequestController() {
+	public  WhPopUpShowRequestHandler() {
 	}
 
 	public void showWindow() {

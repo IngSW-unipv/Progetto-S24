@@ -39,7 +39,7 @@ public class MagazziniereController extends AbsController {
 		MagazziniereDAO md = new MagazziniereDAO();
 		
 		WhPopUpDeleteRequestController wdrc = new WhPopUpDeleteRequestController(mv);
-		WhPopUpUpdateComponentController wupc = new WhPopUpUpdateComponentController();
+		WhPopUpUpdateComponentHandler wupc = new WhPopUpUpdateComponentHandler();
 		
 		Session.getIstance().getRequest();
 		mv.data(Session.getIstance().getName(), Session.getIstance().getSurname(), Session.getIstance().getWh().totalRequest());
@@ -50,7 +50,7 @@ public class MagazziniereController extends AbsController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				WhPopUpShowRequestController wsrc = new WhPopUpShowRequestController();
+				WhPopUpShowRequestHandler wsrc = new WhPopUpShowRequestHandler();
 			
 				System.out.println(Session.getIstance().getWh().getRequest());
 				

@@ -9,12 +9,12 @@ import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.view.McPopUpPilotView;
 import it.unipv.sfw.view.MeccanicoView;
 
-public class McPopUpPilotController {
+public class McPopUpPilotHandler {
 
 	private McPopUpPilotView pv;
 	private MeccanicoDAO md;
 
-	public McPopUpPilotController(MeccanicoView mv) {
+	public McPopUpPilotHandler(MeccanicoView mv) {
 
 		pv = new McPopUpPilotView();
 		md = new MeccanicoDAO();

@@ -82,7 +82,7 @@ public class StrategistController extends AbsController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-				StPopUpCreateStrategyController scs = new StPopUpCreateStrategyController(sv.getTab().getRowCount(),
+				StPopUpCreateStrategyHandler scs = new StPopUpCreateStrategyHandler(sv.getTab().getRowCount(),
 						timeLap);
 				scs.showWindow();
 			}
