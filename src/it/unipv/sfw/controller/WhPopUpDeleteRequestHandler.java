@@ -9,12 +9,12 @@ import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.view.MagazziniereView;
 import it.unipv.sfw.view.WhPopUpDeleteRequestView;
 
-public class WhPopUpDeleteRequestController {
+public class WhPopUpDeleteRequestHandler {
 
 	private WhPopUpDeleteRequestView pdr;
 	private MagazziniereDAO md;
 
-	public WhPopUpDeleteRequestController(MagazziniereView wh) {
+	public WhPopUpDeleteRequestHandler(MagazziniereView wh) {
 		pdr = new WhPopUpDeleteRequestView();
 		md = new MagazziniereDAO();
 

@@ -38,7 +38,7 @@ public class MagazziniereController extends AbsController {
 		MagazziniereView mv = new MagazziniereView();
 		MagazziniereDAO md = new MagazziniereDAO();
 		
-		WhPopUpDeleteRequestController wdrc = new WhPopUpDeleteRequestController(mv);
+		WhPopUpDeleteRequestHandler wdrc = new WhPopUpDeleteRequestHandler(mv);
 		WhPopUpUpdateComponentHandler wupc = new WhPopUpUpdateComponentHandler();
 		
 		Session.getIstance().getRequest();
