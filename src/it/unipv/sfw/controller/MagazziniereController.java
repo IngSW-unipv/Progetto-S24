@@ -10,11 +10,13 @@ import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.model.staff.Staff;
 import it.unipv.sfw.view.MagazziniereView;
 
-public class MagazziniereController extends AbsController {
+public class MagazziniereController extends AbsController{
 	private Staff user;
 	
 	protected Magazziniere m;
 
+	private Observable obs;
+	
 	@Override
 	public TypeController getType() {
 		// TODO Auto-generated method stub
@@ -35,15 +37,17 @@ public class MagazziniereController extends AbsController {
 			System.out.println("Errore");
 		}
 
+		obs = new Observable();
+		
 		MagazziniereView mv = new MagazziniereView();
 		MagazziniereDAO md = new MagazziniereDAO();
 		
-		WhPopUpDeleteRequestHandler wdrc = new WhPopUpDeleteRequestHandler(mv);
+		WhPopUpDeleteRequestHandler wdrc = new WhPopUpDeleteRequestHandler(obs);
 		WhPopUpUpdateComponentHandler wupc = new WhPopUpUpdateComponentHandler();
 		
 		Session.getIstance().getRequest();
 		mv.data(Session.getIstance().getName(), Session.getIstance().getSurname(), Session.getIstance().getWh().totalRequest());
-		
+		obs.addObserver(mv);
 		
 		mv.getShowRequestButton().addActionListener( new ActionListener() {
 
