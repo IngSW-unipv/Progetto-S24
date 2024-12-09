@@ -3,6 +3,7 @@ package it.unipv.sfw.controller;
 import java.awt.Color;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Set;
 
 import it.unipv.sfw.model.component.Components;
 import it.unipv.sfw.model.staff.Session;
@@ -21,11 +22,11 @@ public class StPopUpCreateStrategyHandler {
 
 		pcs = new StPopUpCreateStrategyView();
 		
-		for(Components c : Session.getIstance().getV().getComponent()) {
+		for(Components c : getComponent()) {
 			average += c.getWear();
 		}
 		
-		average = average/Session.getIstance().getV().getComponent().size();
+		average = average/getComponentSize();
 		
 		if(average > 70) {
 			pcs.getComponentLabel1().setText("DEGRADATION OF COMPONENTS:              " + average);
@@ -56,7 +57,7 @@ public class StPopUpCreateStrategyHandler {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				//Session.getIstance().getV().getComponents();
-				gdv = new StGraphicDetailsView(Session.getIstance().getV().getComponent());
+				gdv = new StGraphicDetailsView(getComponent());
 				gdv.show();
 			}
 
@@ -77,6 +78,15 @@ public class StPopUpCreateStrategyHandler {
 		});
 	}
 
+	//metodo per information hiding
+	private Set<Components> getComponent(){
+		return Session.getIstance().getV().getComponent();
+	}
+	
+	private int getComponentSize(){
+		return getComponent().size();
+	}
+	
 	public void showWindow() {
 		// TODO Auto-generated method stub
 		pcs.show();

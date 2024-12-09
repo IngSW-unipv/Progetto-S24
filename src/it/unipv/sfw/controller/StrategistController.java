@@ -18,7 +18,7 @@ public class StrategistController extends AbsController {
 
 	protected Stratega st;
 
-	private int minT1, minT2, minT3, timeLap = Session.getIstance().getS().getTimeLap();
+	private int minT1, minT2, minT3, timeLap = getTimeLap() ;
 
 	@Override
 	public TypeController getType() {
@@ -100,12 +100,12 @@ public class StrategistController extends AbsController {
 	public void createTable(StrategistView sv) {
 
 		// Valori generati casualmente provenienti da Session
-		int app1 = Session.getIstance().getV().getTimeSect1(); // Settore 1
-		int app2 = Session.getIstance().getV().getTimeSect2(); // Settore 2
-		int app3 = Session.getIstance().getV().getTimeSect3(); // Settore 3
+		int app1 = getVehicle().getTimeSect1(); // Settore 1
+		int app2 = getVehicle().getTimeSect2(); // Settore 2
+		int app3 = getVehicle().getTimeSect3(); // Settore 3
 		timeLap = app1 + app2 + app3; // Tempo totale del giro
 
-		Session.getIstance().getS().setTimeLap(timeLap);
+		setTimeLap();
 
 		// Inizializza i minimi solo se sono 0 (primo set di valori)
 		if (minT1 == 0 && minT2 == 0 && minT3 == 0) {
@@ -135,8 +135,9 @@ public class StrategistController extends AbsController {
 		sv.setCountLapLabel(sv.getCountLapLabel());
 	}
 
-	// Metodo per convertire i millisecondi in un formato
-	// "minuti:secondi.millisecondi"
+	/* Metodo per convertire i millisecondi in un formato
+	*           "minuti:secondi.millisecondi"
+	*/
 	private String convertTime(int millis) {
 		int minutes = (millis / 1000) / 60; // Calcolo dei minuti
 		int seconds = (millis / 1000) % 60; // Calcolo dei secondi
@@ -144,6 +145,20 @@ public class StrategistController extends AbsController {
 
 		// Formatta il tempo in "mm:ss.SSS"
 		return String.format("%02d:%02d.%03d", minutes, seconds, milliseconds);
+	}
+	
+	
+	//metodo per information hiding
+	private int getTimeLap() {
+		return Session.getIstance().getS().getTimeLap();
+	}
+	
+	private Vehicle getVehicle() {
+		return Session.getIstance().getV();
+	}
+	
+	private void setTimeLap() {
+		Session.getIstance().getS().setTimeLap(timeLap);
 	}
 
 }

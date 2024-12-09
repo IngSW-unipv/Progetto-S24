@@ -41,7 +41,7 @@ public class McPopUpComponentHandler {
 						idc = Integer.parseInt(pc.getIdC().getText());
 						c = new Components(idc, pc.getNameC().getText().toUpperCase());
 						c.setReplacementStatus(pc.getStatusC().getText().toUpperCase());
-						n = Session.getIstance().getM().addComponent(Session.getIstance().getV(), c);
+						n = addCompo();
 
 						switch (n) {
 
@@ -144,6 +144,11 @@ public class McPopUpComponentHandler {
 			});
 		}
 
+	}
+	
+	//metodo per information hiding
+	private int addCompo() throws DuplicateComponentException {
+		return Session.getIstance().getM().addComponent(Session.getIstance().getV(), c);
 	}
 
 	// Metodo per mostrare la finestra

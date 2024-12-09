@@ -133,7 +133,7 @@ public class MeccanicoController extends AbsController {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method
 					
-				boolean isComponentPresent = (Session.getIstance().getV().getComponent().isEmpty());
+				boolean isComponentPresent = getComponent();
 				
 				if(isComponentPresent) {
 					
@@ -227,6 +227,11 @@ public class MeccanicoController extends AbsController {
 		mv.setVisible(true);
 		view = mv;
 
+	}
+	
+	//metodo per information hiding
+	private boolean getComponent() {
+		 return Session.getIstance().getV().getComponent().isEmpty();
 	}
 
 	@Override

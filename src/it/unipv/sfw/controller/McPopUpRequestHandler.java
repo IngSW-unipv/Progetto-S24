@@ -101,7 +101,7 @@ public class McPopUpRequestHandler {
 						md.checkRequest(pr.getId_c().getText());
 						
 						md.insertRequest(pr.getDesc().getText(), pr.getId_s().getText().toUpperCase(),
-								pr.getId_c().getText(), Session.getIstance().getV().getMSN());
+								pr.getId_c().getText(),fetchMSN());
 						pr.clearComponents(pr.getDataPanel());
 						pr.mex1();
 
@@ -115,6 +115,11 @@ public class McPopUpRequestHandler {
 			});
 		}
 
+	}
+	
+	//metodo per information hiding
+	private String fetchMSN() {
+		return Session.getIstance().getV().getMSN().toUpperCase();
 	}
 
 	// Metodo per mostrare la finestra

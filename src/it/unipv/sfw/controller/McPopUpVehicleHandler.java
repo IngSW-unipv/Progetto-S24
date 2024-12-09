@@ -7,6 +7,7 @@ import it.unipv.sfw.dao.mysql.MeccanicoDAO;
 import it.unipv.sfw.exceptions.PilotNotFoundException;
 import it.unipv.sfw.exceptions.VehicleNotFoundException;
 import it.unipv.sfw.model.staff.Session;
+import it.unipv.sfw.model.vehicle.Vehicle;
 import it.unipv.sfw.view.McPopUpVehicleView;
 import it.unipv.sfw.view.MeccanicoView;
 
@@ -43,7 +44,7 @@ public class McPopUpVehicleHandler {
 					Session.getIstance().getM().setMSN(msn);
 
 					Session.getIstance().getV().setMSN(msn);
-					Session.getIstance().setV(Session.getIstance().getM().addVehicle());
+					Session.getIstance().setV(addVehicle());
 
 					updateButtonStates(mv);
 
@@ -80,6 +81,11 @@ public class McPopUpVehicleHandler {
 		mv.getVisualTimePsButton().setVisible(true);
 	}
 
+	//metodo per information hiding
+	private Vehicle addVehicle() {
+		return Session.getIstance().getM().addVehicle();
+	}
+	
 	// Metodo per mostrare la finestra
 	public void showWindow() {
 		vv.show();

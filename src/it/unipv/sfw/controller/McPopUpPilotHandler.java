@@ -27,7 +27,7 @@ public class McPopUpPilotHandler {
 
 				try {
 					md.selectP(pv.getId().getText(), pv.getName().getText().toUpperCase(), pv.getSurname().getText().toUpperCase(), pv.getNumber().getText());
-					md.insertPilotOnVehicle(pv.getId().getText(), Session.getIstance().getV().getMSN().toUpperCase());
+					md.insertPilotOnVehicle(pv.getId().getText(), fetchMSN());
 
 					Session.getIstance().setId_pilot(pv.getId().getText());
 					pv.clearComponents(pv.getDataPanel());
@@ -45,6 +45,11 @@ public class McPopUpPilotHandler {
 			}
 		});
 
+	}
+	
+	//metodo per information hiding
+	private String fetchMSN() {
+		return Session.getIstance().getV().getMSN().toUpperCase();
 	}
 
 	// Metodo per mostrare la finestra

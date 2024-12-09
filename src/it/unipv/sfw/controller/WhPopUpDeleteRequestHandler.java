@@ -36,10 +36,8 @@ public class WhPopUpDeleteRequestHandler {
 					Session.getIstance().getRequest();
 
 					pdr.clearComponents(pdr.getDataPanel());
-					
-					System.out.println("total req: " +  Session.getIstance().getWh().totalRequest());
 
-					int totalRequest = Session.getIstance().getWh().totalRequest();
+					int totalRequest = setTotalRequest();
 					
 					 // Notifica gli osservatori del cambiamento
                     observable.notifyObservers(totalRequest);
@@ -58,6 +56,11 @@ public class WhPopUpDeleteRequestHandler {
 
 		});
 
+	}
+	
+	//metodo information hiding
+	private int setTotalRequest() {
+		return Session.getIstance().getWh().totalRequest();
 	}
 
 	public void showWindow() {

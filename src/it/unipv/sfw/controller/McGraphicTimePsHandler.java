@@ -10,7 +10,7 @@ public class McGraphicTimePsHandler {
 	private ArrayList<String> labelTime = new ArrayList<>();
 	private ArrayList<String> anomalyLabelTime = new ArrayList<>();
 	
-	private McGraphicTimePsView gtpv  = new McGraphicTimePsView(Session.getIstance().getM().getAllTimePitStop(), labelTime);
+	private McGraphicTimePsView gtpv  = new McGraphicTimePsView(fetchTimePitStop(), labelTime);
 	
 	public McGraphicTimePsHandler() {
 
@@ -51,5 +51,10 @@ public class McGraphicTimePsHandler {
 
 	public void showWindow() {
 		gtpv.show();
+	}
+	
+	//metodo per information hiding
+	private ArrayList<Integer> fetchTimePitStop(){
+		return Session.getIstance().getM().getAllTimePitStop();
 	}
 }
