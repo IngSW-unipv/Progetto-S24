@@ -1,212 +1,174 @@
 package it.unipv.sfw.view;
 
-import java.awt.BorderLayout;
-import java.awt.Color;
-import java.awt.Dimension;
-import java.awt.Graphics;
-import java.awt.GridBagConstraints;
-import java.awt.GridBagLayout;
-import java.awt.Insets;
+import java.awt.*;
 
-import javax.swing.ImageIcon;
-import javax.swing.JButton;
-import javax.swing.JComboBox;
-import javax.swing.JFrame;
-import javax.swing.JLabel;
-import javax.swing.JPanel;
-import javax.swing.JTextField;
-import javax.swing.SwingConstants;
+import javax.swing.*;
 
-public class MagazziniereView extends AbsView {
+import it.unipv.sfw.controller.Observer;
 
-	private JFrame frame;
+public class MagazziniereView extends AbsView implements Observer {
+    private JFrame frame;
+    private JPanel mainContainer, titlePanel, popUpPanel, mexPanel;
+    private JButton showRequestButton, deleteRequestButton, updateCompoButton;
+    private JComboBox<String> comboBox;
+    private JLabel imgLabel, dataLabel, mex;
+    private ImageIcon imgUser, imgWllp2;
+    private JTextField placeholder;
 
-	// decidere un titolo o una immagine
-	private JPanel mainContainer, titlePanel, popUpPanel, mexPanel;
+    private int totalRequests = 0; // Totale richieste
+    private String name;          // Nome utente
+    private String surname;       // Cognome utente
 
-	private JButton showRequestButton, deleteRequestButton, updateCompoButton;
+    public MagazziniereView() {
+        frame = new JFrame("WAREHOUSEMAN");
+        frame.setSize(718, 800);
+        frame.setLocationRelativeTo(null);
+        frame.setLayout(new BorderLayout());
+        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        frame.setResizable(false);
+        ImageIcon icona = new ImageIcon(getClass().getResource("/F1-Logo.png"));
+        frame.setIconImage(icona.getImage());
 
-	private JComboBox<String> comboBox;
+        /*
+         * Creazione titolo e immagine
+         */
+        titlePanel = new JPanel(new BorderLayout());
+        titlePanel.setPreferredSize(new Dimension(718, 200));
 
-	private JLabel imgLabel, dataLabel, mex;
+        try {
+            imgWllp2 = new ImageIcon(this.getClass().getResource("/wallpaper.jpg"));
+            imgWllp2 = new ImageIcon(imgWllp2.getImage().getScaledInstance(718, 400, java.awt.Image.SCALE_SMOOTH));
 
-	private ImageIcon imgUser, imgWllp2;
+            imgUser = new ImageIcon(this.getClass().getResource("/icon.png"));
+            imgUser = new ImageIcon(imgUser.getImage().getScaledInstance(320, 370, java.awt.Image.SCALE_SMOOTH));
+        } catch (Exception e) {
+            System.out.println(e);
+        }
 
-	private JTextField placeholder;
+        mainContainer = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                g.drawImage(imgWllp2.getImage(), 0, 0, getWidth(), getHeight(), this);
+            }
+        };
 
-	public MagazziniereView() {
+        mainContainer.setLayout(new BorderLayout());
+        imgLabel = new JLabel(imgUser);
+        titlePanel.add(imgLabel, BorderLayout.WEST);
+        titlePanel.setOpaque(false);
 
-		frame = new JFrame("WAREHOUSEMAN");
-		frame.setSize(718, 800);
-		frame.setLocationRelativeTo(null);
-		frame.setLayout(new BorderLayout());
-		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-		frame.setResizable(false);
-		ImageIcon icona = new ImageIcon(getClass().getResource("/F1-Logo.png"));
-		frame.setIconImage(icona.getImage());
+        dataLabel = new JLabel();
+        dataLabel.setForeground(Color.BLACK);
+        titlePanel.add(dataLabel, BorderLayout.CENTER);
 
-		/*
-		 * CREAZIONE 1 SEZIONE : TITOLO
-		 */
-		titlePanel = new JPanel(new BorderLayout());
-		titlePanel.setPreferredSize(new Dimension(718, 200));
+        /*
+         * Creazione pulsanti e componenti
+         */
+        popUpPanel = new JPanel();
+        popUpPanel.setPreferredSize(new Dimension(718, 200));
+        popUpPanel.setLayout(new GridBagLayout());
+        popUpPanel.setOpaque(false);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(20, 20, 50, 20);
+        gbc.anchor = GridBagConstraints.CENTER;
 
-		try {
+        Dimension dim = new Dimension(700, 200);
+        gbc.gridx = 0;
+        gbc.gridy = 0;
 
-			imgWllp2 = new ImageIcon(this.getClass().getResource("/wallpaper.jpg"));
-			imgWllp2 = new ImageIcon(imgWllp2.getImage().getScaledInstance(718, 400, java.awt.Image.SCALE_SMOOTH));
+        showRequestButton = new JButton("SHOW REQUESTS");
+        showRequestButton.setPreferredSize(dim);
+        popUpPanel.add(showRequestButton, gbc);
 
-			imgUser = new ImageIcon(this.getClass().getResource("/icon.png"));
-			imgUser = new ImageIcon(imgUser.getImage().getScaledInstance(320, 370, java.awt.Image.SCALE_SMOOTH));
-			System.out.println("immagine user caricata");
+        gbc.gridx = 1;
+        deleteRequestButton = new JButton("DELETE REQUEST");
+        deleteRequestButton.setPreferredSize(dim);
+        popUpPanel.add(deleteRequestButton, gbc);
 
-		} catch (Exception e) {
-			System.out.println(e);
-		}
-		
-		// imposto l'immagine di sfondo
-		mainContainer = new JPanel() {
-			@Override
-			protected void paintComponent(Graphics g) {
-				super.paintComponent(g);
-				// Disegna l'immagine di sfondo
-				g.drawImage(imgWllp2.getImage(), 0, 0, getWidth(), getHeight(), this);
-			}
-		};
-		
-		mainContainer.setLayout(new BorderLayout());
-		
-		imgLabel = new JLabel(imgUser);
-		titlePanel.add(imgLabel, BorderLayout.WEST);
-		titlePanel.setOpaque(false);
-		
-		dataLabel = new JLabel();
-		dataLabel.setForeground(Color.BLACK);
-		titlePanel.add(dataLabel, BorderLayout.CENTER);
+        gbc.gridy = 1;
+        gbc.gridx = 0;
+        updateCompoButton = new JButton("UPDATE COMPONENT");
+        updateCompoButton.setPreferredSize(dim);
+        popUpPanel.add(updateCompoButton, gbc);
 
-		/*
-		 * CREAZIONE 2 SEZIONE: 4 BOTTONI E FINESTRE POP UP
-		 */
-		popUpPanel = new JPanel();
-		popUpPanel.setPreferredSize(new Dimension(718, 200));
-		popUpPanel.setLayout(new GridBagLayout());
-		popUpPanel.setOpaque(false);
-		GridBagConstraints gbc = new GridBagConstraints();
+        gbc.gridx = 1;
+        String[] option = {
+            "RUOTA ANTERIORE SX HARD", "RUOTA ANTERIORE DX HARD",
+            "RUOTA POSTERIORE SX HARD", "RUOTA POSTERIORE DX HARD",
+            "RUOTA ANTERIORE SX MEDIUM", "RUOTA ANTERIORE DX MEDIUM",
+            "RUOTA POSTERIORE SX MEDIUM", "RUOTA POSTERIORE DX MEDIUM",
+            "ALA ANTERIORE", "DRS", "MOTORE TERMICO", "ERS", "- ALL"
+        };
 
-		// Spaziatura interna
-		gbc.insets = new Insets(20, 20, 50, 20);
-		gbc.anchor = GridBagConstraints.CENTER;
+        comboBox = new JComboBox<>(option);
+        comboBox.setPreferredSize(dim);
+        comboBox.setEditable(true);
+        placeholder = (JTextField) comboBox.getEditor().getEditorComponent();
+        placeholder.setText("QUANTITA' COMPONENTI");
 
-		Dimension dim = new Dimension(700, 200);
+        popUpPanel.add(comboBox, gbc);
 
-		// Prima riga - Prima colonna (Insert Veichle)
-		gbc.gridx = 0;
-		gbc.gridy = 0;
+        /*
+         * Creazione sezione messaggi
+         */
+        mexPanel = new JPanel();
+        mexPanel.setOpaque(false);
 
-		showRequestButton = new JButton("SHOW REQUESTS");
-		showRequestButton.setPreferredSize(dim);
-		popUpPanel.add(showRequestButton, gbc);
+        mex = new JLabel("SELECT A COMPONENT FROM THE MENU");
+        mex.setHorizontalAlignment(SwingConstants.CENTER);
+        mex.setPreferredSize(new Dimension(718, 200));
+        mex.setForeground(Color.BLACK);
 
-		// Prima riga - Seconda colonna (insert Request)
-		gbc.gridx = 1;
-		gbc.gridy = 0;
+        mexPanel.add(mex);
 
-		deleteRequestButton = new JButton("DELETE REQUEST");
-		deleteRequestButton.setPreferredSize(dim);
-		popUpPanel.add(deleteRequestButton, gbc);
+        mainContainer.add(titlePanel, BorderLayout.NORTH);
+        mainContainer.add(popUpPanel, BorderLayout.CENTER);
+        mainContainer.add(mexPanel, BorderLayout.SOUTH);
 
-		// Seconda riga - Prima colonna (add Component)
-		gbc.gridx = 0;
-		gbc.gridy = 1;
+        frame.add(mainContainer);
+        frame.setVisible(true);
+    }
 
-		updateCompoButton = new JButton("UPDATE COMPONENT");
-		updateCompoButton.setPreferredSize(dim);
-		popUpPanel.add(updateCompoButton, gbc);
+    @Override
+    public void update(int totalRequests) {
+        this.totalRequests = totalRequests;
+        refresh(name, surname, totalRequests);
+    }
 
-		// Seconda riga - Seconda colonna (remove Component)
-		gbc.gridx = 1;
-		gbc.gridy = 1;
+    private void refresh(String name, String surname, int totalRequests) {
+    	dataLabel.setText("NAME:        "+ name+ "        SURNAME:        " +surname+ "       TOTAL REQUEST: " +totalRequests);
+        System.out.println("Updated view with " + totalRequests + " requests.");
+    }
 
-		String option[] = { "RUOTA ANTERIORE SX HARD", "RUOTA ANTERIORE DX HARD", "RUOTA POSTERIORE SX HARD",
-				"RUOTA POSTERIORE DX HARD", "RUOTA ANTERIORE SX MEDIUM", "RUOTA ANTERIORE DX MEDIUM",
-				"RUOTA POSTERIORE SX MEDIUM", "RUOTA POSTERIORE DX MEDIUM", "ALA ANTERIORE", "DRS", "MOTORE TERMICO",
-				"ERS", "- ALL" };
+    public JButton getShowRequestButton() {
+        return showRequestButton;
+    }
 
-		comboBox = new JComboBox<>(option);
-		comboBox.setPreferredSize(dim);
-		comboBox.setEditable(true);
-		placeholder = (JTextField) comboBox.getEditor().getEditorComponent();
-		placeholder.setText("QUANTITA' COMPONENTI");
+    public JButton getDeleteRequestButton() {
+        return deleteRequestButton;
+    }
 
-		popUpPanel.add(comboBox, gbc);
+    public JButton getUpdateCompoButton() {
+        return updateCompoButton;
+    }
 
-		/*
-		 * CREAZIONE 3 SEZIONE: LABEL PER MEX
-		 */
-
-		mexPanel = new JPanel();
-		mexPanel.setOpaque(false);
-		
-		mex = new JLabel("SELECT A COMPONENT FROM THE MENU");	
-		mex.setHorizontalAlignment(SwingConstants.CENTER);
-		mex.setPreferredSize(new Dimension(718, 200));
-		mex.setForeground(Color.BLACK);
-
-		mexPanel.add(mex);
-
-		mainContainer.add(titlePanel, BorderLayout.NORTH);
-		mainContainer.add(popUpPanel, BorderLayout.CENTER);
-		mainContainer.add(mexPanel, BorderLayout.SOUTH);
-
-		frame.add(mainContainer);
-		frame.setVisible(true);
-		frame.validate();
-		frame.repaint();
-	}
-
-	public JButton getShowRequestButton() {
-		return showRequestButton;
-	}
-
-	public void setShowRequestButton(JButton showRequestButton) {
-		this.showRequestButton = showRequestButton;
-	}
-
-	public JButton getDeleteRequestButton() {
-		return deleteRequestButton;
-	}
-
-	public void setDeleteRequestButton(JButton deleteRequestButton) {
-		this.deleteRequestButton = deleteRequestButton;
-	}
-
-	public JButton getUpdateCompoButton() {
-		return updateCompoButton;
-	}
-
-	public void setUpdateCompoButton(JButton updateCompoButton) {
-		this.updateCompoButton = updateCompoButton;
-	}
-
-	public JComboBox<String> getCombobox() {
-		return comboBox;
-	}
-
-	public void setCombobox(JComboBox<String> combobox) {
-		this.comboBox = combobox;
-	}
-
-	public void setMex() {
+    public JComboBox<String> getCombobox() {
+        return comboBox;
+    }
+    
+    public void setMex() {
 		mex.setText("SELECT A COMPONENT FROM THE MENU");
 		mex.setForeground(Color.BLACK);
 	}
-
-	public void data(String name, String surname, int total) {
-		dataLabel.setText(
-				"NAME: " + name + "           " + "SURNAME: " + surname + "           " + "TOTAL REQUEST: " + total);
-
-	}
-
+    
+    public void data(String name, String surname, int totalRequests) {
+        this.name = name;
+        this.surname = surname;
+        this.totalRequests = totalRequests;
+        dataLabel.setText("NAME:        "+ name+ "        SURNAME:        " +surname+ "        TOTAL REQUEST: " +totalRequests);
+    }
+    
 	public void mexCombo(int quantity) {
 		String currentText = placeholder.getText();
 		mex.setText("NAME COMPONENT:  " + currentText + "             QUANTITY:  " + quantity);
