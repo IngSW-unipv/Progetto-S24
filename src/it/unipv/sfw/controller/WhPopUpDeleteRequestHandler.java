@@ -43,6 +43,7 @@ public class WhPopUpDeleteRequestHandler {
                     observable.notifyObservers(totalRequest);
 					
 					pdr.mex2();
+					md.insertLogEvent(getID(), "DELETE REQUEST ID COMPONENT: " +pdr.getId_c().getText());
 				} catch (RequestNotFoundException err) {
 					System.out.println(err);
 					pdr.mex1();
@@ -62,7 +63,11 @@ public class WhPopUpDeleteRequestHandler {
 	private int setTotalRequest() {
 		return Session.getIstance().getWh().totalRequest();
 	}
-
+	
+	private String getID() {
+		return Session.getIstance().getId_staff();
+	}
+	
 	public void showWindow() {
 		// TODO Auto-generated method stub
 		pdr.show();

@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 import it.unipv.sfw.dao.mysql.MagazziniereDAO;
 import it.unipv.sfw.exceptions.ComponentNotFoundException;
+import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.view.WhPopUpUpdateComponentView;
 
 public class WhPopUpUpdateComponentHandler {
@@ -26,6 +27,7 @@ public class WhPopUpUpdateComponentHandler {
 					md.checkCompo(puc.getId_c().getText());
 					md.updateComponent(puc.getId_c().getText(), puc.getWear().getText() ,puc.getStatus().getText().toUpperCase());
 					puc.mex2();
+					md.insertLogEvent(getID(), "UPDATE COMPONENT: " +puc.getId_c().getText());
 					
 				} catch (ComponentNotFoundException err) {
 					// TODO Auto-generated catch block
@@ -45,6 +47,10 @@ public class WhPopUpUpdateComponentHandler {
 	public void showWindow() {
 		// TODO Auto-generated method stub
 		puc.show();
+	}
+	
+	private String getID() {
+		return Session.getIstance().getId_staff();
 	}
 
 }

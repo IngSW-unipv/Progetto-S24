@@ -31,7 +31,6 @@ public class MeccanicoController extends AbsController {
 	}
 
 	@Override
-
 	public void initialize() {
 		// TODO Auto-generated method stub
 

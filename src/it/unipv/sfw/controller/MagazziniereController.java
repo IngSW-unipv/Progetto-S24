@@ -46,6 +46,8 @@ public class MagazziniereController extends AbsController{
 		WhPopUpUpdateComponentHandler wupc = new WhPopUpUpdateComponentHandler();
 		
 		Session.getIstance().getRequest();
+		md.insertLogEvent(getID(), "LOGIN");
+		
 		mv.data(Session.getIstance().getName(), Session.getIstance().getSurname(), Session.getIstance().getWh().totalRequest());
 		obs.addObserver(mv);
 		
@@ -55,7 +57,8 @@ public class MagazziniereController extends AbsController{
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				WhPopUpShowRequestHandler wsrc = new WhPopUpShowRequestHandler();
-			
+				md.insertLogEvent(getID(), "SHOW REQUEST");
+				
 				System.out.println(Session.getIstance().getWh().getRequest());
 				
 				for(Request r : m.getRequest()) {
@@ -97,7 +100,9 @@ public class MagazziniereController extends AbsController{
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
+				
 				String select = (String) mv.getCombobox().getSelectedItem();
+				md.insertLogEvent(getID(), "SHOW QUANTITY COMPONENT: " +select);
 				
 				if(select.equals("- ALL")) {
 					mv.mexCombo(md.countElement());
@@ -118,6 +123,10 @@ public class MagazziniereController extends AbsController{
 	public void onLoad() {
 		// TODO Auto-generated method stub
 		this.onLoad();
+	}
+	
+	private String getID() {
+		return Session.getIstance().getId_staff();
 	}
 
 }

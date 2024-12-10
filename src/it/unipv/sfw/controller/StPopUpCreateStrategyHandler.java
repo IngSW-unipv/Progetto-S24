@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Set;
 
+import it.unipv.sfw.dao.mysql.StrategistDAO;
 import it.unipv.sfw.model.component.Components;
 import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.view.StGraphicDetailsView;
@@ -14,6 +15,7 @@ public class StPopUpCreateStrategyHandler {
 
 	private StPopUpCreateStrategyView pcs;
 	private StGraphicDetailsView gdv;
+	private StrategistDAO  sd;
 	
 	private final int setPoint = 81000;
 	private int average = 0;
@@ -59,6 +61,7 @@ public class StPopUpCreateStrategyHandler {
 				//Session.getIstance().getV().getComponents();
 				gdv = new StGraphicDetailsView(getComponent());
 				gdv.show();
+				sd.insertLogEvent(getID(), "SHOW DETAILS COMPONENT");
 			}
 
 		});
@@ -72,7 +75,7 @@ public class StPopUpCreateStrategyHandler {
 				Session.getIstance().setStrategy(select);
 				pcs.getStrategyLabel2().setText(select);
 				pcs.getStrategyLabel2().setForeground(Color.YELLOW);
-				
+				sd.insertLogEvent(getID(), "SELECT NEW STRATEGY: " +select);
 			}
 
 		});
@@ -90,5 +93,10 @@ public class StPopUpCreateStrategyHandler {
 	public void showWindow() {
 		// TODO Auto-generated method stub
 		pcs.show();
+	}
+	
+	//metodo per information hiding
+	private String getID() {
+		return Session.getIstance().getId_staff();
 	}
 }
