@@ -20,7 +20,7 @@ public class McPopUpPilotHandler {
 		md = new MeccanicoDAO();
 
 		pv.getSendButton().addActionListener(new ActionListener() {
-
+                    
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
@@ -34,6 +34,8 @@ public class McPopUpPilotHandler {
 
 					mv.setId_p();
 					pv.close();
+						
+					md.insertLogEvent(getID(), "INSERT ID PILOT : " +pv.getId().getText());
 					
 				} catch (PilotNotFoundException err) {
 					// TODO Auto-generated catch block
@@ -48,6 +50,10 @@ public class McPopUpPilotHandler {
 	}
 	
 	//metodo per information hiding
+	private String getID() {
+		return Session.getIstance().getId_staff();
+	}
+	
 	private String fetchMSN() {
 		return Session.getIstance().getV().getMSN().toUpperCase();
 	}

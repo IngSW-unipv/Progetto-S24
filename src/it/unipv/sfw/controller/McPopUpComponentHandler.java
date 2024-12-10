@@ -55,7 +55,7 @@ public class McPopUpComponentHandler {
 						case 1:
 							
 							// componente inserito con successo
-							if (md.insertComponent(pc.getIdC().getText(), Session.getIstance().getV().getMSN())) {
+							if (md.insertComponent(pc.getIdC().getText(), fetchMSN())) {
 								
 								md.updateWear(c.getWear(),pc.getIdC().getText() );
 								pc.mex2();
@@ -66,7 +66,7 @@ public class McPopUpComponentHandler {
 
 						case 2:
 
-							if (md.insertComponent(pc.getIdC().getText(), Session.getIstance().getV().getMSN())) {
+							if (md.insertComponent(pc.getIdC().getText(), fetchMSN())) {
 								md.updateWear(c.getWear(), pc.getIdC().getText());
 								pc.mex2();
 								pc.clearComponents(pc.getDataPanel());
@@ -92,7 +92,8 @@ public class McPopUpComponentHandler {
 									
 								}
 							});
-
+							
+							md.insertLogEvent(getID(), "INSERT COMPONENT ID: " +pc.getIdC().getText());
 							break;
 						}
 					} catch (ComponentNotFoundException err) {
@@ -123,7 +124,7 @@ public class McPopUpComponentHandler {
 				
 					try {
 						md.checkCompo(pc.getIdC().getText().toUpperCase(), pc.getNameC().getText().toUpperCase(), "USED");				
-						md.removeComponent(pc.getIdC().getText().toUpperCase(), Session.getIstance().getV().getMSN());
+						md.removeComponent(pc.getIdC().getText().toUpperCase(), fetchMSN());
 						
 						int id = Integer.parseInt( pc.getIdC().getText());
 						
@@ -132,6 +133,7 @@ public class McPopUpComponentHandler {
 						Session.getIstance().getM().removeComponent(Session.getIstance().getV(), c);
 						
 						pc.mex3();
+						md.insertLogEvent(getID(), "REMOVE COMPONENT ID: " +pc.getIdC().getText());
 					} catch (ComponentNotFoundException err) {
 						// TODO Auto-generated catch block
 						pc.mex();
@@ -147,8 +149,16 @@ public class McPopUpComponentHandler {
 	}
 	
 	//metodo per information hiding
+	private String fetchMSN() {
+		return Session.getIstance().getV().getMSN().toUpperCase();
+	}
+	
 	private int addCompo() throws DuplicateComponentException {
 		return Session.getIstance().getM().addComponent(Session.getIstance().getV(), c);
+	}
+	
+	private String getID() {
+		return Session.getIstance().getId_staff();
 	}
 
 	// Metodo per mostrare la finestra

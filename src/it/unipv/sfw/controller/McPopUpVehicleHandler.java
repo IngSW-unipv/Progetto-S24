@@ -47,6 +47,7 @@ public class McPopUpVehicleHandler {
 					Session.getIstance().setV(addVehicle());
 
 					updateButtonStates(mv);
+					md.insertLogEvent(getID(), "INSERT VEHICLE : " + vv.getMsn().getText().toUpperCase() );
 
 					mv.getInsertVehicleButton().setEnabled(false);
 					vv.close();
@@ -85,6 +86,11 @@ public class McPopUpVehicleHandler {
 	private Vehicle addVehicle() {
 		return Session.getIstance().getM().addVehicle();
 	}
+	
+	private String getID() {
+		return Session.getIstance().getId_staff();
+	}
+	
 	
 	// Metodo per mostrare la finestra
 	public void showWindow() {

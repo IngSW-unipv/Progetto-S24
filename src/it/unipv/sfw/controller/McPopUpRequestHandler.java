@@ -50,9 +50,11 @@ public class McPopUpRequestHandler {
 								pr.getId_c().getText(), pr.getId_v().getText().toUpperCase());
 						pr.clearComponents(pr.getDataPanel());
 						pr.mex1();
+						
+						md.insertLogEvent(getID(), "INSERT REQUEST FOR COMPONENT: " +pr.getId_c().getText());
 
 					} catch (ComponentNotFoundException | WrongRequestException err) {
-						// TODO Auto-generated catch block
+						// TODO Auto-generated catch block 
 						pr.mex();
 						System.out.println(err);
 
@@ -104,7 +106,8 @@ public class McPopUpRequestHandler {
 								pr.getId_c().getText(),fetchMSN());
 						pr.clearComponents(pr.getDataPanel());
 						pr.mex1();
-
+						md.insertLogEvent(getID(), "INSERT REQUEST FOR COMPONENT: " +pr.getId_c().getText());
+						
 					} catch (ComponentNotFoundException | WrongRequestException err) {
 						// TODO Auto-generated catch block
 						pr.mex();
@@ -120,6 +123,10 @@ public class McPopUpRequestHandler {
 	//metodo per information hiding
 	private String fetchMSN() {
 		return Session.getIstance().getV().getMSN().toUpperCase();
+	}
+	
+	private String getID() {
+		return Session.getIstance().getId_staff();
 	}
 
 	// Metodo per mostrare la finestra

@@ -53,9 +53,11 @@ public class MeccanicoController extends AbsController {
 
 		// Inizializzazione dei tempi di PIT STOP
 		Session.getIstance().getTps();
-
-		// Abilita o disabilita bottoni basati sul valore di V
 		
+		// Inserimento del login nella tabella degli eventi
+		md.insertLogEvent(getID(), "LOGIN");
+
+		// Abilita o disabilita bottoni basati sul valore di V	
 		mv.getAddComponentButton().setEnabled(false);
 		mv.getAddComponentButton().setVisible(false);
 
@@ -77,7 +79,7 @@ public class MeccanicoController extends AbsController {
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
-
+				
 				pvc.showWindow();
 				pvc.clear();
 			}
@@ -91,7 +93,7 @@ public class MeccanicoController extends AbsController {
 			public void actionPerformed(ActionEvent e) {
 				// TODO Auto-generated method stub
 				
-
+				
 				boolean isVehiclePresent = (Session.getIstance().getId_pilot() != null);
 
 				if (isVehiclePresent == false) {
@@ -192,6 +194,7 @@ public class MeccanicoController extends AbsController {
 						+ " @MECCANICO CONTROLLER-REMOVE PILOT");
 
 				md.removePilot(Session.getIstance().getId_pilot());
+				md.insertLogEvent(getID(), "REMOVE PILOT");
 				Session.getIstance().setId_pilot(null);
 				mv.setId_p();
 			}
@@ -206,7 +209,7 @@ public class MeccanicoController extends AbsController {
 
 				McGraphicTimePsHandler gtpc = new McGraphicTimePsHandler();
 				gtpc.initialize();
-
+				md.insertLogEvent(getID(), "SHOW TIME PIT STOP");
 			}
 
 		});
@@ -219,7 +222,7 @@ public class MeccanicoController extends AbsController {
 
 				McGraphicAllComponentHandler gacc = new McGraphicAllComponentHandler();
 				gacc.showWindow();
-
+				md.insertLogEvent(getID(), "SHOW STATUS COMPONENT");
 			}
 
 		});
@@ -233,6 +236,11 @@ public class MeccanicoController extends AbsController {
 	private boolean getComponent() {
 		 return Session.getIstance().getV().getComponent().isEmpty();
 	}
+	
+	private String getID() {
+		return Session.getIstance().getId_staff();
+	}
+	
 
 	@Override
 	public void onLoad() {
