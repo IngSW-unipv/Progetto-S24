@@ -18,15 +18,16 @@ import it.unipv.sfw.view.LoginView;
  */
 
 public class LoginController extends AbsController {
-
+	private LoginView logv;
+	
 	private void accedi() {
-		LoginView logv = (LoginView) view;
+		logv = (LoginView) view;
 
 		// Try to login into session
 		// USERNAME = ID DELL'OPERATORE
 
 		try {
-			Session.getIstance().login(logv.getUsernameField().getText(), logv.getPasswordField().getPassword());
+			Session.getIstance().login(getUsername(), getPassword());
 
 		} catch (WrongPasswordException | AccountNotFoundException err) {
 			System.out.print(err);
@@ -40,7 +41,6 @@ public class LoginController extends AbsController {
 		case "MECCANICO":
 			ControllerManager.getInstance().loadController(TypeController.MECCANICO);
 			ControllerManager.getInstance().closeWindow();
-			System.out.println("Sono un meccanico");
 			break;
 
 		case "STRATEGA":
@@ -69,7 +69,6 @@ public class LoginController extends AbsController {
 	public void initialize() {
 		System.out.println("Inizializzazione di LoginController - @LOGINCONTROLLER");
 		LoginView v = new LoginView();
-		System.out.println("LoginView inizializzata. - @LOGINCONTROLLER");
 
 		v.getPasswordField().setFocusTraversalKeysEnabled(false);
 		v.getPasswordField().addKeyListener(new KeyListener() {
@@ -97,6 +96,7 @@ public class LoginController extends AbsController {
 			public void actionPerformed(ActionEvent e) {
 
 				accedi();
+				
 			}
 
 		});
@@ -109,5 +109,15 @@ public class LoginController extends AbsController {
 		// TODO Auto-generated method stub
 		view.onLoad();
 	}
-
+	
+	// metodo per information hiding
+	
+	private String getUsername() {
+		return logv.getUsernameField().getText();
+	}
+	
+	private char[] getPassword() {
+		return logv.getPasswordField().getPassword();
+	}
+	
 }
