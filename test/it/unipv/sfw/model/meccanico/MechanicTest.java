@@ -1,4 +1,4 @@
-package it.unipv.sfw.model.staff;
+package it.unipv.sfw.model.meccanico;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -6,6 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import it.unipv.sfw.exceptions.DuplicateComponentException;
 import it.unipv.sfw.model.component.Components;
+import it.unipv.sfw.model.staff.Meccanico;
 import it.unipv.sfw.model.vehicle.Vehicle;
 
 class MechanicTest {
