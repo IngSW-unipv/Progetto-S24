@@ -11,11 +11,6 @@ public class McGraphicAllComponentHandler {
 	
 	private Set<Components> components = fetchComponent();
 	private McGraphicAllComponentView gv = new McGraphicAllComponentView(components);
-	
-	
-	public McGraphicAllComponentHandler() {
-		
-	}
 
 	public void showWindow() {
 		// TODO Auto-generated method stub

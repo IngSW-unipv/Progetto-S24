@@ -1,6 +1,7 @@
 package it.unipv.sfw.model.staff;
 
 import java.util.function.Predicate;
+import java.util.regex.Pattern;
 
 import it.unipv.sfw.exceptions.EmptyFieldException;
 import it.unipv.sfw.exceptions.WrongIDException;
@@ -43,6 +44,28 @@ public abstract class Staff {
 		if (isValid.test(id) || isValid.test(pwd))
 			throw new EmptyFieldException();
 
+		// Controlla validità ID
+		checkID(id);
+	}
+	
+	/**
+	 * Controlla che l'ID passato sia valido.
+	 *
+	 * @param ID
+	 * @throws WrongIDException
+	 */
+	public static void checkID(String id) throws WrongIDException {
+		
+		/*
+		 * ^\\d+$  è l'espressione regolare che verifica se la stringa contiene solo cifre numeriche
+		 *  (\\d rappresenta qualsiasi cifra da 0 a 9, + indica che ci deve essere almeno una cifra).
+		 */
+		
+		final Predicate<String> isID = Pattern.compile("^\\d+$").asPredicate();
+
+		if (!isID.test(id)) {
+			throw new WrongIDException();
+		}
 	}
 	
 	/**

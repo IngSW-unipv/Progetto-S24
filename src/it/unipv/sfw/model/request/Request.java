@@ -2,9 +2,9 @@ package it.unipv.sfw.model.request;
 
 public class Request {
 
-	protected String description, id_s, id_v;
+	private String description, id_s, id_v;
 
-	protected int id_r, id_c;
+	private int id_r, id_c;
 
 	public Request(int id_r, String description, String id_s, int id_c, String id_v) {
 		this.id_r = id_r;

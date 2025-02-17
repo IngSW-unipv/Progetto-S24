@@ -3,7 +3,7 @@ package it.unipv.sfw.model.staff;
 
 public class Stratega extends Staff{
 	
-	protected int timeLap = 0;
+	private int timeLap = 0;
 	
 	public Stratega(String id, String pwd) {
 		super(id, pwd);

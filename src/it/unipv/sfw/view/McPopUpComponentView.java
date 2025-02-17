@@ -20,7 +20,7 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
-public class McPopUpComponentView extends JFrame {
+public class McPopUpComponentView {
 
 	private JFrame frame;
 

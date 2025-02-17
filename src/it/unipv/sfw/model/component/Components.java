@@ -9,11 +9,11 @@ public class Components {
 	 * Replacement status = è stato sostituito o meno
 	 */
 	
-	protected int idComponent;
-	protected String name,
-								  replacementStatus;
+	private int idComponent;
+	private String name,
+						    replacementStatus;
 	
-	protected int wear;
+	private int wear;
 	
 	public Components(int id_c,String name) {
 		this.idComponent = id_c;

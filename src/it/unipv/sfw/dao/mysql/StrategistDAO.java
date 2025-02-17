@@ -6,7 +6,7 @@ import java.sql.SQLException;
 
 public class StrategistDAO {
 	
-	private String SCHEMA = "log_event";
+	private static final String SCHEMA = "log_event";
 	
 	public void  insertLogEvent(String id_staff, String desc) {
 

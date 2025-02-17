@@ -13,7 +13,7 @@ import it.unipv.sfw.view.MagazziniereView;
 public class MagazziniereController extends AbsController{
 	private Staff user;
 	
-	protected Magazziniere m;
+	private Magazziniere m;
 
 	private Observable obs;
 	

@@ -7,7 +7,7 @@ import it.unipv.sfw.model.request.Request;
 
 public class Magazziniere extends Staff{
 	
-	protected Set<Request> request = new HashSet<>();
+	private Set<Request> request = new HashSet<>();
 
 	public Magazziniere(String id, String pwd) {
 		super(id, pwd);

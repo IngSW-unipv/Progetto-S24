@@ -9,8 +9,7 @@ import it.unipv.sfw.model.staff.Meccanico;
 import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.model.staff.Staff;
 import it.unipv.sfw.model.staff.Stratega;
-import it.unipv.sfw.model.staff.User;
-import it.unipv.sfw.model.staff.User.Type;
+import it.unipv.sfw.model.staff.Staff.TypeController;
 
 public class UserDAO {
 	private static final String SCHEMA = "staff";
@@ -66,9 +65,9 @@ public class UserDAO {
 		return result;
 	}
 
-	public static Type selectByIDandPwd(String id, String pwd) {
+	public static TypeController selectByIDandPwd(String id, String pwd) {
 
-		Type typeSelected = null;
+		TypeController typeSelected = null;
 
 		PreparedStatement st1;
 		ResultSet rs1;
@@ -88,19 +87,19 @@ public class UserDAO {
 				switch (type) {
 				case "Meccanico":
 
-					typeSelected = Type.Meccanico;
+					typeSelected = TypeController.MECCANICO;
 
 					break;
 
 				case "Stratega":
 
-					typeSelected = Type.Stratega;
+					typeSelected = TypeController.STRATEGA;
 
 					break;
 
 				case "Magazziniere":
 
-					typeSelected = Type.Magazziniere;
+					typeSelected = TypeController.MAGAZZINIERE;
 
 					break;
 				}

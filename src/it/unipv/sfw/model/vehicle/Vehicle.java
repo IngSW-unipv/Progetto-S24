@@ -14,14 +14,14 @@ public class Vehicle {
 	/*
 	 * il tempo è considerato in millisecondi
 	 */
-	protected int timeSect1 = 0, timeSect2 = 0, timeSect3 = 0;
+	private int timeSect1 = 0, timeSect2 = 0, timeSect3 = 0;
 
-	protected String timeLap;
+	private String timeLap;
 
 	private String MSN;
 
 	// Set perchè non permetto di avere duplicati
-	protected Set<Components> component;
+	private Set<Components> component;
 
 	public Vehicle(String MSN) {
 		this.MSN = MSN;
@@ -110,14 +110,6 @@ public class Vehicle {
 		timeSect2 = random.nextInt((max - min) + 1) + min;
 		timeSect3 = random.nextInt((max - min) + 1) + min;
 
-	}
-
-	public void showComponent() {
-		for(Components c : component) {
-			
-			System.out. println(" ID: "+c.getIdComponent()+ " NAME: "+ c.getName()+ " Replacement: "+c.getReplacementStatus()+" WEAR : "+c.getWear());
-			 
-		}
 	}
 
 	public String getMSN() {

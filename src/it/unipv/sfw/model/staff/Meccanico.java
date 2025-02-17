@@ -17,8 +17,8 @@ public class Meccanico extends Staff {
 	
 	private Vehicle vehicles;
 
-	protected ArrayList<Integer> allTimePitStop = new ArrayList<>();
-	protected ArrayList<Integer> anomalyTime = new ArrayList<>();
+	private ArrayList<Integer> allTimePitStop = new ArrayList<>();
+	private ArrayList<Integer> anomalyTime = new ArrayList<>();
 
 	public Meccanico(String id, String pwd) {
 		super(id, pwd);
@@ -39,8 +39,6 @@ public class Meccanico extends Staff {
 		int mode = 0;
 
 		mode = v.addComponent(c);
-
-		v.showComponent();
 		
 		return mode;
 	}

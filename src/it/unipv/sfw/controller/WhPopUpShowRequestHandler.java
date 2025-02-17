@@ -9,9 +9,6 @@ import it.unipv.sfw.view.WhPopUpShowRequestView;
 public class WhPopUpShowRequestHandler {
 
 	private WhPopUpShowRequestView psr = new WhPopUpShowRequestView(getRequest());
-
-	public  WhPopUpShowRequestHandler() {
-	}
 	
 	private Set<Request> getRequest() {
 		return Session.getIstance().getWh().getRequest();

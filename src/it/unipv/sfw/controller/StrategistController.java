@@ -16,7 +16,7 @@ public class StrategistController extends AbsController {
 
 	private Staff user;
 
-	protected Stratega st;
+	private Stratega st;
 
 	private int minT1, minT2, minT3, timeLap = getTimeLap() ;
 

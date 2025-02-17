@@ -5,7 +5,6 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JOptionPane;
 
-import it.unipv.sfw.controller.AbsController.TypeController;
 import it.unipv.sfw.dao.mysql.MeccanicoDAO;
 import it.unipv.sfw.model.staff.Meccanico;
 import it.unipv.sfw.model.staff.Session;
@@ -16,18 +15,12 @@ public class MeccanicoController extends AbsController {
 
 	private Staff user;
 
-	protected Meccanico m;
+	private Meccanico m;
 
 	@Override
 	public TypeController getType() {
 		// TODO Auto-generated method stub
 		return TypeController.MECCANICO;
-	}
-	
-	public enum Controller{
-		
-		VEHICLE, PILOT, COMPONENT, REQUEST, PITSTOP, STATUS_COMPO;
-		
 	}
 
 	@Override
@@ -246,6 +239,5 @@ public class MeccanicoController extends AbsController {
 		// TODO Auto-generated method stub
 		this.initialize();
 	}
-	
 
 }

@@ -9,7 +9,7 @@ import it.unipv.sfw.model.vehicle.Vehicle;
 
 public class VehicleDAO {
 	
-	private String SCHEMA = "vehicle";
+	private static final String SCHEMA = "vehicle";
 	
 	public boolean timeSector(Vehicle v) {
 		

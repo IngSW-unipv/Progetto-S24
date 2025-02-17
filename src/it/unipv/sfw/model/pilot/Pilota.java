@@ -2,10 +2,10 @@ package it.unipv.sfw.model.pilot;
 
 public class Pilota {
 	
-	protected String id_pilot,
-								 name,
-								 surname;
-	protected int number;
+	private String id_pilot,
+						    name,
+							surname;
+	private int number;
 	
 	public Pilota(String id_pilot, String name, String surname, int number) {
 		this.id_pilot = id_pilot;
@@ -13,6 +13,14 @@ public class Pilota {
 		this.surname = surname;
 		this.number = number;
 		
+	}
+
+	public String getId_pilot() {
+		return id_pilot;
+	}
+
+	public void setId_pilot(String id_pilot) {
+		this.id_pilot = id_pilot;
 	}
 
 	public String getName() {

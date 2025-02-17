@@ -12,10 +12,6 @@ public class McGraphicTimePsHandler {
 	
 	private McGraphicTimePsView gtpv  = new McGraphicTimePsView(fetchTimePitStop(), labelTime);
 	
-	public McGraphicTimePsHandler() {
-
-	}
-	
 	public void initialize(){
 
 		 for(Integer t : Session.getIstance().getM().getAllTimePitStop()) {
