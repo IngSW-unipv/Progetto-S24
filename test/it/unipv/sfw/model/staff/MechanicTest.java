@@ -2,7 +2,6 @@ package it.unipv.sfw.model.staff;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
 import it.unipv.sfw.exceptions.DuplicateComponentException;
