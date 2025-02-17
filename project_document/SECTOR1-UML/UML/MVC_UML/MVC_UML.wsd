@@ -1,0 +1,162 @@
+@startuml
+
+title Gestione Scuderia MVC - Class Diagram UML
+
+package Controller{
+    abstract class AbsController {
+        # view : AbsView
+        + {abstract} void initialize()
+        + {abstract} AbsController.Type getType()
+        + AbsView getView()
+        + void onLoad()
+    }
+
+    enum AbsTypeController {
+        LOGIN
+        STRATEGA
+        MECCANICO
+        MAGAZZINIERE
+    }
+
+    class ControllerFactory{
+      + {static}AbsController createController(AbsController.TypeController type)
+    }
+
+    class ControllerManager << (S,Violet) singleton >> {
+     - instance : ControllerManager
+     - frame : Frame
+     - currentController : AbsController
+     + {static} ControllerManager getInstance()
+     + void loadController(AbsController.Type c)
+     + void closeWindow()
+    }
+  
+   class LoginController{
+     - logv : LoginView
+     - void accedi()
+     - char[] getPassword()
+     - String getUsername()
+     + TypeController getType()
+     + void initialize()
+     + onLoad()
+   }
+
+   class MagazziniereController{
+     - m : Magazziniere
+     - obs : Observable
+     - user : Staff
+     - String getID()
+     + TypeController getType()
+     + void initialize()
+     + void onLoad()  
+   }
+
+   metaclass WhHandler << metaclass >>
+   metaclass MeccanicoHandler << metaclass >>
+   metaclass StrategistHandler << metaclass >>
+ 
+  class MeccanicoController{
+    - user : Staff 
+    - m : Meccanico
+    - boolean getComponent()
+    - String getID()
+    + TypeController getType()
+    + void initialize()
+    + void onLoad()
+  }
+  
+  class Observable{
+    - observers : List<Observer>
+    + void addObserver(Observer observer)
+    + void removeObserver(Observer observer)
+    + void notifyObservers(int totalRequests)
+  }
+
+  class Observer << (I,BLUE) Observer >> {
+    + void update(int totalRequest)
+  }
+ 
+ 
+  class StrategistController{
+    - user : Staff 
+    - st : Stratega 
+    - minT1 : int 
+    - minT2 : int 
+    - minT3 : int 
+    - timeLap : int 
+    - String convertTime(int millis)
+    - int getTimeLap()
+    - Vehicle getVehicle()
+    - void setTimeLap()
+    + void createTable(StrategistView sv)
+    + TypeController getType() 
+    + void initialize()
+  }
+
+
+ ControllerManager --o AbsController : references
+ ControllerManager -- ControllerFactory  
+
+
+ LoginController -up-|> AbsController
+ MeccanicoController -up-|> AbsController
+ MagazziniereController -up-|> AbsController
+
+ StrategistController -up-|> AbsController
+
+ MeccanicoController --o MeccanicoHandler
+ 
+ MagazziniereController --o WhHandler
+ 
+ StrategistController --o StrategistHandler
+
+ AbsController -up-* AbsTypeController
+ AbsController -right-o ControllerFactory
+ ControllerManager -left-* AbsTypeController
+ MagazziniereController -- Observable : uses
+ Observable -down- Observer : uses
+
+}
+
+package View{
+    metaclass view << metaclass >>
+
+    abstract class AbsView{
+        + void onLoad()
+    }
+}
+
+AbsView -up-|> JPanel
+
+
+package Model{
+
+}
+
+package Frame{
+  class frame{
+    - currentView : AbsView
+    + Frame(int w, int h)
+    + Dimension getCurrentSize()
+    + void loadView(AbsView v)
+  }
+
+  frame --o AbsView : contains
+  ControllerManager --o frame : has
+}
+
+
+
+view -.|> Observer
+
+MeccanicoHandler -up- Model : uses
+StrategistHandler -up- Model  : uses
+WhHandler -up- Model : uses
+
+WhHandler -- view
+MeccanicoHandler -- view
+StrategistHandler -- view
+
+frame -up-|> JFrame
+
+@enduml

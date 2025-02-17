@@ -1,0 +1,31 @@
+@startuml
+title Load Controller - Sequence diagram UML
+
+participant Controller
+participant ControllerManager
+participant ControllerFactory
+participant Frame
+participant StaffController
+participant AbsView
+
+Controller -> ControllerManager: getInstance().loadController(TypeController t)
+
+ControllerManager -> ControllerFactory: loadController(TypeController t)
+ControllerFactory --> ControllerManager
+
+ControllerManager -> StaffController: inizialize()
+
+StaffController -> AbsView: constructor(data)
+AbsView --> StaffController: 
+
+StaffController -> AbsView: onLoad()
+AbsView --> StaffController:
+
+ControllerManager -> StaffController: getView()
+StaffController --> ControllerManager: 
+
+ControllerManager -> Frame: loadView()
+Frame --> ControllerManager: 
+
+
+@enduml
