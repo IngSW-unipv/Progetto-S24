@@ -41,8 +41,5 @@ public abstract class AbsController {
 	 *
 	 */
 	public abstract void initialize();
-
-	public void onLoad() {
-		view.onLoad();
-	}
+	
 }

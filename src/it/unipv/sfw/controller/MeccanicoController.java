@@ -232,12 +232,5 @@ public class MeccanicoController extends AbsController {
 	private String getID() {
 		return Session.getIstance().getId_staff();
 	}
-	
-
-	@Override
-	public void onLoad() {
-		// TODO Auto-generated method stub
-		this.initialize();
-	}
 
 }

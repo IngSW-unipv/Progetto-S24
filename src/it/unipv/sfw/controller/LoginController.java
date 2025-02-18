@@ -103,12 +103,6 @@ public class LoginController extends AbsController {
 
 		view = v;
 	}
-
-	@Override
-	public void onLoad() {
-		// TODO Auto-generated method stub
-		view.onLoad();
-	}
 	
 	// metodo per information hiding
 	
