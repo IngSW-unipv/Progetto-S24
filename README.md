@@ -12,7 +12,7 @@ Per poter compilare l'app GestioneScuderia è necessario l'utilizzo di [Eclipse 
 ## Creazione del database
 Utilizzando un client per MySQL si eseguano in ordine i due script nella cartalla db_scripts, essi creeranno tutte le tables necessarie e le riempiranno con dei dati utili a una demo.
 
-- CREATEDATABASE.sql
-- ADDDATA.sql
+- ```CREATEDATABASE.sql```
+- ```ADDDATA.sql```
 
 
