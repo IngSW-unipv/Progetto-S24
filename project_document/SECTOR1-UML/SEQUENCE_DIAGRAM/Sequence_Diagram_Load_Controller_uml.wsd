@@ -8,24 +8,39 @@ participant Frame
 participant StaffController
 participant AbsView
 
+activate Controller
+
 Controller -> ControllerManager: getInstance().loadController(TypeController t)
 
-ControllerManager -> ControllerFactory: loadController(TypeController t)
+activate ControllerManager
+
+
+ControllerManager -> ControllerFactory:  ControllerFactory.createController()
+activate ControllerFactory
 ControllerFactory --> ControllerManager
+deactivate ControllerFactory
 
-ControllerManager -> StaffController: inizialize()
+ControllerManager -> StaffController: StaffController.inizialize()
+activate StaffController
 
-StaffController -> AbsView: constructor(data)
-AbsView --> StaffController: 
-
-StaffController -> AbsView: onLoad()
-AbsView --> StaffController:
+StaffController -> AbsView: new AbsView()
+activate AbsView
+AbsView --> StaffController
+deactivate AbsView
+StaffController --> ControllerManager
+deactivate StaffController 
 
 ControllerManager -> StaffController: getView()
-StaffController --> ControllerManager: 
+activate StaffController
+StaffController --> ControllerManager
+deactivate StaffController 
 
 ControllerManager -> Frame: loadView()
-Frame --> ControllerManager: 
+activate Frame
+Frame --> ControllerManager
+deactivate Frame
 
+deactivate ControllerManager
+deactivate Controller
 
 @enduml
