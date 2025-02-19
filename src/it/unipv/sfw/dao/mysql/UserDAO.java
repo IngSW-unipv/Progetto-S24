@@ -11,103 +11,113 @@ import it.unipv.sfw.model.staff.Staff;
 import it.unipv.sfw.model.staff.Stratega;
 import it.unipv.sfw.model.staff.Staff.TypeController;
 
+/**
+ * Data Access Object (DAO) per la gestione degli utenti (staff) nel database MySQL.
+ * Fornisce metodi per recuperare informazioni sull'utente tramite ID e per
+ * verificare le credenziali (ID e password) e ottenere il ruolo.
+ */
 public class UserDAO {
-	private static final String SCHEMA = "staff";
+    private static final String SCHEMA = "staff";
 
-	public Staff selectById(String id) {
+    /**
+     * Recupera un utente (membro dello staff) dal database tramite il suo ID.
+     *
+     * @param id L'ID dell'utente da recuperare.
+     * @return Un oggetto {@link Staff} che rappresenta l'utente, o `null` se
+     *         l'utente non viene trovato. Il tipo specifico dell'oggetto Staff
+     *         dipende dal ruolo dell'utente (Meccanico, Stratega, Magazziniere).
+     *         Vengono anche impostati nome e cognome dell'utente nella sessione.
+     */
+    public Staff selectById(String id) {
 
-		Staff result = null;
+        Staff result = null;
 
-		PreparedStatement st1;
-		ResultSet rs1;
+        PreparedStatement st1;
+        ResultSet rs1;
 
-		try (DBConnection db = new DBConnection(SCHEMA)) {
-			Connection conn = db.getConnection();
+        try (DBConnection db = new DBConnection(SCHEMA)) {
+            Connection conn = db.getConnection();
 
-			String query = "SELECT * FROM " + SCHEMA + " WHERE ID = ?";
-			st1 = conn.prepareStatement(query);
-			st1.setString(1, id);
-			rs1 = st1.executeQuery();
+            String query = "SELECT * FROM " + SCHEMA + " WHERE ID = ?";
+            st1 = conn.prepareStatement(query);
+            st1.setString(1, id);
+            rs1 = st1.executeQuery();
 
-			if (rs1.next()) {
-				String type = rs1.getString(5);
+            if (rs1.next()) {
+                String type = rs1.getString(5);
 
-				switch (type) {
-				case "Meccanico":
+                switch (type) {
+                    case "Meccanico":
+                        result = new Meccanico(rs1.getString(1), rs1.getString(4));
+                        Session.getIstance().setName(rs1.getString(2));
+                        Session.getIstance().setSurname(rs1.getString(3));
+                        break;
 
-					result = new Meccanico(rs1.getString(1), rs1.getString(4));
-					Session.getIstance().setName(rs1.getString(2));
-					Session.getIstance().setSurname(rs1.getString(3));
-					
-					break;
+                    case "Stratega":
+                        result = new Stratega(rs1.getString(1), rs1.getString(4));
+                        Session.getIstance().setName(rs1.getString(2));
+                        Session.getIstance().setSurname(rs1.getString(3));
+                        break;
 
-				case "Stratega":
+                    case "Magazziniere":
+                        result = new Magazziniere(rs1.getString(1), rs1.getString(4));
+                        Session.getIstance().setName(rs1.getString(2));
+                        Session.getIstance().setSurname(rs1.getString(3));
+                        break;
+                }
+            }
 
-					result = new Stratega(rs1.getString(1), rs1.getString(4));
-					Session.getIstance().setName(rs1.getString(2));
-					Session.getIstance().setSurname(rs1.getString(3));
-					
-					break;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
 
-				case "Magazziniere":
+    /**
+     * Verifica le credenziali di un utente (ID e password) e restituisce il suo ruolo.
+     *
+     * @param id  L'ID dell'utente.
+     * @param pwd La password dell'utente.
+     * @return Il ruolo dell'utente ({@link TypeController}), o `null` se le
+     *         credenziali non sono corrette.
+     */
+    public static TypeController selectByIDandPwd(String id, String pwd) {
 
-					result = new Magazziniere(rs1.getString(1), rs1.getString(4));
-					Session.getIstance().setName(rs1.getString(2));
-					Session.getIstance().setSurname(rs1.getString(3));
-					
-					break;
-				}
-			}
+        TypeController typeSelected = null;
 
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return result;
-	}
+        PreparedStatement st1;
+        ResultSet rs1;
 
-	public static TypeController selectByIDandPwd(String id, String pwd) {
+        try (DBConnection db = new DBConnection(SCHEMA)) {
+            Connection conn = db.getConnection();
 
-		TypeController typeSelected = null;
+            String query = "SELECT ROLE FROM " + SCHEMA + " WHERE ID = ? AND PASSWORD LIKE ?";
+            st1 = conn.prepareStatement(query);
+            st1.setString(1, id);
+            st1.setString(2, pwd);
+            rs1 = st1.executeQuery();
 
-		PreparedStatement st1;
-		ResultSet rs1;
+            if (rs1.next()) {
+                String type = rs1.getString(5);
 
-		try (DBConnection db = new DBConnection(SCHEMA)) {
-			Connection conn = db.getConnection();
+                switch (type) {
+                    case "Meccanico":
+                        typeSelected = TypeController.MECCANICO;
+                        break;
 
-			String query = "SELECT ROLE FROM " + SCHEMA + " WHERE ID = ? AND PASSWORD LIKE ?";
-			st1 = conn.prepareStatement(query);
-			st1.setString(1, id);
-			st1.setString(2, pwd);
-			rs1 = st1.executeQuery();
+                    case "Stratega":
+                        typeSelected = TypeController.STRATEGA;
+                        break;
 
-			if (rs1.next()) {
-				String type = rs1.getString(5);
+                    case "Magazziniere":
+                        typeSelected = TypeController.MAGAZZINIERE;
+                        break;
+                }
+            }
 
-				switch (type) {
-				case "Meccanico":
-
-					typeSelected = TypeController.MECCANICO;
-
-					break;
-
-				case "Stratega":
-
-					typeSelected = TypeController.STRATEGA;
-
-					break;
-
-				case "Magazziniere":
-
-					typeSelected = TypeController.MAGAZZINIERE;
-
-					break;
-				}
-			}
-
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-		return typeSelected;
-	}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return typeSelected;
+    }
 }

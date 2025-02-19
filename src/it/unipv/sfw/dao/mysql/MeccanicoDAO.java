@@ -11,13 +11,21 @@ import it.unipv.sfw.exceptions.VehicleNotFoundException;
 import it.unipv.sfw.exceptions.WrongIDException;
 import it.unipv.sfw.exceptions.WrongRequestException;
 
-//INSERT PILOTI, SELECT PILOTA, INSERT REQUEST, SELECT STATO COMPONENTI, REMOVE PILOTA
+/**
+ * Data Access Object (DAO) per la gestione di meccanici, piloti, veicoli,
+ * componenti e richieste nel database MySQL.  Fornisce metodi per
+ * inserire, controllare, aggiornare e rimuovere informazioni relative a
+ * queste entità.
+ */
 public class MeccanicoDAO {
 
 	private String SCHEMA = "";
 
-	// CHECK STAFF
-
+    /**
+     * Verifica se esiste un membro dello staff con l'ID specificato.
+     * @param id L'ID del membro dello staff da verificare.
+     * @throws WrongIDException Se non viene trovato alcun membro dello staff con l'ID specificato.
+     */
 	public void checkStaff(String id) throws WrongIDException {
 
 		SCHEMA = "staff";
@@ -46,8 +54,11 @@ public class MeccanicoDAO {
 
 	}
 
-	// CHECK VEHICLE
-
+    /**
+     * Verifica se esiste un veicolo con il numero di telaio (MSN) specificato.
+     * @param msn Il numero di telaio (MSN) del veicolo da verificare.
+     * @throws VehicleNotFoundException Se non viene trovato alcun veicolo con il numero di telaio specificato.
+     */
 	public void checkVehicle(String msn) throws VehicleNotFoundException {
 
 		SCHEMA = "vehicle";
@@ -76,8 +87,12 @@ public class MeccanicoDAO {
 		}
 	}
 
-	// INSERT MECCANICO
-
+    /**
+     * Associa un meccanico a un veicolo.
+     * @param msn Il numero di telaio (MSN) del veicolo.
+     * @param id L'ID del meccanico da associare.
+     * @return `true` se l'associazione ha avuto successo, `false` altrimenti.
+     */
 	public boolean insertMeccOnVehicle(String msn, String id) {
 
 		SCHEMA = "staff";
@@ -109,8 +124,11 @@ public class MeccanicoDAO {
 		return esito;
 	}
 
-	// CHECK PILOT
-
+    /**
+     * Verifica se esiste un pilota con l'ID specificato.
+     * @param id_p L'ID del pilota da verificare.
+     * @throws PilotNotFoundException Se non viene trovato alcun pilota con l'ID specificato.
+     */
 	public void checkPilot(String id_p) throws PilotNotFoundException {
 
 		SCHEMA = "pilot";
@@ -142,8 +160,12 @@ public class MeccanicoDAO {
 
 	}
 
-	// INSERT PILOTONVEHICLE
-
+	   /**
+     * Associa un pilota a un veicolo.
+     * @param id_p L'ID del pilota da associare.
+     * @param msn Il numero di telaio (MSN) del veicolo.
+     * @return `true` se l'associazione ha avuto successo, `false` altrimenti.
+     */
 	public boolean insertPilotOnVehicle(String id_p, String msn) {
 
 		SCHEMA = "vehicle";
@@ -177,8 +199,11 @@ public class MeccanicoDAO {
 		return esito;
 	}
 
-	// REMOVE PILOT
-
+	   /**
+     * Rimuove l'associazione tra un pilota e un veicolo.
+     * @param idp L'ID del pilota da rimuovere dall'associazione.
+     * @return `true` se la rimozione ha avuto successo, `false` altrimenti.
+     */
 	public boolean removePilot(String idp) {
 
 		SCHEMA = "vehicle";
@@ -210,7 +235,14 @@ public class MeccanicoDAO {
 
 	}
 
-	// SELECT ID PILOT
+    /**
+     * Seleziona un pilota dal database.
+     * @param id L'ID del pilota.
+     * @param name Il nome del pilota.
+     * @param surname Il cognome del pilota.
+     * @param number Il numero del pilota.
+     * @throws PilotNotFoundException Se non viene trovato alcun pilota con i dati specificati.
+     */
 
 	public void selectP(String id, String name, String surname, String number) throws PilotNotFoundException {
 
@@ -246,8 +278,11 @@ public class MeccanicoDAO {
 
 	}
 
-	// CHECK PILOTONVEHICLE
-
+    /**
+     * Verifica se un pilota è associato a un veicolo.
+     * @param idp L'ID del pilota.
+     * @return `true` se il pilota è associato a un veicolo, `false` altrimenti.
+     */
 	public boolean checkPilotOnVehicle(String idp) {
 
 		SCHEMA = "vehicle";
@@ -280,8 +315,13 @@ public class MeccanicoDAO {
 		return result;
 	}
 
-	// CHECK COMPO
-
+    /**
+     * Verifica se esiste un componente con le informazioni specificate.
+     * @param id_c L'ID del componente.
+     * @param name Il nome del componente.
+     * @param status Lo stato del componente.
+     * @throws ComponentNotFoundException Se non viene trovato alcun componente con i dati specificati.
+     */
 	public void checkCompo(String id_c, String name, String status) throws ComponentNotFoundException {
 
 		SCHEMA = "component";
@@ -315,8 +355,11 @@ public class MeccanicoDAO {
 		}
 	}
 
-	// CHECK ID COMPO
-
+    /**
+     * Verifica se esiste un componente con l'ID specificato.
+     * @param id_c L'ID del componente.
+     * @throws ComponentNotFoundException Se non viene trovato alcun componente con l'ID specificato.
+     */
 	public void checkIdCompo(String id_c) throws ComponentNotFoundException {
 
 		SCHEMA = "component";
@@ -348,8 +391,12 @@ public class MeccanicoDAO {
 		}
 	}
 
-	// INSERT COMPO
-
+    /**
+     * Associa un componente a un veicolo.
+     * @param id L'ID del componente.
+     * @param msn Il numero di telaio (MSN) del veicolo.
+     * @return `true` se l'associazione ha avuto successo, `false` altrimenti.
+     */
 	public boolean insertComponent(String id, String msn) {
 
 		SCHEMA = "component";
@@ -382,8 +429,12 @@ public class MeccanicoDAO {
 
 	}
 
-	// UPDATE WEAR
-
+    /**
+     * Aggiorna il valore di usura di un componente.
+     * @param wear Il nuovo valore di usura.
+     * @param id L'ID del componente.
+     * @return `true` se l'aggiornamento ha avuto successo, `false` altrimenti.
+     */
 	public boolean updateWear(int wear, String id) {
 
 		SCHEMA = "component";
@@ -419,8 +470,11 @@ public class MeccanicoDAO {
 
 	}
 
-	// REMOVE COMPO
-
+    /**
+     * Rimuove l'associazione tra un componente e un veicolo.
+     * @param id_c L'ID del componente.
+     * @param id_v L'ID del veicolo.
+     */
 	public void removeComponent(String id_c, String id_v) {
 
 		SCHEMA = "component";
@@ -446,8 +500,14 @@ public class MeccanicoDAO {
 
 	}
 
-	// INSERT REQUEST
-
+    /**
+     * Inserisce una nuova richiesta.
+     * @param desc La descrizione della richiesta.
+     * @param id_s L'ID dello staff che ha effettuato la richiesta.
+     * @param id_c L'ID del componente richiesto.
+     * @param id_v L'ID del veicolo a cui si riferisce la richiesta.
+     * @return `true` se l'inserimento ha avuto successo, `false` altrimenti.
+     */
 	public boolean insertRequest(String desc, String id_s, String id_c, String id_v) {
 
 		SCHEMA = "request";
@@ -486,8 +546,11 @@ public class MeccanicoDAO {
 
 	}
 
-	// CHECK REQUEST
-
+    /**
+     * Verifica se esiste una richiesta con l'ID del componente specificato.
+     * @param id_c L'ID del componente.
+     * @throws WrongRequestException Se non viene trovata alcuna richiesta con l'ID del componente specificato.
+     */
 	public void checkRequest(String id_c) throws WrongRequestException {
 
 		SCHEMA = "request";
@@ -519,6 +582,11 @@ public class MeccanicoDAO {
 		}
 	}
 	
+    /**
+     * Inserisce un evento nel log.
+     * @param id_staff L'ID dello staff che ha effettuato l'azione.
+     * @param desc La descrizione dell'evento.
+     */
 	public void  insertLogEvent(String id_staff, String desc) {
 
 		SCHEMA = "log_event";

@@ -8,7 +8,6 @@ import it.unipv.sfw.exceptions.ComponentNotFoundException;
 import it.unipv.sfw.exceptions.DuplicateComponentException;
 import it.unipv.sfw.model.component.Components;
 import it.unipv.sfw.model.staff.Session;
-import it.unipv.sfw.model.vehicle.Vehicle;
 import it.unipv.sfw.view.McPopUpComponentView;
 import it.unipv.sfw.view.McPopUpRequestView;
 
