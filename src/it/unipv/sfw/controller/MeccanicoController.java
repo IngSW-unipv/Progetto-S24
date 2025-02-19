@@ -12,28 +12,20 @@ import it.unipv.sfw.model.staff.Staff;
 import it.unipv.sfw.view.MeccanicoView;
 
 /**
- * Controller per la gestione dell'interfaccia del meccanico.
- * Questa classe gestisce le interazioni dell'utente con la {@link MeccanicoView}
- * e coordina le azioni con il {@link MeccanicoDAO} e altri controller.
+ * Controller per la gestione delle azioni del meccanico.
+ * Gestisce le interazioni tra la vista del meccanico e il modello dei dati.
  */
 public class MeccanicoController extends AbsController {
 
     private Staff user;
+
     private Meccanico m;
 
-    /**
-     * Restituisce il tipo di controller.
-     * @return Il tipo di controller (MECCANICO).
-     */
     @Override
     public TypeController getType() {
         return TypeController.MECCANICO;
     }
 
-    /**
-     * Inizializza il controller, creando la vista, impostando i listener
-     * per i bottoni e recuperando i dati dell'utente dalla sessione.
-     */
     @Override
     public void initialize() {
 
@@ -56,9 +48,21 @@ public class MeccanicoController extends AbsController {
         // Inserimento del login nella tabella degli eventi
         md.insertLogEvent(getID(), "LOGIN");
 
-        // Inizializzazione stato bottoni
-        setButtonStates(mv);
+        // Abilita o disabilita bottoni basati sul valore di V (Veicolo assegnato)
+        mv.getAddComponentButton().setEnabled(false);
+        mv.getAddComponentButton().setVisible(false);
 
+        mv.getAddPilotButton().setEnabled(false);
+        mv.getAddPilotButton().setVisible(false);
+
+        mv.getRemovePilotButton().setEnabled(false);
+        mv.getRemovePilotButton().setVisible(false);
+
+        mv.getRemoveComponentButton().setEnabled(false);
+        mv.getRemoveComponentButton().setVisible(false);
+
+        mv.getVisualTimePsButton().setEnabled(false);
+        mv.getVisualTimePsButton().setVisible(false);
 
         // ADD VEHICLE
         mv.getInsertVehicleButton().addActionListener(new ActionListener() {
@@ -75,7 +79,7 @@ public class MeccanicoController extends AbsController {
             public void actionPerformed(ActionEvent e) {
                 boolean isVehiclePresent = (Session.getIstance().getId_pilot() != null);
 
-                if (!isVehiclePresent) {
+                if (!isVehiclePresent) { // Simplified condition
                     Session.getIstance().setOperation("NO_V");
                 } else {
                     Session.getIstance().setOperation("YES_V");
@@ -103,13 +107,13 @@ public class MeccanicoController extends AbsController {
         mv.getRemoveComponentButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                boolean isComponentPresent = !getComponent(); //Invertito per logica
-                
-                if(!isComponentPresent) { //Invertito per logica
+                boolean isComponentPresent = getComponent();
+
+                if (isComponentPresent) {
                     // messaggio pop up che avverte di rimuovere prima di aggiungere
                     JOptionPane.showMessageDialog(null, "INSERT A COMPONENT BEFORE TO REMOVING", "INFORMATION",
                             JOptionPane.INFORMATION_MESSAGE);
-                }else {
+                } else {
                     Session.getIstance().setOperation("REMOVE");
                     McPopUpComponentHandler pcc = new McPopUpComponentHandler();
                     System.out.println("il contenuto è: " + Session.getIstance().getOperation()
@@ -126,7 +130,7 @@ public class MeccanicoController extends AbsController {
             public void actionPerformed(ActionEvent e) {
                 boolean isPilotPresent = (Session.getIstance().getId_pilot() != null);
 
-                if (!isPilotPresent) {
+                if (!isPilotPresent) { // Simplified condition
                     Session.getIstance().setOperation("ADD");
                     System.out.println("il contenuto è: " + Session.getIstance().getOperation()
                             + " @MECCANICO CONTROLLER-ADD PILOT");
@@ -177,43 +181,11 @@ public class MeccanicoController extends AbsController {
         view = mv;
     }
 
-    /**
-     * Imposta lo stato iniziale dei bottoni dell'interfaccia.
-     * @param mv La vista {@link MeccanicoView} da cui recuperare i bottoni.
-     */
-    private void setButtonStates(MeccanicoView mv) {
-        boolean isVehiclePresent = (Session.getIstance().getV() != null);
-
-        mv.getAddComponentButton().setEnabled(isVehiclePresent);
-        mv.getAddComponentButton().setVisible(isVehiclePresent);
-
-        mv.getAddPilotButton().setEnabled(isVehiclePresent);
-        mv.getAddPilotButton().setVisible(isVehiclePresent);
-
-        mv.getRemovePilotButton().setEnabled(isVehiclePresent);
-        mv.getRemovePilotButton().setVisible(isVehiclePresent);
-
-        mv.getRemoveComponentButton().setEnabled(isVehiclePresent);
-        mv.getRemoveComponentButton().setVisible(isVehiclePresent);
-
-        mv.getVisualTimePsButton().setEnabled(isVehiclePresent);
-        mv.getVisualTimePsButton().setVisible(isVehiclePresent);
-    }
-
-
-
-    /**
-     * Verifica se ci sono componenti nel veicolo.
-     * @return `true` se il veicolo *non* ha componenti, `false` altrimenti.
-     */
+    // Metodo per information hiding
     private boolean getComponent() {
         return Session.getIstance().getV().getComponent().isEmpty();
     }
 
-    /**
-     * Recupera l'ID del membro dello staff dalla sessione.
-     * @return L'ID del membro dello staff.
-     */
     private String getID() {
         return Session.getIstance().getId_staff();
     }
