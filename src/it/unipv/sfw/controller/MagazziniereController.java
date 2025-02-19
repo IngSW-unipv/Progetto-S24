@@ -10,118 +10,114 @@ import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.model.staff.Staff;
 import it.unipv.sfw.view.MagazziniereView;
 
+/**
+ * Controller che gestisce il processo di gestione del magazziniere nella {@link MagazziniereView}.
+ * Si occupa della gestione delle richieste e della visualizzazione delle informazioni relative al magazzino.
+ * 
+ * @see AbsController
+ * @see it.unipv.sfw.view.MagazziniereView
+ */
 public class MagazziniereController extends AbsController {
-	private Staff user;
+    private Staff user;
+    private Magazziniere m;
+    private Observable obs;
 
-	private Magazziniere m;
+    /**
+     * Restituisce il tipo di controller.
+     * 
+     * @return Il tipo di controller, in questo caso {@link TypeController#MAGAZZINIERE}.
+     */
+    @Override
+    public TypeController getType() {
+        return TypeController.MAGAZZINIERE;
+    }
 
-	private Observable obs;
+    /**
+     * Inizializza il controller creando la vista del magazziniere e impostando i listener
+     * per la gestione dei bottoni.
+     */
+    @Override
+    public void initialize() {
+        try {
+            user = Session.getIstance().getCurrentUser();
+            m = (Magazziniere) user;
+        } catch (Exception e) {
+            System.out.println("Errore");
+        }
 
-	@Override
-	public TypeController getType() {
-		// TODO Auto-generated method stub
-		return TypeController.MAGAZZINIERE;
-	}
+        obs = new Observable();
 
-	@Override
-	public void initialize() {
-		// TODO Auto-generated method stub
+        MagazziniereView mv = new MagazziniereView();
+        MagazziniereDAO md = new MagazziniereDAO();
 
-		//
-		try {
+        WhPopUpDeleteRequestHandler wdrc = new WhPopUpDeleteRequestHandler(obs);
+        WhPopUpUpdateComponentHandler wupc = new WhPopUpUpdateComponentHandler();
 
-			user = Session.getIstance().getCurrentUser();
-			m = (Magazziniere) user;
+        Session.getIstance().getRequest();
+        md.insertLogEvent(getID(), "LOGIN");
 
-		} catch (Exception e) {
-			System.out.println("Errore");
-		}
+        mv.data(Session.getIstance().getName(), Session.getIstance().getSurname(),
+                Session.getIstance().getWh().totalRequest());
+        obs.addObserver(mv);
 
-		obs = new Observable();
+        mv.getShowRequestButton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                WhPopUpShowRequestHandler wsrc = new WhPopUpShowRequestHandler();
+                md.insertLogEvent(getID(), "SHOW REQUEST");
 
-		MagazziniereView mv = new MagazziniereView();
-		MagazziniereDAO md = new MagazziniereDAO();
+                System.out.println(Session.getIstance().getWh().getRequest());
 
-		WhPopUpDeleteRequestHandler wdrc = new WhPopUpDeleteRequestHandler(obs);
-		WhPopUpUpdateComponentHandler wupc = new WhPopUpUpdateComponentHandler();
+                for (Request r : m.getRequest()) {
+                    System.out.println(r);
+                }
 
-		Session.getIstance().getRequest();
-		md.insertLogEvent(getID(), "LOGIN");
+                wsrc.showWindow();
+                mv.setMex();
+            }
+        });
 
-		mv.data(Session.getIstance().getName(), Session.getIstance().getSurname(),
-				Session.getIstance().getWh().totalRequest());
-		obs.addObserver(mv);
+        mv.getDeleteRequestButton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                wdrc.showWindow();
+                wdrc.clear();
+                mv.setMex();
+            }
+        });
 
-		mv.getShowRequestButton().addActionListener(new ActionListener() {
+        mv.getUpdateCompoButton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                wupc.showWindow();
+                mv.setMex();
+            }
+        });
 
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				WhPopUpShowRequestHandler wsrc = new WhPopUpShowRequestHandler();
-				md.insertLogEvent(getID(), "SHOW REQUEST");
+        mv.getCombobox().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                String select = (String) mv.getCombobox().getSelectedItem();
+                md.insertLogEvent(getID(), "SHOW QUANTITY COMPONENT: " + select);
 
-				System.out.println(Session.getIstance().getWh().getRequest());
+                if (select.equals("- ALL")) {
+                    mv.mexCombo(md.countElement());
+                } else {
+                    mv.mexCombo(md.countElementBySelect(select));
+                }
+            }
+        });
 
-				for (Request r : m.getRequest()) {
-					System.out.println(r);
-
-				}
-
-				wsrc.showWindow();
-				mv.setMex();
-			}
-
-		});
-
-		mv.getDeleteRequestButton().addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				wdrc.showWindow();
-				wdrc.clear();
-				mv.setMex();
-			}
-
-		});
-
-		mv.getUpdateCompoButton().addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-				wupc.showWindow();
-				mv.setMex();
-			}
-
-		});
-
-		mv.getCombobox().addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-				// TODO Auto-generated method stub
-
-				String select = (String) mv.getCombobox().getSelectedItem();
-				md.insertLogEvent(getID(), "SHOW QUANTITY COMPONENT: " + select);
-
-				if (select.equals("- ALL")) {
-					mv.mexCombo(md.countElement());
-
-				} else {
-					mv.mexCombo(md.countElementBySelect(select));
-				}
-
-			}
-
-		});
-
-		mv.setVisible(true);
-		view = mv;
-	}
-
-	private String getID() {
-		return Session.getIstance().getId_staff();
-	}
-
+        mv.setVisible(true);
+        view = mv;
+    }
+    
+    /**
+     * Restituisce l'ID dello staff attualmente autenticato.
+     * 
+     * @return Una stringa contenente l'ID dello staff.
+     */
+    private String getID() {
+        return Session.getIstance().getId_staff();
+    }
 }

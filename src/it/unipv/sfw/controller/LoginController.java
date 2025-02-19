@@ -11,107 +11,107 @@ import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.view.LoginView;
 
 /**
- * Controller che si occupa della LoginView.
- *
+ * Controller che gestisce il processo di login nella {@link LoginView}.
+ * Si occupa di verificare le credenziali dell'utente e di caricare il controller appropriato
+ * in base al ruolo dell'utente autenticato.
+ * 
  * @see AbsController
  * @see it.unipv.sfw.view.LoginView
  */
-
 public class LoginController extends AbsController {
-	private LoginView logv;
-	
-	private void accedi() {
-		logv = (LoginView) view;
+    private LoginView logv;
+    
+    /**
+     * Gestisce il processo di login di un operatore nel sistema.
+     * In base al ruolo dell'operatore, carica il controller corrispondente.
+     */
+    private void accedi() {
+        logv = (LoginView) view;
 
-		// Try to login into session
-		// USERNAME = ID DELL'OPERATORE
+        try {
+            Session.getIstance().login(getUsername(), getPassword());
+        } catch (WrongPasswordException | AccountNotFoundException err) {
+            System.out.print(err);
+            logv.upError();
+            return;
+        }
 
-		try {
-			Session.getIstance().login(getUsername(), getPassword());
+        // Caricamento del controller in base al tipo di utente
+        switch ("" + Session.getIstance().getCurrentUser().getType()) {
+            case "MECCANICO":
+                ControllerManager.getInstance().loadController(TypeController.MECCANICO);
+                ControllerManager.getInstance().closeWindow();
+                break;
+            case "STRATEGA":
+                ControllerManager.getInstance().loadController(TypeController.STRATEGA);
+                ControllerManager.getInstance().closeWindow();
+                break;
+            case "MAGAZZINIERE":
+                ControllerManager.getInstance().loadController(TypeController.MAGAZZINIERE);
+                ControllerManager.getInstance().closeWindow();
+                break;
+        }
+    }
 
-		} catch (WrongPasswordException | AccountNotFoundException err) {
-			System.out.print(err);
-			logv.upError();
-			return;
-		}
+    /**
+     * Restituisce il tipo di controller.
+     * 
+     * @return Il tipo di controller, in questo caso {@link TypeController#LOGIN}.
+     */
+    @Override
+    public TypeController getType() {
+        return TypeController.LOGIN;
+    }
 
-		// SWITCH LOAD CONTROLLER
-		switch ("" + Session.getIstance().getCurrentUser().getType()) {
+    /**
+     * Inizializza il controller creando la vista di login e impostando i listener
+     * per la gestione dell'accesso tramite tastiera e pulsante.
+     */
+    @Override
+    public void initialize() {
+        System.out.println("Inizializzazione di LoginController - @LOGINCONTROLLER");
+        LoginView v = new LoginView();
 
-		case "MECCANICO":
-			ControllerManager.getInstance().loadController(TypeController.MECCANICO);
-			ControllerManager.getInstance().closeWindow();
-			break;
+        v.getPasswordField().setFocusTraversalKeysEnabled(false);
+        v.getPasswordField().addKeyListener(new KeyListener() {
+            @Override
+            public void keyPressed(KeyEvent e) {
+                if (e.getKeyCode() == KeyEvent.VK_ENTER)
+                    accedi();
+            }
 
-		case "STRATEGA":
-			ControllerManager.getInstance().loadController(TypeController.STRATEGA);
-			ControllerManager.getInstance().closeWindow();
+            @Override
+            public void keyReleased(KeyEvent e) {}
 
-			break;
+            @Override
+            public void keyTyped(KeyEvent e) {}
+        });
 
-		case "MAGAZZINIERE":
-			ControllerManager.getInstance().loadController(TypeController.MAGAZZINIERE);
-			ControllerManager.getInstance().closeWindow();
+        v.getAccediButton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                accedi();
+            }
+        });
 
-			break;
-
-		}
-
-	}
-
-	@Override
-	public TypeController getType() {
-
-		return TypeController.LOGIN;
-	}
-
-	@Override
-	public void initialize() {
-		System.out.println("Inizializzazione di LoginController - @LOGINCONTROLLER");
-		LoginView v = new LoginView();
-
-		v.getPasswordField().setFocusTraversalKeysEnabled(false);
-		v.getPasswordField().addKeyListener(new KeyListener() {
-
-			@Override
-			public void keyPressed(KeyEvent e) {
-				if (e.getKeyCode() == KeyEvent.VK_ENTER)
-				accedi();
-			}
-
-			@Override
-			public void keyReleased(KeyEvent e) {
-			}
-
-			@Override
-			public void keyTyped(KeyEvent e) {
-
-			}
-
-		});
-
-		v.getAccediButton().addActionListener(new ActionListener() {
-
-			@Override
-			public void actionPerformed(ActionEvent e) {
-
-				accedi();
-				
-			}
-
-		});
-
-		view = v;
-	}
-	
-	// metodo per information hiding
-	
-	private String getUsername() {
-		return logv.getUsernameField().getText();
-	}
-	
-	private char[] getPassword() {
-		return logv.getPasswordField().getPassword();
-	}
-	
+        view = v;
+    }
+    
+    /**
+     * Restituisce il nome utente inserito nella vista di login.
+     * 
+     * @return Il nome utente come stringa.
+     */
+    private String getUsername() {
+        return logv.getUsernameField().getText();
+    }
+    
+    /**
+     * Restituisce la password inserita nella vista di login.
+     * 
+     * @return Un array di caratteri contenente la password.
+     */
+    private char[] getPassword() {
+        return logv.getPasswordField().getPassword();
+    }
 }
