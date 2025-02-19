@@ -5,30 +5,56 @@ import java.util.Set;
 
 import it.unipv.sfw.model.request.Request;
 
-public class Magazziniere extends Staff{
-	
-	private Set<Request> request = new HashSet<>();
+/**
+ * Classe che rappresenta un magazziniere, un tipo di membro dello staff.
+ * Estende la classe {@link Staff} e contiene informazioni sulle richieste
+ * gestite dal magazziniere.
+ */
+public class Magazziniere extends Staff {
 
-	public Magazziniere(String id, String pwd) {
-		super(id, pwd);
-		
-	}
+    private Set<Request> request = new HashSet<>();
 
-	@Override
-	public TypeController getType() {
-		return Staff.TypeController.MAGAZZINIERE;
-	}
+    /**
+     * Costruttore della classe Magazziniere.
+     * @param id L'ID del magazziniere.
+     * @param pwd La password del magazziniere.
+     */
+    public Magazziniere(String id, String pwd) {
+        super(id, pwd);
 
-	public Set<Request> getRequest() {
-		return request;
-	}
+    }
 
-	public void setRequest(Set<Request> request) {
-		this.request = request;
-	}
-	
-	public int totalRequest() {
-		return request.size();
-	}
+    /**
+     * Restituisce il tipo di membro dello staff.
+     * @return Il tipo di membro dello staff ({@link Staff.TypeController.MAGAZZINIERE}).
+     */
+    @Override
+    public TypeController getType() {
+        return Staff.TypeController.MAGAZZINIERE;
+    }
+
+    /**
+     * Restituisce l'insieme delle richieste gestite dal magazziniere.
+     * @return L'insieme delle richieste.
+     */
+    public Set<Request> getRequest() {
+        return request;
+    }
+
+    /**
+     * Imposta l'insieme delle richieste gestite dal magazziniere.
+     * @param request L'insieme delle richieste.
+     */
+    public void setRequest(Set<Request> request) {
+        this.request = request;
+    }
+
+    /**
+     * Restituisce il numero totale di richieste gestite dal magazziniere.
+     * @return Il numero di richieste.
+     */
+    public int totalRequest() {
+        return request.size();
+    }
 
 }
