@@ -144,7 +144,6 @@ public class McPopUpRequestView {
         sendPanel.add(mexLabel, gbcSend);
 
         frame.add(sendPanel, BorderLayout.CENTER);
-
 		id_s.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent e) {

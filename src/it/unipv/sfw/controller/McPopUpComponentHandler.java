@@ -81,6 +81,15 @@ public class McPopUpComponentHandler {
                 pc.clearComponents(pc.getDataPanel());
                 break;
             case 1:
+            	// componente inserito con successo
+				if (md.insertComponent(pc.getIdC().getText(), fetchMSN())) {
+					
+					md.updateWear(c.getWear(),pc.getIdC().getText() );
+					pc.mex2();
+					pc.clearComponents(pc.getDataPanel());
+				}
+
+				break; 
             case 2:
                 if (md.insertComponent(pc.getIdC().getText(), fetchMSN())) {
                     md.updateWear(c.getWear(), pc.getIdC().getText());
