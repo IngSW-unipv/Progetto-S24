@@ -1,26 +1,45 @@
 package it.unipv.sfw.model.staff;
 
+/**
+ * Classe che rappresenta uno stratega, un tipo di membro dello staff.
+ * Estende la classe {@link Staff}.
+ */
+public class Stratega extends Staff {
 
-public class Stratega extends Staff{
-	
-	private int timeLap = 0;
-	
-	public Stratega(String id, String pwd) {
-		super(id, pwd);
-	}
-	
-	@Override
-	public TypeController getType() {
-		return Staff.TypeController.STRATEGA;
-	}
+    private int timeLap = 0; // Tempo sul giro
 
-	public int getTimeLap() {
-		return timeLap;
-	}
+    /**
+     * Costruttore della classe Stratega.
+     * @param id L'ID dello stratega.
+     * @param pwd La password dello stratega.
+     */
+    public Stratega(String id, String pwd) {
+        super(id, pwd);
+    }
 
-	public void setTimeLap(int timeLap) {
-		this.timeLap = timeLap;
-	}
-	
+    /**
+     * Restituisce il tipo di membro dello staff.
+     * @return Il tipo di membro dello staff ({@link Staff.TypeController.STRATEGA}).
+     */
+    @Override
+    public TypeController getType() {
+        return Staff.TypeController.STRATEGA;
+    }
+
+    /**
+     * Restituisce il tempo sul giro.
+     * @return Il tempo sul giro.
+     */
+    public int getTimeLap() {
+        return timeLap;
+    }
+
+    /**
+     * Imposta il tempo sul giro.
+     * @param timeLap Il tempo sul giro da impostare.
+     */
+    public void setTimeLap(int timeLap) {
+        this.timeLap = timeLap;
+    }
 
 }

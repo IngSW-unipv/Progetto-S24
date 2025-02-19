@@ -6,6 +6,12 @@ import it.unipv.sfw.exceptions.AccountNotFoundException;
 import it.unipv.sfw.exceptions.WrongPasswordException;
 import it.unipv.sfw.model.vehicle.Vehicle;
 
+/**
+ * Classe che rappresenta una sessione utente.
+ * Gestisce le informazioni relative all'utente loggato, come il tipo, le credenziali,
+ * i dati personali e le relative istanze di {@link Meccanico}, {@link Magazziniere},
+ * {@link Stratega} e {@link Vehicle}. Implementa il pattern Singleton.
+ */
 public class Session {
 
 	private static Session istance = null;
@@ -23,9 +29,10 @@ public class Session {
 	private Stratega s;
 	private Vehicle v;
 
-	/**
-	 * @return L'istanza corrente di {@link Session}, nel caso non esista la crea.
-	 */
+    /**
+     * Restituisce l'istanza corrente della sessione. Se non esiste, ne crea una nuova.
+     * @return L'istanza della sessione.
+     */
 	public static Session getIstance() {
 
 		if (istance == null) {
@@ -36,8 +43,7 @@ public class Session {
 
 	private Staff currentUser;
 
-	// costruttore privato per evitare che vengano istanziati oggetti di tipo
-	// session
+	// Costruttore privato per impedire l'instanziazione diretta.
 	private Session() {
 		currentUser = null;
 		mgd = new MagazziniereDAO();
@@ -48,18 +54,12 @@ public class Session {
 	}
 
 	/**
-	 * Funzione che verifica nel database se l'utente specificato esiste
-	 * controllandone anche la password.
-	 * 
-	 * @param ID  Identificativo dell'utente di cui si vuole eseguire il login.
-	 * @param PWD Password dell'utente di cui si vuole eseguire il login.
-	 * 
-	 * @throws WrongPasswordException   Lanciata nel caso in cui la password sia
-	 *                                  errata.
-	 * @throws AccountNotFoundException Lanciata nel caso in cui l'account non
-	 *                                  esista.
-	 */
-
+     * Effettua il login dell'utente.
+     * @param id L'ID dell'utente.
+     * @param pwd La password dell'utente (array di caratteri).
+     * @throws WrongPasswordException Se la password è errata.
+     * @throws AccountNotFoundException Se l'account non esiste.
+     */
 	public void login(String id, char[] pwd) throws AccountNotFoundException, WrongPasswordException {
 
 		id_staff = new String(id);
@@ -98,65 +98,121 @@ public class Session {
 		}
 	}
 
-	/**
-	 * @return {@link Utente} della sessione corrente.
-	 */
+    /**
+     * Restituisce l'utente corrente (loggato).
+     * @return L'utente corrente.
+     */
 	public Staff getCurrentUser() {
 		return currentUser;
 	}
-
+	
+    /**
+     * Imposta l'utente corrente (loggato).
+     * @param user L'utente da impostare come corrente.
+     */
 	public void setCurrentUser(Staff user) {
 		currentUser = user;
 	}
-
+	
+    /**
+     * Restituisce l'operazione corrente.
+     * @return L'operazione corrente.
+     */
 	public String getOperation() {
 		return operation;
 	}
-
+	
+    /**
+     * Imposta l'operazione corrente.
+     * @param operation L'operazione da impostare.
+     */
 	public void setOperation(String operation) {
 		this.operation = operation;
 	}
-
+	
+    /**
+     * Restituisce l'ID del pilota.
+     * @return L'ID del pilota.
+     */
 	public String getId_pilot() {
 		return id_pilot;
 	}
 
+	/**
+     * Imposta l'ID del pilota.
+     * @param id_pilot L'ID del pilota da impostare.
+     */
 	public void setId_pilot(String id_pilot) {
 		this.id_pilot = id_pilot;
 	}
-
+	
+    /**
+     * Restituisce l'ID dello staff.
+     * @return L'ID dello staff.
+     */
 	public String getId_staff() {
 		return id_staff;
 	}
-
+	
+    /**
+     * Imposta l'ID dello staff.
+     * @param id_staff L'ID dello staff da impostare.
+     */
 	public void setId_staff(String id_staff) {
 		this.id_staff = id_staff;
 	}
-
+	
+    /**
+     * Restituisce la password dello staff.
+     * @return La password dello staff.
+     */
 	public String getPwd_staff() {
 		return pwd_staff;
 	}
-
+	
+    /**
+     * Imposta la password dello staff.
+     * @param pwd_staff La password dello staff da impostare.
+     */
 	public void setPwd_staff(String pwd_staff) {
 		this.pwd_staff = pwd_staff;
 	}
-
+	
+    /**
+     * Restituisce il nome dell'utente.
+     * @return Il nome dell'utente.
+     */
 	public String getName() {
 		return name;
 	}
-
+	
+    /**
+     * Imposta il nome dell'utente.
+     * @param name Il nome dell'utente da impostare.
+     */
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	
+    /**
+     * Restituisce il cognome dell'utente.
+     * @return Le cognome dell'utente.
+     */
 	public String getSurname() {
 		return surname;
 	}
-
+	
+    /**
+     * Imposta il cognome dell'utente.
+     * @param surname Il cognome dell'utente da impostare.
+     */
 	public void setSurname(String surname) {
 		this.surname = surname;
 	}
-
+	
+    /**
+     * Simula l'impostazione di 8 tempi di pit stop casuali per il meccanico.
+     */
 	public void getTps() {
 		// inizializzo l'array
 		int i = 0;
@@ -167,50 +223,96 @@ public class Session {
 
 	}
 	
+    /**
+     * Recupera e imposta le richieste per il magazziniere.
+     */
 	public void getRequest() {
 		wh.setRequest(mgd.selectAllRequest());
 	}
-
+	
+    /**
+     * Simula l'impostazione dei tempi di settore per il veicolo.
+     */
 	public void getTS() {
 		v.setTimeSect();
 	}
 	
+    /**
+     * Restituisce l'istanza di {@link Vehicle}.
+     * @return L'istanza di {@link Vehicle}.
+     */
 	public Vehicle getV() {
 		return v;
 	}
-
+	
+    /**
+     * Imposta l'istanza di {@link Vehicle}.
+     * @param v L'istanza di {@link Vehicle} da impostare.
+     */
 	public void setV(Vehicle v) {
 		this.v = v;
 	}
-
+	
+    /**
+     * Restituisce l'istanza di {@link Meccanico}.
+     * @return L'istanza di {@link Meccanico}.
+     */
 	public Meccanico getM() {
 		return m;
 	}
-
+	
+    /**
+     * Imposta l'istanza di {@link Meccanico}.
+     * @param m L'istanza di {@link Meccanico} da impostare.
+     */
 	public void setM(Meccanico m) {
 		this.m = m;
 	}
-
+	
+    /**
+     * Restituisce l'istanza di {@link Magazziniere}.
+     * @return L'istanza di {@link Magazziniere}.
+     */
 	public Magazziniere getWh() {
 		return wh;
 	}
-
+	
+    /**
+     * Imposta l'istanza di {@link Magazziniere}.
+     * @param wh L'istanza di {@link Magazziniere} da impostare.
+     */
 	public void setWh(Magazziniere wh) {
 		this.wh = wh;
 	}
-
+	
+    /**
+     * Restituisce l'istanza di {@link Stratega}.
+     * @return L'istanza di {@link Stratega}.
+     */
 	public Stratega getS() {
 		return s;
 	}
-
+	
+    /**
+     * Imposta l'istanza di {@link Stratega}.
+     * @param s L'istanza di {@link Stratega} da impostare.
+     */
 	public void setS(Stratega s) {
 		this.s = s;
 	}
-
+	
+    /**
+     * Restituisce la strategia selezionata.
+     * @return La strategia selezionata.
+     */
 	public String getStrategy() {
 		return strategy;
 	}
-
+	
+    /**
+     * Imposta la strategia selezionata.
+     * @param strategy La strategia da impostare.
+     */
 	public void setStrategy(String strategy) {
 		this.strategy = strategy;
 	}

@@ -8,124 +8,203 @@ import it.unipv.sfw.exceptions.DuplicateComponentException;
 import it.unipv.sfw.model.component.Components;
 import it.unipv.sfw.model.vehicle.Vehicle;
 
+/**
+ * Classe che rappresenta un meccanico, un tipo di membro dello staff.
+ * Estende la classe {@link Staff} e contiene informazioni sul veicolo
+ * assegnato, i tempi di pit stop e le anomalie riscontrate.
+ */
 public class Meccanico extends Staff {
 
-	/*
-	 * MSN è il numero di serie dell'autovettura
-	 */
-	private String MSN;
-	
-	private Vehicle vehicles;
+    /*
+     * MSN è il numero di serie dell'autovettura
+     */
+    private String MSN;
 
-	private ArrayList<Integer> allTimePitStop = new ArrayList<>();
-	private ArrayList<Integer> anomalyTime = new ArrayList<>();
+    private Vehicle vehicles;
 
-	public Meccanico(String id, String pwd) {
-		super(id, pwd);
+    private ArrayList<Integer> allTimePitStop = new ArrayList<>();
+    private ArrayList<Integer> anomalyTime = new ArrayList<>();
 
-	}
+    /**
+     * Costruttore della classe Meccanico.
+     * @param id L'ID del meccanico.
+     * @param pwd La password del meccanico.
+     */
+    public Meccanico(String id, String pwd) {
+        super(id, pwd);
 
-	public Vehicle addVehicle() {
+    }
 
-		MSN = getMSN();
-		Vehicle v = new Vehicle(MSN);
-		
-		return vehicles = v;
-		
-	}
+    /**
+     * Aggiunge un nuovo veicolo.
+     * Genera un numero di serie (MSN) e crea un nuovo oggetto {@link Vehicle}.
+     * @return L'oggetto {@link Vehicle} creato.
+     */
+    public Vehicle addVehicle() {
 
-	public int addComponent(Vehicle v, Components c) throws DuplicateComponentException {
+        MSN = getMSN(); // Potrebbe essere necessario generare un nuovo MSN qui
+        Vehicle v = new Vehicle(MSN);
 
-		int mode = 0;
+        return vehicles = v;
 
-		mode = v.addComponent(c);
-		
-		return mode;
-	}
+    }
 
-	public void removeComponent(Vehicle v, Components c) throws ComponentNotFoundException {
-		
-		 v.removeComponent(c);
-		
-	}
+    /**
+     * Aggiunge un componente a un veicolo.
+     * @param v L'oggetto {@link Vehicle} a cui aggiungere il componente.
+     * @param c L'oggetto {@link Components} da aggiungere.
+     * @return Un codice che indica l'esito dell'operazione.
+     * @throws DuplicateComponentException Se si tenta di aggiungere un componente già presente.
+     */
+    public int addComponent(Vehicle v, Components c) throws DuplicateComponentException {
 
-	public int setTimePS() {
+        int mode = 0;
 
-		Random random = new Random();
+        mode = v.addComponent(c);
 
-		int  min = 2000, max = 4000, tmePs = 0;
+        return mode;
+    }
 
-		tmePs = random.nextInt((max - min) + 1) + min;
+    /**
+     * Rimuove un componente da un veicolo.
+     * @param v L'oggetto {@link Vehicle} da cui rimuovere il componente.
+     * @param c L'oggetto {@link Components} da rimuovere.
+     * @throws ComponentNotFoundException Se si tenta di rimuovere un componente non presente.
+     */
+    public void removeComponent(Vehicle v, Components c) throws ComponentNotFoundException {
 
-		checkPS(tmePs);
-		
-		allTimePitStop.add(tmePs);
-		
-		return tmePs;
+        v.removeComponent(c);
 
-	}
+    }
 
-	private void checkPS(int timePS) {
-		
+    /**
+     * Imposta un tempo di pit stop casuale.
+     * Genera un tempo casuale tra 2000 e 4000 (millisecondi) e lo verifica.
+     * @return Il tempo di pit stop generato.
+     */
+    public int setTimePS() {
 
-		if (timePS == 2000 || timePS < 3000) {
-			System.out.println("Tempo pit stop valido");
-		} else {
-			anomalyTime.add(timePS);
-			System.out.println("Tempo pit stop eccessivo --> verificata anomalia");
-		}
+        Random random = new Random();
 
-	}
+        int min = 2000, max = 4000, tmePs = 0;
 
-	// Metodo per convertire una stringa di tempo (mm:ss.SSS) in secondi decimali
-	public double convertTime(String tps) throws NumberFormatException {
+        tmePs = random.nextInt((max - min) + 1) + min;
 
-		String[] minSec = tps.split(":"), secMilli = tps.split(".");
+        checkPS(tmePs);
 
-		int minutes = Integer.parseInt(minSec[0]);
-		int seconds = Integer.parseInt(secMilli[0]);
-		int milliseconds = Integer.parseInt(secMilli[1]);
+        allTimePitStop.add(tmePs);
 
-		return (minutes * 60) + seconds + (milliseconds / 1000.0);
+        return tmePs;
 
-	}
+    }
 
-	@Override
-	public TypeController getType() {
+    /**
+     * Verifica il tempo di pit stop.
+     * Se il tempo è inferiore a 3000ms, lo considera valido.
+     * Altrimenti, lo considera un'anomalia.
+     * @param timePS Il tempo di pit stop da verificare.
+     */
+    private void checkPS(int timePS) {
 
-		return Staff.TypeController.MECCANICO;
-	}
+        if (timePS == 2000 || timePS < 3000) {
+            System.out.println("Tempo pit stop valido");
+        } else {
+            anomalyTime.add(timePS);
+            System.out.println("Tempo pit stop eccessivo --> verificata anomalia");
+        }
 
-	public Vehicle getVehicles() {
-		return vehicles;
-	}
+    }
 
-	public void setVehicles(Vehicle vehicles) {
-		this.vehicles = vehicles;
-	}
+    /**
+     * Converte una stringa di tempo (mm:ss.SSS) in secondi decimali.
+     * @param tps La stringa di tempo da convertire.
+     * @return Il tempo in secondi decimali.
+     * @throws NumberFormatException Se la stringa di tempo non è nel formato corretto.
+     */
+    public double convertTime(String tps) throws NumberFormatException {
 
-	public ArrayList<Integer> getAllTimePitStop() {
-		return allTimePitStop;
-	}
+        String[] minSec = tps.split(":"), secMilli = tps.split("\\."); // Escaping "."
 
-	public void setAllTimePitStop(ArrayList<Integer> allTimePitStop) {
-		this.allTimePitStop = allTimePitStop;
-	}
+        int minutes = Integer.parseInt(minSec[0]);
+        int seconds = Integer.parseInt(secMilli[0]);
+        int milliseconds = Integer.parseInt(secMilli[1]);
 
-	public String getMSN() {
-		return MSN;
-	}
+        return (minutes * 60) + seconds + (milliseconds / 1000.0);
 
-	public void setMSN(String mSN) {
-		MSN = mSN;
-	}
+    }
 
-	public ArrayList<Integer> getAnomalyTime() {
-		return anomalyTime;
-	}
+    /**
+     * Restituisce il tipo di membro dello staff.
+     * @return Il tipo di membro dello staff ({@link Staff.TypeController.MECCANICO}).
+     */
+    @Override
+    public TypeController getType() {
 
-	public void setAnomalyTime(ArrayList<Integer> anomalyTime) {
-		this.anomalyTime = anomalyTime;
-	}
-	
+        return Staff.TypeController.MECCANICO;
+    }
+
+    /**
+     * Restituisce il veicolo assegnato al meccanico.
+     * @return Il veicolo assegnato.
+     */
+    public Vehicle getVehicles() {
+        return vehicles;
+    }
+
+    /**
+     * Imposta il veicolo assegnato al meccanico.
+     * @param vehicles Il veicolo da assegnare.
+     */
+    public void setVehicles(Vehicle vehicles) {
+        this.vehicles = vehicles;
+    }
+
+    /**
+     * Restituisce la lista di tutti i tempi di pit stop registrati.
+     * @return La lista dei tempi di pit stop.
+     */
+    public ArrayList<Integer> getAllTimePitStop() {
+        return allTimePitStop;
+    }
+
+    /**
+     * Imposta la lista di tutti i tempi di pit stop registrati.
+     * @param allTimePitStop La lista dei tempi di pit stop.
+     */
+    public void setAllTimePitStop(ArrayList<Integer> allTimePitStop) {
+        this.allTimePitStop = allTimePitStop;
+    }
+
+    /**
+     * Restituisce il numero di serie (MSN) del veicolo.
+     * @return Il numero di serie del veicolo.
+     */
+    public String getMSN() {
+        return MSN;
+    }
+
+    /**
+     * Imposta il numero di serie (MSN) del veicolo.
+     * @param mSN Il numero di serie del veicolo.
+     */
+    public void setMSN(String mSN) {
+        MSN = mSN;
+    }
+
+    /**
+     * Restituisce la lista dei tempi di pit stop considerati anomalie.
+     * @return La lista dei tempi di pit stop anomali.
+     */
+    public ArrayList<Integer> getAnomalyTime() {
+        return anomalyTime;
+    }
+
+    /**
+     * Imposta la lista dei tempi di pit stop considerati anomalie.
+     * @param anomalyTime La lista dei tempi di pit stop anomali.
+     */
+    public void setAnomalyTime(ArrayList<Integer> anomalyTime) {
+        this.anomalyTime = anomalyTime;
+    }
+
 }
