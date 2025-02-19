@@ -1,12 +1,17 @@
 package it.unipv.sfw.exceptions;
 
 /**
- * Eccezione utilizzata quando non tutti i campi sono stati riempiti.
- *
+ * Eccezione che viene lanciata quando si tenta di eseguire un'operazione
+ * (ad esempio, l'invio di un form) senza aver compilato tutti i campi
+ * obbligatori.
  */
 public class EmptyFieldException extends Exception {
 
-	public EmptyFieldException() {
-		super("Alcuni campi sono vuoti.");
-	}
+    /**
+     * Costruttore dell'eccezione.
+     * Il messaggio predefinito indica che alcuni campi sono vuoti.
+     */
+    public EmptyFieldException() {
+        super("Alcuni campi sono vuoti.");
+    }
 }

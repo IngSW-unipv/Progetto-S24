@@ -1,26 +1,26 @@
 package it.unipv.sfw.exceptions;
 
 /**
- * Eccezione che interviene nel momento in cui la password inserita dall'utente,
- * relativa al suo account, sia sbagliata.
- *
+ * Eccezione che viene lanciata quando la password fornita per un account
+ * non è corretta.
  */
-public class WrongPasswordException extends Exception{
-	private String accountId;
+public class WrongPasswordException extends Exception {
+    private String accountId;
 
-	/**
-	 * @param ID, la stringa identificativa relativa all'account è errata
-	 */
-	public WrongPasswordException(String id) {
-		super("La password relativa all' account " + id + " è sbagliata");
-		accountId = id;
-	}
+    /**
+     * Costruttore dell'eccezione.
+     * @param id L'identificativo dell'account per il quale la password è errata.
+     */
+    public WrongPasswordException(String id) {
+        super("La password relativa all' account " + id + " è sbagliata");
+        accountId = id;
+    }
 
-	/**
-	 * @return La email relativa all'account dell'utente che ha inserito la password
-	 *         ma è errata.
-	 */
-	public String getAccountId() {
-		return accountId;
-	}
+    /**
+     * Restituisce l'identificativo dell'account per il quale la password è errata.
+     * @return L'identificativo dell'account.
+     */
+    public String getAccountId() {
+        return accountId;
+    }
 }

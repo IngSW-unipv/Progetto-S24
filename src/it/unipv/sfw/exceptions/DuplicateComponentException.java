@@ -1,21 +1,27 @@
 package it.unipv.sfw.exceptions;
 
-public class DuplicateComponentException extends Exception{
-	private String nameCompo;
+/**
+ * Eccezione che viene lanciata quando si tenta di inserire un componente
+ * che esiste già nel sistema (duplicato).
+ */
+public class DuplicateComponentException extends Exception {
+    private String nameCompo;
 
-	/**
-	 * @param id Identificativo del pilota richiesto ma inesistente.
-	 */
-	public DuplicateComponentException(String name) {
-		super("Il componente " + name+ " è già inserito");
-		nameCompo = name;
-	}
+    /**
+     * Costruttore dell'eccezione.
+     * @param name Il nome del componente duplicato.
+     */
+    public DuplicateComponentException(String name) {
+        super("Il componente " + name + " è già inserito");
+        nameCompo = name;
+    }
 
-	/**
-	 * @return id identificativo del pilota richiesto ma inesistente.
-	 */
-	public String getNameCompo() {
-		return nameCompo;
-	}
+    /**
+     * Restituisce il nome del componente duplicato.
+     * @return Il nome del componente.
+     */
+    public String getNameCompo() {
+        return nameCompo;
+    }
 
 }
