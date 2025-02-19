@@ -21,122 +21,129 @@ import javax.swing.JTextArea;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+/**
+ * Vista per l'inserimento di una richiesta.
+ * Permette all'utente di inserire i dati di una nuova richiesta.
+ */
 public class McPopUpRequestView {
 
-	private JFrame frame;
+    private JFrame frame;
 
-	// contenitori delle 3 sezioni +1 main
-	private JPanel dataPanel, sendPanel;
+    // contenitori delle 3 sezioni +1 main
+    private JPanel dataPanel, sendPanel;
 
-	private JLabel titleLabel, mexLabel;
+    private JLabel titleLabel, mexLabel;
 
-	// inserimento dati
-	private JTextField id_s, id_c, id_v;
+    // inserimento dati
+    private JTextField id_s, id_c, id_v;
 
-	// area per descrivere la richiesta
-	private JTextArea desc;
+    // area per descrivere la richiesta
+    private JTextArea desc;
 
-	// bottoni per l'interazione: 1
-	private JButton sendButton;
+    // bottoni per l'interazione: 1
+    private JButton sendButton;
 
-	public McPopUpRequestView() {
+    /**
+     * Costruttore della vista.
+     */
+    public McPopUpRequestView() {
 
-		frame = new JFrame("INSERT REQUEST");
+        frame = new JFrame("INSERT REQUEST");
 
-		frame.setSize(500, 500);
-		frame.setBackground(Color.BLACK);
-		frame.setLocationRelativeTo(null);
-		frame.setLayout(new BorderLayout());
-		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		frame.setResizable(false);
-		ImageIcon icona = new ImageIcon(getClass().getResource("/F1-Logo.png"));
-		frame.setIconImage(icona.getImage());
-		frame.setLayout(new GridLayout(3, 1));
+        frame.setSize(500, 500);
+        frame.setBackground(Color.BLACK);
+        frame.setLocationRelativeTo(null);
+        frame.setLayout(new BorderLayout());
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setResizable(false);
+        ImageIcon icona = new ImageIcon(getClass().getResource("/F1-Logo.png"));
+        frame.setIconImage(icona.getImage());
+        frame.setLayout(new GridLayout(3, 1));
 
-		/*
-		 * CREAZIONE 1 SEZIONE
-		 */
+        /*
+         * CREAZIONE 1 SEZIONE
+         */
 
-		titleLabel = new JLabel("REQUEST", SwingConstants.CENTER);
+        titleLabel = new JLabel("REQUEST", SwingConstants.CENTER);
 
-		titleLabel.setForeground(Color.WHITE);
-		titleLabel.setOpaque(true);
-		titleLabel.setBackground(Color.BLACK);
-		titleLabel.setForeground(Color.WHITE);
-		titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        titleLabel.setForeground(Color.WHITE);
+        titleLabel.setOpaque(true);
+        titleLabel.setBackground(Color.BLACK);
+        titleLabel.setForeground(Color.WHITE);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
 
-		frame.add(titleLabel);
+        frame.add(titleLabel);
 
-		/*
-		 * CREAZIONE 2 SEZIONE
-		 */
+        /*
+         * CREAZIONE 2 SEZIONE
+         */
 
-		dataPanel = new JPanel();
-		dataPanel.setBackground(Color.BLACK);
+        dataPanel = new JPanel();
+        dataPanel.setBackground(Color.BLACK);
 
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.insets = new Insets(10, 20, 10, 20);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(10, 20, 10, 20);
 
-		Dimension dim = new Dimension(130, 30);
+        Dimension dim = new Dimension(130, 30);
 
-		// Prima riga, prima colonna
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		id_s = new JTextField("ID STAFF");
-		id_s.setPreferredSize(dim);
-		dataPanel.add(id_s, gbc);
+        // Prima riga, prima colonna
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        id_s = new JTextField("ID STAFF");
+        id_s.setPreferredSize(dim);
+        dataPanel.add(id_s, gbc);
 
-		// Prima riga, seconda colonna
-		gbc.gridx = 1;
-		gbc.gridy = 0;
-		id_c = new JTextField("ID COMPONENT");
-		id_c.setPreferredSize(dim);
-		dataPanel.add(id_c, gbc);
+        // Prima riga, seconda colonna
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        id_c = new JTextField("ID COMPONENT");
+        id_c.setPreferredSize(dim);
+        dataPanel.add(id_c, gbc);
 
-		// Prima riga, terza colonna
-		gbc.gridx = 2;
-		gbc.gridy = 0;
-		id_v = new JTextField("ID VEHICLE");
-		id_v.setPreferredSize(dim);
-		dataPanel.add(id_v, gbc);
+        // Prima riga, terza colonna
+        gbc.gridx = 2;
+        gbc.gridy = 0;
+        id_v = new JTextField("ID VEHICLE");
+        id_v.setPreferredSize(dim);
+        dataPanel.add(id_v, gbc);
 
-		// Seconda riga, prima/seconda/terza colonna
-		gbc.gridx = 0;
-		gbc.gridy = 1;
-		gbc.gridwidth = 3; // Numero di colonne da occupare
-		gbc.gridheight = 1; // Numero di righe da occupare
-		desc = new JTextArea("DESCRIPTION...");
-		desc.setPreferredSize(new Dimension(400, 100));
-		dataPanel.add(desc, gbc);
+        // Seconda riga, prima/seconda/terza colonna
+        gbc.gridx = 0;
+        gbc.gridy = 1;
+        gbc.gridwidth = 3; // Numero di colonne da occupare
+        gbc.gridheight = 1; // Numero di righe da occupare
+        desc = new JTextArea("DESCRIPTION...");
+        desc.setPreferredSize(new Dimension(400, 100));
+        dataPanel.add(desc, gbc);
 
-		frame.add(dataPanel);
+        frame.add(dataPanel);
 
-		/*
-		 * CREAZIONE 3 SEZIONE
-		 */
+        /*
+         * CREAZIONE 3 SEZIONE
+         */
 
-		sendPanel = new JPanel();
-		sendPanel.setLayout(new GridBagLayout());
-		sendPanel.setBackground(Color.BLACK);
+        sendPanel = new JPanel();
+        sendPanel.setLayout(new GridBagLayout());
+        sendPanel.setBackground(Color.BLACK);
 
-		GridBagConstraints gbcSend = new GridBagConstraints();
-		gbcSend.insets = new Insets(10, 0, 10, 0); // Margini per centrare il bottone e il messaggio
+        GridBagConstraints gbcSend = new GridBagConstraints();
+        gbcSend.insets = new Insets(10, 0, 10, 0); // Margini per centrare il bottone e il messaggio
 
-		gbcSend.gridx = 0;
-		gbcSend.gridy = 0;
-		sendButton = new JButton("SEND");
-		sendButton.setPreferredSize(new Dimension(150, 30));
-		sendPanel.add(sendButton, gbcSend);
+        gbcSend.gridx = 0;
+        gbcSend.gridy = 0;
+        sendButton = new JButton("SEND");
+        sendButton.setPreferredSize(new Dimension(150, 30));
+        sendPanel.add(sendButton, gbcSend);
 
-		mexLabel = new JLabel();
+        mexLabel = new JLabel();
 
-		gbcSend.gridy = 1; // Sposta il messaggio sotto il bottone
-		mexLabel = new JLabel("", SwingConstants.CENTER);
-		mexLabel.setForeground(Color.WHITE);
-		sendPanel.add(mexLabel, gbcSend);
+        gbcSend.gridy = 1; // Sposta il messaggio sotto il bottone
+        mexLabel = new JLabel("", SwingConstants.CENTER);
+        mexLabel.setForeground(Color.WHITE);
+        sendPanel.add(mexLabel, gbcSend);
 
-		frame.add(sendPanel, BorderLayout.CENTER);
+        frame.add(sendPanel, BorderLayout.CENTER);
 
 		id_s.addFocusListener(new FocusListener() {
 			@Override
@@ -201,98 +208,174 @@ public class McPopUpRequestView {
 				}
 			}
 		});
-	}
 
-	public void show() {
-		frame.setVisible(true);
-	}
+    }
 
-	public void mex() {
-		mexLabel.setText("INVALID ERROR");
-		mexLabel.setForeground(Color.RED);
-	}
+    /**
+     * Mostra la finestra.
+     */
+    public void show() {
+        frame.setVisible(true);
+    }
 
-	public void mex1() {
-		mexLabel.setText("SUCCESSFULLY  INSERTED");
-		mexLabel.setForeground(Color.GREEN);
-	}
-	
-	public void hide() {
-		id_v.setVisible(false);
-		id_v.setEnabled(false);
-	}
-	
-	public void title() {
-		frame.setTitle("REMOVE COMPONENT");
-	}
+    /**
+     * Imposta il messaggio.
+     * @param message Il messaggio da mostrare.
+     */
+    public void mex() {
+        mexLabel.setText("INVALID ERROR");
+        mexLabel.setForeground(Color.RED); // Puoi personalizzare il colore
+    }
 
-	public JPanel getDataPanel() {
-		return dataPanel;
-	}
+    /**
+     * Imposta il messaggio di inserimento avvenuto con successo.
+     */
+    public void mex1() {
+        mexLabel.setText("SUCCESSFULLY  INSERTED");
+        mexLabel.setForeground(Color.GREEN);
+    }
 
-	public void setDataPanel(JPanel dataPanel) {
-		this.dataPanel = dataPanel;
-	}
+    /**
+     * Nasconde il campo ID veicolo.
+     */
+    public void hide() {
+        id_v.setVisible(false);
+        id_v.setEnabled(false);
+    }
 
-	public JPanel getSendPanel() {
-		return sendPanel;
-	}
+    /**
+     * Imposta il titolo della finestra.
+     */
+    public void title() {
+        frame.setTitle("REMOVE COMPONENT");
+    }
 
-	public void setSendPanel(JPanel sendPanel) {
-		this.sendPanel = sendPanel;
-	}
+    /**
+     * Restituisce il pannello dati.
+     * @return Il pannello dati.
+     */
+    public JPanel getDataPanel() {
+        return dataPanel;
+    }
 
-	// Metodo per ripulire i JTextField e JLabel in un JPanel
-	public void clearComponents(JPanel panel) {
-		for (Component comp : panel.getComponents()) {
-			if (comp instanceof JTextField) {
-				((JTextField) comp).setText(""); // Pulisce il JTextField
-			} else if (comp instanceof JTextArea) {
-				((JTextArea) comp).setText("");
-			}
-		}
-		panel.revalidate(); // Rende il pannello nuovamente valido
-		panel.repaint(); // Ridisegna il pannello
-	}
+    /**
+     * Imposta il pannello dati.
+     * @param dataPanel Il pannello dati da impostare.
+     */
+    public void setDataPanel(JPanel dataPanel) {
+        this.dataPanel = dataPanel;
+    }
 
-	public JTextField getId_s() {
-		return id_s;
-	}
+    /**
+     * Restituisce il pannello di invio.
+     * @return Il pannello di invio.
+     */
+    public JPanel getSendPanel() {
+        return sendPanel;
+    }
 
-	public void setId_s(JTextField id_s) {
-		this.id_s = id_s;
-	}
+    /**
+     * Imposta il pannello di invio.
+     * @param sendPanel Il pannello di invio da impostare.
+     */
+    public void setSendPanel(JPanel sendPanel) {
+        this.sendPanel = sendPanel;
+    }
 
-	public JTextField getId_c() {
-		return id_c;
-	}
+    /**
+     * Pulisce i campi di testo e le aree di testo in un JPanel.
+     * @param panel Il pannello da pulire.
+     */
+    public void clearComponents(JPanel panel) {
+        for (Component comp : panel.getComponents()) {
+            if (comp instanceof JTextField) {
+                ((JTextField) comp).setText(""); // Pulisce il JTextField
+            } else if (comp instanceof JTextArea) {
+                ((JTextArea) comp).setText(""); // Pulisce il JTextArea
+            }
+        }
+        panel.revalidate(); // Rende il pannello nuovamente valido
+        panel.repaint(); // Ridisegna il pannello
+    }
 
+    /**
+     * Restituisce il campo ID staff.
+     * @return Il campo ID staff.
+     */
+    public JTextField getId_s() {
+        return id_s;
+    }
+
+    /**
+     * Imposta il campo ID staff.
+     * @param id_s Il campo ID staff da impostare.
+     */
+    public void setId_s(JTextField id_s) {
+        this.id_s = id_s;
+    }
+
+    /**
+     * Restituisce il campo ID componente.
+     * @return Il campo ID componente.
+     */
+    public JTextField getId_c() {
+        return id_c;
+    }
+
+    /**
+     * Imposta il campo ID componente.
+     * @param id_c Il campo ID componente da impostare.
+     */
 	public void setId_c(JTextField id_c) {
 		this.id_c = id_c;
 	}
+	
+	/**
+     * Restituisce il campo ID veicolo.
+     * @return Il campo ID veicolo.
+     */
+    public JTextField getId_v() {
+        return id_v;
+    }
 
-	public JTextField getId_v() {
-		return id_v;
-	}
+    /**
+     * Imposta il campo ID veicolo.
+     * @param id_v Il campo ID veicolo da impostare.
+     */
+    public void setId_v(JTextField id_v) {
+        this.id_v = id_v;
+    }
 
-	public void setId_v(JTextField id_v) {
-		this.id_v = id_v;
-	}
+    /**
+     * Restituisce l'area di testo per la descrizione.
+     * @return L'area di testo per la descrizione.
+     */
+    public JTextArea getDesc() {
+        return desc;
+    }
 
-	public JTextArea getDesc() {
-		return desc;
-	}
+    /**
+     * Imposta l'area di testo per la descrizione.
+     * @param desc L'area di testo per la descrizione da impostare.
+     */
+    public void setDesc(JTextArea desc) {
+        this.desc = desc;
+    }
 
-	public void setDesc(JTextArea desc) {
-		this.desc = desc;
-	}
+    /**
+     * Restituisce il pulsante di invio.
+     * @return Il pulsante di invio.
+     */
+    public JButton getSendButton() {
+        return sendButton;
+    }
 
-	public JButton getSendButton() {
-		return sendButton;
-	}
-
-	public void setSendButton(JButton sendButton) {
-		this.sendButton = sendButton;
-	}
+    /**
+     * Imposta il pulsante di invio.
+     * @param sendButton Il pulsante di invio da impostare.
+     */
+    public void setSendButton(JButton sendButton) {
+        this.sendButton = sendButton;
+    }
 
 }

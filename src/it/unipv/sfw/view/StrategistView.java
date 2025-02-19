@@ -5,6 +5,11 @@ import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
 
+/**
+ * Vista per lo stratega.
+ * Permette allo stratega di visualizzare i tempi sul giro, il meteo, il circuito
+ * e di creare una strategia.
+ */
 public class StrategistView extends AbsView {
 
     private JFrame frame;
@@ -15,6 +20,10 @@ public class StrategistView extends AbsView {
     private DefaultTableModel tabTime;
     private JTable tab;
 
+    /**
+     * Costruttore della vista per lo stratega.
+     * Inizializza e posiziona i componenti grafici.
+     */
     public StrategistView() {
         // Setup base frame
         frame = new JFrame("STRATEGIST");
@@ -120,7 +129,13 @@ public class StrategistView extends AbsView {
         frame.repaint();
     }
 
-    // Add row method
+    /**
+     * Aggiunge una riga alla tabella dei tempi.
+     * @param t1 Tempo settore 1
+     * @param t2 Tempo settore 2
+     * @param t3 Tempo settore 3
+     * @param t4 Tempo sul giro
+     */
     public void addRow(String t1, String t2, String t3, String t4) {
         Object[] newRow = {t1, t2, t3, t4};
         tabTime.addRow(newRow);
@@ -128,7 +143,12 @@ public class StrategistView extends AbsView {
         tab.repaint();
     }
 
-    // Cell coloring method
+    /**
+     * Colora le celle della tabella in base a delle soglie.
+     * @param thresholdSector1 Soglia per il settore 1
+     * @param thresholdSector2 Soglia per il settore 2
+     * @param thresholdSector3 Soglia per il settore 3
+     */
     public void colorCell(int thresholdSector1, int thresholdSector2, int thresholdSector3) {
         tab.setDefaultRenderer(Object.class, new DefaultTableCellRenderer() {
             @Override
@@ -169,36 +189,66 @@ public class StrategistView extends AbsView {
         });
     }
 
-    // Getters and setters
+    /**
+     * Restituisce il label per il conteggio dei giri.
+     * @return Il label per il conteggio dei giri.
+     */
     public JLabel getCountLapLabel() {
         return countLapLabel;
     }
 
+    /**
+     * Imposta il conteggio dei giri nel label.
+     */
     public void setCountLapLabel(JLabel countLapLabel) {
         int cLap = tab.getRowCount();
         countLapLabel.setText(String.valueOf(cLap));
     }
 
+    /**
+     * Restituisce la tabella dei tempi.
+     * @return La tabella dei tempi.
+     */
     public JTable getTab() {
         return tab;
     }
 
+    /**
+     * Imposta la tabella dei tempi.
+     * @param tab La tabella dei tempi da impostare.
+     */
     public void setTab(JTable tab) {
         this.tab = tab;
     }
 
+    /**
+     * Restituisce il bottone per ottenere i tempi.
+     * @return Il bottone per ottenere i tempi.
+     */
     public JButton getGetTimeButton() {
         return getTimeButton;
     }
 
+    /**
+     * Imposta il bottone per ottenere i tempi.
+     * @param getTimeButton Il bottone per ottenere i tempi da impostare.
+     */
     public void setGetTimeButton(JButton getTimeButton) {
         this.getTimeButton = getTimeButton;
     }
 
+    /**
+     * Restituisce il bottone per creare una strategia.
+     * @return Il bottone per creare una strategia.
+     */
     public JButton getCreateStrategyButton() {
         return createStrategyButton;
     }
 
+    /**
+     * Imposta il bottone per creare una strategia.
+     * @param createStrategyButton Il bottone per creare una strategia da impostare.
+     */
     public void setCreateStrategyButton(JButton createStrategyButton) {
         this.createStrategyButton = createStrategyButton;
     }

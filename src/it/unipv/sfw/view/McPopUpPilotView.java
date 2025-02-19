@@ -20,119 +20,126 @@ import javax.swing.JPanel;
 import javax.swing.JTextField;
 import javax.swing.SwingConstants;
 
+/**
+ * Vista per l'aggiunta di un pilota.
+ * Permette all'utente di inserire i dati di un nuovo pilota.
+ */
 public class McPopUpPilotView {
 
-	private JFrame frame;
+    private JFrame frame;
 
-	// contenitori delle 3 sezioni +1 main
-	private JPanel dataPanel, sendPanel;
+    // contenitori delle 3 sezioni +1 main
+    private JPanel dataPanel, sendPanel;
 
-	private JLabel titleLabel, mexLabel;
+    private JLabel titleLabel, mexLabel;
 
-	// inserimento dati
-	private JTextField id, name, surname, number;
+    // inserimento dati
+    private JTextField id, name, surname, number;
 
-	// bottoni per l'interazione: 1
-	private JButton sendButton;
+    // bottoni per l'interazione: 1
+    private JButton sendButton;
 
-	public McPopUpPilotView() {
+    /**
+     * Costruttore della vista.
+     */
+    public McPopUpPilotView() {
 
-		frame = new JFrame("ADD PILOT");
+        frame = new JFrame("ADD PILOT");
 
-		frame.setSize(500, 500);
-		frame.setBackground(Color.BLACK);
-		frame.setLocationRelativeTo(null);
-		frame.setLayout(new BorderLayout());
-		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		frame.setResizable(false);
-		ImageIcon icona = new ImageIcon(getClass().getResource("/F1-Logo.png"));
-		frame.setIconImage(icona.getImage());
-		frame.setLayout(new GridLayout(3, 1));
+        frame.setSize(500, 500);
+        frame.setBackground(Color.BLACK);
+        frame.setLocationRelativeTo(null);
+        frame.setLayout(new BorderLayout());
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.setResizable(false);
+        ImageIcon icona = new ImageIcon(getClass().getResource("/F1-Logo.png"));
+        frame.setIconImage(icona.getImage());
+        frame.setLayout(new GridLayout(3, 1));
 
-		/*
-		 * CREAZIONE 1 SEZIONE
-		 */
+        /*
+         * CREAZIONE 1 SEZIONE
+         */
 
-		titleLabel = new JLabel("DATA PILOT", SwingConstants.CENTER);
+        titleLabel = new JLabel("DATA PILOT", SwingConstants.CENTER);
 
-		titleLabel.setForeground(Color.WHITE);
-		titleLabel.setOpaque(true);
-		titleLabel.setBackground(Color.BLACK);
-		titleLabel.setForeground(Color.WHITE);
-		titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
+        titleLabel.setForeground(Color.WHITE);
+        titleLabel.setOpaque(true);
+        titleLabel.setBackground(Color.BLACK);
+        titleLabel.setForeground(Color.WHITE);
+        titleLabel.setFont(new Font("Arial", Font.BOLD, 20));
 
-		frame.add(titleLabel);
+        frame.add(titleLabel);
 
-		/*
-		 * CREAZIONE 2 SEZIONE
-		 */
+        /*
+         * CREAZIONE 2 SEZIONE
+         */
 
-		dataPanel = new JPanel();
-		dataPanel.setBackground(Color.BLACK);
+        dataPanel = new JPanel();
+        dataPanel.setBackground(Color.BLACK);
 
-		GridBagConstraints gbc = new GridBagConstraints();
-		gbc.fill = GridBagConstraints.HORIZONTAL;
-		gbc.insets = new Insets(10, 20, 10, 20);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        gbc.insets = new Insets(10, 20, 10, 20);
 
-		Dimension dim = new Dimension(110, 30);
-		
-		// Prima riga, prima colonna
-		gbc.gridx = 0;
-		gbc.gridy = 0;
-		id = new JTextField("ID");
-		id.setPreferredSize(dim);
-		dataPanel.add(id, gbc);
-		
-		// Prima riga, prima colonna
-		gbc.gridx = 1;
-		gbc.gridy = 0;
-		name = new JTextField("NAME");
-		name.setPreferredSize(dim);
-		dataPanel.add(name, gbc);
+        Dimension dim = new Dimension(110, 30);
 
-		// Prima riga, seconda colonna
-		gbc.gridx = 2;
-		gbc.gridy = 0;
-		surname = new JTextField("SURNAME");
-		surname.setPreferredSize(dim);
-		dataPanel.add(surname, gbc);
+        // Prima riga, prima colonna
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        id = new JTextField("ID");
+        id.setPreferredSize(dim);
+        dataPanel.add(id, gbc);
 
-		// Prima riga, terza colonna
-		gbc.gridx = 3;
-		gbc.gridy = 0;
-		number = new JTextField("NUMBER");
-		number.setPreferredSize(dim);
-		dataPanel.add(number, gbc);
+        // Prima riga, seconda colonna
+        gbc.gridx = 1;
+        gbc.gridy = 0;
+        name = new JTextField("NAME");
+        name.setPreferredSize(dim);
+        dataPanel.add(name, gbc);
 
-		frame.add(dataPanel);
+        // Prima riga, terza colonna
+        gbc.gridx = 2;
+        gbc.gridy = 0;
+        surname = new JTextField("SURNAME");
+        surname.setPreferredSize(dim);
+        dataPanel.add(surname, gbc);
 
-		/*
-		 * CREAZIONE 3 SEZIONE
-		 */
+        // Prima riga, quarta colonna
+        gbc.gridx = 3;
+        gbc.gridy = 0;
+        number = new JTextField("NUMBER");
+        number.setPreferredSize(dim);
+        dataPanel.add(number, gbc);
 
-		sendPanel = new JPanel();
-		sendPanel.setLayout(new GridBagLayout());
-		sendPanel.setBackground(Color.BLACK);
+        frame.add(dataPanel);
 
-		GridBagConstraints gbcSend = new GridBagConstraints();
-		gbcSend.insets = new Insets(10, 0, 10, 0); // Margini per centrare il bottone e il messaggio
+        /*
+         * CREAZIONE 3 SEZIONE
+         */
 
-		gbcSend.gridx = 0;
-		gbcSend.gridy = 0;
-		sendButton = new JButton("SEND");
-		sendButton.setPreferredSize(new Dimension(150, 30));
-		sendPanel.add(sendButton, gbcSend);
+        sendPanel = new JPanel();
+        sendPanel.setLayout(new GridBagLayout());
+        sendPanel.setBackground(Color.BLACK);
 
-		mexLabel = new JLabel();
+        GridBagConstraints gbcSend = new GridBagConstraints();
+        gbcSend.insets = new Insets(10, 0, 10, 0); // Margini per centrare il bottone e il messaggio
 
-		gbcSend.gridy = 1; // Sposta il messaggio sotto il bottone
-		mexLabel = new JLabel("", SwingConstants.CENTER);
-		mexLabel.setForeground(Color.WHITE);
-		sendPanel.add(mexLabel, gbcSend);
+        gbcSend.gridx = 0;
+        gbcSend.gridy = 0;
+        sendButton = new JButton("SEND");
+        sendButton.setPreferredSize(new Dimension(150, 30));
+        sendPanel.add(sendButton, gbcSend);
 
-		frame.add(sendPanel, BorderLayout.CENTER);
-		
-		id.addFocusListener(new FocusListener() {
+        mexLabel = new JLabel();
+
+        gbcSend.gridy = 1; // Sposta il messaggio sotto il bottone
+        mexLabel = new JLabel("", SwingConstants.CENTER);
+        mexLabel.setForeground(Color.WHITE);
+        sendPanel.add(mexLabel, gbcSend);
+
+        frame.add(sendPanel, BorderLayout.CENTER);
+
+        id.addFocusListener(new FocusListener() {
 			@Override
 			public void focusGained(FocusEvent e) {
 				if (id.getText().equals("ID")) {
@@ -200,86 +207,154 @@ public class McPopUpPilotView {
 			}
 		});
 
-	}
+    }
 
-	public void show() {
-		frame.setVisible(true);
-	}
+    /**
+     * Mostra la finestra.
+     */
+    public void show() {
+        frame.setVisible(true);
+    }
 
-	public JTextField getName() {
-		return name;
-	}
+    /**
+     * Restituisce il campo nome.
+     * @return Il campo nome.
+     */
+    public JTextField getName() {
+        return name;
+    }
 
-	public void mex() {
-		mexLabel.setText("ERROR");
-		mexLabel.setForeground(Color.RED);
-	}
+    /**
+     * Imposta il messaggio di errore.
+     */
+    public void mex() {
+        mexLabel.setText("ERROR");
+        mexLabel.setForeground(Color.RED);
+    }
 
-	public void close() {
-		frame.dispose();
-	}
+    /**
+     * Chiude la finestra.
+     */
+    public void close() {
+        frame.dispose();
+    }
 
-	// Metodo per ripulire i JTextField e JLabel in un JPanel
-	public void clearComponents(JPanel panel) {
-		for (Component comp : panel.getComponents()) {
-			if (comp instanceof JTextField) {
-				((JTextField) comp).setText(""); // Pulisce il JTextField
-			} else if (comp instanceof JLabel) {
-				((JLabel) comp).setText("");
-			}
-		}
-		panel.revalidate(); // Rende il pannello nuovamente valido
-		panel.repaint(); // Ridisegna il pannello
-	}
+    /**
+     * Pulisce i campi di testo e le etichette in un JPanel.
+     * @param panel Il pannello da pulire.
+     */
+    public void clearComponents(JPanel panel) {
+        for (Component comp : panel.getComponents()) {
+            if (comp instanceof JTextField) {
+                ((JTextField) comp).setText(""); // Pulisce il JTextField
+            } else if (comp instanceof JLabel) {
+                ((JLabel) comp).setText("");
+            }
+        }
+        panel.revalidate(); // Rende il pannello nuovamente valido
+        panel.repaint(); // Ridisegna il pannello
+    }
 
-	public JTextField getId() {
-		return id;
-	}
+    /**
+     * Restituisce il campo ID.
+     * @return Il campo ID.
+     */
+    public JTextField getId() {
+        return id;
+    }
 
-	public void setId(JTextField id) {
-		this.id = id;
-	}
+    /**
+     * Imposta il campo ID.
+     * @param id Il campo ID da impostare.
+     */
+    public void setId(JTextField id) {
+        this.id = id;
+    }
 
-	public void setName(JTextField name) {
-		this.name = name;
-	}
+    /**
+     * Imposta il campo nome.
+     * @param name Il campo nome da impostare.
+     */
+    public void setName(JTextField name) {
+        this.name = name;
+    }
 
-	public JTextField getSurname() {
-		return surname;
-	}
+    /**
+     * Restituisce il campo cognome.
+     * @return Il campo cognome.
+     */
+    public JTextField getSurname() {
+        return surname;
+    }
 
-	public void setSurname(JTextField surname) {
-		this.surname = surname;
-	}
+    /**
+     * Imposta il campo cognome.
+     * @param surname Il campo cognome da impostare.
+     */
+    public void setSurname(JTextField surname) {
+        this.surname = surname;
+    }
 
-	public JTextField getNumber() {
-		return number;
-	}
+    /**
+     * Restituisce il campo numero.
+     * @return Il campo numero.
+     */
+    public JTextField getNumber() {
+        return number;
+    }
 
-	public void setNumber(JTextField number) {
-		this.number = number;
-	}
+    /**
+     * Imposta il campo numero.
+     * @param number Il campo numero da impostare.
+     */
+    public void setNumber(JTextField number) {
+        this.number = number;
+    }
 
-	public JButton getSendButton() {
-		return sendButton;
-	}
+    /**
+     * Restituisce il pulsante di invio.
+     * @return Il pulsante di invio.
+     */
+    public JButton getSendButton() {
+        return sendButton;
+    }
 
-	public void setSendButton(JButton sendButton) {
-		this.sendButton = sendButton;
-	}
+    /**
+     * Imposta il pulsante di invio.
+     * @param sendButton Il pulsante di invio da impostare.
+     */
+    public void setSendButton(JButton sendButton) {
+        this.sendButton = sendButton;
+    }
 
-	public JPanel getDataPanel() {
-		return dataPanel;
-	}
+    /**
+     * Restituisce il pannello dati.
+     * @return Il pannello dati.
+     */
+    public JPanel getDataPanel() {
+        return dataPanel;
+    }
 
-	public void setDataPanel(JPanel dataPanel) {
-		this.dataPanel = dataPanel;
-	}
+    /**
+     * Imposta il pannello dati.
+     * @param dataPanel Il pannello dati da impostare.
+     */
+    public void setDataPanel(JPanel dataPanel) {
+        this.dataPanel = dataPanel;
+    }
 
-	public JPanel getSendPanel() {
-		return sendPanel;
-	}
-
+    /**
+     * Restituisce il pannello di invio.
+     * @return Il pannello di invio.
+     */
+    public JPanel getSendPanel() {
+        return sendPanel;
+    }
+    
+    /**
+     * Imposta il pannello di invio.
+     * @return Il pannello di invio.
+     */
 	public void setSendPanel(JPanel sendPanel) {
 		this.sendPanel = sendPanel;
 	}

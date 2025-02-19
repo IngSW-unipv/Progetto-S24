@@ -2,13 +2,19 @@ package it.unipv.sfw.view;
 
 import javax.swing.JPanel;
 
-public abstract class AbsView extends JPanel{
-	/**
-	 * Fuzione chiamata quando la view viene caricata dal controller.
-	 * {@link it.unipv.sfw.view.AbsView} la implementa vuota, per avere un
-	 * comportamento diverso deve essere sovrascritta dalle sottoclassi.
-	 */
-	public void onLoad() {
-	}
+/**
+ * Classe astratta che rappresenta una vista generica.
+ * Estende JPanel e fornisce un metodo onLoad() vuoto che può essere sovrascritto
+ * dalle sottoclassi per eseguire azioni specifiche al momento del caricamento della vista.
+ */
+public abstract class AbsView extends JPanel {
+
+    /**
+     * Funzione chiamata quando la view viene caricata dal controller.
+     * Questa implementazione è vuota e può essere sovrascritta dalle sottoclassi
+     * per eseguire azioni specifiche al momento del caricamento della vista.
+     */
+    public void onLoad() {
+    }
 
 }

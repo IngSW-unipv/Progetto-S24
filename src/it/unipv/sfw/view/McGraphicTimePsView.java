@@ -20,51 +20,60 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.SwingConstants;
 
+/**
+ * Vista grafica che mostra un grafico dei tempi di pit stop.
+ * Permette di visualizzare i tempi di pit stop e le anomalie.
+ */
 public class McGraphicTimePsView extends JPanel {
 
-	private int width = 800;
-	private int height = 600;
-	private int padding = 25;
-	private int labelPadding = 25;
-	private Color lineColor = new Color(255, 255, 0, 180);
-	private Color pointColor = new Color(255, 0, 0, 180);
-	private Color gridColor = new Color(50, 50, 50, 200);
-	private static final Stroke GRAPH_STROKE = new BasicStroke(2f);
-	private int pointWidth = 8;
-	private int numberYDivisions = 10;
-	private ArrayList<Integer> scores;
-	private JFrame frame;
-	private JLabel messageLabel, tmeLabel;
-	private JPanel messagePanel;
+    private int width = 800;
+    private int height = 600;
+    private int padding = 25;
+    private int labelPadding = 25;
+    private Color lineColor = new Color(255, 255, 0, 180);
+    private Color pointColor = new Color(255, 0, 0, 180);
+    private Color gridColor = new Color(50, 50, 50, 200);
+    private static final Stroke GRAPH_STROKE = new BasicStroke(2f);
+    private int pointWidth = 8;
+    private int numberYDivisions = 10;
+    private ArrayList<Integer> scores;
+    private JFrame frame;
+    private JLabel messageLabel, tmeLabel;
+    private JPanel messagePanel;
 
-	public McGraphicTimePsView(ArrayList<Integer> scores, ArrayList<String> labelTime) {
-		this.scores = scores;
-		
-		// Inizializza la JFrame
-		frame = new JFrame("GRAFICO TEMPI PIT STOP");
-		frame.setPreferredSize(new Dimension(900,700));
-		frame.setResizable(false);
-		frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		frame.getContentPane().add(this);
-		ImageIcon icona = new ImageIcon(getClass().getResource("/F1-Logo.png"));
-		frame.setIconImage(icona.getImage());
-		frame.setLayout(new BorderLayout());
+    /**
+     * Costruttore della vista.
+     * @param scores Lista dei tempi di pit stop.
+     * @param labelTime Lista delle etichette per i tempi di pit stop.
+     */
+    public McGraphicTimePsView(ArrayList<Integer> scores, ArrayList<String> labelTime) {
+        this.scores = scores;
 
-		/*
-		 *  Creo un JPanel anonimo con il metodo paintComponent sovrascritto.
-		 *  L'uso di una classe anonima serve a implementare velocemente il metodo paintComponent()
-		 *  per il pannello del grafico senza bisogno di definire una classe separata solo per il rendering grafico. 
-		 *  Questo è utile soprattutto quando la classe viene utilizzata solo in un unico punto, come in questo caso.
-		 */
+        // Inizializza la JFrame
+        frame = new JFrame("GRAFICO TEMPI PIT STOP");
+        frame.setPreferredSize(new Dimension(900, 700));
+        frame.setResizable(false);
+        frame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        frame.getContentPane().add(this);
+        ImageIcon icona = new ImageIcon(getClass().getResource("/F1-Logo.png"));
+        frame.setIconImage(icona.getImage());
+        frame.setLayout(new BorderLayout());
 
-		JPanel graphPanel = new JPanel() {
-			@Override
-			protected void paintComponent(Graphics g) {
-				super.paintComponent(g);
-				Graphics2D g2 = (Graphics2D) g;
-				g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+        /*
+         *  Creo un JPanel anonimo con il metodo paintComponent sovrascritto.
+         *  L'uso di una classe anonima serve a implementare velocemente il metodo paintComponent()
+         *  per il pannello del grafico senza bisogno di definire una classe separata solo per il rendering grafico. 
+         *  Questo è utile soprattutto quando la classe viene utilizzata solo in un unico punto, come in questo caso.
+         */
 
-				double xScale = ((double) getWidth() - (2 * padding) - labelPadding) / (scores.size() - 1);
+        JPanel graphPanel = new JPanel() {
+            @Override
+            protected void paintComponent(Graphics g) {
+                super.paintComponent(g);
+                Graphics2D g2 = (Graphics2D) g;
+                g2.setRenderingHint(RenderingHints.KEY_ANTIALIASING, RenderingHints.VALUE_ANTIALIAS_ON);
+
+                double xScale = ((double) getWidth() - (2 * padding) - labelPadding) / (scores.size() - 1);
 				double yScale = ((double) getHeight() - 2 * padding - labelPadding) / (getMaxScore() - getMinScore());
 
 				List<Point> graphPoints = new ArrayList<>();
@@ -158,64 +167,71 @@ public class McGraphicTimePsView extends JPanel {
 					g2.drawString(label, x - labelWidth, y + metrics.getHeight() + 5);
 					g2.setColor(pointColor);
 				}
-			}
-		};
+            }
+        };
 
-		graphPanel.setPreferredSize(new Dimension(width, height));
-		frame.add(graphPanel, BorderLayout.NORTH);
-	
-		// Crea un pannello con GridLayout per gestire il layout delle due etichette
-		messagePanel = new JPanel(new GridLayout(2, 1, 0, 5)); // Due righe per due etichette
+        graphPanel.setPreferredSize(new Dimension(width, height));
+        frame.add(graphPanel, BorderLayout.NORTH);
 
-		// Crea la prima etichetta, centrata
-		messageLabel = new JLabel("ABNORMAL PIT STOP TIMES:", SwingConstants.CENTER);
+        // Crea un pannello con GridLayout per gestire il layout delle due etichette
+        messagePanel = new JPanel(new GridLayout(2, 1, 0, 5)); // Due righe per due etichette
 
-		// Aggiungi messageLabel (centrata nella sua cella)
-		messagePanel.add(messageLabel);
+        // Crea la prima etichetta, centrata
+        messageLabel = new JLabel("ABNORMAL PIT STOP TIMES:", SwingConstants.CENTER);
 
-		// Crea la seconda etichetta, allineata a sinistra
-		tmeLabel = new JLabel();
-		tmeLabel.setHorizontalAlignment(SwingConstants.LEFT);  // Allinea il testo a sinistra
+        // Aggiungi messageLabel (centrata nella sua cella)
+        messagePanel.add(messageLabel);
 
-		// Aggiungi tmeLabel sotto messageLabel, allineata a sinistra
-		messagePanel.add(tmeLabel);
+        // Crea la seconda etichetta, allineata a sinistra
+        tmeLabel = new JLabel();
+        tmeLabel.setHorizontalAlignment(SwingConstants.LEFT); // Allinea il testo a sinistra
 
-		// Aggiungi messagePanel al frame, al centro
-		frame.add(messagePanel, BorderLayout.CENTER);
+        // Aggiungi tmeLabel sotto messageLabel, allineata a sinistra
+        messagePanel.add(tmeLabel);
 
-		// Finalizza il frame
-		frame.pack();
-		frame.setLocationRelativeTo(null);
-		
-	}
+        // Aggiungi messagePanel al frame, al centro
+        frame.add(messagePanel, BorderLayout.CENTER);
 
-	// Metodi per ottenere min e max punteggi
-	private double getMinScore() {
-		double minScore = Double.MAX_VALUE;
+        // Finalizza il frame
+        frame.pack();
+        frame.setLocationRelativeTo(null);
+
+    }
+
+    // Metodi per ottenere min e max punteggi
+    private double getMinScore() {
+    	double minScore = Double.MAX_VALUE;
 		for (Integer score : scores) {
 			minScore = Math.min(minScore, score);
 		}
 		return minScore;
-	}
+    }
 
-	private double getMaxScore() {
-		double maxScore = Double.MIN_VALUE;
+    private double getMaxScore() {
+    	double maxScore = Double.MIN_VALUE;
 		for (Integer score : scores) {
 			maxScore = Math.max(maxScore, score);
 		}
 		return maxScore;
-	}
-	
-	public void show() {
-		frame.setVisible(true);
-	}
-	
-	public void anomalyTime(ArrayList<String> at) {
-		String time = "";
+    }
+
+    /**
+     * Mostra la finestra.
+     */
+    public void show() {
+        frame.setVisible(true);
+    }
+
+    /**
+     * Imposta il testo del label con i tempi anomali.
+     * @param at Lista dei tempi anomali.
+     */
+    public void anomalyTime(ArrayList<String> at) {
+        String time = "";
         for (String s : at) {
-            time += s + "              ";
+            time += s + "              ";
         }
-		tmeLabel.setText("" + time);
-		tmeLabel.setForeground(Color.RED);
-	}
+        tmeLabel.setText("" + time);
+        tmeLabel.setForeground(Color.RED);
+    }
 }

@@ -6,6 +6,10 @@ import javax.swing.*;
 
 import it.unipv.sfw.controller.Observer;
 
+/**
+ * Vista per il magazziniere.
+ * Permette di visualizzare e gestire le richieste, e aggiornare i componenti.
+ */
 public class MagazziniereView extends AbsView implements Observer {
     private JFrame frame;
     private JPanel mainContainer, titlePanel, popUpPanel, mexPanel;
@@ -18,7 +22,11 @@ public class MagazziniereView extends AbsView implements Observer {
     private int totalRequests = 0; // Totale richieste
     private String name;          // Nome utente
     private String surname;       // Cognome utente
-
+    
+    /**
+     * Costruttore della vista per il magazziniere.
+     * Inizializza e posiziona i componenti grafici.
+     */
     public MagazziniereView() {
         frame = new JFrame("WAREHOUSEMAN");
         frame.setSize(718, 800);
@@ -129,39 +137,74 @@ public class MagazziniereView extends AbsView implements Observer {
         frame.add(mainContainer);
         frame.setVisible(true);
     }
-
+    
+    /**
+     * Aggiorna la vista con il numero totale di richieste.
+     * @param totalRequests Il numero totale di richieste.
+     */
     @Override
     public void update(int totalRequests) {
         this.totalRequests = totalRequests;
         refresh(name, surname, totalRequests);
     }
-
+    
+    /**
+     * Aggiorna le etichette con i dati dell'utente e il numero di richieste.
+     * @param name Il nome dell'utente.
+     * @param surname Il cognome dell'utente.
+     * @param totalRequests Il numero totale di richieste.
+     */
     private void refresh(String name, String surname, int totalRequests) {
     	dataLabel.setText("NAME:        "+ name+ "        SURNAME:        " +surname+ "       TOTAL REQUEST: " +totalRequests);
         System.out.println("Updated view with " + totalRequests + " requests.");
     }
-
+    
+    /**
+     * Restituisce il pulsante per visualizzare le richieste.
+     * @return Il pulsante per visualizzare le richieste.
+     */
     public JButton getShowRequestButton() {
         return showRequestButton;
     }
-
+    
+    /**
+     * Restituisce il pulsante per eliminare le richieste.
+     * @return Il pulsante per eliminare le richieste.
+     */
     public JButton getDeleteRequestButton() {
         return deleteRequestButton;
     }
-
+    
+    /**
+     * Restituisce il pulsante per aggiornare i componenti.
+     * @return Il pulsante per aggiornare i componenti.
+     */
     public JButton getUpdateCompoButton() {
         return updateCompoButton;
     }
-
+    
+    /**
+     * Restituisce la casella combinata per la selezione dei componenti.
+     * @return La casella combinata per la selezione dei componenti.
+     */
     public JComboBox<String> getCombobox() {
         return comboBox;
     }
     
+    /**
+     * Imposta il testo del messaggio principale.
+     */
     public void setMex() {
 		mex.setText("SELECT A COMPONENT FROM THE MENU");
 		mex.setForeground(Color.BLACK);
 	}
     
+    /**
+     * Imposta i dati dell'utente e il numero di richieste.
+     * @param name Il nome dell'utente.
+     * @param surname Il cognome dell'utente.
+     * @param totalRequests Il numero totale di richieste.
+     */
     public void data(String name, String surname, int totalRequests) {
         this.name = name;
         this.surname = surname;
@@ -169,6 +212,10 @@ public class MagazziniereView extends AbsView implements Observer {
         dataLabel.setText("NAME:        "+ name+ "        SURNAME:        " +surname+ "        TOTAL REQUEST: " +totalRequests);
     }
     
+    /**
+     * Imposta il testo del messaggio principale con il nome del componente e la quantità.
+     * @param quantity La quantità del componente.
+     */
 	public void mexCombo(int quantity) {
 		String currentText = placeholder.getText();
 		mex.setText("NAME COMPONENT:  " + currentText + "             QUANTITY:  " + quantity);
