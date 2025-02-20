@@ -1,0 +1,14 @@
+it.unipv.sfw.controller
+it.unipv.sfw.dao
+it.unipv.sfw.dao.mysql
+it.unipv.sfw.exceptions
+it.unipv.sfw.frame
+it.unipv.sfw.model.component
+it.unipv.sfw.model.magazziniere
+it.unipv.sfw.model.meccanico
+it.unipv.sfw.model.pilot
+it.unipv.sfw.model.request
+it.unipv.sfw.model.staff
+it.unipv.sfw.model.stratega
+it.unipv.sfw.model.vehicle
+it.unipv.sfw.view
