@@ -79,7 +79,7 @@ public class MeccanicoController extends AbsController {
             public void actionPerformed(ActionEvent e) {
                 boolean isVehiclePresent = (Session.getIstance().getId_pilot() != null);
 
-                if (!isVehiclePresent) { // Simplified condition
+                if (!isVehiclePresent) {
                     Session.getIstance().setOperation("NO_V");
                 } else {
                     Session.getIstance().setOperation("YES_V");
@@ -130,7 +130,7 @@ public class MeccanicoController extends AbsController {
             public void actionPerformed(ActionEvent e) {
                 boolean isPilotPresent = (Session.getIstance().getId_pilot() != null);
 
-                if (!isPilotPresent) { // Simplified condition
+                if (!isPilotPresent) { 
                     Session.getIstance().setOperation("ADD");
                     System.out.println("il contenuto è: " + Session.getIstance().getOperation()
                             + " @MECCANICO CONTROLLER-ADD PILOT");
