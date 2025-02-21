@@ -13,9 +13,10 @@ import javax.swing.table.DefaultTableModel;
 public class StrategistView extends AbsView {
 
     private JFrame frame;
-    private JPanel mainContainer, titlePanel, lapPanel, timePanel, buttonPanel;
-    private JButton getTimeButton, createStrategyButton;
+    private JPanel mainContainer, titlePanel, lapPanel, timePanel,addVehiclePanel, buttonPanel;
+    private JButton getTimeButton, createStrategyButton,sendButton;
     private JLabel countLapLabel, imgWeatherLabel, imgCircuitLabel, dataLabel;
+    private JTextField vehicleField;
     private ImageIcon imgWeather, imgCircuit;
     private DefaultTableModel tabTime;
     private JTable tab;
@@ -86,7 +87,26 @@ public class StrategistView extends AbsView {
         lapPanel.add(countLapLabel, gbcLap);
 
         titlePanel.add(lapPanel, BorderLayout.EAST);
-
+        
+        addVehiclePanel = new JPanel(new GridBagLayout());
+        addVehiclePanel.setPreferredSize(new Dimension(700, 350));
+        addVehiclePanel.setBackground(Color.BLACK);
+        addVehiclePanel.setOpaque(false);
+        GridBagConstraints gbc = new GridBagConstraints();
+        gbc.insets = new Insets(20, 20, 50, 20);
+        gbc.anchor = GridBagConstraints.CENTER;
+        
+        gbc.gridx = 0;
+        gbc.gridy = 0;
+        vehicleField = new JTextField("INSERT MSN");
+        vehicleField.setPreferredSize(new Dimension(150, 30));
+        addVehiclePanel.add(vehicleField, gbc);
+        
+        gbc.gridy = 1;
+        sendButton = new JButton("SEND");
+        addVehiclePanel.add(sendButton, gbc);
+        
+        
         // Time panel setup
         timePanel = new JPanel(new BorderLayout());
         timePanel.setPreferredSize(new Dimension(700, 350));
@@ -121,6 +141,7 @@ public class StrategistView extends AbsView {
         // Assemble panels
         mainContainer.add(titlePanel, BorderLayout.NORTH);
         mainContainer.add(timePanel, BorderLayout.CENTER);
+        mainContainer.add(addVehiclePanel, BorderLayout.CENTER);
         mainContainer.add(buttonPanel, BorderLayout.SOUTH);
 
         frame.add(mainContainer);
@@ -188,7 +209,7 @@ public class StrategistView extends AbsView {
             }
         });
     }
-
+    
     /**
      * Restituisce il label per il conteggio dei giri.
      * @return Il label per il conteggio dei giri.

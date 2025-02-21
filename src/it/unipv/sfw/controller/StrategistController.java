@@ -3,6 +3,7 @@ package it.unipv.sfw.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import it.unipv.sfw.dao.mysql.StrategistDAO;
 import it.unipv.sfw.dao.mysql.VehicleDAO;
 import it.unipv.sfw.exceptions.DuplicateComponentException;
 import it.unipv.sfw.model.component.Components;
@@ -57,7 +58,7 @@ public class StrategistController extends AbsController {
             v.addComponent(c2);
             v.addComponent(c3);
         } catch (DuplicateComponentException e) {
-            e.printStackTrace(); // Gestione dell'eccezione (da migliorare in produzione)
+            e.printStackTrace();
         }
 
         try {
@@ -69,7 +70,16 @@ public class StrategistController extends AbsController {
 
         StrategistView sv = new StrategistView();
         VehicleDAO vd = new VehicleDAO();
+        StrategistDAO sd = new StrategistDAO();
+        
+        sd.insertLogEvent(getID(), "LOGIN");
 
+        sv.getTab().setEnabled(false);
+        sv.getTab().setVisible(false);
+        
+       sv.getCreateStrategyButton().setEnabled(false);;
+       sv.getCreateStrategyButton().setVisible(false);       
+        
         sv.getGetTimeButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -166,5 +176,9 @@ public class StrategistController extends AbsController {
      */
     private void setTimeLap() {
         Session.getIstance().getS().setTimeLap(timeLap);
+    }
+    
+    private String getID() {
+        return Session.getIstance().getId_staff();
     }
 }
