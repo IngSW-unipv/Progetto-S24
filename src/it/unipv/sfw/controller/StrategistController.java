@@ -6,6 +6,8 @@ import java.awt.event.ActionListener;
 import it.unipv.sfw.dao.mysql.StrategistDAO;
 import it.unipv.sfw.dao.mysql.VehicleDAO;
 import it.unipv.sfw.exceptions.DuplicateComponentException;
+import it.unipv.sfw.exceptions.PilotNotFoundException;
+import it.unipv.sfw.exceptions.VehicleNotFoundException;
 import it.unipv.sfw.model.component.Components;
 import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.model.staff.Staff;
@@ -77,9 +79,32 @@ public class StrategistController extends AbsController {
         sv.getTab().setEnabled(false);
         sv.getTab().setVisible(false);
         
-       sv.getCreateStrategyButton().setEnabled(false);;
+       sv.getCreateStrategyButton().setEnabled(false);
        sv.getCreateStrategyButton().setVisible(false);       
         
+       sv.getGetTimeButton().setEnabled(false);
+       sv.getGetTimeButton().setVisible(false);
+       
+       
+       sv.getSendButton().addActionListener(new ActionListener() {
+    	   @Override
+           public void actionPerformed(ActionEvent e) {
+              String msn = sv.getVehicleField().getText().toUpperCase();
+              
+              try {
+            	  
+            	  sd.insertStrategistOnVehicle(msn, getID());
+            	  sv.showElement();
+            	  
+              } catch (VehicleNotFoundException ev) {
+                  System.out.println(ev);
+                  sv.mex();
+                  return;
+              }
+              
+           }
+       });
+       
         sv.getGetTimeButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
