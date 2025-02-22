@@ -1,6 +1,9 @@
 package it.unipv.sfw.view;
 
 import java.awt.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
@@ -13,11 +16,11 @@ import javax.swing.table.DefaultTableModel;
 public class StrategistView extends AbsView {
 
     private JFrame frame;
-    private JPanel mainContainer, titlePanel, lapPanel, timePanel,addVehiclePanel, buttonPanel;
-    private JButton getTimeButton, createStrategyButton,sendButton;
-    private JLabel countLapLabel, imgWeatherLabel, imgCircuitLabel, dataLabel;
+    private JPanel mainContainer, titlePanel, lapPanel, timePanel,addVehiclePanel,sendBtnPanel, GetTimebtnPanel;
+    private JButton getTimeButton, createStrategyButton, sendButton;
+    private JLabel countLapLabel, imgWeatherLabel, imgCircuitLabel, dataLabel, msnLabel, mex;
     private JTextField vehicleField;
-    private ImageIcon imgWeather, imgCircuit;
+	private ImageIcon imgWeather, imgCircuit;
     private DefaultTableModel tabTime;
     private JTable tab;
 
@@ -89,23 +92,43 @@ public class StrategistView extends AbsView {
         titlePanel.add(lapPanel, BorderLayout.EAST);
         
         addVehiclePanel = new JPanel(new GridBagLayout());
-        addVehiclePanel.setPreferredSize(new Dimension(700, 350));
-        addVehiclePanel.setBackground(Color.BLACK);
+        addVehiclePanel.setPreferredSize(new Dimension(700,350));
         addVehiclePanel.setOpaque(false);
         GridBagConstraints gbc = new GridBagConstraints();
-        gbc.insets = new Insets(20, 20, 50, 20);
-        gbc.anchor = GridBagConstraints.CENTER;
+
+        // Spaziatura interna
+        gbc.insets = new Insets(10, 10, 10, 10);
+
+        Dimension dimField = new Dimension(100, 30);
         
-        gbc.gridx = 0;
+        gbc.gridx = 1;
         gbc.gridy = 0;
-        vehicleField = new JTextField("INSERT MSN");
-        vehicleField.setPreferredSize(new Dimension(150, 30));
+        msnLabel = new JLabel("Insert MSN");
+        msnLabel.setForeground(Color.WHITE);
+        msnLabel.setPreferredSize(dimField);
+        addVehiclePanel.add(msnLabel, gbc);   
+        
+        gbc.gridx = 2;
+        gbc.gridy = 0;
+        vehicleField = new JTextField("MSN");
+        vehicleField.setPreferredSize(dimField);
         addVehiclePanel.add(vehicleField, gbc);
         
+        gbc.gridx = 0;
         gbc.gridy = 1;
+        gbc.gridwidth = 2; // Occupa entrambe le colonne
+        gbc.fill = GridBagConstraints.HORIZONTAL;
+        sendBtnPanel = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        sendBtnPanel.setOpaque(false);
+        Dimension dimBtn = new Dimension(100, 30);
         sendButton = new JButton("SEND");
-        addVehiclePanel.add(sendButton, gbc);
+        sendButton.setPreferredSize(dimBtn);
+        sendBtnPanel.add(sendButton);
+        addVehiclePanel.add(sendBtnPanel, gbc);
         
+        gbc.gridy = 1;
+        mex = new JLabel("", SwingConstants.CENTER);
+        addVehiclePanel.add(mex,gbc);
         
         // Time panel setup
         timePanel = new JPanel(new BorderLayout());
@@ -122,9 +145,9 @@ public class StrategistView extends AbsView {
         timePanel.add(scroll, BorderLayout.CENTER);
 
         // Button panel setup
-        buttonPanel = new JPanel(new GridBagLayout());
-        buttonPanel.setBackground(Color.BLACK);
-        buttonPanel.setPreferredSize(new Dimension(1100, 150));
+        GetTimebtnPanel = new JPanel(new GridBagLayout());
+        GetTimebtnPanel.setBackground(Color.BLACK);
+        GetTimebtnPanel.setPreferredSize(new Dimension(1100, 150));
         GridBagConstraints gbcButton = new GridBagConstraints();
         gbcButton.insets = new Insets(10, 10, 20, 10);
         gbcButton.anchor = GridBagConstraints.CENTER;
@@ -132,25 +155,41 @@ public class StrategistView extends AbsView {
         gbcButton.gridx = 0;
         gbcButton.gridy = 0;
         getTimeButton = new JButton("GET TIME");
-        buttonPanel.add(getTimeButton, gbcButton);
+        GetTimebtnPanel.add(getTimeButton, gbcButton);
 
         gbcButton.gridx = 1;
         createStrategyButton = new JButton("CREATE STRATEGY");
-        buttonPanel.add(createStrategyButton, gbcButton);
+        GetTimebtnPanel.add(createStrategyButton, gbcButton);
 
         // Assemble panels
         mainContainer.add(titlePanel, BorderLayout.NORTH);
         mainContainer.add(timePanel, BorderLayout.CENTER);
         mainContainer.add(addVehiclePanel, BorderLayout.CENTER);
-        mainContainer.add(buttonPanel, BorderLayout.SOUTH);
+        mainContainer.add(GetTimebtnPanel, BorderLayout.SOUTH);
 
         frame.add(mainContainer);
         frame.setVisible(true);
         frame.validate();
         frame.repaint();
+        
+        vehicleField.addFocusListener(new FocusListener() {
+			@Override
+			public void focusGained(FocusEvent e) {
+				if (vehicleField.getText().equals("MSN")) {
+					vehicleField.setText(""); // Rimuove il testo predefinito
+				}
+			}
+
+			@Override
+			public void focusLost(FocusEvent e) {
+				if (vehicleField.getText().isEmpty()) {
+					vehicleField.setText("MSN"); // Ripristina il testo predefinito se vuoto
+				}
+			}
+		});
     }
 
-    /**
+	/**
      * Aggiunge una riga alla tabella dei tempi.
      * @param t1 Tempo settore 1
      * @param t2 Tempo settore 2
@@ -209,6 +248,69 @@ public class StrategistView extends AbsView {
             }
         });
     }
+    
+    public void showElement() {
+        msnLabel.setEnabled(false);
+        msnLabel.setVisible(false);
+        
+        vehicleField.setEnabled(false);
+        vehicleField.setVisible(false);
+        
+        sendButton.setEnabled(false);
+        sendButton.setVisible(false);
+        
+        mex.setEnabled(false);
+        mex.setVisible(false);
+        
+    	addVehiclePanel.setEnabled(false);
+    	addVehiclePanel.setVisible(false);
+    	
+        tab.setEnabled(true);
+        tab.setVisible(true);
+        
+       createStrategyButton.setEnabled(true);
+       createStrategyButton.setVisible(true);       
+        
+       getTimeButton.setEnabled(true);
+       getTimeButton.setVisible(true);
+    }
+    
+    public JPanel getAddVehiclePanel() {
+		return addVehiclePanel;
+	}
+
+	public void setAddVehiclePanel(JPanel addVehiclePanel) {
+		this.addVehiclePanel = addVehiclePanel;
+	}
+
+	public void mex() {
+    	mex.setText("ERROR VEHICLE NOT FOUND");
+    	mex.setForeground(Color.RED);
+    }
+    
+    public JTextField getVehicleField() {
+		return vehicleField;
+	}
+
+	public void setVehicleField(JTextField vehicleField) {
+		this.vehicleField = vehicleField;
+	}
+    
+    /**
+     * Restituisce il bottone per inviare i  dati
+     * @return il bottone per inviare i  dati.
+     */
+    public JButton getSendButton() {
+		return sendButton;
+	}
+    
+    /**
+     * Imposta il bottone per inviare i  dati
+     * @param getTimeButton Il bottone per per inviare i  dati.
+     */
+	public void setSendButton(JButton sendButton) {
+		this.sendButton = sendButton;
+	}
     
     /**
      * Restituisce il label per il conteggio dei giri.
@@ -273,4 +375,6 @@ public class StrategistView extends AbsView {
     public void setCreateStrategyButton(JButton createStrategyButton) {
         this.createStrategyButton = createStrategyButton;
     }
+    
+    
 }
