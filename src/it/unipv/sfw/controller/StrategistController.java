@@ -75,9 +75,6 @@ public class StrategistController extends AbsController {
         StrategistDAO sd = new StrategistDAO();
         
         sd.insertLogEvent(getID(), "LOGIN");
-
-//        sv.getTab().setEnabled(false);
-//        sv.getTab().setVisible(false);
         
        sv.getCreateStrategyButton().setEnabled(false);
        sv.getCreateStrategyButton().setVisible(false);       
@@ -93,6 +90,7 @@ public class StrategistController extends AbsController {
               
               try {
             	  
+            	  sd.checkVehicle(msn);
             	  sd.insertStrategistOnVehicle(msn, getID());
             	  sv.showElement();
             	  
