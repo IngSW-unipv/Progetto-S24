@@ -77,19 +77,19 @@ public class Session {
 		// SWITCH
 		switch ("" + user.getType()) {
 
-		case "MECCANICO":
+		case "MECHANIC":
 			Mechanic mc = (Mechanic) user;
 			this.setCurrentUser(user);
 
 			break;
 
-		case "STRATEGA":
+		case "STRATEGIST":
 			Strategist stg = (Strategist) user;
 			this.setCurrentUser(user);
 
 			break;
 
-		case "MAGAZZINIERE":
+		case "WAREHOUSEMAN":
 			Warehouseman mg = (Warehouseman) user;
 			this.setCurrentUser(user);
 
