@@ -33,7 +33,7 @@ public class StrategistController extends AbsController {
      */
     @Override
     public TypeController getType() {
-        return TypeController.STRATEGA;
+        return TypeController.STRATEGIST;
     }
 
     /**

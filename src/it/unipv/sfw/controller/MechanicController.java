@@ -9,13 +9,13 @@ import it.unipv.sfw.dao.mysql.MechanicDAO;
 import it.unipv.sfw.model.staff.Mechanic;
 import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.model.staff.Staff;
-import it.unipv.sfw.view.MeccanicoView;
+import it.unipv.sfw.view.MechanicView;
 
 /**
  * Controller per la gestione delle azioni del meccanico.
  * Gestisce le interazioni tra la vista del meccanico e il modello dei dati.
  */
-public class MeccanicoController extends AbsController {
+public class MechanicController extends AbsController {
 
     private Staff user;
 
@@ -23,7 +23,7 @@ public class MeccanicoController extends AbsController {
 
     @Override
     public TypeController getType() {
-        return TypeController.MECCANICO;
+        return TypeController.MECHANIC;
     }
 
     @Override
@@ -36,7 +36,7 @@ public class MeccanicoController extends AbsController {
             System.out.println("Errore");
         }
 
-        MeccanicoView mv = new MeccanicoView();
+        MechanicView mv = new MechanicView();
         MechanicDAO md = new MechanicDAO();
 
         McPopUpVehicleHandler pvc = new McPopUpVehicleHandler(mv);

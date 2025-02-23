@@ -23,7 +23,7 @@ public class Strategist extends Staff {
      */
     @Override
     public TypeController getType() {
-        return Staff.TypeController.STRATEGA;
+        return Staff.TypeController.STRATEGIST;
     }
 
     /**

@@ -22,7 +22,7 @@ import it.unipv.sfw.model.staff.Session;
  * Vista per il meccanico.
  * Permette al meccanico di visualizzare e gestire i componenti, i piloti, i veicoli e le richieste.
  */
-public class MeccanicoView extends AbsView {
+public class MechanicView extends AbsView {
 
     private JFrame frame;
 
@@ -41,7 +41,7 @@ public class MeccanicoView extends AbsView {
      * Costruttore della vista per il meccanico.
      * Inizializza e posiziona i componenti grafici.
      */
-    public MeccanicoView() {
+    public MechanicView() {
 
         frame = new JFrame("MECHANIC");
         frame.setSize(718, 800);

@@ -4,7 +4,7 @@ package it.unipv.sfw.model.pilot;
  * Classe che rappresenta un pilota.
  * Contiene informazioni sull'ID, il nome, il cognome e il numero.
  */
-public class Pilota {
+public class Pilot {
 
     private String id_pilot;
     private String name;
@@ -18,7 +18,7 @@ public class Pilota {
      * @param surname Il cognome del pilota.
      * @param number Il numero del pilota.
      */
-    public Pilota(String id_pilot, String name, String surname, int number) {
+    public Pilot(String id_pilot, String name, String surname, int number) {
         this.id_pilot = id_pilot;
         this.name = name;
         this.surname = surname;

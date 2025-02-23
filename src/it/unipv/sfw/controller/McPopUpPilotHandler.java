@@ -7,7 +7,7 @@ import it.unipv.sfw.dao.mysql.MechanicDAO;
 import it.unipv.sfw.exceptions.PilotNotFoundException;
 import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.view.McPopUpPilotView;
-import it.unipv.sfw.view.MeccanicoView;
+import it.unipv.sfw.view.MechanicView;
 
 /**
  * Controller per la finestra di pop-up utilizzata dai meccanici per assegnare
@@ -24,9 +24,9 @@ public class McPopUpPilotHandler {
     /**
      * Costruttore per il McPopUpPilotHandler.
      *
-     * @param mv La {@link MeccanicoView} associata a questo handler.
+     * @param mv La {@link MechanicView} associata a questo handler.
      */
-    public McPopUpPilotHandler(MeccanicoView mv) {
+    public McPopUpPilotHandler(MechanicView mv) {
 
         pv = new McPopUpPilotView();
         md = new MechanicDAO();

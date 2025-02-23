@@ -13,12 +13,12 @@ public class ControllerFactory {
         switch (type) {
             case LOGIN:
                 return new LoginController();
-            case STRATEGA:
+            case STRATEGIST:
                 return new StrategistController();
-            case MECCANICO:
-                return new MeccanicoController();
-            case MAGAZZINIERE:
-                return new MagazziniereController();
+            case MECHANIC:
+                return new MechanicController();
+            case WAREHOUSEMAN:
+                return new WarehousemanController();
             default:
                 throw new IllegalArgumentException("Tipo di controller sconosciuto: " + type);
         }

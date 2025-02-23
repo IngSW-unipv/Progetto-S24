@@ -8,16 +8,16 @@ import it.unipv.sfw.model.request.Request;
 import it.unipv.sfw.model.staff.Warehouseman;
 import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.model.staff.Staff;
-import it.unipv.sfw.view.MagazziniereView;
+import it.unipv.sfw.view.WarehousemanView;
 
 /**
- * Controller che gestisce il processo di gestione del magazziniere nella {@link MagazziniereView}.
+ * Controller che gestisce il processo di gestione del magazziniere nella {@link WarehousemanView}.
  * Si occupa della gestione delle richieste e della visualizzazione delle informazioni relative al magazzino.
  * 
  * @see AbsController
- * @see it.unipv.sfw.view.MagazziniereView
+ * @see it.unipv.sfw.view.WarehousemanView
  */
-public class MagazziniereController extends AbsController {
+public class WarehousemanController extends AbsController {
     private Staff user;
     private Warehouseman m;
     private Observable obs;
@@ -29,7 +29,7 @@ public class MagazziniereController extends AbsController {
      */
     @Override
     public TypeController getType() {
-        return TypeController.MAGAZZINIERE;
+        return TypeController.WAREHOUSEMAN;
     }
 
     /**
@@ -47,7 +47,7 @@ public class MagazziniereController extends AbsController {
 
         obs = new Observable();
 
-        MagazziniereView mv = new MagazziniereView();
+        WarehousemanView mv = new WarehousemanView();
         WarehousemanDAO md = new WarehousemanDAO();
 
         WhPopUpDeleteRequestHandler wdrc = new WhPopUpDeleteRequestHandler(obs);

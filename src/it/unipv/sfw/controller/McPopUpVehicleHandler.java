@@ -9,7 +9,7 @@ import it.unipv.sfw.exceptions.VehicleNotFoundException;
 import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.model.vehicle.Vehicle;
 import it.unipv.sfw.view.McPopUpVehicleView;
-import it.unipv.sfw.view.MeccanicoView;
+import it.unipv.sfw.view.MechanicView;
 
 /**
  * Controller per la finestra di pop-up per l'inserimento di un veicolo.
@@ -24,9 +24,9 @@ public class McPopUpVehicleHandler {
     /**
      * Costruttore per McPopUpVehicleHandler.
      *
-     * @param mv La {@link MeccanicoView} associata a questo handler.
+     * @param mv La {@link MechanicView} associata a questo handler.
      */
-    public McPopUpVehicleHandler(MeccanicoView mv) {
+    public McPopUpVehicleHandler(MechanicView mv) {
 
         vv = new McPopUpVehicleView();
         md = new MechanicDAO();
@@ -74,12 +74,12 @@ public class McPopUpVehicleHandler {
 
     /**
      * Aggiorna lo stato (abilitato/disabilitato) e la visibilità di alcuni
-     * pulsanti nell'interfaccia {@link MeccanicoView}, in base alla presenza
+     * pulsanti nell'interfaccia {@link MechanicView}, in base alla presenza
      * di un veicolo nella sessione.
      *
-     * @param mv La {@link MeccanicoView} da aggiornare.
+     * @param mv La {@link MechanicView} da aggiornare.
      */
-    private void updateButtonStates(MeccanicoView mv) {
+    private void updateButtonStates(MechanicView mv) {
         boolean isVehiclePresent = (Session.getIstance().getV() != null);
 
         mv.getAddComponentButton().setEnabled(isVehiclePresent);

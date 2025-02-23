@@ -13,7 +13,7 @@ public abstract class AbsController {
 	 * Enumerazione che rappresenta ogni tipo di controller.
 	 */
 	public enum TypeController  {
-		LOGIN, STRATEGA, MECCANICO, MAGAZZINIERE;
+		LOGIN, STRATEGIST, MECHANIC, WAREHOUSEMAN;
 		
 	}
 

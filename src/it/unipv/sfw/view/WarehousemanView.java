@@ -10,7 +10,7 @@ import it.unipv.sfw.controller.Observer;
  * Vista per il magazziniere.
  * Permette di visualizzare e gestire le richieste, e aggiornare i componenti.
  */
-public class MagazziniereView extends AbsView implements Observer {
+public class WarehousemanView extends AbsView implements Observer {
     private JFrame frame;
     private JPanel mainContainer, titlePanel, popUpPanel, mexPanel;
     private JButton showRequestButton, deleteRequestButton, updateCompoButton;
@@ -27,7 +27,7 @@ public class MagazziniereView extends AbsView implements Observer {
      * Costruttore della vista per il magazziniere.
      * Inizializza e posiziona i componenti grafici.
      */
-    public MagazziniereView() {
+    public WarehousemanView() {
         frame = new JFrame("WAREHOUSEMAN");
         frame.setSize(718, 800);
         frame.setLocationRelativeTo(null);

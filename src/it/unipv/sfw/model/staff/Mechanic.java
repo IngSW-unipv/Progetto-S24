@@ -140,7 +140,7 @@ public class Mechanic extends Staff {
     @Override
     public TypeController getType() {
 
-        return Staff.TypeController.MECCANICO;
+        return Staff.TypeController.MECHANIC;
     }
 
     /**

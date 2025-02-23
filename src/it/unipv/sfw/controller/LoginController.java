@@ -38,16 +38,16 @@ public class LoginController extends AbsController {
 
         // Caricamento del controller in base al tipo di utente
         switch ("" + Session.getIstance().getCurrentUser().getType()) {
-            case "MECCANICO":
-                ControllerManager.getInstance().loadController(TypeController.MECCANICO);
+            case "MECHANIC":
+                ControllerManager.getInstance().loadController(TypeController.MECHANIC);
                 ControllerManager.getInstance().closeWindow();
                 break;
-            case "STRATEGA":
-                ControllerManager.getInstance().loadController(TypeController.STRATEGA);
+            case "STRATEGIST":
+                ControllerManager.getInstance().loadController(TypeController.STRATEGIST);
                 ControllerManager.getInstance().closeWindow();
                 break;
-            case "MAGAZZINIERE":
-                ControllerManager.getInstance().loadController(TypeController.MAGAZZINIERE);
+            case "WAREHOUSEMAN":
+                ControllerManager.getInstance().loadController(TypeController.WAREHOUSEMAN);
                 ControllerManager.getInstance().closeWindow();
                 break;
         }

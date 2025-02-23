@@ -30,7 +30,7 @@ public class Warehouseman extends Staff {
      */
     @Override
     public TypeController getType() {
-        return Staff.TypeController.MAGAZZINIERE;
+        return Staff.TypeController.WAREHOUSEMAN;
     }
 
     /**
