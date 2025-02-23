@@ -50,10 +50,14 @@ public class StrategistDAO {
 
     }
     
-    
-    public void insertStrategistOnVehicle(String msn, String id) throws VehicleNotFoundException{
-    	
-    	SCHEMA = "VEHICLE";
+    /**
+     * Verifica se esiste un veicolo con il numero di telaio (MSN) specificato.
+     * @param msn Il numero di telaio (MSN) del veicolo da verificare.
+     * @throws VehicleNotFoundException Se non viene trovato alcun veicolo con il numero di telaio specificato.
+     */
+	public void checkVehicle(String msn) throws VehicleNotFoundException {
+
+		SCHEMA = "vehicle";
 
 		PreparedStatement st1;
 		ResultSet rs1;
@@ -61,22 +65,48 @@ public class StrategistDAO {
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
 
-			String query = "UPDATE" + SCHEMA + " SET ID_STRATEGIST = ? WHERE MSN = ?";
+			String query = "SELECT * FROM " + SCHEMA + " WHERE MSN = ?";
+			st1 = conn.prepareStatement(query);
+
+			st1.setString(1, msn);
+
+			rs1 = st1.executeQuery();
+
+			// Verifica se ci sono risultati
+			if (!rs1.next()) {
+				// Accedi ai dati solo dopo rs.next()
+				throw new VehicleNotFoundException(msn);
+			}
+
+		} catch (SQLException e) {
+			throw new RuntimeException("Errore di connessione al database", e);
+		}
+	}
+    
+    public void insertStrategistOnVehicle(String msn, String id){
+    	
+    	SCHEMA = "vehicle";
+
+		PreparedStatement st1;
+		int rs1;
+
+		try (DBConnection db = new DBConnection(SCHEMA)) {
+			Connection conn = db.getConnection();
+
+			String query = "UPDATE " + SCHEMA + " SET ID_STRATEGIST = ? WHERE MSN = ?";
 			st1 = conn.prepareStatement(query);
 
 			st1.setString(1, id);
 			st1.setString(2, msn);
 
-			rs1 = st1.executeQuery();
-
-			if (!rs1.next()) { // Spostati alla prima riga del risultato
-				throw new WrongIDException();
-			}
+			rs1 = st1.executeUpdate();
 
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		
     	
     	
     }
