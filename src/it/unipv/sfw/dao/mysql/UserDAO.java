@@ -102,15 +102,15 @@ public class UserDAO {
 
                 switch (type) {
                     case "Meccanico":
-                        typeSelected = TypeController.MECCANICO;
+                        typeSelected = TypeController.MECHANIC;
                         break;
 
                     case "Stratega":
-                        typeSelected = TypeController.STRATEGA;
+                        typeSelected = TypeController.STRATEGIST;
                         break;
 
                     case "Magazziniere":
-                        typeSelected = TypeController.MAGAZZINIERE;
+                        typeSelected = TypeController.WAREHOUSEMAN;
                         break;
                 }
             }

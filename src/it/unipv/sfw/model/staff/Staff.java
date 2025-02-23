@@ -12,7 +12,7 @@ public abstract class Staff {
      * Enumerazione che definisce i possibili tipi di membri dello staff.
      */
     public enum TypeController {
-        STRATEGA, MECCANICO, MAGAZZINIERE;
+        STRATEGIST, MECHANIC, WAREHOUSEMAN;
     }
 
     private String id;
