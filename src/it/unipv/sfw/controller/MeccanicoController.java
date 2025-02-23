@@ -5,8 +5,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JOptionPane;
 
-import it.unipv.sfw.dao.mysql.MeccanicoDAO;
-import it.unipv.sfw.model.staff.Meccanico;
+import it.unipv.sfw.dao.mysql.MechanicDAO;
+import it.unipv.sfw.model.staff.Mechanic;
 import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.model.staff.Staff;
 import it.unipv.sfw.view.MeccanicoView;
@@ -19,7 +19,7 @@ public class MeccanicoController extends AbsController {
 
     private Staff user;
 
-    private Meccanico m;
+    private Mechanic m;
 
     @Override
     public TypeController getType() {
@@ -31,13 +31,13 @@ public class MeccanicoController extends AbsController {
 
         try {
             user = Session.getIstance().getCurrentUser();
-            m = (Meccanico) user;
+            m = (Mechanic) user;
         } catch (Exception e) {
             System.out.println("Errore");
         }
 
         MeccanicoView mv = new MeccanicoView();
-        MeccanicoDAO md = new MeccanicoDAO();
+        MechanicDAO md = new MechanicDAO();
 
         McPopUpVehicleHandler pvc = new McPopUpVehicleHandler(mv);
         McPopUpPilotHandler ppc = new McPopUpPilotHandler(mv);

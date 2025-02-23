@@ -3,7 +3,7 @@ package it.unipv.sfw.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import it.unipv.sfw.dao.mysql.MeccanicoDAO;
+import it.unipv.sfw.dao.mysql.MechanicDAO;
 import it.unipv.sfw.exceptions.ComponentNotFoundException;
 import it.unipv.sfw.exceptions.VehicleNotFoundException;
 import it.unipv.sfw.exceptions.WrongIDException;
@@ -14,13 +14,13 @@ import it.unipv.sfw.view.McPopUpRequestView;
 /**
  * Controller per la finestra di pop-up per le richieste di componenti.
  * Questa classe gestisce le interazioni dell'utente con la
- * {@link McPopUpRequestView} e interagisce con il {@link MeccanicoDAO}
+ * {@link McPopUpRequestView} e interagisce con il {@link MechanicDAO}
  * per inserire le richieste nel database.
  */
 public class McPopUpRequestHandler {
 
     private McPopUpRequestView pr;
-    private MeccanicoDAO md;
+    private MechanicDAO md;
 
     /**
      * Costruttore per McPopUpRequestHandler.
@@ -28,7 +28,7 @@ public class McPopUpRequestHandler {
     public McPopUpRequestHandler() {
 
         pr = new McPopUpRequestView();
-        md = new MeccanicoDAO();
+        md = new MechanicDAO();
 
         System.out.println("OPERATION: " + Session.getIstance().getOperation());
 

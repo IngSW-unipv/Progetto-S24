@@ -3,7 +3,7 @@ package it.unipv.sfw.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import it.unipv.sfw.dao.mysql.MagazziniereDAO;
+import it.unipv.sfw.dao.mysql.WarehousemanDAO;
 import it.unipv.sfw.exceptions.RequestNotFoundException;
 import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.view.WhPopUpDeleteRequestView;
@@ -11,14 +11,14 @@ import it.unipv.sfw.view.WhPopUpDeleteRequestView;
 /**
  * Controller per la finestra di pop-up di eliminazione richiesta.
  * Gestisce le interazioni dell'utente con la {@link WhPopUpDeleteRequestView}
- * e coordina le azioni con il {@link MagazziniereDAO}.
+ * e coordina le azioni con il {@link WarehousemanDAO}.
  * Implementa il pattern Observer per notificare eventuali cambiamenti
  * nel numero di richieste.
  */
 public class WhPopUpDeleteRequestHandler {
 
     private WhPopUpDeleteRequestView pdr;
-    private MagazziniereDAO md;
+    private WarehousemanDAO md;
 
     /**
      * Costruttore per WhPopUpDeleteRequestHandler.
@@ -28,7 +28,7 @@ public class WhPopUpDeleteRequestHandler {
      */
     public WhPopUpDeleteRequestHandler(Observable observable) {
         pdr = new WhPopUpDeleteRequestView();
-        md = new MagazziniereDAO();
+        md = new WarehousemanDAO();
 
         pdr.getSendButton().addActionListener(new ActionListener() {
 

@@ -19,7 +19,7 @@ import it.unipv.sfw.model.request.Request;
  * informazioni relative a richieste e componenti, oltre che di registrare
  * eventi nel log.
  */
-public class MagazziniereDAO {
+public class WarehousemanDAO {
 
     private String SCHEMA = "";
 

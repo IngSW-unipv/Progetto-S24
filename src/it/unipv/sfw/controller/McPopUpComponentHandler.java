@@ -3,7 +3,7 @@ package it.unipv.sfw.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import it.unipv.sfw.dao.mysql.MeccanicoDAO;
+import it.unipv.sfw.dao.mysql.MechanicDAO;
 import it.unipv.sfw.exceptions.ComponentNotFoundException;
 import it.unipv.sfw.exceptions.DuplicateComponentException;
 import it.unipv.sfw.model.component.Components;
@@ -19,7 +19,7 @@ public class McPopUpComponentHandler {
 
     private McPopUpComponentView pc;
     private McPopUpRequestView pr;
-    private MeccanicoDAO md;
+    private MechanicDAO md;
     private Components c;
     
     /**
@@ -29,7 +29,7 @@ public class McPopUpComponentHandler {
     public McPopUpComponentHandler() {
         pc = new McPopUpComponentView();
         pr = new McPopUpRequestView();
-        md = new MeccanicoDAO();
+        md = new MechanicDAO();
         
         if (Session.getIstance().getOperation().equals("ADD")) {
             setupAddComponentListener();

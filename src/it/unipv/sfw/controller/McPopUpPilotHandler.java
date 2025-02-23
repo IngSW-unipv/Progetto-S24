@@ -3,7 +3,7 @@ package it.unipv.sfw.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import it.unipv.sfw.dao.mysql.MeccanicoDAO;
+import it.unipv.sfw.dao.mysql.MechanicDAO;
 import it.unipv.sfw.exceptions.PilotNotFoundException;
 import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.view.McPopUpPilotView;
@@ -14,12 +14,12 @@ import it.unipv.sfw.view.MeccanicoView;
  * piloti ai veicoli.
  * Questa classe gestisce le interazioni dell'utente con la
  * {@link McPopUpPilotView} e interagisce
- * con il {@link MeccanicoDAO} per aggiornare il database.
+ * con il {@link MechanicDAO} per aggiornare il database.
  */
 public class McPopUpPilotHandler {
 
     private McPopUpPilotView pv;
-    private MeccanicoDAO md;
+    private MechanicDAO md;
 
     /**
      * Costruttore per il McPopUpPilotHandler.
@@ -29,7 +29,7 @@ public class McPopUpPilotHandler {
     public McPopUpPilotHandler(MeccanicoView mv) {
 
         pv = new McPopUpPilotView();
-        md = new MeccanicoDAO();
+        md = new MechanicDAO();
 
         pv.getSendButton().addActionListener(new ActionListener() {
 

@@ -17,7 +17,7 @@ import it.unipv.sfw.exceptions.WrongRequestException;
  * inserire, controllare, aggiornare e rimuovere informazioni relative a
  * queste entità.
  */
-public class MeccanicoDAO {
+public class MechanicDAO {
 
 	private String SCHEMA = "";
 

@@ -4,11 +4,11 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
-import it.unipv.sfw.model.staff.Magazziniere;
-import it.unipv.sfw.model.staff.Meccanico;
+import it.unipv.sfw.model.staff.Warehouseman;
+import it.unipv.sfw.model.staff.Mechanic;
 import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.model.staff.Staff;
-import it.unipv.sfw.model.staff.Stratega;
+import it.unipv.sfw.model.staff.Strategist;
 import it.unipv.sfw.model.staff.Staff.TypeController;
 
 /**
@@ -44,23 +44,23 @@ public class UserDAO {
             rs1 = st1.executeQuery();
 
             if (rs1.next()) {
-                String type = rs1.getString(5);
+                String type = rs1.getString(3);
 
                 switch (type) {
-                    case "Meccanico":
-                        result = new Meccanico(rs1.getString(1), rs1.getString(2));
+                    case "Mechanic":
+                        result = new Mechanic(rs1.getString(1), rs1.getString(2));
                         Session.getIstance().setName(rs1.getString(4));
                         Session.getIstance().setSurname(rs1.getString(5));
                         break;
 
-                    case "Stratega":
-                        result = new Stratega(rs1.getString(1), rs1.getString(2));
+                    case "Strategist":
+                        result = new Strategist(rs1.getString(1), rs1.getString(2));
                         Session.getIstance().setName(rs1.getString(4));
                         Session.getIstance().setSurname(rs1.getString(5));
                         break;
 
-                    case "Magazziniere":
-                        result = new Magazziniere(rs1.getString(1), rs1.getString(2));
+                    case "Warehouseman":
+                        result = new Warehouseman(rs1.getString(1), rs1.getString(2));
                         Session.getIstance().setName(rs1.getString(4));
                         Session.getIstance().setSurname(rs1.getString(5));
                         break;

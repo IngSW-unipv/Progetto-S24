@@ -3,9 +3,9 @@ package it.unipv.sfw.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import it.unipv.sfw.dao.mysql.MagazziniereDAO;
+import it.unipv.sfw.dao.mysql.WarehousemanDAO;
 import it.unipv.sfw.model.request.Request;
-import it.unipv.sfw.model.staff.Magazziniere;
+import it.unipv.sfw.model.staff.Warehouseman;
 import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.model.staff.Staff;
 import it.unipv.sfw.view.MagazziniereView;
@@ -19,7 +19,7 @@ import it.unipv.sfw.view.MagazziniereView;
  */
 public class MagazziniereController extends AbsController {
     private Staff user;
-    private Magazziniere m;
+    private Warehouseman m;
     private Observable obs;
 
     /**
@@ -40,7 +40,7 @@ public class MagazziniereController extends AbsController {
     public void initialize() {
         try {
             user = Session.getIstance().getCurrentUser();
-            m = (Magazziniere) user;
+            m = (Warehouseman) user;
         } catch (Exception e) {
             System.out.println("Errore");
         }
@@ -48,7 +48,7 @@ public class MagazziniereController extends AbsController {
         obs = new Observable();
 
         MagazziniereView mv = new MagazziniereView();
-        MagazziniereDAO md = new MagazziniereDAO();
+        WarehousemanDAO md = new WarehousemanDAO();
 
         WhPopUpDeleteRequestHandler wdrc = new WhPopUpDeleteRequestHandler(obs);
         WhPopUpUpdateComponentHandler wupc = new WhPopUpUpdateComponentHandler();

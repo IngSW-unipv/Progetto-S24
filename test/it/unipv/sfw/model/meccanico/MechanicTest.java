@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import it.unipv.sfw.exceptions.DuplicateComponentException;
 import it.unipv.sfw.model.component.Components;
-import it.unipv.sfw.model.staff.Meccanico;
+import it.unipv.sfw.model.staff.Mechanic;
 import it.unipv.sfw.model.vehicle.Vehicle;
 
 class MechanicTest {
@@ -14,7 +14,7 @@ class MechanicTest {
 
 	@Test
 	void addVehicleTest() {
-		Meccanico m = new Meccanico("MM01", "MMpwd123");
+		Mechanic m = new Mechanic("MM01", "MMpwd123");
 
 		Vehicle v = m.addVehicle();
 		
@@ -24,7 +24,7 @@ class MechanicTest {
 
 	@Test
 	void addComponentTest() throws DuplicateComponentException {
-		Meccanico m = new Meccanico("MM01", "MMpwd123");
+		Mechanic m = new Mechanic("MM01", "MMpwd123");
 		String MSN = "SF24-001";
 		Vehicle v = new Vehicle(MSN);
 	
@@ -37,7 +37,7 @@ class MechanicTest {
 	
 	@Test
 	void setTimePsTest() {
-		Meccanico m = new Meccanico("MM01", "MMpwd123");
+		Mechanic m = new Mechanic("MM01", "MMpwd123");
 		
 		int time = m.setTimePS();
 		

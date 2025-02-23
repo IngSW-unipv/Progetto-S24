@@ -11,7 +11,7 @@ import it.unipv.sfw.exceptions.VehicleNotFoundException;
 import it.unipv.sfw.model.component.Components;
 import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.model.staff.Staff;
-import it.unipv.sfw.model.staff.Stratega;
+import it.unipv.sfw.model.staff.Strategist;
 import it.unipv.sfw.model.vehicle.Vehicle;
 import it.unipv.sfw.view.StrategistView;
 
@@ -23,7 +23,7 @@ import it.unipv.sfw.view.StrategistView;
 public class StrategistController extends AbsController {
 
     private Staff user;
-    private Stratega st;
+    private Strategist st;
 
     private int minT1, minT2, minT3, timeLap = getTimeLap();
 
@@ -65,7 +65,7 @@ public class StrategistController extends AbsController {
 
         try {
             user = Session.getIstance().getCurrentUser();
-            st = (Stratega) user;
+            st = (Strategist) user;
         } catch (Exception e) {
             System.out.println("Errore");
         }

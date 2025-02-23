@@ -10,7 +10,7 @@ import it.unipv.sfw.model.request.Request;
  * Estende la classe {@link Staff} e contiene informazioni sulle richieste
  * gestite dal magazziniere.
  */
-public class Magazziniere extends Staff {
+public class Warehouseman extends Staff {
 
     private Set<Request> request = new HashSet<>();
 
@@ -19,7 +19,7 @@ public class Magazziniere extends Staff {
      * @param id L'ID del magazziniere.
      * @param pwd La password del magazziniere.
      */
-    public Magazziniere(String id, String pwd) {
+    public Warehouseman(String id, String pwd) {
         super(id, pwd);
 
     }

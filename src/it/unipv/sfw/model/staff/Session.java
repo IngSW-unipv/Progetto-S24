@@ -1,7 +1,7 @@
 package it.unipv.sfw.model.staff;
 
 import it.unipv.sfw.dao.DAOFactory;
-import it.unipv.sfw.dao.mysql.MagazziniereDAO;
+import it.unipv.sfw.dao.mysql.WarehousemanDAO;
 import it.unipv.sfw.exceptions.AccountNotFoundException;
 import it.unipv.sfw.exceptions.WrongPasswordException;
 import it.unipv.sfw.model.vehicle.Vehicle;
@@ -9,8 +9,8 @@ import it.unipv.sfw.model.vehicle.Vehicle;
 /**
  * Classe che rappresenta una sessione utente.
  * Gestisce le informazioni relative all'utente loggato, come il tipo, le credenziali,
- * i dati personali e le relative istanze di {@link Meccanico}, {@link Magazziniere},
- * {@link Stratega} e {@link Vehicle}. Implementa il pattern Singleton.
+ * i dati personali e le relative istanze di {@link Mechanic}, {@link Warehouseman},
+ * {@link Strategist} e {@link Vehicle}. Implementa il pattern Singleton.
  */
 public class Session {
 
@@ -21,12 +21,12 @@ public class Session {
 	private String id_pilot;
 	private String id_staff;
 	private String pwd_staff;
-	private MagazziniereDAO mgd;
+	private WarehousemanDAO mgd;
 
 	private String name = "", surname = "";
-	private Meccanico m;
-	private Magazziniere wh;
-	private Stratega s;
+	private Mechanic m;
+	private Warehouseman wh;
+	private Strategist s;
 	private Vehicle v;
 
     /**
@@ -46,11 +46,11 @@ public class Session {
 	// Costruttore privato per impedire l'instanziazione diretta.
 	private Session() {
 		currentUser = null;
-		mgd = new MagazziniereDAO();
-		m = new Meccanico(id_staff, pwd_staff);
+		mgd = new WarehousemanDAO();
+		m = new Mechanic(id_staff, pwd_staff);
 		v = new Vehicle(m.getMSN());
-		wh = new Magazziniere(id_staff, pwd_staff);
-		s = new Stratega(id_staff, pwd_staff);
+		wh = new Warehouseman(id_staff, pwd_staff);
+		s = new Strategist(id_staff, pwd_staff);
 	}
 
 	/**
@@ -78,19 +78,19 @@ public class Session {
 		switch ("" + user.getType()) {
 
 		case "MECCANICO":
-			Meccanico mc = (Meccanico) user;
+			Mechanic mc = (Mechanic) user;
 			this.setCurrentUser(user);
 
 			break;
 
 		case "STRATEGA":
-			Stratega stg = (Stratega) user;
+			Strategist stg = (Strategist) user;
 			this.setCurrentUser(user);
 
 			break;
 
 		case "MAGAZZINIERE":
-			Magazziniere mg = (Magazziniere) user;
+			Warehouseman mg = (Warehouseman) user;
 			this.setCurrentUser(user);
 
 			break;
@@ -254,50 +254,50 @@ public class Session {
 	}
 	
     /**
-     * Restituisce l'istanza di {@link Meccanico}.
-     * @return L'istanza di {@link Meccanico}.
+     * Restituisce l'istanza di {@link Mechanic}.
+     * @return L'istanza di {@link Mechanic}.
      */
-	public Meccanico getM() {
+	public Mechanic getM() {
 		return m;
 	}
 	
     /**
-     * Imposta l'istanza di {@link Meccanico}.
-     * @param m L'istanza di {@link Meccanico} da impostare.
+     * Imposta l'istanza di {@link Mechanic}.
+     * @param m L'istanza di {@link Mechanic} da impostare.
      */
-	public void setM(Meccanico m) {
+	public void setM(Mechanic m) {
 		this.m = m;
 	}
 	
     /**
-     * Restituisce l'istanza di {@link Magazziniere}.
-     * @return L'istanza di {@link Magazziniere}.
+     * Restituisce l'istanza di {@link Warehouseman}.
+     * @return L'istanza di {@link Warehouseman}.
      */
-	public Magazziniere getWh() {
+	public Warehouseman getWh() {
 		return wh;
 	}
 	
     /**
-     * Imposta l'istanza di {@link Magazziniere}.
-     * @param wh L'istanza di {@link Magazziniere} da impostare.
+     * Imposta l'istanza di {@link Warehouseman}.
+     * @param wh L'istanza di {@link Warehouseman} da impostare.
      */
-	public void setWh(Magazziniere wh) {
+	public void setWh(Warehouseman wh) {
 		this.wh = wh;
 	}
 	
     /**
-     * Restituisce l'istanza di {@link Stratega}.
-     * @return L'istanza di {@link Stratega}.
+     * Restituisce l'istanza di {@link Strategist}.
+     * @return L'istanza di {@link Strategist}.
      */
-	public Stratega getS() {
+	public Strategist getS() {
 		return s;
 	}
 	
     /**
-     * Imposta l'istanza di {@link Stratega}.
-     * @param s L'istanza di {@link Stratega} da impostare.
+     * Imposta l'istanza di {@link Strategist}.
+     * @param s L'istanza di {@link Strategist} da impostare.
      */
-	public void setS(Stratega s) {
+	public void setS(Strategist s) {
 		this.s = s;
 	}
 	

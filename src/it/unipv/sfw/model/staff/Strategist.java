@@ -4,7 +4,7 @@ package it.unipv.sfw.model.staff;
  * Classe che rappresenta uno stratega, un tipo di membro dello staff.
  * Estende la classe {@link Staff}.
  */
-public class Stratega extends Staff {
+public class Strategist extends Staff {
 
     private int timeLap = 0; // Tempo sul giro
 
@@ -13,7 +13,7 @@ public class Stratega extends Staff {
      * @param id L'ID dello stratega.
      * @param pwd La password dello stratega.
      */
-    public Stratega(String id, String pwd) {
+    public Strategist(String id, String pwd) {
         super(id, pwd);
     }
 

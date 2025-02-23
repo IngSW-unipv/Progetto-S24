@@ -3,7 +3,7 @@ package it.unipv.sfw.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import it.unipv.sfw.dao.mysql.MagazziniereDAO;
+import it.unipv.sfw.dao.mysql.WarehousemanDAO;
 import it.unipv.sfw.exceptions.ComponentNotFoundException;
 import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.view.WhPopUpUpdateComponentView;
@@ -11,19 +11,19 @@ import it.unipv.sfw.view.WhPopUpUpdateComponentView;
 /**
  * Controller per la finestra di pop-up di aggiornamento componente.
  * Gestisce le interazioni dell'utente con la {@link WhPopUpUpdateComponentView}
- * e coordina le azioni con il {@link MagazziniereDAO}.
+ * e coordina le azioni con il {@link WarehousemanDAO}.
  */
 public class WhPopUpUpdateComponentHandler {
 
     private WhPopUpUpdateComponentView puc;
-    private MagazziniereDAO md;
+    private WarehousemanDAO md;
 
     /**
      * Costruttore per WhPopUpUpdateComponentHandler.
      */
     public WhPopUpUpdateComponentHandler() {
         puc = new WhPopUpUpdateComponentView();
-        md = new MagazziniereDAO();
+        md = new WarehousemanDAO();
 
         puc.getSendButton().addActionListener(new ActionListener() {
 

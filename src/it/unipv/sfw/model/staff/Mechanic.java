@@ -13,7 +13,7 @@ import it.unipv.sfw.model.vehicle.Vehicle;
  * Estende la classe {@link Staff} e contiene informazioni sul veicolo
  * assegnato, i tempi di pit stop e le anomalie riscontrate.
  */
-public class Meccanico extends Staff {
+public class Mechanic extends Staff {
 
     /*
      * MSN è il numero di serie dell'autovettura
@@ -30,7 +30,7 @@ public class Meccanico extends Staff {
      * @param id L'ID del meccanico.
      * @param pwd La password del meccanico.
      */
-    public Meccanico(String id, String pwd) {
+    public Mechanic(String id, String pwd) {
         super(id, pwd);
 
     }
