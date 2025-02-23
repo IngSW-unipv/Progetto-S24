@@ -143,6 +143,8 @@ public class StrategistView extends AbsView {
         scroll.setBackground(Color.BLACK);
 
         timePanel.add(scroll, BorderLayout.CENTER);
+        
+        timePanel.setVisible(false);
 
         // Button panel setup
         GetTimebtnPanel = new JPanel(new GridBagLayout());
@@ -250,6 +252,7 @@ public class StrategistView extends AbsView {
     }
     
     public void showElement() {
+    	
         msnLabel.setEnabled(false);
         msnLabel.setVisible(false);
         
@@ -260,19 +263,19 @@ public class StrategistView extends AbsView {
         sendButton.setVisible(false);
         
         mex.setEnabled(false);
-        mex.setVisible(false);
+        mex.setVisible(false);   	
         
-    	addVehiclePanel.setEnabled(false);
-    	addVehiclePanel.setVisible(false);
-    	
-        tab.setEnabled(true);
-        tab.setVisible(true);
+        timePanel.setVisible(false);
         
-       createStrategyButton.setEnabled(true);
-       createStrategyButton.setVisible(true);       
+        createStrategyButton.setEnabled(true);
+        createStrategyButton.setVisible(true);       
         
-       getTimeButton.setEnabled(true);
-       getTimeButton.setVisible(true);
+        getTimeButton.setEnabled(true);
+        getTimeButton.setVisible(true);
+        
+        frame.revalidate();
+        frame.repaint();
+       
     }
     
     public JPanel getAddVehiclePanel() {

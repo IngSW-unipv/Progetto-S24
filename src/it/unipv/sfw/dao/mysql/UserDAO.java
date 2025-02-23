@@ -48,21 +48,21 @@ public class UserDAO {
 
                 switch (type) {
                     case "Meccanico":
-                        result = new Meccanico(rs1.getString(1), rs1.getString(4));
-                        Session.getIstance().setName(rs1.getString(2));
-                        Session.getIstance().setSurname(rs1.getString(3));
+                        result = new Meccanico(rs1.getString(1), rs1.getString(2));
+                        Session.getIstance().setName(rs1.getString(4));
+                        Session.getIstance().setSurname(rs1.getString(5));
                         break;
 
                     case "Stratega":
-                        result = new Stratega(rs1.getString(1), rs1.getString(4));
-                        Session.getIstance().setName(rs1.getString(2));
-                        Session.getIstance().setSurname(rs1.getString(3));
+                        result = new Stratega(rs1.getString(1), rs1.getString(2));
+                        Session.getIstance().setName(rs1.getString(4));
+                        Session.getIstance().setSurname(rs1.getString(5));
                         break;
 
                     case "Magazziniere":
-                        result = new Magazziniere(rs1.getString(1), rs1.getString(4));
-                        Session.getIstance().setName(rs1.getString(2));
-                        Session.getIstance().setSurname(rs1.getString(3));
+                        result = new Magazziniere(rs1.getString(1), rs1.getString(2));
+                        Session.getIstance().setName(rs1.getString(4));
+                        Session.getIstance().setSurname(rs1.getString(5));
                         break;
                 }
             }
@@ -96,9 +96,9 @@ public class UserDAO {
             st1.setString(1, id);
             st1.setString(2, pwd);
             rs1 = st1.executeQuery();
-
+            
             if (rs1.next()) {
-                String type = rs1.getString(5);
+                String type = rs1.getString(3);
 
                 switch (type) {
                     case "Meccanico":

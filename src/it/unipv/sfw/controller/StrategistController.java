@@ -76,8 +76,8 @@ public class StrategistController extends AbsController {
         
         sd.insertLogEvent(getID(), "LOGIN");
 
-        sv.getTab().setEnabled(false);
-        sv.getTab().setVisible(false);
+//        sv.getTab().setEnabled(false);
+//        sv.getTab().setVisible(false);
         
        sv.getCreateStrategyButton().setEnabled(false);
        sv.getCreateStrategyButton().setVisible(false);       

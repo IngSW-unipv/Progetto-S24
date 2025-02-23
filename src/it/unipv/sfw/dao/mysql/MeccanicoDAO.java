@@ -95,7 +95,7 @@ public class MeccanicoDAO {
      */
 	public boolean insertMeccOnVehicle(String msn, String id) {
 
-		SCHEMA = "staff";
+		SCHEMA = "vehicle";
 
 		PreparedStatement st1;
 		int rs1 = 0;
@@ -105,11 +105,11 @@ public class MeccanicoDAO {
 		try (DBConnection db = new DBConnection(SCHEMA)) {
 			Connection conn = db.getConnection();
 
-			String query = "UPDATE " + SCHEMA + " SET ID_VEHICLE = ? WHERE ID = ? ";
+			String query = "UPDATE " + SCHEMA + " SET ID_MECHANIC = ? WHERE MSN = ? ";
 			st1 = conn.prepareStatement(query);
 
-			st1.setString(1, msn);
-			st1.setString(2, id);
+			st1.setString(1, id);
+			st1.setString(2, msn);
 
 			rs1 = st1.executeUpdate();
 
@@ -521,16 +521,16 @@ public class MeccanicoDAO {
 			Connection conn = db.getConnection();
 
 			String query = "INSERT INTO " + SCHEMA
-					+ " (DESCRIPTION, ID_STAFF, ID_COMPONENT, ID_VEHICLE) VALUES(?,?,?,?)";
+					+ " (ID_MECHANIC, ID_COMPONENT, ID_VEHICLE, DESCRIPTION) VALUES(?,?,?,?)";
 			st1 = conn.prepareStatement(query);
 
-			st1.setString(1, desc);
+			st1.setString(1, id_s);
 
-			st1.setString(2, id_s);
+			st1.setString(2, id_c);
 
-			st1.setString(3, id_c);
+			st1.setString(3, id_v);
 
-			st1.setString(4, id_v);
+			st1.setString(4, desc);
 
 			rs1 = st1.executeUpdate();
 

@@ -48,14 +48,14 @@ public class MagazziniereDAO {
 
             while (rs1.next()) {
 
-                String id = rs1.getString(1), id_component = rs1.getString(4);
+                String id = rs1.getString(1), id_component = rs1.getString(3);
 
                 int n1, n2;
 
                 n1 = Integer.parseInt(id);
                 n2 = Integer.parseInt(id_component);
 
-                Request r = new Request(n1, rs1.getString(2), rs1.getString(3), n2, rs1.getString(5));
+                Request r = new Request(n1, rs1.getString(5), rs1.getString(2), n2, rs1.getString(4));
                 result.add(r);
 
             }
@@ -228,7 +228,7 @@ public class MagazziniereDAO {
             Connection conn = db.getConnection();
 
             String query = "SELECT * FROM " + SCHEMA
-                    + " WHERE ID_STAFF = ? AND ID_COMPONENT = ? AND ID_VEHICLE = ?";
+                    + " WHERE ID_MECHANIC = ? AND ID_COMPONENT = ? AND ID_VEHICLE = ?";
             st1 = conn.prepareStatement(query);
 
             st1.setString(1, id_s);
