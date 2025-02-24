@@ -1,22 +1,22 @@
 use database_scuderia;
 
-insert into staff (ID, NAME, SURNAME, PASSWORD, ROLE, ID_VEHICLE)
+insert into staff (ID, PASSWORD, ROLE)
 values
-('01MM', 'Michele','Mica', 'MMpwd123','MECCANICO',NULL),
-('01MR', 'Mario','Rossi', 'MRpwd123','STRATEGA',NULL),
-('01RC', 'Rocco','Calli', 'RCpwd123','MAGAZZINIERE',NULL),
-('02LB', 'Luigi','Bianchi', 'LBpwd456','STRATEGA',NULL),
-('02SC', 'Simone','Carico', 'SCpwd456','MECCANICO',NULL);
+('01MM', 'MMpwd123','Mechanic'),
+('01MR', 'MRpwd123','Strategist'),
+('01RC', 'RCpwd123','Warehouseman'),
+('02LB', 'LBpwd456','Strategist'),
+('02SC', 'SCpwd456','Mechanic');
 
-insert into pilot(NAME, SURNAME, NUMBER)
+insert into pilot(ID, NAME, SURNAME, NUMBER)
 values
-('Carlo','Leclerco',61),
-('Luigi','Amiltone',8);
+(1,'CARLO','LECLERCO',61),
+(2,'LUIGI','AMILTONE',8);
 
-insert into vehicle(MSN, TIME_SECTOR1, TIME_SECTOR2, TIME_SECTOR3, ID_PILOT)
+insert into vehicle(MSN, TIME_SECTOR1, TIME_SECTOR2, TIME_SECTOR3, ID_PILOT, ID_MECHANIC, ID_STRATEGIST)
 values
-('SF24-001',NULL, NULL, NULL, '1'),
-('SF24-002',NULL, NULL, NULL, '2');
+('SF24-001',NULL, NULL, NULL, NULL, NULL, NULL),
+('SF24-002',NULL, NULL, NULL, NULL, NULL, NULL);
 
 insert into component(NAME, WEAR, STATUS, WAREHOUSE, ID_VEHICLE)
 values
