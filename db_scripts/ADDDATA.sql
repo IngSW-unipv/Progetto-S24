@@ -1,12 +1,12 @@
 use database_scuderia;
 
-insert into staff (ID, PASSWORD, ROLE)
+insert into staff (ID, PASSWORD, ROLE, NAME, SURNAME)
 values
-('01MM', 'MMpwd123','Mechanic'),
-('01MR', 'MRpwd123','Strategist'),
-('01RC', 'RCpwd123','Warehouseman'),
-('02LB', 'LBpwd456','Strategist'),
-('02SC', 'SCpwd456','Mechanic');
+('01MM', 'MMpwd123','Mechanic','Michele','Mica'),
+('01MR', 'MRpwd123','Strategist','Mario','Rossi'),
+('01RC', 'RCpwd123','Warehouseman','Rocco','Calli'),
+('02LB', 'LBpwd456','Strategist','Luigi','Bianchi'),
+('02SC', 'SCpwd456','Mechanic','Simone','Carico');
 
 insert into pilot(ID, NAME, SURNAME, NUMBER)
 values
