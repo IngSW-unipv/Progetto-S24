@@ -1,4 +1,4 @@
-package it.unipv.sfw.model.stratega;
+package it.unipv.sfw.model.strategist;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -6,7 +6,7 @@ import org.junit.jupiter.api.Test;
 
 import it.unipv.sfw.model.staff.Strategist;
 
-class StrategaTest {
+class StrategistTest {
 
 	@Test
 	void setTimeLap() {

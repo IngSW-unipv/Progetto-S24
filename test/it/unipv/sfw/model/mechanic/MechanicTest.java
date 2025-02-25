@@ -1,4 +1,4 @@
-package it.unipv.sfw.model.meccanico;
+package it.unipv.sfw.model.mechanic;
 
 import static org.junit.jupiter.api.Assertions.*;
 

@@ -1,4 +1,4 @@
-package it.unipv.sfw.model.magazziniere;
+package it.unipv.sfw.model.warehouseman;
 
 import static org.junit.jupiter.api.Assertions.*;
 
