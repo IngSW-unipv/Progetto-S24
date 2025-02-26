@@ -6,7 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 
 import it.unipv.sfw.exceptions.VehicleNotFoundException;
-import it.unipv.sfw.exceptions.WrongIDException;
 
 /**
  * Data Access Object (DAO) per le operazioni relative allo stratega,
