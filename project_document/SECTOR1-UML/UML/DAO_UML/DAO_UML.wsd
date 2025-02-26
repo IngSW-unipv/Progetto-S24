@@ -31,7 +31,7 @@ package DAO.mysql{
     + boolean isOpen() 
   }
   
-  class MagazziniereDAO{
+  class WarehousemanDAO{
     - String SCHEMA
     + void checkCompo(String id_c)
     + void checkRequest(String id_s, String id_c, String id_v)
@@ -43,7 +43,7 @@ package DAO.mysql{
     + boolean updateComponent(String id, String wear, String status
   }
 
-  class MeccanicoDAO{
+  class MechanicDAO{
     - String SCHEMA
     + void checkCompo(String id_c, String name, String status)
     + void checkIdCompo(String id_c)
@@ -66,6 +66,8 @@ package DAO.mysql{
   class StrategistDAO {
     - {static} String SCHEMA
     + void  insertLogEvent(String id_staff, String desc)
+    + void checkVehicle(String msn)
+    + void insertStrategistOnVehicle(String msn, String id) 
   }
 
   class UserDAO {
@@ -84,15 +86,13 @@ DAOFactory -* DbType
 DBConnection -up.|> AutoClosable
 ControllerManager -- DAOFactory
 
-Session -- MagazziniereDAO
+WarehousemanDAO -- WhPopUpUpdateComponentHandler
+WarehousemanDAO -- WhPopUpDeleteRequestHandler
 
-MagazziniereDAO -- WhPopUpUpdateComponentHandler
-MagazziniereDAO -- WhPopUpDeleteRequestHandler
-
-MeccanicoDAO -- McPopUpPilotHandler
-MeccanicoDAO -- McPopUpVehicleHandler
-MeccanicoDAO -- McPopUpRequestHandler
-MeccanicoDAO -- McPopUpComponentHandler
+MechanicDAO -- McPopUpPilotHandler
+MechanicDAO -- McPopUpVehicleHandler
+MechanicDAO -- McPopUpRequestHandler
+MechanicDAO -- McPopUpComponentHandler
 
 StrategistDAO -- StPopUpCreateStrategyHandler
 VehicleDAO -- StrategistControllere

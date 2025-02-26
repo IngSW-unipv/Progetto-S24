@@ -13,9 +13,9 @@ package Controller{
 
     enum AbsTypeController {
         LOGIN
-        STRATEGA
-        MECCANICO
-        MAGAZZINIERE
+        STRATEGIST
+        MECHANIC
+        WAREHOUSEMAN
     }
 
     class ControllerFactory{
@@ -41,8 +41,8 @@ package Controller{
      + onLoad()
    }
 
-   class MagazziniereController{
-     - m : Magazziniere
+   class WarehousemanController{
+     - m : Warehouseman
      - obs : Observable
      - user : Staff
      - String getID()
@@ -52,12 +52,12 @@ package Controller{
    }
 
    metaclass WhHandler << metaclass >>
-   metaclass MeccanicoHandler << metaclass >>
+   metaclass MechanicHandler << metaclass >>
    metaclass StrategistHandler << metaclass >>
  
-  class MeccanicoController{
+  class MechanicController{
     - user : Staff 
-    - m : Meccanico
+    - m : Mechanic
     - boolean getComponent()
     - String getID()
     + TypeController getType()
@@ -79,7 +79,7 @@ package Controller{
  
   class StrategistController{
     - user : Staff 
-    - st : Stratega 
+    - st : Strategist
     - minT1 : int 
     - minT2 : int 
     - minT3 : int 
@@ -99,21 +99,21 @@ package Controller{
 
 
  LoginController -up-|> AbsController
- MeccanicoController -up-|> AbsController
- MagazziniereController -up-|> AbsController
+ MechanicController -up-|> AbsController
+ WarehousemanController -up-|> AbsController
 
  StrategistController -up-|> AbsController
 
- MeccanicoController --o MeccanicoHandler
+ MechanicController --o MechanicHandler
  
- MagazziniereController --o WhHandler
+ WarehousemanController --o WhHandler
  
  StrategistController --o StrategistHandler
 
  AbsController -up-* AbsTypeController
  AbsController -right-o ControllerFactory
  ControllerManager -left-* AbsTypeController
- MagazziniereController -- Observable : uses
+ WarehousemanController -- Observable : uses
  Observable -down- Observer : uses
 
 }
@@ -149,12 +149,12 @@ package Frame{
 
 view -.|> Observer
 
-MeccanicoHandler -up- Model : uses
+MechanicHandler -up- Model : uses
 StrategistHandler -up- Model  : uses
 WhHandler -up- Model : uses
 
 WhHandler -- view
-MeccanicoHandler -- view
+MechanicHandler -- view
 StrategistHandler -- view
 
 frame -up-|> JFrame
