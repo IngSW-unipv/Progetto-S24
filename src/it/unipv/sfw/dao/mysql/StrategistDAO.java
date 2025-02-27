@@ -8,8 +8,10 @@ import java.sql.SQLException;
 import it.unipv.sfw.exceptions.VehicleNotFoundException;
 
 /**
- * Data Access Object (DAO) per le operazioni relative allo stratega,
- * in particolare per l'inserimento di eventi di log.
+ * Data Access Object (DAO) per la gestione delle operazioni relative allo stratega.
+ * Questa classe fornisce metodi per l'inserimento di eventi di log,
+ * la verifica dell'esistenza di un veicolo tramite MSN e
+ * l'assegnazione di uno stratega a un veicolo.
  */
 public class StrategistDAO {
 
@@ -35,7 +37,6 @@ public class StrategistDAO {
             st1 = conn.prepareStatement(query);
 
             st1.setString(1, id_staff);
-
             st1.setString(2, desc);
 
             rs1 = st1.executeUpdate();
@@ -51,6 +52,7 @@ public class StrategistDAO {
     
     /**
      * Verifica se esiste un veicolo con il numero di telaio (MSN) specificato.
+     *
      * @param msn Il numero di telaio (MSN) del veicolo da verificare.
      * @throws VehicleNotFoundException Se non viene trovato alcun veicolo con il numero di telaio specificato.
      */
@@ -82,6 +84,12 @@ public class StrategistDAO {
 		}
 	}
     
+    /**
+     * Assegna uno stratega a un veicolo specificato tramite MSN.
+     *
+     * @param msn Il numero di telaio (MSN) del veicolo.
+     * @param id  L'ID dello stratega da assegnare.
+     */
     public void insertStrategistOnVehicle(String msn, String id){
     	
     	SCHEMA = "vehicle";
@@ -104,10 +112,5 @@ public class StrategistDAO {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		
-		
-    	
-    	
-    }
-
+	}
 }
