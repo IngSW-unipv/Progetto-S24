@@ -2,7 +2,7 @@
 Progetto personale di Matteo Morello del corso di programmazione ad oggetti e ingegneria del software dell'università di Pavia.
 ## Goal
 Il software deve essere uno strumento in grado di aiutare lo staff di una scuderia di Formula 1 a gestire le risorse disponibili in un possibile weekend di gara. Lo staff è suddiviso in diverse mansioni, tra le quali : i meccanici, gli strateghi, i magazzinieri.
-## Tecnlogie utilizzate
+## Tecnologie utilizzate
 - [MySQL Java Connector](https://github.com/mysql/mysql-connector-j)
 - [JUnit5](https://junit.org/junit5/)
 ## Set Up necessario
