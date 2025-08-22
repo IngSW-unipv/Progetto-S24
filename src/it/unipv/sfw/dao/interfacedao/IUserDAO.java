@@ -1,12 +1,11 @@
 package it.unipv.sfw.dao.interfacedao;
 
 import it.unipv.sfw.model.staff.Staff;
-import it.unipv.sfw.model.staff.Staff.TypeController;
 
 public interface IUserDAO {
-	
-	Staff selectById(String id);
-	
-  TypeController selectByIDandPwd(String id, String pwd);
+    /** Ritorna lo Staff concreto (Mechanic/Strategist/Warehouseman) o null se non trovato. */
+    Staff selectById(String id);
 
+    /** Ritorna il ruolo se le credenziali sono corrette, altrimenti null. */
+    it.unipv.sfw.model.staff.Staff.TypeController selectByIDandPwd(String id, String pwd);
 }
