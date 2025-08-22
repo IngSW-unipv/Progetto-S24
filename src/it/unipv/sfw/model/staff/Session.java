@@ -96,7 +96,7 @@ public final class Session {
         return currentUser != null ? currentUser.getID() : null;
     }
 
-    // --- Metadati "leggeri" (usati dalla UI) ---
+    // --- Metadati "leggeri"
 
     public String getOperation() { 
     	return operation; 
