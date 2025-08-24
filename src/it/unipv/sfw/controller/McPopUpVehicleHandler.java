@@ -6,127 +6,88 @@ import java.awt.event.ActionListener;
 import it.unipv.sfw.dao.mysql.MechanicDAO;
 import it.unipv.sfw.exceptions.PilotNotFoundException;
 import it.unipv.sfw.exceptions.VehicleNotFoundException;
+import it.unipv.sfw.model.staff.Mechanic;
 import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.model.vehicle.Vehicle;
 import it.unipv.sfw.view.McPopUpVehicleView;
 import it.unipv.sfw.view.MechanicView;
 
 /**
- * Controller per la finestra di pop-up per l'inserimento di un veicolo.
- * Gestisce le interazioni dell'utente con la {@link McPopUpVehicleView} e
- * interagisce con il {@link MechanicDAO} per aggiornare il database.
+ * Handler per il pop-up di associazione veicolo.
+ * Riceve il Mechanic dal Controller, opera sul Model, poi aggiorna DB e UI.
  */
 public class McPopUpVehicleHandler {
 
-    private McPopUpVehicleView vv;
-    private MechanicDAO md;
+    private final McPopUpVehicleView vv;
+    private final MechanicDAO md;
+    private final Mechanic m;      // lo stesso oggetto passato dal Controller
+    private final MechanicView mv; // per aggiornare la UI principale
 
-    /**
-     * Costruttore per McPopUpVehicleHandler.
-     *
-     * @param mv La {@link MechanicView} associata a questo handler.
-     */
-    public McPopUpVehicleHandler(MechanicView mv) {
-
-        vv = new McPopUpVehicleView();
-        md = new MechanicDAO();
+    public McPopUpVehicleHandler(Mechanic m, MechanicView mv) {
+        this.vv = new McPopUpVehicleView();
+        this.md = new MechanicDAO();
+        this.m  = m;
+        this.mv = mv;
 
         vv.getSendButton().addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                String id_pilot = vv.getId_p().getText(), 
-                		   msn = vv.getMsn().getText().toUpperCase();
-
-                try {
-                    md.checkPilot(id_pilot);
-                    md.checkVehicle(msn);
-
-                    md.insertPilotOnVehicle(id_pilot, msn);
-                    Session.getIstance().setId_pilot(id_pilot);
-
-                    mv.setId_p();
-
-                    String id = Session.getIstance().getId_staff();
-                    md.insertMeccOnVehicle(msn, id);
-
-                    Session.getIstance().getM().setMSN(msn);
-
-                    Session.getIstance().getV().setMSN(msn);
-                    Session.getIstance().setV(addVehicle());
-
-                    updateButtonStates(mv);
-                    md.insertLogEvent(getID(), "INSERT VEHICLE : " + vv.getMsn().getText().toUpperCase());
-
-                    mv.getInsertVehicleButton().setEnabled(false);
-                    vv.close();
-                } catch (PilotNotFoundException | VehicleNotFoundException ev) {
-                    System.out.println(ev);
-                    vv.mex();
-                    return;
-                }
-
+            @Override public void actionPerformed(ActionEvent e) {
+                onSend();
             }
-
         });
-
     }
 
-    /**
-     * Aggiorna lo stato (abilitato/disabilitato) e la visibilità di alcuni
-     * pulsanti nell'interfaccia {@link MechanicView}, in base alla presenza
-     * di un veicolo nella sessione.
-     *
-     * @param mv La {@link MechanicView} da aggiornare.
-     */
-    private void updateButtonStates(MechanicView mv) {
-        boolean isVehiclePresent = (Session.getIstance().getV() != null);
+    private void onSend() {
+        String idPilot = vv.getId_p().getText();
+        String msn     = vv.getMsn().getText().toUpperCase();
 
-        mv.getAddComponentButton().setEnabled(isVehiclePresent);
+        try {
+            // 1) Validazioni DB
+            md.checkPilot(idPilot);
+            md.checkVehicle(msn);
+
+            // 2) MODEL FIRST: creo/ottengo il Vehicle e imposto MSN, sintassi equivalente a un if/else
+            Vehicle v = (m.getVehicles() != null) ? m.getVehicles() : m.addVehicle();
+            v.setMSN(msn);
+
+            // 3) Persisto le associazioni
+            md.insertPilotOnVehicle(idPilot, msn);
+            md.insertMeccOnVehicle(msn, m.getID());
+
+            // 4) Metadato UI leggero
+            Session.getIstance().setId_pilot(idPilot);
+
+            // 5) UI + Log
+            mv.setId_p(); // aggiorna label del pilota
+            enableVehicleActions(true);
+            md.insertLogEvent(m.getID(), "INSERT VEHICLE : " + msn);
+
+            mv.getInsertVehicleButton().setEnabled(false);
+            vv.close();
+
+        } catch (PilotNotFoundException | VehicleNotFoundException ex) {
+            // messaggio standard della view
+            vv.mex();
+        }
+    }
+
+    private void enableVehicleActions(boolean on) {
+        mv.getAddComponentButton().setEnabled(on);
         mv.getAddComponentButton().setVisible(true);
 
-        mv.getAddPilotButton().setEnabled(isVehiclePresent);
+        mv.getAddPilotButton().setEnabled(on);
         mv.getAddPilotButton().setVisible(true);
 
-        mv.getRemovePilotButton().setEnabled(isVehiclePresent);
+        mv.getRemovePilotButton().setEnabled(on);
         mv.getRemovePilotButton().setVisible(true);
 
-        mv.getRemoveComponentButton().setEnabled(isVehiclePresent);
+        mv.getRemoveComponentButton().setEnabled(on);
         mv.getRemoveComponentButton().setVisible(true);
 
-        mv.getVisualTimePsButton().setEnabled(isVehiclePresent);
+        mv.getVisualTimePsButton().setEnabled(on);
         mv.getVisualTimePsButton().setVisible(true);
     }
 
-    /**
-     * Aggiunge un veicolo alla sessione.
-     * @return Il veicolo aggiunto.
-     */
-    private Vehicle addVehicle() {
-        return Session.getIstance().getM().addVehicle();
-    }
+    public void showWindow() { vv.show(); }
 
-    /**
-     * Recupera l'ID del membro dello staff dalla sessione.
-     * @return L'ID del membro dello staff.
-     */
-    private String getID() {
-        return Session.getIstance().getId_staff();
-    }
-
-    /**
-     * Mostra la finestra di pop-up.
-     */
-    public void showWindow() {
-        vv.show();
-    }
-
-    /**
-     * Pulisce i componenti del pannello di invio.
-     */
-    public void clear() {
-        vv.clearComponents(vv.getSendPanel());
-    }
-
+    public void clear() { vv.clearComponents(vv.getSendPanel()); }
 }

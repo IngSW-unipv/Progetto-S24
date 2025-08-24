@@ -9,17 +9,18 @@ import it.unipv.sfw.dao.mysql.MechanicDAO;
 import it.unipv.sfw.model.staff.Mechanic;
 import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.model.staff.Staff;
+import it.unipv.sfw.model.vehicle.Vehicle;
 import it.unipv.sfw.view.MechanicView;
 
 /**
  * Controller per la gestione delle azioni del meccanico.
- * Gestisce le interazioni tra la vista del meccanico e il modello dei dati.
+ * Orchestration: View -> Controller -> Model(+DAO)
  */
 public class MechanicController extends AbsController {
 
-    private Staff user;
-
-    private Mechanic m;
+    private Mechanic m; // model corrente (unico riferimento)
+    private MechanicView mv;
+    private MechanicDAO md;
 
     @Override
     public TypeController getType() {
@@ -28,46 +29,33 @@ public class MechanicController extends AbsController {
 
     @Override
     public void initialize() {
-
-        try {
-            user = Session.getIstance().getCurrentUser();
-            m = (Mechanic) user;
-        } catch (Exception e) {
-            System.out.println("Errore");
+        // 1) Utente corrente dalla Session (solo questo dalla Session)
+        Staff user = Session.getIstance().getCurrentUser();
+        if (!(user instanceof Mechanic)) {
+            // se non è un meccanico, interrompo (evito cast errati)
+            throw new IllegalStateException("L'utente corrente non è un Mechanic");
         }
+        m = (Mechanic) user;
 
-        MechanicView mv = new MechanicView();
-        MechanicDAO md = new MechanicDAO();
+        // 2) View + DAO
+        mv = new MechanicView();
+        md = new MechanicDAO();
 
-        McPopUpVehicleHandler pvc = new McPopUpVehicleHandler(mv);
-        McPopUpPilotHandler ppc = new McPopUpPilotHandler(mv);
+        // 3) Handlers (passo il model per DI)
+        McPopUpVehicleHandler pvc = new McPopUpVehicleHandler(m, mv);
+        McPopUpPilotHandler   ppc = new McPopUpPilotHandler(mv);
 
-        // Inizializzazione dei tempi di PIT STOP
-        Session.getIstance().getTps();
+        // 4) Log di login
+        md.insertLogEvent(m.getID(), "LOGIN");
 
-        // Inserimento del login nella tabella degli eventi
-        md.insertLogEvent(getID(), "LOGIN");
+        // 5) Stato iniziale UI (niente vehicle assegnato)
+        enableVehicleActions(false);
 
-        // Abilita o disabilita bottoni basati sul valore di V (Veicolo assegnato)
-        mv.getAddComponentButton().setEnabled(false);
-        mv.getAddComponentButton().setVisible(false);
+        // --- LISTENER BUTTONS ---
 
-        mv.getAddPilotButton().setEnabled(false);
-        mv.getAddPilotButton().setVisible(false);
-
-        mv.getRemovePilotButton().setEnabled(false);
-        mv.getRemovePilotButton().setVisible(false);
-
-        mv.getRemoveComponentButton().setEnabled(false);
-        mv.getRemoveComponentButton().setVisible(false);
-
-        mv.getVisualTimePsButton().setEnabled(false);
-        mv.getVisualTimePsButton().setVisible(false);
-
-        // ADD VEHICLE
+        // ADD VEHICLE (apre popup; il salvataggio avviene nell'handler)
         mv.getInsertVehicleButton().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+            @Override public void actionPerformed(ActionEvent e) {
                 pvc.showWindow();
                 pvc.clear();
             }
@@ -75,15 +63,9 @@ public class MechanicController extends AbsController {
 
         // INSERT REQUEST
         mv.getInsertRequestButton().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                boolean isVehiclePresent = (Session.getIstance().getId_pilot() != null);
-
-                if (!isVehiclePresent) {
-                    Session.getIstance().setOperation("NO_V");
-                } else {
-                    Session.getIstance().setOperation("YES_V");
-                }
+            @Override public void actionPerformed(ActionEvent e) {
+                boolean hasVehicle = (m.getVehicles() != null);
+                Session.getIstance().setOperation(hasVehicle ? "YES_V" : "NO_V"); // metadato leggero (se ti serve)
                 McPopUpRequestHandler prc = new McPopUpRequestHandler();
                 prc.showWindow();
                 prc.clear();
@@ -92,12 +74,9 @@ public class MechanicController extends AbsController {
 
         // ADD COMPONENT
         mv.getAddComponentButton().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                Session.getIstance().setOperation("ADD");
+            @Override public void actionPerformed(ActionEvent e) {
+                Session.getIstance().setOperation("ADD"); // se altri handler si basano su questo
                 McPopUpComponentHandler pcc = new McPopUpComponentHandler();
-                System.out.println("il contenuto è: " + Session.getIstance().getOperation()
-                        + " @MECCANICO CONTROLLER-ADD COMPONENT");
                 pcc.showWindow();
                 pcc.clear();
             }
@@ -105,40 +84,33 @@ public class MechanicController extends AbsController {
 
         // REMOVE COMPONENT
         mv.getRemoveComponentButton().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                boolean isComponentPresent = getComponent();
-
-                if (isComponentPresent) {
-                    // messaggio pop up che avverte di rimuovere prima di aggiungere
-                    JOptionPane.showMessageDialog(null, "INSERT A COMPONENT BEFORE TO REMOVING", "INFORMATION",
+            @Override public void actionPerformed(ActionEvent e) {
+                if (hasNoComponents()) {
+                    JOptionPane.showMessageDialog(null,
+                            "INSERT A COMPONENT BEFORE REMOVING",
+                            "INFORMATION",
                             JOptionPane.INFORMATION_MESSAGE);
                 } else {
                     Session.getIstance().setOperation("REMOVE");
                     McPopUpComponentHandler pcc = new McPopUpComponentHandler();
-                    System.out.println("il contenuto è: " + Session.getIstance().getOperation()
-                            + " @MECCANICO CONTROLLER-REMOVE COMPONENT");
                     pcc.showWindow();
                     pcc.clear();
                 }
             }
         });
 
-        // ADD PILOT
+        // ADD PILOT (mantengo la tua logica su id_pilot se il resto dell'app lo usa)
         mv.getAddPilotButton().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+            @Override public void actionPerformed(ActionEvent e) {
                 boolean isPilotPresent = (Session.getIstance().getId_pilot() != null);
-
-                if (!isPilotPresent) { 
+                if (!isPilotPresent) {
                     Session.getIstance().setOperation("ADD");
-                    System.out.println("il contenuto è: " + Session.getIstance().getOperation()
-                            + " @MECCANICO CONTROLLER-ADD PILOT");
                     ppc.showWindow();
                     ppc.clear();
                 } else {
-                    // messaggio pop up che avverte di rimuovere prima di aggiungere
-                    JOptionPane.showMessageDialog(null, "REMOVE THE PILOT BEFORE TO ADD", "ERROR",
+                    JOptionPane.showMessageDialog(null,
+                            "REMOVE THE PILOT BEFORE TO ADD",
+                            "ERROR",
                             JOptionPane.ERROR_MESSAGE);
                 }
             }
@@ -146,34 +118,30 @@ public class MechanicController extends AbsController {
 
         // REMOVE PILOT
         mv.getRemovePilotButton().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+            @Override public void actionPerformed(ActionEvent e) {
                 Session.getIstance().setOperation("REMOVE");
-                System.out.println("il contenuto è: " + Session.getIstance().getOperation()
-                        + " @MECCANICO CONTROLLER-REMOVE PILOT");
-
                 md.removePilot(Session.getIstance().getId_pilot());
-                md.insertLogEvent(getID(), "REMOVE PILOT");
+                md.insertLogEvent(m.getID(), "REMOVE PILOT");
                 Session.getIstance().setId_pilot(null);
                 mv.setId_p();
             }
         });
 
+        // SHOW PIT STOP TIMES
         mv.getVisualTimePsButton().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+            @Override public void actionPerformed(ActionEvent e) {
                 McGraphicTimePsHandler gtpc = new McGraphicTimePsHandler();
                 gtpc.initialize();
-                md.insertLogEvent(getID(), "SHOW TIME PIT STOP");
+                md.insertLogEvent(m.getID(), "SHOW TIME PIT STOP");
             }
         });
 
+        // SHOW COMPONENT STATUS
         mv.getVisualStatusComponentButton().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
+            @Override public void actionPerformed(ActionEvent e) {
                 McGraphicAllComponentHandler gacc = new McGraphicAllComponentHandler();
                 gacc.showWindow();
-                md.insertLogEvent(getID(), "SHOW STATUS COMPONENT");
+                md.insertLogEvent(m.getID(), "SHOW STATUS COMPONENT");
             }
         });
 
@@ -181,12 +149,26 @@ public class MechanicController extends AbsController {
         view = mv;
     }
 
-    // Metodo per information hiding
-    private boolean getComponent() {
-        return Session.getIstance().getV().getComponent().isEmpty();
+    private void enableVehicleActions(boolean on) {
+        mv.getAddComponentButton().setEnabled(on);
+        mv.getAddComponentButton().setVisible(true);
+
+        mv.getAddPilotButton().setEnabled(on);
+        mv.getAddPilotButton().setVisible(true);
+
+        mv.getRemovePilotButton().setEnabled(on);
+        mv.getRemovePilotButton().setVisible(true);
+
+        mv.getRemoveComponentButton().setEnabled(on);
+        mv.getRemoveComponentButton().setVisible(true);
+
+        mv.getVisualTimePsButton().setEnabled(on);
+        mv.getVisualTimePsButton().setVisible(true);
     }
 
-    private String getID() {
-        return Session.getIstance().getId_staff();
+    // true se NON ci sono componenti (o non esiste il vehicle)
+    private boolean hasNoComponents() {
+        Vehicle v = m.getVehicles();
+        return v == null || v.getComponent().isEmpty();
     }
 }
