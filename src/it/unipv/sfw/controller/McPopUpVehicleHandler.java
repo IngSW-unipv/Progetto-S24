@@ -36,7 +36,8 @@ public class McPopUpVehicleHandler {
             @Override
             public void actionPerformed(ActionEvent e) {
 
-                String id_pilot = vv.getId_p().getText(), msn = vv.getMsn().getText().toUpperCase();
+                String id_pilot = vv.getId_p().getText(), 
+                		   msn = vv.getMsn().getText().toUpperCase();
 
                 try {
                     md.checkPilot(id_pilot);

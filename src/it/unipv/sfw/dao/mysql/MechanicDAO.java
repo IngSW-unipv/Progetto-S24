@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import it.unipv.sfw.dao.interfacedao.IMechanicDAO;
 import it.unipv.sfw.exceptions.ComponentNotFoundException;
 import it.unipv.sfw.exceptions.PilotNotFoundException;
 import it.unipv.sfw.exceptions.VehicleNotFoundException;
@@ -17,7 +18,7 @@ import it.unipv.sfw.exceptions.WrongRequestException;
  * inserire, controllare, aggiornare e rimuovere informazioni relative a
  * queste entità.
  */
-public class MechanicDAO {
+public class MechanicDAO implements IMechanicDAO{
 
 	private String SCHEMA = "";
 

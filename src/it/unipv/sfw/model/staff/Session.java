@@ -89,7 +89,7 @@ public final class Session {
     	return currentUser != null; 
     	}
     
-    public Staff.TypeController getCurrentRole() {
+    public Staff.TypeRole getCurrentRole() {
         return currentUser != null ? currentUser.getType() : null;
     }
     public String getCurrentUserId() {

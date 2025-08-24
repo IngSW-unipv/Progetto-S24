@@ -22,8 +22,8 @@ public class Strategist extends Staff {
      * @return Il tipo di membro dello staff ({@link Staff.TypeController.STRATEGA}).
      */
     @Override
-    public TypeController getType() {
-        return Staff.TypeController.STRATEGIST;
+    public TypeRole getType() {
+        return Staff.TypeRole.STRATEGIST;
     }
 
     /**

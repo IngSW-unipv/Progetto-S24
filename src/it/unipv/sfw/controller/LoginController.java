@@ -8,65 +8,56 @@ import java.awt.event.KeyListener;
 import it.unipv.sfw.exceptions.AccountNotFoundException;
 import it.unipv.sfw.exceptions.WrongPasswordException;
 import it.unipv.sfw.model.staff.Session;
+import it.unipv.sfw.model.staff.Staff;
 import it.unipv.sfw.view.LoginView;
 
 /**
  * Controller che gestisce il processo di login nella {@link LoginView}.
- * Si occupa di verificare le credenziali dell'utente e di caricare il controller appropriato
- * in base al ruolo dell'utente autenticato.
- * 
- * @see AbsController
- * @see it.unipv.sfw.view.LoginView
+ * Verifica le credenziali e, in base al ruolo dell'utente,
+ * carica il controller congruente usando {@link ControllerFactory}.
  */
 public class LoginController extends AbsController {
     private LoginView logv;
-    
+
     /**
-     * Gestisce il processo di login di un operatore nel sistema.
-     * In base al ruolo dell'operatore, carica il controller corrispondente.
+     * Esegue il flusso di autenticazione e routing:
+     *
+     *   Legge username/password dalla view.
+     *   Invoca {@link Session#login(String, char[])}.
+     *   Ricava il ruolo corrente e lo mappa in un {@link AbsController.TypeController}.
+     *   Carica il controller corrispondente nel {@link ControllerManager}.
+     * 
+     * Gestisce gli errori di credenziali mostrando il messaggio nella view.
      */
     private void accedi() {
         logv = (LoginView) view;
 
         try {
+            // 1) login applicativo
             Session.getIstance().login(getUsername(), getPassword());
-        } catch (WrongPasswordException | AccountNotFoundException err) {
-            System.out.print(err);
-            logv.upError();
-            return;
-        }
 
-        // Caricamento del controller in base al tipo di utente
-        switch ("" + Session.getIstance().getCurrentUser().getType()) {
-            case "MECHANIC":
-                ControllerManager.getInstance().loadController(TypeController.MECHANIC);
-                ControllerManager.getInstance().closeWindow();
-                break;
-            case "STRATEGIST":
-                ControllerManager.getInstance().loadController(TypeController.STRATEGIST);
-                ControllerManager.getInstance().closeWindow();
-                break;
-            case "WAREHOUSEMAN":
-                ControllerManager.getInstance().loadController(TypeController.WAREHOUSEMAN);
-                ControllerManager.getInstance().closeWindow();
-                break;
+            // 2) ruolo corrente come enum
+            Staff.TypeRole role = Session.getIstance().getCurrentRole();
+
+            // 3) mapping ruolo → tipo controller
+            AbsController.TypeController typeController = ControllerRole.toControllerType(role);
+
+            // 4) carica il controller tramite factory
+            ControllerManager cm = ControllerManager.getInstance();
+            cm.loadController(typeController);
+            cm.closeWindow();
+
+        } catch (WrongPasswordException | AccountNotFoundException err) {
+            System.out.println(err);
+            logv.upError(); //UI per mostrare l'errore
         }
     }
 
-    /**
-     * Restituisce il tipo di controller.
-     * 
-     * @return Il tipo di controller, in questo caso {@link TypeController#LOGIN}.
-     */
     @Override
     public TypeController getType() {
         return TypeController.LOGIN;
     }
 
-    /**
-     * Inizializza il controller creando la vista di login e impostando i listener
-     * per la gestione dell'accesso tramite tastiera e pulsante.
-     */
     @Override
     public void initialize() {
         System.out.println("Inizializzazione di LoginController - @LOGINCONTROLLER");
@@ -74,43 +65,31 @@ public class LoginController extends AbsController {
 
         v.getPasswordField().setFocusTraversalKeysEnabled(false);
         v.getPasswordField().addKeyListener(new KeyListener() {
-            @Override
+            @Override 
             public void keyPressed(KeyEvent e) {
-                if (e.getKeyCode() == KeyEvent.VK_ENTER)
-                    accedi();
+                if (e.getKeyCode() == KeyEvent.VK_ENTER) accedi();
             }
-
-            @Override
+            @Override 
             public void keyReleased(KeyEvent e) {}
-
             @Override
             public void keyTyped(KeyEvent e) {}
         });
 
         v.getAccediButton().addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                accedi();
-            }
+            @Override 
+            public void actionPerformed(ActionEvent e) { accedi(); }
         });
 
         view = v;
+        logv = v;
     }
-    
-    /**
-     * Restituisce il nome utente inserito nella vista di login.
-     * 
-     * @return Il nome utente come stringa.
-     */
+
+    /** @return username dalla view */
     private String getUsername() {
         return logv.getUsernameField().getText();
     }
-    
-    /**
-     * Restituisce la password inserita nella vista di login.
-     * 
-     * @return Un array di caratteri contenente la password.
-     */
+
+    /** @return password dalla view */
     private char[] getPassword() {
         return logv.getPasswordField().getPassword();
     }

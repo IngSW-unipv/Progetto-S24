@@ -29,8 +29,8 @@ public class Warehouseman extends Staff {
      * @return Il tipo di membro dello staff ({@link Staff.TypeController.MAGAZZINIERE}).
      */
     @Override
-    public TypeController getType() {
-        return Staff.TypeController.WAREHOUSEMAN;
+    public TypeRole getType() {
+        return Staff.TypeRole.WAREHOUSEMAN;
     }
 
     /**

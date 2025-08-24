@@ -138,9 +138,9 @@ public class Mechanic extends Staff {
      * @return Il tipo di membro dello staff ({@link Staff.TypeController.MECCANICO}).
      */
     @Override
-    public TypeController getType() {
+    public TypeRole getType() {
 
-        return Staff.TypeController.MECHANIC;
+        return Staff.TypeRole.MECHANIC;
     }
 
     /**

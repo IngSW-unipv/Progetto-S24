@@ -1,19 +1,18 @@
 package it.unipv.sfw.controller;
 
+import java.util.EnumMap;
+import java.util.Map;
+
 import it.unipv.sfw.dao.DAOFactory;
 import it.unipv.sfw.frame.Frame;
+import it.unipv.sfw.model.staff.Staff;
 
 /**
- * Classe Singleton che si occupa della gestione dei controllers e del
- * caricamento della view corrente nel frame.
- *
- * @see AbsController
- * @see Frame
+ * Classe Singleton che gestisce i controller e carica la loro view nel {@link Frame}.
  */
-
 public class ControllerManager {
 
-    // Contenitore del Singleton
+    // ------------------ Singleton ------------------
     private static ControllerManager instance = null;
 
     public static ControllerManager getInstance() {
@@ -23,45 +22,70 @@ public class ControllerManager {
         return instance;
     }
 
-    // Entry point dell'applicazione
-    public static void main(String[] args) {
-        ControllerManager manager = ControllerManager.getInstance();
-        manager.loadController(AbsController.TypeController.LOGIN);
-    }
-
-    // Componenti principali
-    private Frame frame;
+    // ------------------ Stato UI -------------------
+    private final Frame frame;
     private AbsController currentController;
 
     private ControllerManager() {
         // Inizializza DAOFactory
         DAOFactory.createInstance(DAOFactory.DbType.MYSQL);
 
-        // Inizializza il frame
+        // Inizializza frame
         frame = new Frame(560, 600);
-
-        // Carica il controller
-        loadController(AbsController.TypeController.LOGIN);
-
         currentController = null;
+
+        // All’avvio: mostra il login
+        loadController(AbsController.TypeController.LOGIN);
+    }
+
+    // Mappa 1:1 ruolo dominio → tipo controller UI
+    private static final Map<Staff.TypeRole, AbsController.TypeController> ROLE_TO_CONTROLLER =
+            new EnumMap<>(Staff.TypeRole.class);
+    static {
+        ROLE_TO_CONTROLLER.put(Staff.TypeRole.MECHANIC,     AbsController.TypeController.MECHANIC);
+        ROLE_TO_CONTROLLER.put(Staff.TypeRole.STRATEGIST,   AbsController.TypeController.STRATEGIST);
+        ROLE_TO_CONTROLLER.put(Staff.TypeRole.WAREHOUSEMAN, AbsController.TypeController.WAREHOUSEMAN);
     }
 
     /**
-     * Funzione per caricare un controller e la sua rispettiva view nel {@link Frame}.
+     * Carica un controller del tipo indicato, lo inizializza e monta la view nel {@link Frame}.
      *
-     * @param controllerType Il tipo di controller da caricare.
-     * 
+     * @param controllerType il tipo di controller da caricare (non {@code null})
+     * @throws IllegalArgumentException se {@code controllerType} è nullo o non supportato
      */
     public void loadController(AbsController.TypeController controllerType) {
-
+        if (controllerType == null) {
+            throw new IllegalArgumentException("Il tipo di controller non può essere null.");
+        }
+        // QUI FACTORY crea l’istanza
         currentController = ControllerFactory.createController(controllerType);
         currentController.initialize();
-
-        // Carica la view del controller nel frame
         frame.loadView(currentController.getView());
     }
 
+    /**
+     * Carica il controller congruente al <b>ruolo dell'utente autenticato</b>.
+     * <p>
+     * Usa il mapping ruolo→tipo e delega a {@link #loadController(AbsController.TypeRole)}.
+     *
+     * @param role il ruolo dell’utente (non {@code null})
+     * @throws IllegalArgumentException se il ruolo non è mappato
+     */
+    public void loadControllerForRole(Staff.TypeRole role) {
+        AbsController.TypeController type = ROLE_TO_CONTROLLER.get(role);
+        if (type == null) {
+            throw new IllegalArgumentException("Ruolo non supportato: " + role);
+        }
+        loadController(type);
+    }
+
+    /** Chiude la finestra principale. */
     public void closeWindow() {
         frame.dispose();
+    }
+
+    // Entry point dell'app (opzionale; evita di caricare due volte il login)
+    public static void main(String[] args) {
+        ControllerManager.getInstance(); // il costruttore carica già il LOGIN
     }
 }

@@ -11,7 +11,7 @@ public abstract class Staff {
     /**
      * Enumerazione che definisce i possibili tipi di membri dello staff.
      */
-    public enum TypeController {
+    public enum TypeRole{
         STRATEGIST, MECHANIC, WAREHOUSEMAN;
     }
 
@@ -66,5 +66,5 @@ public abstract class Staff {
      * Restituisce il tipo di utente.
      * @return Il tipo di utente (un valore dell'enumerazione {@link TypeController}).
      */
-    public abstract TypeController getType();
+    public abstract TypeRole getType();
 }
