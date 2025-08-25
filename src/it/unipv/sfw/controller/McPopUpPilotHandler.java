@@ -3,95 +3,81 @@ package it.unipv.sfw.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JOptionPane;
+
 import it.unipv.sfw.dao.mysql.MechanicDAO;
 import it.unipv.sfw.exceptions.PilotNotFoundException;
-import it.unipv.sfw.model.staff.Session;
+import it.unipv.sfw.model.staff.Mechanic;
+import it.unipv.sfw.model.vehicle.Vehicle;
+import it.unipv.sfw.model.staff.Session; // opzionale: solo per id_pilot UI
 import it.unipv.sfw.view.McPopUpPilotView;
 import it.unipv.sfw.view.MechanicView;
 
 /**
- * Controller per la finestra di pop-up utilizzata dai meccanici per assegnare
- * piloti ai veicoli.
- * Questa classe gestisce le interazioni dell'utente con la
- * {@link McPopUpPilotView} e interagisce
- * con il {@link MechanicDAO} per aggiornare il database.
+ * Handler pop-up per assegnare un pilota a un veicolo.
+ * Usa il Mechanic passato dal Controller
  */
 public class McPopUpPilotHandler {
 
-    private McPopUpPilotView pv;
-    private MechanicDAO md;
+    private final McPopUpPilotView pv;
+    private final MechanicDAO md;
+    private final Mechanic m;      // stesso Mechanic del Controller
+    private final MechanicView mv; // per aggiornare la UI principale
 
-    /**
-     * Costruttore per il McPopUpPilotHandler.
-     *
-     * @param mv La {@link MechanicView} associata a questo handler.
-     */
-    public McPopUpPilotHandler(MechanicView mv) {
-
-        pv = new McPopUpPilotView();
-        md = new MechanicDAO();
+    public McPopUpPilotHandler(Mechanic m, MechanicView mv) {
+        this.pv = new McPopUpPilotView();
+        this.md = new MechanicDAO();
+        this.m  = m;
+        this.mv = mv;
 
         pv.getSendButton().addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-
-                try {
-                    md.selectP(pv.getId().getText(), pv.getName().getText().toUpperCase(),
-                            pv.getSurname().getText().toUpperCase(), pv.getNumber().getText());
-                    md.insertPilotOnVehicle(pv.getId().getText(), fetchMSN());
-
-                    Session.getIstance().setId_pilot(pv.getId().getText());
-                    pv.clearComponents(pv.getDataPanel());
-
-                    mv.setId_p();
-                    pv.close();
-
-                    md.insertLogEvent(getID(), "INSERT ID PILOT : " + pv.getId().getText());
-
-                } catch (PilotNotFoundException err) {
-                    System.out.println(err);
-                    pv.mex();
-                    pv.clearComponents(pv.getDataPanel());
-                }
-
+            @Override public void actionPerformed(ActionEvent e) {
+                onSend();
             }
         });
-
     }
 
-    /**
-     * Recupera l'ID del membro dello staff attualmente loggato.
-     * Questo metodo fornisce information hiding accedendo all'istanza di Sessione.
-     *
-     * @return L'ID del membro dello staff loggato.
-     */
-    private String getID() {
-        return Session.getIstance().getId_staff();
+    private void onSend() {
+        String pilotId = pv.getId().getText();
+        String name    = pv.getName().getText().toUpperCase();
+        String surname = pv.getSurname().getText().toUpperCase();
+        String number  = pv.getNumber().getText();
+
+        // 0) Deve esistere un Vehicle con MSN
+        Vehicle v = m.getVehicles();
+        if (v == null || v.getMSN() == null || v.getMSN().isBlank()) {
+            JOptionPane.showMessageDialog(null,
+                "Assign or create a vehicle (with MSN) before linking a pilot.",
+                "No vehicle", JOptionPane.WARNING_MESSAGE);
+            return;
+        }
+        String msn = v.getMSN().toUpperCase();
+
+        try {
+            // 1) Verifica esistenza pilota con i dati inseriti
+            md.selectP(pilotId, name, surname, number);
+
+            // 2) Associa pilota al veicolo
+            md.insertPilotOnVehicle(pilotId, msn);
+
+            // 3) (Opzionale) memorizza id pilota in Session come metadato leggero per UI altrove
+            Session.getIstance().setId_pilot(pilotId);
+
+            // 4) Aggiorna UI + log
+            pv.clearComponents(pv.getDataPanel());
+            mv.setId_p();
+            pv.close();
+
+            md.insertLogEvent(m.getID(), "INSERT ID PILOT : " + pilotId);
+
+        } catch (PilotNotFoundException err) {
+            pv.mex();                 //  messaggio di errore standard
+            System.out.println(err);
+            pv.clearComponents(pv.getDataPanel());
+        }
     }
 
-    /**
-     * Recupera l'MSN del veicolo.
-     * Questo metodo fornisce information hiding accedendo all'istanza di Sessione.
-     *
-     * @return L'MSN del veicolo.
-     */
-    private String fetchMSN() {
-        return Session.getIstance().getV().getMSN().toUpperCase();
-    }
+    public void showWindow() { pv.show(); }
 
-    /**
-     * Mostra la finestra di pop-up per l'assegnazione dei piloti.
-     */
-    public void showWindow() {
-        pv.show();
-    }
-
-    /**
-     * Cancella i dati nella finestra di pop-up.
-     */
-    public void clear() {
-        pv.clearComponents(pv.getSendPanel());
-    }
-
+    public void clear() { pv.clearComponents(pv.getSendPanel()); }
 }

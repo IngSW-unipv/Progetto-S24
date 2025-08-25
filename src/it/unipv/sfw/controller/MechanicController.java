@@ -14,7 +14,7 @@ import it.unipv.sfw.view.MechanicView;
 
 /**
  * Controller per la gestione delle azioni del meccanico.
- * Orchestration: View -> Controller -> Model(+DAO)
+ * View -> Controller -> Model(+DAO)
  */
 public class MechanicController extends AbsController {
 
@@ -43,7 +43,7 @@ public class MechanicController extends AbsController {
 
         // 3) Handlers (passo il model per DI)
         McPopUpVehicleHandler pvc = new McPopUpVehicleHandler(m, mv);
-        McPopUpPilotHandler   ppc = new McPopUpPilotHandler(mv);
+        McPopUpPilotHandler   ppc = new McPopUpPilotHandler(m, mv);
 
         // 4) Log di login
         md.insertLogEvent(m.getID(), "LOGIN");
@@ -55,7 +55,8 @@ public class MechanicController extends AbsController {
 
         // ADD VEHICLE (apre popup; il salvataggio avviene nell'handler)
         mv.getInsertVehicleButton().addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
+            @Override 
+            public void actionPerformed(ActionEvent e) {
                 pvc.showWindow();
                 pvc.clear();
             }
@@ -63,10 +64,11 @@ public class MechanicController extends AbsController {
 
         // INSERT REQUEST
         mv.getInsertRequestButton().addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
+            @Override 
+            public void actionPerformed(ActionEvent e) {
                 boolean hasVehicle = (m.getVehicles() != null);
-                Session.getIstance().setOperation(hasVehicle ? "YES_V" : "NO_V"); // metadato leggero (se ti serve)
-                McPopUpRequestHandler prc = new McPopUpRequestHandler();
+                Session.getIstance().setOperation(hasVehicle ? "YES_V" : "NO_V");
+                McPopUpRequestHandler prc = new McPopUpRequestHandler(m);
                 prc.showWindow();
                 prc.clear();
             }
@@ -74,34 +76,30 @@ public class MechanicController extends AbsController {
 
         // ADD COMPONENT
         mv.getAddComponentButton().addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                Session.getIstance().setOperation("ADD"); // se altri handler si basano su questo
-                McPopUpComponentHandler pcc = new McPopUpComponentHandler();
-                pcc.showWindow();
-                pcc.clear();
+            @Override 
+            public void actionPerformed(ActionEvent e) {
+            	McPopUpComponentHandler addHandler =
+            		    new McPopUpComponentHandler(m, McPopUpComponentHandler.Operation.ADD);
+            		addHandler.showWindow();
+            		addHandler.clear();
             }
         });
 
         // REMOVE COMPONENT
         mv.getRemoveComponentButton().addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                if (hasNoComponents()) {
-                    JOptionPane.showMessageDialog(null,
-                            "INSERT A COMPONENT BEFORE REMOVING",
-                            "INFORMATION",
-                            JOptionPane.INFORMATION_MESSAGE);
-                } else {
-                    Session.getIstance().setOperation("REMOVE");
-                    McPopUpComponentHandler pcc = new McPopUpComponentHandler();
-                    pcc.showWindow();
-                    pcc.clear();
-                }
+            @Override 
+             public void actionPerformed(ActionEvent e) {
+            	McPopUpComponentHandler removeHandler =
+            		    new McPopUpComponentHandler(m, McPopUpComponentHandler.Operation.REMOVE);
+            		removeHandler.showWindow();
+            		removeHandler.clear();
             }
         });
 
-        // ADD PILOT (mantengo la tua logica su id_pilot se il resto dell'app lo usa)
+        // ADD PILOT 
         mv.getAddPilotButton().addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
+            @Override 
+            public void actionPerformed(ActionEvent e) {
                 boolean isPilotPresent = (Session.getIstance().getId_pilot() != null);
                 if (!isPilotPresent) {
                     Session.getIstance().setOperation("ADD");
@@ -118,7 +116,8 @@ public class MechanicController extends AbsController {
 
         // REMOVE PILOT
         mv.getRemovePilotButton().addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
+            @Override 
+            public void actionPerformed(ActionEvent e) {
                 Session.getIstance().setOperation("REMOVE");
                 md.removePilot(Session.getIstance().getId_pilot());
                 md.insertLogEvent(m.getID(), "REMOVE PILOT");
@@ -129,8 +128,9 @@ public class MechanicController extends AbsController {
 
         // SHOW PIT STOP TIMES
         mv.getVisualTimePsButton().addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                McGraphicTimePsHandler gtpc = new McGraphicTimePsHandler();
+            @Override 
+            public void actionPerformed(ActionEvent e) {
+                McGraphicTimePsHandler gtpc = new McGraphicTimePsHandler(m);
                 gtpc.initialize();
                 md.insertLogEvent(m.getID(), "SHOW TIME PIT STOP");
             }
@@ -138,8 +138,9 @@ public class MechanicController extends AbsController {
 
         // SHOW COMPONENT STATUS
         mv.getVisualStatusComponentButton().addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                McGraphicAllComponentHandler gacc = new McGraphicAllComponentHandler();
+            @Override 
+            public void actionPerformed(ActionEvent e) {
+                McGraphicAllComponentHandler gacc = new McGraphicAllComponentHandler(m);
                 gacc.showWindow();
                 md.insertLogEvent(m.getID(), "SHOW STATUS COMPONENT");
             }

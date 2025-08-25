@@ -1,70 +1,90 @@
 package it.unipv.sfw.controller;
 
 import java.util.ArrayList;
+import java.util.List;
 
-import it.unipv.sfw.model.staff.Session;
+import javax.swing.JOptionPane;
+
+import it.unipv.sfw.model.staff.Mechanic;
 import it.unipv.sfw.view.McGraphicTimePsView;
 
 /**
  * Gestisce la visualizzazione grafica dei tempi di Pit Stop.
- * Recupera i dati relativi ai tempi di Pit Stop, li elabora e li visualizza nella finestra corrispondente.
+ * Dipende dal Mechanic passato dal Controller
  */
 public class McGraphicTimePsHandler {
-    
-    private ArrayList<String> labelTime = new ArrayList<>();
-    private ArrayList<String> anomalyLabelTime = new ArrayList<>();
-    private McGraphicTimePsView gtpv = new McGraphicTimePsView(fetchTimePitStop(), labelTime);
+
+    private final Mechanic m;
+
+    private final List<String> labelTime = new ArrayList<>();
+    private final List<String> anomalyLabelTime = new ArrayList<>();
+
+    private McGraphicTimePsView gtpv; // inizializzata in initialize()
+
+    public McGraphicTimePsHandler(Mechanic mechanic) {
+        this.m = mechanic;
+    }
 
     /**
-     * Inizializza la vista McGraphicTimePsView, stampando informazioni sui tempi di Pit Stop,
-     * creando etichette e gestendo eventuali anomalie.
+     * Inizializza la vista, crea etichette e gestisce eventuali anomalie.
      */
     public void initialize() {
-        for (Integer t : Session.getIstance().getM().getAllTimePitStop()) {
+        if (m == null) {
+            throw new IllegalStateException("Mechanic nullo: passa il model al costruttore.");
+        }
+
+        // Log dei tempi in console (debug)
+        for (Integer t : m.getAllTimePitStop()) {
             System.out.println("tempo: " + t);
         }
+
         createLabels();
-        gtpv.anomalyTime(anomalyLabelTime);
+
+        if (m.getAllTimePitStop().isEmpty()) {
+            JOptionPane.showMessageDialog(
+                null,
+                "Nessun tempo di pit stop disponibile.",
+                "Informazione",
+                JOptionPane.INFORMATION_MESSAGE
+            );
+        }
+
+        // Crea la view solo ora che i dati sono pronti
+        gtpv = new McGraphicTimePsView(new ArrayList<>(m.getAllTimePitStop()), new ArrayList<>(labelTime));
+        gtpv.anomalyTime(new ArrayList<>(anomalyLabelTime));
         showWindow();
     }
 
     /**
-     * Crea le etichette per i tempi di Pit Stop e per eventuali anomalie.
+     * Crea le etichette per i tempi di Pit Stop e per le anomalie.
      */
-    public void createLabels() {
-        for (Integer time : Session.getIstance().getM().getAllTimePitStop()) {
-            labelTime.add(convertTime(time));    
+    private void createLabels() {
+        labelTime.clear();
+        anomalyLabelTime.clear();
+
+        for (Integer time : m.getAllTimePitStop()) {
+            labelTime.add(formatMs(time));
         }
-        for (Integer time : Session.getIstance().getM().getAnomalyTime()) {
-            anomalyLabelTime.add(convertTime(time));
+        for (Integer time : m.getAnomalyTime()) {
+            anomalyLabelTime.add(formatMs(time));
         }
     }
-    
+
     /**
-     * Converte i millisecondi in un formato "secondi.millisecondi".
-     * 
-     * @param millis Il tempo in millisecondi.
-     * @return Il tempo formattato come stringa.
+     * Converte millisecondi in "s.mmm" (es. 2.345).
      */
-    private String convertTime(int millis) {
+    private String formatMs(int millis) {
         int seconds = (millis / 1000) % 60;
         int milliseconds = millis % 1000;
-        return String.format("%02d.%03d", seconds, milliseconds);
+        return String.format("%d.%03d", seconds, milliseconds);
     }
 
     /**
      * Mostra la finestra con i dati dei tempi di Pit Stop.
      */
     public void showWindow() {
-        gtpv.show();
-    }
-    
-    /**
-     * Recupera la lista dei tempi di Pit Stop dal sistema.
-     * 
-     * @return Una lista di tempi di Pit Stop in millisecondi.
-     */
-    private ArrayList<Integer> fetchTimePitStop() {
-        return Session.getIstance().getM().getAllTimePitStop();
+        if (gtpv != null) {
+            gtpv.show();
+        }
     }
 }
