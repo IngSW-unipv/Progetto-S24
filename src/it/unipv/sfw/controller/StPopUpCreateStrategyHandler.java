@@ -7,127 +7,100 @@ import java.util.Set;
 
 import it.unipv.sfw.dao.mysql.StrategistDAO;
 import it.unipv.sfw.model.component.Components;
-import it.unipv.sfw.model.staff.Session;
+import it.unipv.sfw.model.staff.Strategist;
+import it.unipv.sfw.model.vehicle.Vehicle;
 import it.unipv.sfw.view.StGraphicDetailsView;
 import it.unipv.sfw.view.StPopUpCreateStrategyView;
 
 /**
- * Controller per la finestra di pop-up di creazione/selezione strategia.
- * Gestisce le interazioni dell'utente con la {@link StPopUpCreateStrategyView}
- * e visualizza informazioni relative allo stato dei componenti e suggerimenti
- * di strategia.
+ * Popup per creare/selezionare la strategia di gara.
+ * Dipende da Strategist e Vehicle passati dal Controller (no Model letto da Session).
  */
 public class StPopUpCreateStrategyHandler {
 
-    private StPopUpCreateStrategyView pcs;
-    private StGraphicDetailsView gdv;
-    private StrategistDAO sd;
+    private final StPopUpCreateStrategyView pcs;
+    private final StrategistDAO sd;
+    private final Strategist strategist;
+    private final Vehicle vehicle;
 
-    private final int setPoint = 81000;
-    private int average = 0;
+    // Soglia di riferimento per decidere PUSH/HOLD (ms)
+    private static final int SET_POINT_MS = 81_000;
+
+    private StGraphicDetailsView gdv;
 
     /**
-     * Costruttore per StPopUpCreateStrategyHandler.
-     *
-     * @param rc      Valore che indica se è stata selezionata una strategia
-     *                precedente (0) o meno.
-     * @param tmeLap Tempo sul giro corrente.
+     * @param strategist stratega corrente (dal controller)
+     * @param vehicle    veicolo associato (dal controller)
+     * @param selectedStrategyCount 0 se era già stata selezionata una strategia in precedenza
+     * @param currentLapTimeMs      tempo giro corrente (ms)
      */
-    public StPopUpCreateStrategyHandler(int rc, int tmeLap) {
+    public StPopUpCreateStrategyHandler(Strategist strategist, Vehicle vehicle,
+                                        int selectedStrategyCount, int currentLapTimeMs) {
+        this.pcs = new StPopUpCreateStrategyView();
+        this.sd  = new StrategistDAO();
+        this.strategist = strategist;
+        this.vehicle    = vehicle;
 
-        pcs = new StPopUpCreateStrategyView();
-        sd = new StrategistDAO(); // Inizializzazione del DAO
+        // 1) Calcolo media usura componenti
+        int averageWear = computeAverageWear(vehicle.getComponent());
 
-        // Calcolo della media di usura dei componenti
-        for (Components c : getComponent()) {
-            average += c.getWear();
-        }
+        // 2) Mostra degradazione componenti con colore
+        pcs.getComponentLabel1().setText("DEGRADATION OF COMPONENTS: " + averageWear);
+        pcs.getComponentLabel1().setForeground(colorForWear(averageWear));
 
-        average = average / getComponentSize();
-
-        // Visualizzazione del livello di usura dei componenti
-        String degradationMessage = "DEGRADATION OF COMPONENTS: " + average;
-        pcs.getComponentLabel1().setText(degradationMessage);
-
-        Color degradationColor;
-        if (average > 70) {
-            degradationColor = Color.GREEN;
-        } else if (average >= 50 && average <= 70) {
-            degradationColor = Color.ORANGE;
-        } else {
-            degradationColor = Color.RED;
-        }
-        pcs.getComponentLabel1().setForeground(degradationColor);
-
-        // Visualizzazione del messaggio di strategia raccomandata
-        String strategyMessage;
+        // 3) Messaggio strategia raccomandata
+        String strategyMsg;
         Color strategyColor;
-
-        if (rc == 0) {
-            strategyMessage = "SELECTED A STRATEGY";
+        if (selectedStrategyCount == 0) {
+            strategyMsg = "SELECTED A STRATEGY";
             strategyColor = Color.YELLOW;
-        } else if ((tmeLap - setPoint) > 0) {
-            strategyMessage = "RECOMMENDED STRATEGY : PUSH";
+        } else if ((currentLapTimeMs - SET_POINT_MS) > 0) {
+            strategyMsg = "RECOMMENDED STRATEGY : PUSH";
             strategyColor = Color.RED;
         } else {
-            strategyMessage = "RECOMMENDED STRATEGY : HOLD THE POSITION";
+            strategyMsg = "RECOMMENDED STRATEGY : HOLD THE POSITION";
             strategyColor = Color.GREEN;
         }
-
-        pcs.getMexLabel().setText(strategyMessage);
+        pcs.getMexLabel().setText(strategyMsg);
         pcs.getMexLabel().setForeground(strategyColor);
 
-        // Listener per il bottone "Details"
+        // 4) Listener: dettagli componenti
         pcs.getDetailsButton().addActionListener(new ActionListener() {
-            @Override
+            @Override 
             public void actionPerformed(ActionEvent e) {
-                gdv = new StGraphicDetailsView(getComponent());
+                gdv = new StGraphicDetailsView(vehicle.getComponent());
                 gdv.show();
-                sd.insertLogEvent(getID(), "SHOW DETAILS COMPONENT");
+                sd.insertLogEvent(strategist.getID(), "SHOW DETAILS COMPONENT");
             }
         });
 
-        // Listener per la casella combinata di selezione della strategia
+        // 5) Listener: scelta strategia dalla combo
         pcs.getBox().addActionListener(new ActionListener() {
-            @Override
+            @Override 
             public void actionPerformed(ActionEvent e) {
                 String select = (String) pcs.getBox().getSelectedItem();
-                Session.getIstance().setStrategy(select);
+                
                 pcs.getStrategyLabel2().setText(select);
                 pcs.getStrategyLabel2().setForeground(Color.YELLOW);
-                sd.insertLogEvent(getID(), "SELECT NEW STRATEGY: " + select);
+                sd.insertLogEvent(strategist.getID(), "SELECT NEW STRATEGY: " + select);
             }
         });
     }
 
-    /**
-     * Recupera l'insieme dei componenti del veicolo dalla sessione.
-     * @return L'insieme dei componenti.
-     */
-    private Set<Components> getComponent() {
-        return Session.getIstance().getV().getComponent();
+    public void showWindow() { pcs.show(); }
+
+    // ---------- Helpers ----------
+
+    private static int computeAverageWear(Set<Components> comps) {
+        if (comps == null || comps.isEmpty()) return 0;
+        int sum = 0;
+        for (Components c : comps) sum += c.getWear();
+        return sum / comps.size();
     }
 
-    /**
-     * Restituisce il numero di componenti.
-     * @return Il numero di componenti.
-     */
-    private int getComponentSize() {
-        return getComponent().size();
-    }
-
-    /**
-     * Mostra la finestra di pop-up.
-     */
-    public void showWindow() {
-        pcs.show();
-    }
-
-    /**
-     * Recupera l'ID del membro dello staff dalla sessione.
-     * @return L'ID del membro dello staff.
-     */
-    private String getID() {
-        return Session.getIstance().getId_staff();
+    private static Color colorForWear(int avg) {
+        if (avg > 70) return Color.GREEN;
+        if (avg >= 50) return Color.ORANGE;
+        return Color.RED;
     }
 }
