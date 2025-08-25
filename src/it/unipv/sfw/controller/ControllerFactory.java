@@ -7,9 +7,9 @@ import java.util.function.Supplier;
 /**
  * Factory centralizzata per creare istanze di {@link AbsController}
  * a partire dal loro {@link AbsController.TypeController}.
- * <p>
+ * 
  * Implementata tramite mappa di {@link Supplier}, 
- * e si mantiene la creazione incapsulata.
+ * 
  */
 public final class ControllerFactory {
 
