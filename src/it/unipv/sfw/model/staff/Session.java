@@ -39,7 +39,7 @@ public final class Session {
     // --- Autenticazione ---
 
     /**
-     * Effettua il login: valida credenziali contro la persistenza,
+     * Effettua il login: valida credenziali
      * imposta l'utente corrente se ok.
      *
      * Input:
@@ -50,33 +50,61 @@ public final class Session {
      *  - se ok: this.currentUser viene settato all'istanza Staff concreta (Mechanic/Strategist/Warehouseman)
      *  - eccezioni se account mancante o password errata
      */
+    
+ // Indici 
+    private static final int IDX_ID = 0;
+    private static final int IDX_PWD = 1;
+    private static final int IDX_ROLE = 2;
+    private static final int IDX_NAME = 3;
+    private static final int IDX_SURNAME = 4;
+    
     public void login(String id, char[] pwd)
             throws AccountNotFoundException, WrongPasswordException {
 
-        // prendi il DAO utente dalla factory (interfaccia)
         IUserDAO userDAO = DAOFactory.createUserDAO();
 
-        // 1) lookup utente per id
-        Staff user = userDAO.selectById(id);
-        if (user == null) {
-            // pulizia di sicurezza
+        // 1) Unica query: prendo tutti i campi come array
+        String[] row = userDAO.selectRowFieldsById(id);
+        if (row == null) {
             java.util.Arrays.fill(pwd, '\0');
             throw new AccountNotFoundException(id);
         }
 
-        // 2) confronta la password
+        // 2) Password check
         String rawPwd = new String(pwd);
         java.util.Arrays.fill(pwd, '\0');
-
-        if (!rawPwd.equals(user.getPwd())) {
+        String storedPw = row[IDX_PWD];
+        if (storedPw == null || !storedPw.equals(rawPwd)) {
             throw new WrongPasswordException("***");
         }
 
-        // 3) ok → utente corrente impostato
+        // 3) Mappo il ruolo e costruisco la sottoclasse Staff
+        String normRole = (row[IDX_ROLE] == null ? "" : row[IDX_ROLE].trim().toUpperCase());
+
+        Staff user;
+        switch (normRole) {
+            case "MECHANIC":
+                user = new Mechanic(row[IDX_ID], storedPw);
+                break;
+            case "STRATEGIST":
+                user = new Strategist(row[IDX_ID], storedPw);
+                break;
+            case "WAREHOUSEMAN":
+                user = new Warehouseman(row[IDX_ID], storedPw);
+                break;
+            default:
+                // ruolo sconosciuto → tratto come account non valido
+                throw new AccountNotFoundException(id);
+        }
+
+        // 4) inizializzazione campi
         this.currentUser = user;
+        this.name = row[IDX_NAME] != null ? row[IDX_NAME] : "";
+        this.surname = row[IDX_SURNAME] != null ? row[IDX_SURNAME] : "";
+    
     }
 
-    // --- Accessors principali ---
+    // getters e setters
 
     public Staff getCurrentUser() {
     	return currentUser; 
@@ -124,13 +152,13 @@ public final class Session {
     }
     public void setName(String name) {
     	this.name = name;
-    }      // tenuti per compatibilità con l'attuale UserDAO
+    }
 
     public String getSurname() { 
     	return surname; 
     }
     public void setSurname(String surname) { 
     	this.surname = surname; 
-    	} // idem
+    	}
     
 }
