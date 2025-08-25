@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLIntegrityConstraintViolationException;
 
+import it.unipv.sfw.dao.interfacedao.IVehicleDAO;
 import it.unipv.sfw.model.vehicle.Vehicle;
 
 /**
@@ -11,7 +12,7 @@ import it.unipv.sfw.model.vehicle.Vehicle;
  * Contiene metodi per interagire con la tabella "vehicle", in particolare
  * per aggiornare i tempi di settore di un veicolo.
  */
-public class VehicleDAO {
+public class VehicleDAO implements IVehicleDAO{
 
     private static final String SCHEMA = "vehicle";
 
@@ -23,6 +24,7 @@ public class VehicleDAO {
      *         In particolare, restituisce `false` se viene violato un vincolo di integrità
      *         (ad esempio, se si tenta di inserire un valore non valido).
      */
+    @Override
     public boolean timeSector(Vehicle v) {
 
         PreparedStatement st1;

@@ -27,6 +27,7 @@ public class MechanicDAO implements IMechanicDAO{
      * @param id L'ID del membro dello staff da verificare.
      * @throws WrongIDException Se non viene trovato alcun membro dello staff con l'ID specificato.
      */
+	@Override
 	public void checkStaff(String id) throws WrongIDException {
 
 		SCHEMA = "staff";
@@ -60,6 +61,7 @@ public class MechanicDAO implements IMechanicDAO{
      * @param msn Il numero di telaio (MSN) del veicolo da verificare.
      * @throws VehicleNotFoundException Se non viene trovato alcun veicolo con il numero di telaio specificato.
      */
+	@Override
 	public void checkVehicle(String msn) throws VehicleNotFoundException {
 
 		SCHEMA = "vehicle";
@@ -94,6 +96,7 @@ public class MechanicDAO implements IMechanicDAO{
      * @param id L'ID del meccanico da associare.
      * @return `true` se l'associazione ha avuto successo, `false` altrimenti.
      */
+	@Override
 	public boolean insertMeccOnVehicle(String msn, String id) {
 
 		SCHEMA = "vehicle";
@@ -130,6 +133,7 @@ public class MechanicDAO implements IMechanicDAO{
      * @param id_p L'ID del pilota da verificare.
      * @throws PilotNotFoundException Se non viene trovato alcun pilota con l'ID specificato.
      */
+	@Override
 	public void checkPilot(String id_p) throws PilotNotFoundException {
 
 		SCHEMA = "pilot";
@@ -167,6 +171,7 @@ public class MechanicDAO implements IMechanicDAO{
      * @param msn Il numero di telaio (MSN) del veicolo.
      * @return `true` se l'associazione ha avuto successo, `false` altrimenti.
      */
+	@Override
 	public boolean insertPilotOnVehicle(String id_p, String msn) {
 
 		SCHEMA = "vehicle";
@@ -205,6 +210,7 @@ public class MechanicDAO implements IMechanicDAO{
      * @param idp L'ID del pilota da rimuovere dall'associazione.
      * @return `true` se la rimozione ha avuto successo, `false` altrimenti.
      */
+	@Override
 	public boolean removePilot(String idp) {
 
 		SCHEMA = "vehicle";
@@ -244,7 +250,7 @@ public class MechanicDAO implements IMechanicDAO{
      * @param number Il numero del pilota.
      * @throws PilotNotFoundException Se non viene trovato alcun pilota con i dati specificati.
      */
-
+	@Override
 	public void selectP(String id, String name, String surname, String number) throws PilotNotFoundException {
 
 		SCHEMA = "pilot";
@@ -284,6 +290,7 @@ public class MechanicDAO implements IMechanicDAO{
      * @param idp L'ID del pilota.
      * @return `true` se il pilota è associato a un veicolo, `false` altrimenti.
      */
+	@Override
 	public boolean checkPilotOnVehicle(String idp) {
 
 		SCHEMA = "vehicle";
@@ -323,6 +330,7 @@ public class MechanicDAO implements IMechanicDAO{
      * @param status Lo stato del componente.
      * @throws ComponentNotFoundException Se non viene trovato alcun componente con i dati specificati.
      */
+	@Override
 	public void checkCompo(String id_c, String name, String status) throws ComponentNotFoundException {
 
 		SCHEMA = "component";
@@ -361,6 +369,7 @@ public class MechanicDAO implements IMechanicDAO{
      * @param id_c L'ID del componente.
      * @throws ComponentNotFoundException Se non viene trovato alcun componente con l'ID specificato.
      */
+	@Override
 	public void checkIdCompo(String id_c) throws ComponentNotFoundException {
 
 		SCHEMA = "component";
@@ -398,6 +407,7 @@ public class MechanicDAO implements IMechanicDAO{
      * @param msn Il numero di telaio (MSN) del veicolo.
      * @return `true` se l'associazione ha avuto successo, `false` altrimenti.
      */
+	@Override
 	public boolean insertComponent(String id, String msn) {
 
 		SCHEMA = "component";
@@ -436,6 +446,7 @@ public class MechanicDAO implements IMechanicDAO{
      * @param id L'ID del componente.
      * @return `true` se l'aggiornamento ha avuto successo, `false` altrimenti.
      */
+	@Override
 	public boolean updateWear(int wear, String id) {
 
 		SCHEMA = "component";
@@ -476,6 +487,7 @@ public class MechanicDAO implements IMechanicDAO{
      * @param id_c L'ID del componente.
      * @param id_v L'ID del veicolo.
      */
+	@Override
 	public void removeComponent(String id_c, String id_v) {
 
 		SCHEMA = "component";
@@ -509,6 +521,7 @@ public class MechanicDAO implements IMechanicDAO{
      * @param id_v L'ID del veicolo a cui si riferisce la richiesta.
      * @return `true` se l'inserimento ha avuto successo, `false` altrimenti.
      */
+	@Override
 	public boolean insertRequest(String desc, String id_s, String id_c, String id_v) {
 
 		SCHEMA = "request";
@@ -552,6 +565,7 @@ public class MechanicDAO implements IMechanicDAO{
      * @param id_c L'ID del componente.
      * @throws WrongRequestException Se non viene trovata alcuna richiesta con l'ID del componente specificato.
      */
+	@Override
 	public void checkRequest(String id_c) throws WrongRequestException {
 
 		SCHEMA = "request";
@@ -588,6 +602,7 @@ public class MechanicDAO implements IMechanicDAO{
      * @param id_staff L'ID dello staff che ha effettuato l'azione.
      * @param desc La descrizione dell'evento.
      */
+	@Override
 	public void  insertLogEvent(String id_staff, String desc) {
 
 		SCHEMA = "log_event";

@@ -8,6 +8,7 @@ import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.HashSet;
 import java.util.Set;
 
+import it.unipv.sfw.dao.interfacedao.IWarehousemanDAO;
 import it.unipv.sfw.exceptions.ComponentNotFoundException;
 import it.unipv.sfw.exceptions.RequestNotFoundException;
 import it.unipv.sfw.exceptions.WrongIDException;
@@ -19,7 +20,7 @@ import it.unipv.sfw.model.request.Request;
  * informazioni relative a richieste e componenti, oltre che di registrare
  * eventi nel log.
  */
-public class WarehousemanDAO {
+public class WarehousemanDAO implements IWarehousemanDAO{
 
     private String SCHEMA = "";
 
@@ -29,6 +30,7 @@ public class WarehousemanDAO {
      * @return Un insieme (Set) di oggetti {@link Request} che rappresenta
      *         tutte le richieste presenti nel database.
      */
+    @Override
     public Set<Request> selectAllRequest() {
 
         SCHEMA = "request";
@@ -73,6 +75,7 @@ public class WarehousemanDAO {
      *
      * @param idc L'ID del componente la cui richiesta deve essere rimossa.
      */
+    @Override
     public void removeRequest(String idc) {
 
         SCHEMA = "request";
@@ -106,6 +109,7 @@ public class WarehousemanDAO {
      * @param status Il nuovo stato del componente.
      * @return `true` se l'aggiornamento ha avuto successo, `false` altrimenti.
      */
+    @Override
     public boolean updateComponent(String id, String wear, String status) {
 
         SCHEMA = "component";
@@ -146,6 +150,7 @@ public class WarehousemanDAO {
      *
      * @return Il numero di componenti presenti nel database.
      */
+    @Override
     public int countElement() {
 
         SCHEMA = "component";
@@ -179,6 +184,7 @@ public class WarehousemanDAO {
      * @param select Il nome del componente da cercare.
      * @return Il numero di componenti con il nome specificato.
      */
+    @Override
     public int countElementBySelect(String select) {
 
         SCHEMA = "component";
@@ -217,6 +223,7 @@ public class WarehousemanDAO {
      * @throws RequestNotFoundException Se non viene trovata alcuna richiesta
      *                                   corrispondente ai dati forniti.
      */
+    @Override
     public void checkRequest(String id_s, String id_c, String id_v) throws RequestNotFoundException {
 
         SCHEMA = "request";
@@ -253,6 +260,7 @@ public class WarehousemanDAO {
      * @throws ComponentNotFoundException Se non viene trovato alcun componente
      *                                     con l'ID specificato.
      */
+    @Override
     public void checkCompo(String id_c) throws ComponentNotFoundException {
 
         SCHEMA = "component";
@@ -287,6 +295,7 @@ public class WarehousemanDAO {
      * @param id_staff L'ID dello staff che ha causato l'evento.
      * @param desc     La descrizione dell'evento.
      */
+    @Override
     public void  insertLogEvent(String id_staff, String desc) {
 
 		SCHEMA = "log_event";

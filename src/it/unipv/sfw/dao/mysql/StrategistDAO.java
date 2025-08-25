@@ -5,6 +5,7 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
+import it.unipv.sfw.dao.interfacedao.IStrategistDAO;
 import it.unipv.sfw.exceptions.VehicleNotFoundException;
 
 /**
@@ -13,7 +14,7 @@ import it.unipv.sfw.exceptions.VehicleNotFoundException;
  * la verifica dell'esistenza di un veicolo tramite MSN e
  * l'assegnazione di uno stratega a un veicolo.
  */
-public class StrategistDAO {
+public class StrategistDAO implements IStrategistDAO{
 
     private static String SCHEMA = "";
 
@@ -23,6 +24,7 @@ public class StrategistDAO {
      * @param id_staff L'ID dello staff che ha causato l'evento.
      * @param desc     La descrizione dell'evento.
      */
+    @Override
     public void insertLogEvent(String id_staff, String desc) {
     	
     	SCHEMA = "log_event";
@@ -56,6 +58,7 @@ public class StrategistDAO {
      * @param msn Il numero di telaio (MSN) del veicolo da verificare.
      * @throws VehicleNotFoundException Se non viene trovato alcun veicolo con il numero di telaio specificato.
      */
+    @Override
 	public void checkVehicle(String msn) throws VehicleNotFoundException {
 
 		SCHEMA = "vehicle";
@@ -90,6 +93,7 @@ public class StrategistDAO {
      * @param msn Il numero di telaio (MSN) del veicolo.
      * @param id  L'ID dello stratega da assegnare.
      */
+    @Override
     public void insertStrategistOnVehicle(String msn, String id){
     	
     	SCHEMA = "vehicle";
