@@ -3,64 +3,88 @@ package it.unipv.sfw.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import javax.swing.JOptionPane;
+
 import it.unipv.sfw.dao.mysql.WarehousemanDAO;
 import it.unipv.sfw.exceptions.ComponentNotFoundException;
-import it.unipv.sfw.model.staff.Session;
+import it.unipv.sfw.model.staff.Warehouseman;
 import it.unipv.sfw.view.WhPopUpUpdateComponentView;
 
 /**
- * Controller per la finestra di pop-up di aggiornamento componente.
- * Gestisce le interazioni dell'utente con la {@link WhPopUpUpdateComponentView}
- * e coordina le azioni con il {@link WarehousemanDAO}.
+ * Handler per il pop-up di aggiornamento componente.
+ * Dipende dal Warehouseman passato dal Controller
  */
 public class WhPopUpUpdateComponentHandler {
 
-    private WhPopUpUpdateComponentView puc;
-    private WarehousemanDAO md;
+    private final WhPopUpUpdateComponentView puc;
+    private final WarehousemanDAO md;
+    private final Warehouseman warehouseman; // per log/contesto
 
-    /**
-     * Costruttore per WhPopUpUpdateComponentHandler.
-     */
-    public WhPopUpUpdateComponentHandler() {
-        puc = new WhPopUpUpdateComponentView();
-        md = new WarehousemanDAO();
+    public WhPopUpUpdateComponentHandler(Warehouseman warehouseman) {
+        this.puc = new WhPopUpUpdateComponentView();
+        this.md  = new WarehousemanDAO();
+        this.warehouseman = warehouseman;
 
+        wireEvents();
+    }
+
+    private void wireEvents() {
         puc.getSendButton().addActionListener(new ActionListener() {
-
-            @Override
+            @Override 
             public void actionPerformed(ActionEvent e) {
-                try {
-                    md.checkCompo(puc.getId_c().getText());
-                    md.updateComponent(puc.getId_c().getText(), puc.getWear().getText(),
-                            puc.getStatus().getText().toUpperCase());
-                    puc.mex2(); // Mostra messaggio di successo
-                    md.insertLogEvent(getID(), "UPDATE COMPONENT: " + puc.getId_c().getText());
+                onUpdateComponent();
+            }
+        });
+    }
 
-                } catch (ComponentNotFoundException err) {
-                    System.out.println(err);
-                    puc.mex1(); // Mostra messaggio di errore
-                }
+    private void onUpdateComponent() {
+        String idComp = puc.getId_c().getText();
+        String wearStr = puc.getWear().getText();
+        String status  = puc.getStatus().getText() != null ? puc.getStatus().getText().toUpperCase().trim(): "";
 
-                puc.clearComponents(puc.getDataPanel()); // Pulisce i campi del form
+        try {
+            // Validazioni input base
+            if (idComp == null || idComp.isBlank()) {
+                JOptionPane.showMessageDialog(null, "Inserire ID componente.", "Errore", JOptionPane.ERROR_MESSAGE);
+                return;
             }
 
-        });
+            int wear;
+            try {
+                wear = Integer.parseInt(wearStr);
+                if (wear < 0 || wear > 100) {
+                    JOptionPane.showMessageDialog(null, "Wear deve essere tra 0 e 100.", "Errore", JOptionPane.ERROR_MESSAGE);
+                    return;
+                }
+            } catch (NumberFormatException nfe) {
+                JOptionPane.showMessageDialog(null, "Wear non numerico.", "Errore", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
 
+            if (!status.equals("NEW") && !status.equals("USED")) {
+                JOptionPane.showMessageDialog(null, "Status deve essere NEW o USED.", "Errore", JOptionPane.ERROR_MESSAGE);
+                return;
+            }
+
+            // 1) Verifica esistenza componente
+            md.checkCompo(idComp);
+
+            // 2) Aggiorna componente nel DB
+            md.updateComponent(idComp, String.valueOf(wear), status);
+
+            // 3) UI + Log
+            puc.mex2(); // successo
+            md.insertLogEvent(warehouseman.getID(), "UPDATE COMPONENT: " + idComp);
+
+        } catch (ComponentNotFoundException err) {
+            puc.mex1(); // errore componente non trovato
+        } finally {
+            // 4) Pulisci form
+            puc.clearComponents(puc.getDataPanel());
+        }
     }
 
-    /**
-     * Mostra la finestra di pop-up per l'aggiornamento del componente.
-     */
-    public void showWindow() {
-        puc.show();
-    }
+    public void showWindow() { puc.show(); }
 
-    /**
-     * Recupera l'ID del membro dello staff dalla sessione.
-     * @return L'ID del membro dello staff.
-     */
-    private String getID() {
-        return Session.getIstance().getId_staff();
-    }
-
+    public void clear() { puc.clearComponents(puc.getSendPanel()); }
 }

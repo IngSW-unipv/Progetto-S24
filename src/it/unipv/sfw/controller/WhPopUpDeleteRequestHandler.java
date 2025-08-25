@@ -5,96 +5,70 @@ import java.awt.event.ActionListener;
 
 import it.unipv.sfw.dao.mysql.WarehousemanDAO;
 import it.unipv.sfw.exceptions.RequestNotFoundException;
-import it.unipv.sfw.model.staff.Session;
+import it.unipv.sfw.model.staff.Warehouseman;
 import it.unipv.sfw.view.WhPopUpDeleteRequestView;
 
 /**
- * Controller per la finestra di pop-up di eliminazione richiesta.
- * Gestisce le interazioni dell'utente con la {@link WhPopUpDeleteRequestView}
- * e coordina le azioni con il {@link WarehousemanDAO}.
- * Implementa il pattern Observer per notificare eventuali cambiamenti
- * nel numero di richieste.
+ * Handler popup per l'eliminazione di una richiesta.
+ * Dipende dal Warehouseman passato dal Controller e notifica via Observable.
  */
 public class WhPopUpDeleteRequestHandler {
 
-    private WhPopUpDeleteRequestView pdr;
-    private WarehousemanDAO md;
+    private final WhPopUpDeleteRequestView pdr;
+    private final WarehousemanDAO md;
+    private final Warehouseman warehouseman;   // model utente corrente
+    private final Observable observable;       // per notificare la view principale
 
-    /**
-     * Costruttore per WhPopUpDeleteRequestHandler.
-     *
-     * @param observable L'oggetto {@link Observable} a cui questo handler
-     *                   si registrerà per notificare eventuali cambiamenti.
-     */
-    public WhPopUpDeleteRequestHandler(Observable observable) {
-        pdr = new WhPopUpDeleteRequestView();
-        md = new WarehousemanDAO();
+    public WhPopUpDeleteRequestHandler(Warehouseman warehouseman, Observable observable) {
+        this.pdr = new WhPopUpDeleteRequestView();
+        this.md  = new WarehousemanDAO();
+        this.warehouseman = warehouseman;
+        this.observable   = observable;
 
+        wireEvents();
+    }
+
+    private void wireEvents() {
         pdr.getSendButton().addActionListener(new ActionListener() {
-
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                System.out.println("ID STAFF: " + pdr.getId_s().getText());
-                System.out.println("ID COMPONENT: " + pdr.getId_c().getText());
-                System.out.println("ID VEHICLE: " + pdr.getId_v().getText());
-
-                try {
-                    md.checkRequest(pdr.getId_s().getText(), pdr.getId_c().getText(),
-                            pdr.getId_v().getText().toUpperCase());
-                    md.removeRequest(pdr.getId_c().getText());
-
-                    Session.getIstance().getRequest(); //Aggiorna la lista di richieste nella sessione
-
-                    pdr.clearComponents(pdr.getDataPanel());
-
-                    int totalRequest = setTotalRequest();
-
-                    // Notifica gli osservatori del cambiamento nel numero di richieste
-                    observable.notifyObservers(totalRequest);
-
-                    pdr.mex2(); // Mostra messaggio di successo
-                    md.insertLogEvent(getID(), "DELETE REQUEST ID COMPONENT: " + pdr.getId_c().getText());
-                } catch (RequestNotFoundException err) {
-                    System.out.println(err);
-                    pdr.mex1(); // Mostra messaggio di errore
-                    pdr.clearComponents(pdr.getDataPanel());
-                    return;
-
-                }
-
+            @Override public void actionPerformed(ActionEvent e) {
+                onDeleteRequest();
             }
-
         });
-
     }
 
-    /**
-     * Recupera e aggiorna il numero totale di richieste dal magazzino nella sessione.
-     * @return Il numero totale di richieste.
-     */
-    private int setTotalRequest() {
-        return Session.getIstance().getWh().totalRequest();
+    private void onDeleteRequest() {
+        String idStaff = pdr.getId_s().getText();
+        String idComp  = pdr.getId_c().getText();
+        String msn     = pdr.getId_v().getText() != null ? pdr.getId_v().getText().toUpperCase() : "";
+
+        try {
+            // 1) Validazione: la richiesta deve esistere
+            md.checkRequest(idStaff, idComp, msn);
+
+            // 2) Persistenza: elimina la richiesta dal DB
+            md.removeRequest(idComp);
+
+            // 3) Model:
+            warehouseman.getRequest().removeIf(r -> String.valueOf(r.getId_c()).equals(idComp));
+
+            // 4) UI: pulisci form + messaggio successo
+            pdr.clearComponents(pdr.getDataPanel());
+            pdr.mex2();
+
+            // 5) Observer: notifica nuovo totale richieste
+            int totalRequest = warehouseman.totalRequest();
+            observable.notifyObservers(totalRequest);
+
+            // 6) Log
+            md.insertLogEvent(warehouseman.getID(), "DELETE REQUEST ID COMPONENT: " + idComp);
+
+        } catch (RequestNotFoundException err) {
+            pdr.mex1();                      // messaggio di errore
+            pdr.clearComponents(pdr.getDataPanel());
+        }
     }
 
-    /**
-     * Recupera l'ID del membro dello staff dalla sessione.
-     * @return L'ID del membro dello staff.
-     */
-    private String getID() {
-        return Session.getIstance().getId_staff();
-    }
+    public void showWindow() { pdr.show(); }
 
-    /**
-     * Mostra la finestra di pop-up.
-     */
-    public void showWindow() {
-        pdr.show();
-    }
-
-    /**
-     * Pulisce i componenti del pannello di invio.
-     */
-    public void clear() {
-        pdr.clearComponents(pdr.getSendPanel());
-    }
+    public void clear() { pdr.clearComponents(pdr.getSendPanel()); }
 }

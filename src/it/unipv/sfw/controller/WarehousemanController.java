@@ -2,6 +2,7 @@ package it.unipv.sfw.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.Set;
 
 import it.unipv.sfw.dao.mysql.WarehousemanDAO;
 import it.unipv.sfw.model.request.Request;
@@ -11,74 +12,71 @@ import it.unipv.sfw.model.staff.Staff;
 import it.unipv.sfw.view.WarehousemanView;
 
 /**
- * Controller che gestisce il processo di gestione del magazziniere nella {@link WarehousemanView}.
- * Si occupa della gestione delle richieste e della visualizzazione delle informazioni relative al magazzino.
- * 
- * @see AbsController
- * @see it.unipv.sfw.view.WarehousemanView
+ * Controller che gestisce il flusso del magazziniere (Warehouseman).
+ * View -> Controller -> Model(+DAO)
  */
 public class WarehousemanController extends AbsController {
-    private Staff user;
-    private Warehouseman m;
-    private Observable obs;
 
-    /**
-     * Restituisce il tipo di controller.
-     * 
-     * @return Il tipo di controller, in questo caso {@link TypeController#MAGAZZINIERE}.
-     */
+    private Warehouseman m;     // model utente corrente
+    private Observable obs;     // Observable
+
     @Override
     public TypeController getType() {
         return TypeController.WAREHOUSEMAN;
     }
 
-    /**
-     * Inizializza il controller creando la vista del magazziniere e impostando i listener
-     * per la gestione dei bottoni.
-     */
     @Override
     public void initialize() {
-        try {
-            user = Session.getIstance().getCurrentUser();
-            m = (Warehouseman) user;
-        } catch (Exception e) {
-            System.out.println("Errore");
+        // 1) Utente corrente dalla Session
+        Staff user = Session.getIstance().getCurrentUser();
+        if (!(user instanceof Warehouseman)) {
+            throw new IllegalStateException("L'utente corrente non è un Warehouseman");
         }
+        m = (Warehouseman) user;
 
-        obs = new Observable();
-
+        // 2) View + DAO + Observable
         WarehousemanView mv = new WarehousemanView();
         WarehousemanDAO md = new WarehousemanDAO();
+        obs = new Observable();
 
-        WhPopUpDeleteRequestHandler wdrc = new WhPopUpDeleteRequestHandler(obs);
-        WhPopUpUpdateComponentHandler wupc = new WhPopUpUpdateComponentHandler();
+        // 3) Carica le richieste dal DB nel Model
+        Set<Request> reqs = md.selectAllRequest();
+        m.setRequest(reqs);
 
-        Session.getIstance().getRequest();
-        md.insertLogEvent(getID(), "LOGIN");
+        // 4) Log di login
+        md.insertLogEvent(m.getID(), "LOGIN");
 
-        mv.data(Session.getIstance().getName(), Session.getIstance().getSurname(),
-                Session.getIstance().getWh().totalRequest());
+        // 5) Dati intestazione nella view (name/surname ancora in Session come metadati UI)
+        mv.data(
+            Session.getIstance().getName(),
+            Session.getIstance().getSurname(),
+            m.totalRequest()
+        );
+
+        // 6) Osservazione della view
         obs.addObserver(mv);
 
+        // 7) Handlers con DI del model/observable
+        WhPopUpDeleteRequestHandler wdrc = new WhPopUpDeleteRequestHandler(m, obs);
+        WhPopUpUpdateComponentHandler wupc = new WhPopUpUpdateComponentHandler(m); 
+
+        // --- LISTENER BUTTONS ---
+
+        // Mostra richieste
         mv.getShowRequestButton().addActionListener(new ActionListener() {
-            @Override
+            @Override 
             public void actionPerformed(ActionEvent e) {
-                WhPopUpShowRequestHandler wsrc = new WhPopUpShowRequestHandler();
-                md.insertLogEvent(getID(), "SHOW REQUEST");
-
-                System.out.println(Session.getIstance().getWh().getRequest());
-
-                for (Request r : m.getRequest()) {
-                    System.out.println(r);
-                }
+                WhPopUpShowRequestHandler wsrc = new WhPopUpShowRequestHandler(m);
+                md.insertLogEvent(m.getID(), "SHOW REQUEST");
 
                 wsrc.showWindow();
                 mv.setMex();
             }
         });
 
+        // Elimina richiesta
         mv.getDeleteRequestButton().addActionListener(new ActionListener() {
-            @Override
+            @Override 
             public void actionPerformed(ActionEvent e) {
                 wdrc.showWindow();
                 wdrc.clear();
@@ -86,21 +84,23 @@ public class WarehousemanController extends AbsController {
             }
         });
 
+        // Aggiorna componente (stato/usura)
         mv.getUpdateCompoButton().addActionListener(new ActionListener() {
-            @Override
+            @Override 
             public void actionPerformed(ActionEvent e) {
                 wupc.showWindow();
                 mv.setMex();
             }
         });
 
+        // Combo quantità componenti
         mv.getCombobox().addActionListener(new ActionListener() {
-            @Override
+            @Override 
             public void actionPerformed(ActionEvent e) {
                 String select = (String) mv.getCombobox().getSelectedItem();
-                md.insertLogEvent(getID(), "SHOW QUANTITY COMPONENT: " + select);
+                md.insertLogEvent(m.getID(), "SHOW QUANTITY COMPONENT: " + select);
 
-                if (select.equals("- ALL")) {
+                if ("- ALL".equals(select)) {
                     mv.mexCombo(md.countElement());
                 } else {
                     mv.mexCombo(md.countElementBySelect(select));
@@ -110,14 +110,5 @@ public class WarehousemanController extends AbsController {
 
         mv.setVisible(true);
         view = mv;
-    }
-    
-    /**
-     * Restituisce l'ID dello staff attualmente autenticato.
-     * 
-     * @return Una stringa contenente l'ID dello staff.
-     */
-    private String getID() {
-        return Session.getIstance().getId_staff();
     }
 }
