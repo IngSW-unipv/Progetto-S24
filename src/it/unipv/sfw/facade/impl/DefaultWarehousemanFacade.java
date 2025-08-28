@@ -26,7 +26,7 @@ public class DefaultWarehousemanFacade implements WarehousemanFacade {
 
     @Override
     public Set<Request> loadRequests() {
-        // Ritorno una copia mutabile (utile al controller per eventuali rimozioni)
+        // Ritorno una copia modificabile (utile al controller per eventuali rimozioni)
         return new HashSet<>(dao.selectAllRequest());
     }
 

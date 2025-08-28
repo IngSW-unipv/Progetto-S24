@@ -56,10 +56,10 @@ public class WhPopUpDeleteRequestHandler {
             // 1) Validazione/persistenza su DB
             facade.deleteRequest(idStaff, idComp, msn);
 
-            // 2) Model: rimuovi localmente la request
+            // 2) Model: rimuovo localmente la request
             warehouseman.getRequest().removeIf(r -> String.valueOf(r.getId_c()).equals(idComp));
 
-            // 3) UI: pulisci e conferma
+            // 3) UI: pulisco e conferma
             pdr.clearComponents(pdr.getDataPanel());
             pdr.mex2();
 

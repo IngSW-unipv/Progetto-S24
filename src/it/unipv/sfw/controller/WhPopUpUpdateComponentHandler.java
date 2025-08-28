@@ -19,7 +19,7 @@ public class WhPopUpUpdateComponentHandler {
     private final WhPopUpUpdateComponentView puc;
     private final Warehouseman warehouseman; // per log/contesto
 
-    // Facade al posto del DAO diretto
+    // Facade
     private final WarehousemanFacade facade;
 
     public WhPopUpUpdateComponentHandler(Warehouseman warehouseman, WarehousemanFacade facade) {
