@@ -140,6 +140,14 @@ public class Vehicle {
         timeSect3 = random.nextInt((max - min) + 1) + min;
 
     }
+    
+    /**
+     * Controllo validità MSN
+     */
+    public boolean hasValidMsn() {
+     return getMSN() != null && !getMSN().isBlank();
+	}
+
 
     /**
      * Restituisce il numero di serie (MSN) del veicolo.

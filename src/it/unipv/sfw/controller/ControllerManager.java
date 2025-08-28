@@ -50,7 +50,7 @@ public class ControllerManager {
     /**
      * Carica un controller del tipo indicato, lo inizializza e monta la view nel {@link Frame}.
      *
-     * @param controllerType il tipo di controller da caricare (non {@code null})
+     * @param controllerType il tipo di controller da caricare
      * @throws IllegalArgumentException se {@code controllerType} è nullo o non supportato
      */
     public void loadController(AbsController.TypeController controllerType) {
@@ -66,9 +66,9 @@ public class ControllerManager {
     /**
      * Carica il controller congruente al <b>ruolo dell'utente autenticato</b>.
      * <p>
-     * Usa il mapping ruolo→tipo e delega a {@link #loadController(AbsController.TypeRole)}.
+     * Usa il mapping ruolo-tipo e delega a {@link #loadController(AbsController.TypeRole)}.
      *
-     * @param role il ruolo dell’utente (non {@code null})
+     * @param role il ruolo dell’utente
      * @throws IllegalArgumentException se il ruolo non è mappato
      */
     public void loadControllerForRole(Staff.TypeRole role) {
@@ -84,8 +84,8 @@ public class ControllerManager {
         frame.dispose();
     }
 
-    // Entry point dell'app (opzionale; evita di caricare due volte il login)
+    // Entry point dell'app
     public static void main(String[] args) {
-        ControllerManager.getInstance(); // il costruttore carica già il LOGIN
+        ControllerManager.getInstance();
     }
 }
