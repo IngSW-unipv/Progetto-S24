@@ -30,7 +30,7 @@ public class McGraphicTimePsHandler {
      */
     public void initialize() {
         if (m == null) {
-            throw new IllegalStateException("Mechanic nullo: passa il model al costruttore.");
+            throw new IllegalStateException("Mechanic nullo");
         }
 
         // Log dei tempi in console (debug)

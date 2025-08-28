@@ -17,7 +17,7 @@ public class MechanicController extends AbsController {
 
     private Mechanic m;
     private MechanicView mv;
-    private MechanicFacade facade; // Facade inject
+    private MechanicFacade facade; // Facade
 
     @Override
     public TypeController getType() {

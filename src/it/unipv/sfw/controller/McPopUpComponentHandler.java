@@ -115,7 +115,8 @@ public class McPopUpComponentHandler {
         pr.setId_c(pc.getIdC()); // precompila id componente
 
         pr.getSendButton().addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
+            @Override 
+            public void actionPerformed(ActionEvent e) {
                 try {
                     facade.createComponentRequest(
                         m.getID(),
@@ -139,7 +140,8 @@ public class McPopUpComponentHandler {
     private void setupRemoveComponentListener() {
         pc.hideField();
         pc.getSendButton().addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
+            @Override
+            public void actionPerformed(ActionEvent e) {
                 handleRemoveComponent();
             }
         });
