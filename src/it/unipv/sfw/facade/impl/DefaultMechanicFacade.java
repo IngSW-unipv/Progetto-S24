@@ -12,11 +12,11 @@ import it.unipv.sfw.facade.AddComponentOutcome;
 import it.unipv.sfw.facade.AddComponentResult;
 import it.unipv.sfw.facade.MechanicFacade;
 
-public class MechanicFacadeImpl implements MechanicFacade {
+public class DefaultMechanicFacade implements MechanicFacade {
 
     private final IMechanicDAO md;
 
-    public MechanicFacadeImpl(IMechanicDAO mechanicDao) {
+    public DefaultMechanicFacade(IMechanicDAO mechanicDao) {
         this.md = Objects.requireNonNull(mechanicDao);
     }
 
