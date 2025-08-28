@@ -35,7 +35,11 @@ public class VehicleDAO implements IVehicleDAO{
         try (DBConnection db = new DBConnection(SCHEMA)) {
             Connection conn = db.getConnection();
 
-            String query = "UPDATE " + SCHEMA + " SET TIME_SECTOR1 = ?, TIME_SECTOR2 = ?, TIME_SECTOR3 = ? WHERE MSN = 'SF24-001' ";
+            // usa l'MSN del Vehicle passato
+            String query = "UPDATE " + SCHEMA +
+                           " SET TIME_SECTOR1 = ?, TIME_SECTOR2 = ?, TIME_SECTOR3 = ?" +
+                           " WHERE MSN = ?";
+
             st1 = conn.prepareStatement(query);
 
             String c1 = String.valueOf(v.getTimeSect1());
@@ -46,6 +50,9 @@ public class VehicleDAO implements IVehicleDAO{
 
             String c3 = String.valueOf(v.getTimeSect3());
             st1.setString(3, c3);
+
+            // MSN dal model (normalizzato in maiuscolo per coerenza)
+            st1.setString(4, v.getMSN() != null ? v.getMSN().toUpperCase() : "");
 
             rs1 = st1.executeUpdate();
 
