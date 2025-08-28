@@ -3,8 +3,8 @@ package it.unipv.sfw.controller;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
-import it.unipv.sfw.dao.mysql.WarehousemanDAO;
 import it.unipv.sfw.exceptions.RequestNotFoundException;
+import it.unipv.sfw.facade.WarehousemanFacade;
 import it.unipv.sfw.model.staff.Warehouseman;
 import it.unipv.sfw.view.WhPopUpDeleteRequestView;
 
@@ -15,15 +15,17 @@ import it.unipv.sfw.view.WhPopUpDeleteRequestView;
 public class WhPopUpDeleteRequestHandler {
 
     private final WhPopUpDeleteRequestView pdr;
-    private final WarehousemanDAO md;
     private final Warehouseman warehouseman;   // model utente corrente
     private final Observable observable;       // per notificare la view principale
 
-    public WhPopUpDeleteRequestHandler(Warehouseman warehouseman, Observable observable) {
+    // Facade
+    private final WarehousemanFacade facade;
+
+    public WhPopUpDeleteRequestHandler(Warehouseman warehouseman, Observable observable, WarehousemanFacade facade) {
         this.pdr = new WhPopUpDeleteRequestView();
-        this.md  = new WarehousemanDAO();
         this.warehouseman = warehouseman;
         this.observable   = observable;
+        this.facade       = facade;
 
         wireEvents();
     }
@@ -36,39 +38,47 @@ public class WhPopUpDeleteRequestHandler {
         });
     }
 
+    /**
+     * Gestione dell'evento di eliminazione di una richiesta.
+     *
+     * Flusso:
+     *  1) Legge i dati dalla UI.
+     *  2) Delega alla Facade la validazione e la cancellazione sul DB.
+     *  3) Aggiorna il Model locale
+     *  4) Log (via Facade) e aggiornamento UI/Observable.
+     */
     private void onDeleteRequest() {
         String idStaff = pdr.getId_s().getText();
         String idComp  = pdr.getId_c().getText();
         String msn     = pdr.getId_v().getText() != null ? pdr.getId_v().getText().toUpperCase() : "";
 
         try {
-            // 1) Validazione: la richiesta deve esistere
-            md.checkRequest(idStaff, idComp, msn);
+            // 1) Validazione/persistenza su DB
+            facade.deleteRequest(idStaff, idComp, msn);
 
-            // 2) Persistenza: elimina la richiesta dal DB
-            md.removeRequest(idComp);
-
-            // 3) Model:
+            // 2) Model: rimuovi localmente la request
             warehouseman.getRequest().removeIf(r -> String.valueOf(r.getId_c()).equals(idComp));
 
-            // 4) UI: pulisci form + messaggio successo
+            // 3) UI: pulisci e conferma
             pdr.clearComponents(pdr.getDataPanel());
             pdr.mex2();
 
-            // 5) Observer: notifica nuovo totale richieste
+            // 4) Observer: notifica nuovo totale
             int totalRequest = warehouseman.totalRequest();
             observable.notifyObservers(totalRequest);
 
-            // 6) Log
-            md.insertLogEvent(warehouseman.getID(), "DELETE REQUEST ID COMPONENT: " + idComp);
+            // 5) Log
+            facade.log(warehouseman.getID(), "DELETE REQUEST ID COMPONENT: " + idComp);
 
         } catch (RequestNotFoundException err) {
-            pdr.mex1();                      // messaggio di errore
+            pdr.mex1(); // errore
             pdr.clearComponents(pdr.getDataPanel());
         }
     }
 
-    public void showWindow() { pdr.show(); }
+    public void showWindow() { 
+    	pdr.show();
+    }
 
     public void clear() { pdr.clearComponents(pdr.getSendPanel()); }
 }

@@ -2,9 +2,12 @@ package it.unipv.sfw.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.HashSet;
 import java.util.Set;
 
 import it.unipv.sfw.dao.mysql.WarehousemanDAO;
+import it.unipv.sfw.facade.WarehousemanFacade;
+import it.unipv.sfw.facade.impl.DefaultWarehousemanFacade;
 import it.unipv.sfw.model.request.Request;
 import it.unipv.sfw.model.staff.Warehouseman;
 import it.unipv.sfw.model.staff.Session;
@@ -19,6 +22,9 @@ public class WarehousemanController extends AbsController {
 
     private Warehouseman m;     // model utente corrente
     private Observable obs;     // Observable
+
+    //Facade
+    private WarehousemanFacade facade;
 
     @Override
     public TypeController getType() {
@@ -39,14 +45,18 @@ public class WarehousemanController extends AbsController {
         WarehousemanDAO md = new WarehousemanDAO();
         obs = new Observable();
 
+        // inizializzo la Facade con il DAO
+        facade = new DefaultWarehousemanFacade(md);
+
         // 3) Carica le richieste dal DB nel Model
-        Set<Request> reqs = md.selectAllRequest();
-        m.setRequest(reqs);
+        // la Facade NON tocca il Model; aggiorna il controller
+        Set<Request> reqs = facade.loadRequests();
+        m.setRequest(new HashSet<>(reqs)); 
 
         // 4) Log di login
-        md.insertLogEvent(m.getID(), "LOGIN");
+        facade.log(m.getID(), "LOGIN");
 
-        // 5) Dati intestazione nella view (name/surname ancora in Session come metadati UI)
+        // 5) Dati intestazione nella view
         mv.data(
             Session.getIstance().getName(),
             Session.getIstance().getSurname(),
@@ -56,9 +66,9 @@ public class WarehousemanController extends AbsController {
         // 6) Osservazione della view
         obs.addObserver(mv);
 
-        // 7) Handlers con DI del model/observable
-        WhPopUpDeleteRequestHandler wdrc = new WhPopUpDeleteRequestHandler(m, obs);
-        WhPopUpUpdateComponentHandler wupc = new WhPopUpUpdateComponentHandler(m); 
+        // 7) Creazione Handler
+        WhPopUpDeleteRequestHandler wdrc = new WhPopUpDeleteRequestHandler(m, obs, facade);
+        WhPopUpUpdateComponentHandler wupc = new WhPopUpUpdateComponentHandler(m, facade);
 
         // --- LISTENER BUTTONS ---
 
@@ -67,7 +77,7 @@ public class WarehousemanController extends AbsController {
             @Override 
             public void actionPerformed(ActionEvent e) {
                 WhPopUpShowRequestHandler wsrc = new WhPopUpShowRequestHandler(m);
-                md.insertLogEvent(m.getID(), "SHOW REQUEST");
+                facade.log(m.getID(), "SHOW REQUEST");
 
                 wsrc.showWindow();
                 mv.setMex();
@@ -98,12 +108,12 @@ public class WarehousemanController extends AbsController {
             @Override 
             public void actionPerformed(ActionEvent e) {
                 String select = (String) mv.getCombobox().getSelectedItem();
-                md.insertLogEvent(m.getID(), "SHOW QUANTITY COMPONENT: " + select);
+                facade.log(m.getID(), "SHOW QUANTITY COMPONENT: " + select);
 
                 if ("- ALL".equals(select)) {
-                    mv.mexCombo(md.countElement());
+                    mv.mexCombo(facade.countAllComponentsInWarehouse());
                 } else {
-                    mv.mexCombo(md.countElementBySelect(select));
+                    mv.mexCombo(facade.countComponentsInWarehouseByName(select));
                 }
             }
         });

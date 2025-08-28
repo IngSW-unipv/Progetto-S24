@@ -5,8 +5,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JOptionPane;
 
-import it.unipv.sfw.dao.mysql.WarehousemanDAO;
 import it.unipv.sfw.exceptions.ComponentNotFoundException;
+import it.unipv.sfw.facade.WarehousemanFacade;
 import it.unipv.sfw.model.staff.Warehouseman;
 import it.unipv.sfw.view.WhPopUpUpdateComponentView;
 
@@ -17,13 +17,15 @@ import it.unipv.sfw.view.WhPopUpUpdateComponentView;
 public class WhPopUpUpdateComponentHandler {
 
     private final WhPopUpUpdateComponentView puc;
-    private final WarehousemanDAO md;
     private final Warehouseman warehouseman; // per log/contesto
 
-    public WhPopUpUpdateComponentHandler(Warehouseman warehouseman) {
+    // Facade al posto del DAO diretto
+    private final WarehousemanFacade facade;
+
+    public WhPopUpUpdateComponentHandler(Warehouseman warehouseman, WarehousemanFacade facade) {
         this.puc = new WhPopUpUpdateComponentView();
-        this.md  = new WarehousemanDAO();
         this.warehouseman = warehouseman;
+        this.facade = facade;
 
         wireEvents();
     }
@@ -37,13 +39,23 @@ public class WhPopUpUpdateComponentHandler {
         });
     }
 
+    /**
+     * Gestione dell'evento di aggiornamento componente.
+     *
+     * Flusso:
+     *  1) Recupera input da UI (id componente, wear, status).
+     *  2) Esegue validazioni (UI).
+     *  3) Delega alla Facade le validazioni
+     *  4) Mostra esito nella view e pulisce i campi.
+     *
+     */
     private void onUpdateComponent() {
         String idComp = puc.getId_c().getText();
         String wearStr = puc.getWear().getText();
         String status  = puc.getStatus().getText() != null ? puc.getStatus().getText().toUpperCase().trim(): "";
 
         try {
-            // Validazioni input base
+            // Validazioni input base (UI)
             if (idComp == null || idComp.isBlank()) {
                 JOptionPane.showMessageDialog(null, "Inserire ID componente.", "Errore", JOptionPane.ERROR_MESSAGE);
                 return;
@@ -66,25 +78,23 @@ public class WhPopUpUpdateComponentHandler {
                 return;
             }
 
-            // 1) Verifica esistenza componente
-            md.checkCompo(idComp);
+            // 1) Validazioni/persistenza/log via Facade
+            facade.updateComponent(idComp, wear, status, warehouseman.getID());
 
-            // 2) Aggiorna componente nel DB
-            md.updateComponent(idComp, String.valueOf(wear), status);
-
-            // 3) UI + Log
-            puc.mex2(); // successo
-            md.insertLogEvent(warehouseman.getID(), "UPDATE COMPONENT: " + idComp);
+            // 2) UI (successo)
+            puc.mex2();
 
         } catch (ComponentNotFoundException err) {
             puc.mex1(); // errore componente non trovato
         } finally {
-            // 4) Pulisci form
+            // 3) Pulisci form
             puc.clearComponents(puc.getDataPanel());
         }
     }
 
-    public void showWindow() { puc.show(); }
+    public void showWindow() {
+    	puc.show();
+    }
 
     public void clear() { puc.clearComponents(puc.getSendPanel()); }
 }
