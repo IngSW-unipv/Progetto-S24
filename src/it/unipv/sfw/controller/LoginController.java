@@ -5,9 +5,12 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
+import it.unipv.sfw.dao.mysql.UserDAO;
 import it.unipv.sfw.exceptions.AccountNotFoundException;
 import it.unipv.sfw.exceptions.WrongPasswordException;
-import it.unipv.sfw.model.staff.Session;
+import it.unipv.sfw.facade.AuthResult;
+import it.unipv.sfw.facade.LoginFacade;
+import it.unipv.sfw.facade.impl.DefaultLoginFacade;
 import it.unipv.sfw.model.staff.Staff;
 import it.unipv.sfw.view.LoginView;
 
@@ -18,28 +21,29 @@ import it.unipv.sfw.view.LoginView;
  */
 public class LoginController extends AbsController {
     private LoginView logv;
+    private LoginFacade loginFacade;
 
     /**
      * Esegue il flusso di autenticazione e routing:
      *
      *   Legge username/password dalla view.
-     *   Invoca {@link Session#login(String, char[])}.
+     *   Invoca {@link LoginFacade#authenticate(String, char[])} (che a sua volta aggiorna la Session).
      *   Ricava il ruolo corrente e lo mappa in un {@link AbsController.TypeController}.
      *   Carica il controller corrispondente nel {@link ControllerManager}.
-     * 
-     * Gestisce gli errori di credenziali mostrando il messaggio nella view.
+     *
+     *   Gestisce gli errori di credenziali mostrando il messaggio nella view.
      */
     private void accedi() {
         logv = (LoginView) view;
 
         try {
-            // 1) login applicativo
-            Session.getIstance().login(getUsername(), getPassword());
+            // 1) login applicativo tramite Facade
+            AuthResult result = loginFacade.authenticate(getUsername(), getPassword());
 
             // 2) ruolo corrente come enum
-            Staff.TypeRole role = Session.getIstance().getCurrentRole();
+            Staff.TypeRole role = result.getRole();
 
-            // 3) mapping ruolo → tipo controller
+            // 3) mapping ruolo - tipo controller
             AbsController.TypeController typeController = ControllerRole.toControllerType(role);
 
             // 4) carica il controller tramite factory
@@ -63,21 +67,27 @@ public class LoginController extends AbsController {
         System.out.println("Inizializzazione di LoginController - @LOGINCONTROLLER");
         LoginView v = new LoginView();
 
+        // Uso la Facade di login di default (HOME)
+        this.loginFacade = new DefaultLoginFacade(new UserDAO());
+
         v.getPasswordField().setFocusTraversalKeysEnabled(false);
         v.getPasswordField().addKeyListener(new KeyListener() {
-            @Override 
+            @Override
             public void keyPressed(KeyEvent e) {
                 if (e.getKeyCode() == KeyEvent.VK_ENTER) accedi();
             }
             @Override 
             public void keyReleased(KeyEvent e) {}
-            @Override
+            
+            @Override 
             public void keyTyped(KeyEvent e) {}
         });
 
         v.getAccediButton().addActionListener(new ActionListener() {
-            @Override 
-            public void actionPerformed(ActionEvent e) { accedi(); }
+            @Override
+            public void actionPerformed(ActionEvent e) { 
+            	accedi();
+            }
         });
 
         view = v;
@@ -85,12 +95,8 @@ public class LoginController extends AbsController {
     }
 
     /** @return username dalla view */
-    private String getUsername() {
-        return logv.getUsernameField().getText();
-    }
+    private String getUsername() { return logv.getUsernameField().getText(); }
 
     /** @return password dalla view */
-    private char[] getPassword() {
-        return logv.getPasswordField().getPassword();
-    }
+    private char[] getPassword() { return logv.getPasswordField().getPassword(); }
 }

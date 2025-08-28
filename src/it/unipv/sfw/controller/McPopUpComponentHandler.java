@@ -5,37 +5,34 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JOptionPane;
 
-import it.unipv.sfw.dao.mysql.MechanicDAO;
 import it.unipv.sfw.exceptions.ComponentNotFoundException;
 import it.unipv.sfw.exceptions.DuplicateComponentException;
+import it.unipv.sfw.facade.AddComponentOutcome;
+import it.unipv.sfw.facade.MechanicFacade;
 import it.unipv.sfw.model.component.Components;
 import it.unipv.sfw.model.staff.Mechanic;
 import it.unipv.sfw.model.vehicle.Vehicle;
 import it.unipv.sfw.view.McPopUpComponentView;
 import it.unipv.sfw.view.McPopUpRequestView;
 
-/**
- * Gestisce il popup per Aggiungere o Rimuovere componenti.
- * Dipende dal Mechanic passato dal Controller (no Model in Session).
- */
 public class McPopUpComponentHandler {
 
     public enum Operation { ADD, REMOVE }
 
     private final McPopUpComponentView pc;
-    private final McPopUpRequestView pr;   // usata solo quando serve una richiesta
-    private final MechanicDAO md;
+    private final McPopUpRequestView pr;
     private final Mechanic m;
     private final Operation op;
+    private final MechanicFacade facade;
 
-    private Components c; // componente corrente (costruito dalla UI)
+    private Components c;
 
-    public McPopUpComponentHandler(Mechanic m, Operation op) {
+    public McPopUpComponentHandler(Mechanic m, Operation op, MechanicFacade facade) {
         this.pc = new McPopUpComponentView();
         this.pr = new McPopUpRequestView();
-        this.md = new MechanicDAO();
         this.m  = m;
         this.op = op;
+        this.facade = facade;
 
         if (op == Operation.ADD) {
             setupAddComponentListener();
@@ -48,70 +45,67 @@ public class McPopUpComponentHandler {
 
     private void setupAddComponentListener() {
         pc.getSendButton().addActionListener(new ActionListener() {
-            @Override public void actionPerformed(ActionEvent e) {
-                handleAddComponent();
+            @Override 
+            public void actionPerformed(ActionEvent e) {
+                try {
+					handleAddComponent();
+				} catch (DuplicateComponentException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
             }
         });
     }
 
-    private void handleAddComponent() {
+    private void handleAddComponent() throws DuplicateComponentException {
         Vehicle v = ensureVehicleWithMSN();
-        if (v == null) return; // messaggio già mostrato
+        if (v == null) return;
 
         try {
-            // Validazioni lato DB su id/nome/stato dichiarato nella UI
             String idCStr = pc.getIdC().getText();
             String name   = pc.getNameC().getText().toUpperCase();
             String status = pc.getStatusC().getText().toUpperCase();
-
-            md.checkCompo(idCStr, name, status);
 
             int idc = Integer.parseInt(idCStr);
             c = new Components(idc, name);
             c.setReplacementStatus(status);
 
-            // Update MODEL: prova ad aggiungere il componente al Vehicle
-            int result = m.addComponent(v, c);
+            // model-first: calcola wear/esito
+            int result = m.addComponent(v, c); // 1/2 ok, 3 worn
 
-            // Persist/UX in base all’esito
-            handleAddComponentResult(result, v);
+            var res = facade.addComponent(
+                m.getID(),
+                v.getMSN().toUpperCase(),
+                c.getIdComponent(),
+                c.getName().toUpperCase(),
+                c.getReplacementStatus().toUpperCase(),
+                c.getWear()
+            );
+
+            switch (res.getOutcome()) {
+                case INSERTED_OK -> {
+                    pc.mex2();
+                    pc.clearComponents(pc.getDataPanel());
+                }
+                case NEEDS_REPLACEMENT -> {
+                    if (result == 3) {
+                        handleComponentReplacementRequest(v);
+                    } else {
+                        pc.mex1();
+                        pc.clearComponents(pc.getDataPanel());
+                    }
+                }
+                default -> {
+                    pc.mex1();
+                    pc.clearComponents(pc.getDataPanel());
+                }
+            }
 
         } catch (ComponentNotFoundException err) {
-            pc.mex(); // tuo errore generico
-            System.out.println(err);
-        } catch (DuplicateComponentException err) {
-            pc.mex1(); // tuo messaggio "duplicato"
+            pc.mex();
             System.out.println(err);
         } catch (NumberFormatException nfe) {
             JOptionPane.showMessageDialog(null, "ID componente non numerico.", "Errore", JOptionPane.ERROR_MESSAGE);
-        }
-    }
-
-    private void handleAddComponentResult(int result, Vehicle v) {
-        // Convenzione: 1=ottime, 2=buone, 3=usurato (da tua Vehicle.addComponent corretta)
-        switch (result) {
-            case 1:
-            case 2:
-                // Persist nel DB + wear aggiornato
-                if (md.insertComponent(String.valueOf(c.getIdComponent()), v.getMSN().toUpperCase())) {
-                    md.updateWear(c.getWear(), String.valueOf(c.getIdComponent()));
-                    pc.mex2(); // tuo "inserito con successo"
-                    pc.clearComponents(pc.getDataPanel());
-                }
-                md.insertLogEvent(m.getID(), "INSERT COMPONENT ID: " + c.getIdComponent());
-                break;
-
-            case 3:
-                // componente usurato -> avvia richiesta sostituzione
-                handleComponentReplacementRequest(v);
-                md.insertLogEvent(m.getID(), "REQUEST REPLACEMENT FOR COMPONENT ID: " + c.getIdComponent());
-                break;
-
-            default:
-                // fallback (in caso il tuo Vehicle ritorni 0 in qualche condizione)
-                pc.mex1(); // messaggio neutro
-                pc.clearComponents(pc.getDataPanel());
-                break;
         }
     }
 
@@ -122,15 +116,20 @@ public class McPopUpComponentHandler {
 
         pr.getSendButton().addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
-                // Inserisci richiesta usando direttamente l’MSN del Vehicle corrente
-                md.insertRequest(
-                    pr.getDesc().getText(),
-                    pr.getId_s().getText().toUpperCase(),
-                    pc.getIdC().getText(),
-                    v.getMSN().toUpperCase()
-                );
-                // opzionale: feedback UI
-                // pr.mex1(); // se hai un "success" per la request
+                try {
+                    facade.createComponentRequest(
+                        m.getID(),
+                        pr.getId_s().getText(),
+                        pc.getIdC().getText(),
+                        v.getMSN().toUpperCase(),
+                        pr.getDesc().getText().toUpperCase()
+                    );
+                    // opzionale
+                    // pr.mex1();
+                } catch (Exception ex) {
+                    pr.mex();
+                    System.out.println(ex);
+                }
             }
         });
     }
@@ -138,7 +137,7 @@ public class McPopUpComponentHandler {
     // ---------- REMOVE ----------
 
     private void setupRemoveComponentListener() {
-        pc.hideField(); // nasconde campi non necessari per remove (coerente con tua UI)
+        pc.hideField();
         pc.getSendButton().addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
                 handleRemoveComponent();
@@ -154,20 +153,20 @@ public class McPopUpComponentHandler {
             String idCStr = pc.getIdC().getText();
             String name   = pc.getNameC().getText().toUpperCase();
 
-            // Validazione: il componente esiste ed è USED
-            md.checkCompo(idCStr.toUpperCase(), name, "USED");
-
-            // Persist: rimozione dal DB
-            md.removeComponent(idCStr.toUpperCase(), v.getMSN().toUpperCase());
-
-            // Update MODEL: rimozione dal Vehicle
             int id = Integer.parseInt(idCStr);
+
+            facade.removeComponent(
+                m.getID(),
+                v.getMSN().toUpperCase(),
+                id,
+                name
+            );
+
+            // model update
             c = new Components(id, name);
-            v.removeComponent(c); // Vehicle rimuove per name o equals/hashCode
+            v.removeComponent(c);
 
-            pc.mex3(); // tuo "rimosso con successo"
-            md.insertLogEvent(m.getID(), "REMOVE COMPONENT ID: " + idCStr);
-
+            pc.mex3();
         } catch (ComponentNotFoundException err) {
             pc.mex();
             System.out.println(err);
@@ -178,11 +177,11 @@ public class McPopUpComponentHandler {
         pc.clearComponents(pc.getDataPanel());
     }
 
-    // ---------- Helpers ----------
+    // ---------- Helpers SOLO UI ----------
 
     private Vehicle ensureVehicleWithMSN() {
         Vehicle v = m.getVehicles();
-        if (v == null || v.getMSN() == null || v.getMSN().isBlank()) {
+        if (v == null || !v.hasValidMsn()) {
             JOptionPane.showMessageDialog(
                 null,
                 "Assign/create a vehicle (with MSN) before managing components.",
@@ -194,6 +193,5 @@ public class McPopUpComponentHandler {
     }
 
     public void showWindow() { pc.show(); }
-
     public void clear() { pc.clearComponents(pc.getSendPanel()); }
 }
