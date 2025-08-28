@@ -8,6 +8,8 @@ import javax.swing.JOptionPane;
 import it.unipv.sfw.dao.mysql.StrategistDAO;
 import it.unipv.sfw.dao.mysql.VehicleDAO;
 import it.unipv.sfw.exceptions.VehicleNotFoundException;
+import it.unipv.sfw.facade.StrategistFacade;
+import it.unipv.sfw.facade.impl.DefaultStrategistFacade;
 import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.model.staff.Staff;
 import it.unipv.sfw.model.staff.Strategist;
@@ -27,7 +29,9 @@ public class StrategistController extends AbsController {
     private StrategistDAO sd;
     private VehicleDAO vd;
 
-    // tracking minimi per colorazione tabella
+    // Facade
+    private StrategistFacade facade;
+
     private int minT1 = 0, minT2 = 0, minT3 = 0;
     private int timeLap = 0;
 
@@ -50,8 +54,11 @@ public class StrategistController extends AbsController {
         sd = new StrategistDAO();
         vd = new VehicleDAO();
 
+        // inizializzo la Facade con i DAO (IStrategistDAO + IVehicleDAO)
+        facade = new DefaultStrategistFacade(sd, vd);
+
         // 3) Log di login
-        sd.insertLogEvent(st.getID(), "LOGIN");
+        facade.log(st.getID(), "LOGIN");
 
         // 4) Stato UI iniziale (niente vehicle associato)
         setStrategyActionsEnabled(false);
@@ -69,10 +76,8 @@ public class StrategistController extends AbsController {
                 }
                 msn = msn.toUpperCase();
                 try {
-                    // validazione esistenza veicolo
-                    sd.checkVehicle(msn);
-                    // persistenza associazione
-                    sd.insertStrategistOnVehicle(msn, st.getID());
+                    // validazione + persistenza associazione (DB) via Facade
+                    facade.bindVehicleToStrategist(st.getID(), msn);
 
                     // model: creo/aggancio il veicolo allo stratega
                     currentVehicle = new Vehicle(msn);
@@ -81,7 +86,7 @@ public class StrategistController extends AbsController {
                     sv.showElement();
                     setStrategyActionsEnabled(true);
 
-                    sd.insertLogEvent(st.getID(), "BIND VEHICLE: " + msn);
+                    facade.log(st.getID(), "BIND VEHICLE: " + msn);
                 } catch (VehicleNotFoundException ex) {
                     sv.mex(); // popup di errore
                     System.out.println(ex);
@@ -89,7 +94,7 @@ public class StrategistController extends AbsController {
             }
         });
 
-        // Genera tempi settore (sul model) e aggiorna tabella
+        // Genera tempi settore sul model e aggiorna tabella
         sv.getGetTimeButton().addActionListener(new ActionListener() {
             @Override 
             public void actionPerformed(ActionEvent e) {
@@ -100,11 +105,11 @@ public class StrategistController extends AbsController {
                     return;
                 }
 
-                // Model first: genera tempi sul Vehicle
+                //  genera tempi sul Vehicle
                 currentVehicle.setTimeSect();
 
-                // persisti i tempi via DAO
-                vd.timeSector(currentVehicle);
+                // persistenza dei tempi via Facade (DB)
+                facade.persistSectorTimes(currentVehicle);
 
                 // aggiorna tabella/etichette
                 addLapRow(sv, currentVehicle);
@@ -116,7 +121,8 @@ public class StrategistController extends AbsController {
             @Override 
             public void actionPerformed(ActionEvent e) {
                 int laps = sv.getTab().getRowCount();
-                StPopUpCreateStrategyHandler scs = new StPopUpCreateStrategyHandler(st, currentVehicle, laps == 0 ? 1 : 0, timeLap);
+                StPopUpCreateStrategyHandler scs =
+                    new StPopUpCreateStrategyHandler(st, currentVehicle, laps == 0 ? 1 : 0, timeLap, facade);
                 scs.showWindow();
             }
         });
@@ -145,7 +151,7 @@ public class StrategistController extends AbsController {
         int t3 = v.getTimeSect3();
         timeLap = t1 + t2 + t3;
 
-        // Memorizza il lap time anche nello Strategist (model utente)
+        // Memorizza il lap time anche nello Strategist
         st.setTimeLap(timeLap);
 
         // Inizializza i minimi al primo giro

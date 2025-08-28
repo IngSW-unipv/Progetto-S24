@@ -5,7 +5,7 @@ import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Set;
 
-import it.unipv.sfw.dao.mysql.StrategistDAO;
+import it.unipv.sfw.facade.StrategistFacade;
 import it.unipv.sfw.model.component.Components;
 import it.unipv.sfw.model.staff.Strategist;
 import it.unipv.sfw.model.vehicle.Vehicle;
@@ -19,36 +19,29 @@ import it.unipv.sfw.view.StPopUpCreateStrategyView;
 public class StPopUpCreateStrategyHandler {
 
     private final StPopUpCreateStrategyView pcs;
-    private final StrategistDAO sd;
     private final Strategist strategist;
     private final Vehicle vehicle;
+
+    // Facade per il solo logging 
+    private final StrategistFacade facade;
 
     // Soglia di riferimento per decidere PUSH/HOLD (ms)
     private static final int SET_POINT_MS = 81_000;
 
     private StGraphicDetailsView gdv;
 
-    /**
-     * @param strategist stratega corrente (dal controller)
-     * @param vehicle    veicolo associato (dal controller)
-     * @param selectedStrategyCount 0 se era già stata selezionata una strategia in precedenza
-     * @param currentLapTimeMs      tempo giro corrente (ms)
-     */
     public StPopUpCreateStrategyHandler(Strategist strategist, Vehicle vehicle,
-                                        int selectedStrategyCount, int currentLapTimeMs) {
+                                        int selectedStrategyCount, int currentLapTimeMs,
+                                        StrategistFacade facade) {
         this.pcs = new StPopUpCreateStrategyView();
-        this.sd  = new StrategistDAO();
         this.strategist = strategist;
         this.vehicle    = vehicle;
+        this.facade     = facade;
 
-        // 1) Calcolo media usura componenti
         int averageWear = computeAverageWear(vehicle.getComponent());
-
-        // 2) Mostra degradazione componenti con colore
         pcs.getComponentLabel1().setText("DEGRADATION OF COMPONENTS: " + averageWear);
         pcs.getComponentLabel1().setForeground(colorForWear(averageWear));
 
-        // 3) Messaggio strategia raccomandata
         String strategyMsg;
         Color strategyColor;
         if (selectedStrategyCount == 0) {
@@ -64,25 +57,22 @@ public class StPopUpCreateStrategyHandler {
         pcs.getMexLabel().setText(strategyMsg);
         pcs.getMexLabel().setForeground(strategyColor);
 
-        // 4) Listener: dettagli componenti
         pcs.getDetailsButton().addActionListener(new ActionListener() {
             @Override 
             public void actionPerformed(ActionEvent e) {
                 gdv = new StGraphicDetailsView(vehicle.getComponent());
                 gdv.show();
-                sd.insertLogEvent(strategist.getID(), "SHOW DETAILS COMPONENT");
+                facade.log(strategist.getID(), "SHOW DETAILS COMPONENT");
             }
         });
 
-        // 5) Listener: scelta strategia dalla combo
         pcs.getBox().addActionListener(new ActionListener() {
             @Override 
             public void actionPerformed(ActionEvent e) {
                 String select = (String) pcs.getBox().getSelectedItem();
-                
                 pcs.getStrategyLabel2().setText(select);
                 pcs.getStrategyLabel2().setForeground(Color.YELLOW);
-                sd.insertLogEvent(strategist.getID(), "SELECT NEW STRATEGY: " + select);
+                facade.log(strategist.getID(), "SELECT NEW STRATEGY: " + select);
             }
         });
     }

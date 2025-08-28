@@ -78,7 +78,7 @@ public class StrategistDAO implements IStrategistDAO{
 
 			// Verifica se ci sono risultati
 			if (!rs1.next()) {
-				// Accedi ai dati solo dopo rs.next()
+				// Accedo ai dati solo dopo rs.next()
 				throw new VehicleNotFoundException(msn);
 			}
 
