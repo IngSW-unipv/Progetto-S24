@@ -12,24 +12,54 @@ import it.unipv.sfw.model.request.Request;
 
 /**
  * Implementazione della Facade del magazziniere.
- * Delega al DAO e restituisce dati/esiti; non modifica il Model.
+ * <p>
+ * Delega le operazioni al livello DAO e restituisce dati/esiti verso i Controller;
+ * non modifica direttamente il Model di dominio.
+ * </p>
+ *
+ * @see WarehousemanFacade
+ * @see IWarehousemanDAO
  */
 public class DefaultWarehousemanFacade implements WarehousemanFacade {
 
     private final IWarehousemanDAO dao;
 
+    /**
+     * Costruttore.
+     *
+     * @param dao implementazione di {@link IWarehousemanDAO} da utilizzare
+     * @throws NullPointerException se {@code dao} è {@code null}
+     */
     public DefaultWarehousemanFacade(IWarehousemanDAO dao) {
         this.dao = Objects.requireNonNull(dao);
     }
 
     // === REQUESTS ===
 
+    /**
+     * Carica tutte le richieste
+     * <p>
+     * Restituisce una <b>copia modificabile</b> dell'insieme, così che
+     * il Controller possa eventualmente rimuovere elementi dal proprio set
+     * senza influenzare la collezione originale del DAO.
+     * </p>
+     *
+     * @return insieme di {@link Request} correnti
+     */
     @Override
     public Set<Request> loadRequests() {
         // Ritorno una copia modificabile (utile al controller per eventuali rimozioni)
         return new HashSet<>(dao.selectAllRequest());
     }
 
+    /**
+     * Elimina una richiesta individuata da staff, componente e MSN veicolo.
+     *
+     * @param staffId    ID dello staff che ha inserito la richiesta
+     * @param componentId ID del componente collegato alla richiesta
+     * @param msn        MSN del veicolo; verrà normalizzato in maiuscolo
+     * @throws RequestNotFoundException se la richiesta non è presente/valida
+     */
     @Override
     public void deleteRequest(String staffId, String componentId, String msn)
             throws RequestNotFoundException {
@@ -41,6 +71,15 @@ public class DefaultWarehousemanFacade implements WarehousemanFacade {
 
     // === COMPONENTS ===
 
+    /**
+     * Aggiorna un componente (usura e stato) e registra un evento di log.
+     *
+     * @param idComp  ID del componente
+     * @param wear    livello di usura (0-100)
+     * @param status  stato dichiarato (es. {@code NEW}/{@code USED});
+     * @param staffId ID del magazziniere che effettua l’operazione (per il log)
+     * @throws ComponentNotFoundException se il componente non esiste
+     */
     @Override
     public void updateComponent(String idComp, int wear, String status, String staffId)
             throws ComponentNotFoundException {
@@ -52,11 +91,22 @@ public class DefaultWarehousemanFacade implements WarehousemanFacade {
 
     // === COUNTS / REPORT ===
 
+    /**
+     * Conta il numero totale di componenti presenti in magazzino.
+     *
+     * @return numero totale di componenti
+     */
     @Override
     public int countAllComponentsInWarehouse() {
         return dao.countElement();
     }
 
+    /**
+     * Conta il numero di componenti presenti in magazzino filtrando per nome/tipo.
+     *
+     * @param name nome del componente da filtrare
+     * @return numero di componenti corrispondenti
+     */
     @Override
     public int countComponentsInWarehouseByName(String name) {
         return dao.countElementBySelect(name);
@@ -64,6 +114,12 @@ public class DefaultWarehousemanFacade implements WarehousemanFacade {
 
     // === LOG ===
 
+    /**
+     * Registra un evento di log a nome del magazziniere.
+     *
+     * @param staffId     ID dello staff
+     * @param description descrizione sintetica dell’evento
+     */
     @Override
     public void log(String staffId, String description) {
         dao.insertLogEvent(staffId, description);

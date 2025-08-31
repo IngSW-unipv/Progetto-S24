@@ -1,4 +1,3 @@
-// FILE: src/it/unipv/sfw/facade/login/impl/DefaultLoginFacade.java
 package it.unipv.sfw.facade.impl;
 
 import java.util.Arrays;
@@ -15,28 +14,55 @@ import it.unipv.sfw.model.staff.Strategist;
 import it.unipv.sfw.model.staff.Warehouseman;
 
 /**
- * Implementazione di default della Facade di login.
- * - usa IUserDAO per leggere le credenziali/ruolo;
- * - valida la password;
- * - mappa ROLE - sottoclasse Staff;
- * - aggiorna la Session con l'utente autenticato;
- * - restituisce AuthResult per il routing.
+ * Implementazione di default della {@link LoginFacade}.
+ * <p>
+ * Responsabilità principali:
+ * <ul>
+ *   <li>Usare {@link IUserDAO} per recuperare credenziali e ruolo dell'utente</li>
+ *   <li>Validare la password fornita</li>
+ *   <li>Mappare il ruolo in una sottoclasse di {@link Staff} coerente
+ *       ({@link Mechanic}, {@link Strategist}, {@link Warehouseman})</li>
+ *   <li>Aggiornare lo stato della {@link Session} con l'utente autenticato</li>
+ *   <li>Restituire un {@link AuthResult} con i dati minimi per routing/UI</li>
+ * </ul>
+ * </p>
  */
 public class DefaultLoginFacade implements LoginFacade {
 
     private final IUserDAO userDAO;
 
-    // Indici colonne (coerenti con UserDAO.selectRowFieldsById)
+    // Indici delle colonne
     private static final int IDX_ID = 0;
     private static final int IDX_PWD = 1;
     private static final int IDX_ROLE = 2;
     private static final int IDX_NAME = 3;
     private static final int IDX_SURNAME = 4;
 
+    /**
+     * Costruisce una facade di login di default.
+     *
+     * @param userDAO implementazione di {@link IUserDAO} da utilizzare
+     */
     public DefaultLoginFacade(IUserDAO userDAO) {
         this.userDAO = userDAO;
     }
 
+    /**
+     * Esegue l’autenticazione dell’utente dato un ID e una password.
+     * <ol>
+     *   <li>Recupera tutti i campi dell’utente dal DB tramite {@link IUserDAO}</li>
+     *   <li>Verifica la password rispetto a quella memorizzata</li>
+     *   <li>Mappa il ruolo e costruisce la sottoclasse {@link Staff} appropriata</li>
+     *   <li>Aggiorna la {@link Session} con l’utente autenticato</li>
+     *   <li>Restituisce un {@link AuthResult} per il controller</li>
+     * </ol>
+     *
+     * @param id       ID utente
+     * @param password password in chiaro (viene azzerata dopo l’uso per motivi di sicurezza)
+     * @return risultato dell’autenticazione ({@link AuthResult})
+     * @throws AccountNotFoundException se l’ID non è presente o il ruolo è sconosciuto
+     * @throws WrongPasswordException   se la password non corrisponde
+     */
     @Override
     public AuthResult authenticate(String id, char[] password)
             throws AccountNotFoundException, WrongPasswordException {
@@ -63,13 +89,13 @@ public class DefaultLoginFacade implements LoginFacade {
             case "MECHANIC"     -> user = new Mechanic(row[IDX_ID], storedPw);
             case "STRATEGIST"   -> user = new Strategist(row[IDX_ID], storedPw);
             case "WAREHOUSEMAN" -> user = new Warehouseman(row[IDX_ID], storedPw);
-            default             -> throw new AccountNotFoundException(id); // ruolo sconosciuto -> account non valido
+            default             -> throw new AccountNotFoundException(id); // ruolo sconosciuto
         }
 
-        // 4) inizializzazione campi di Session (stato utente autenticato + metadati leggeri)
+        // 4) Aggiorna lo stato della Session
         Session.getIstance().setAuthenticatedUser(user, row[IDX_NAME], row[IDX_SURNAME]);
 
-        // 5) ritorno DTO minimale per routing/UI
+        // 5) Ritorna oggetto per routing/UI
         return new AuthResult(
                 row[IDX_ID],
                 user.getType(),
@@ -78,16 +104,30 @@ public class DefaultLoginFacade implements LoginFacade {
         );
     }
 
+    /**
+     * Verifica se esiste un utente autenticato in sessione.
+     *
+     * @return {@code true} se l’utente è autenticato, {@code false} altrimenti
+     */
     @Override
     public boolean isAuthenticated() {
         return Session.getIstance().isAuthenticated();
     }
 
+    /**
+     * Restituisce il ruolo dell’utente attualmente autenticato.
+     *
+     * @return ruolo utente oppure {@code null} se non autenticato
+     */
     @Override
     public Staff.TypeRole currentRoleOrNull() {
         return Session.getIstance().getCurrentRole();
     }
 
+    /**
+     * Effettua il logout dell’utente corrente,
+     * azzerando lo stato della {@link Session}.
+     */
     @Override
     public void logout() {
         Session.getIstance().clearAuthentication();
