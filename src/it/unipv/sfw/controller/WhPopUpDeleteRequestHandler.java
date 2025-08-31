@@ -10,7 +10,16 @@ import it.unipv.sfw.view.WhPopUpDeleteRequestView;
 
 /**
  * Handler popup per l'eliminazione di una richiesta.
- * Dipende dal Warehouseman passato dal Controller e notifica via Observable.
+ * <p>
+ * Coordina la view {@link WhPopUpDeleteRequestView}, interagisce con il modello
+ * {@link Warehouseman} e delega alla {@link WarehousemanFacade} la cancellazione
+ * sul livello di persistenza. Notifica inoltre la view principale tramite
+ * {@link Observable} con il nuovo totale di richieste.
+ * </p>
+ *
+ * @see WhPopUpDeleteRequestView
+ * @see WarehousemanFacade
+ * @see Observable
  */
 public class WhPopUpDeleteRequestHandler {
 
@@ -21,6 +30,13 @@ public class WhPopUpDeleteRequestHandler {
     // Facade
     private final WarehousemanFacade facade;
 
+    /**
+     * Costruttore che inizializza la popup e registra i listener necessari.
+     *
+     * @param warehouseman il magazziniere corrente
+     * @param observable   l'osservabile per notificare la view principale (nuovo totale richieste)
+     * @param facade       facciata applicativa per la cancellazione della richiesta e il logging
+     */
     public WhPopUpDeleteRequestHandler(Warehouseman warehouseman, Observable observable, WarehousemanFacade facade) {
         this.pdr = new WhPopUpDeleteRequestView();
         this.warehouseman = warehouseman;
@@ -30,6 +46,12 @@ public class WhPopUpDeleteRequestHandler {
         wireEvents();
     }
 
+    /**
+     * Collega gli handler degli eventi della view.
+     * <p>
+     * Il pulsante di invio è associato a {@link #onDeleteRequest()}.
+     * </p>
+     */
     private void wireEvents() {
         pdr.getSendButton().addActionListener(new ActionListener() {
             @Override public void actionPerformed(ActionEvent e) {
@@ -40,12 +62,17 @@ public class WhPopUpDeleteRequestHandler {
 
     /**
      * Gestione dell'evento di eliminazione di una richiesta.
-     *
+     * <p>
      * Flusso:
-     *  1) Legge i dati dalla UI.
-     *  2) Delega alla Facade la validazione e la cancellazione sul DB.
-     *  3) Aggiorna il Model locale
-     *  4) Log (via Facade) e aggiornamento UI/Observable.
+     * </p>
+     * <ol>
+     *   <li>Legge i dati dalla UI (id staff, id componente, MSN veicolo)</li>
+     *   <li>Delega alla {@link WarehousemanFacade} la validazione e la cancellazione su DB</li>
+     *   <li>Rimuove la richiesta dal modello locale {@link Warehouseman}</li>
+     *   <li>Pulisce la form, mostra conferma e notifica l'{@link Observable} con il totale aggiornato</li>
+     *   <li>Esegue il log dell'operazione tramite la Facade</li>
+     * </ol>
+     * In caso di richiesta inesistente, mostra un messaggio d'errore nella view e ripulisce i campi.
      */
     private void onDeleteRequest() {
         String idStaff = pdr.getId_s().getText();
@@ -76,9 +103,15 @@ public class WhPopUpDeleteRequestHandler {
         }
     }
 
+    /**
+     * Mostra la finestra popup per l'eliminazione della richiesta.
+     */
     public void showWindow() { 
     	pdr.show();
     }
 
+    /**
+     * Pulisce i campi dell'area di invio nella popup.
+     */
     public void clear() { pdr.clearComponents(pdr.getSendPanel()); }
 }

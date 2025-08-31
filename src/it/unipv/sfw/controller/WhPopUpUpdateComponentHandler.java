@@ -11,17 +11,37 @@ import it.unipv.sfw.model.staff.Warehouseman;
 import it.unipv.sfw.view.WhPopUpUpdateComponentView;
 
 /**
- * Handler per il pop-up di aggiornamento componente.
- * Dipende dal Warehouseman passato dal Controller
+ * Handler che gestisce il pop-up di aggiornamento di un {@link it.unipv.sfw.model.component.Components}.
+ * <p>
+ * Si occupa di:
+ * <ul>
+ *   <li>Recuperare gli input dalla view {@link WhPopUpUpdateComponentView}</li>
+ *   <li>Validare i dati lato UI (id componente, wear, status)</li>
+ *   <li>Delegare le operazioni di dominio/persistenza alla {@link WarehousemanFacade}</li>
+ *   <li>Mostrare messaggi di esito e pulire i campi della UI</li>
+ * </ul>
+ * </p>
+ *
+ * @see Warehouseman
+ * @see WarehousemanFacade
+ * @see WhPopUpUpdateComponentView
  */
 public class WhPopUpUpdateComponentHandler {
 
     private final WhPopUpUpdateComponentView puc;
-    private final Warehouseman warehouseman; // per log/contesto
+    private final Warehouseman warehouseman; // contesto per log e ID
 
-    // Facade
+    /**
+     * Facade che incapsula la logica applicativa e la persistenza.
+     */
     private final WarehousemanFacade facade;
 
+    /**
+     * Costruttore che inizializza la popup e registra i listener sugli eventi UI.
+     *
+     * @param warehouseman il magazziniere corrente
+     * @param facade la facciata per gestire l'aggiornamento dei componenti
+     */
     public WhPopUpUpdateComponentHandler(Warehouseman warehouseman, WarehousemanFacade facade) {
         this.puc = new WhPopUpUpdateComponentView();
         this.warehouseman = warehouseman;
@@ -30,6 +50,10 @@ public class WhPopUpUpdateComponentHandler {
         wireEvents();
     }
 
+    /**
+     * Registra i listener sugli elementi della view.
+     * In particolare, il pulsante di invio è associato a {@link #onUpdateComponent()}.
+     */
     private void wireEvents() {
         puc.getSendButton().addActionListener(new ActionListener() {
             @Override 
@@ -40,14 +64,14 @@ public class WhPopUpUpdateComponentHandler {
     }
 
     /**
-     * Gestione dell'evento di aggiornamento componente.
-     *
-     * Flusso:
-     *  1) Recupera input da UI (id componente, wear, status).
-     *  2) Esegue validazioni (UI).
-     *  3) Delega alla Facade le validazioni
-     *  4) Mostra esito nella view e pulisce i campi.
-     *
+     * Gestisce l'evento di aggiornamento componente.
+     * <ol>
+     *   <li>Recupera input da UI (id, wear, status)</li>
+     *   <li>Esegue validazioni lato UI (campi obbligatori, range wear, valori status ammessi)</li>
+     *   <li>Invoca {@link WarehousemanFacade#updateComponent(String, int, String, String)} per validazione e persistenza</li>
+     *   <li>Mostra messaggi di esito nella view</li>
+     *   <li>Pulisce il form</li>
+     * </ol>
      */
     private void onUpdateComponent() {
         String idComp = puc.getId_c().getText();
@@ -78,23 +102,29 @@ public class WhPopUpUpdateComponentHandler {
                 return;
             }
 
-            // 1) Validazioni/persistenza/log via Facade
+            // Validazioni e persistenza via Facade
             facade.updateComponent(idComp, wear, status, warehouseman.getID());
 
-            // 2) UI (successo)
+            // Successo
             puc.mex2();
 
         } catch (ComponentNotFoundException err) {
-            puc.mex1(); // errore componente non trovato
+            puc.mex1(); // errore: componente non trovato
         } finally {
-            // 3) Pulisci form
+            // Pulizia form
             puc.clearComponents(puc.getDataPanel());
         }
     }
 
+    /**
+     * Mostra la finestra popup.
+     */
     public void showWindow() {
     	puc.show();
     }
 
+    /**
+     * Pulisce i campi dell'area di invio della popup.
+     */
     public void clear() { puc.clearComponents(puc.getSendPanel()); }
 }

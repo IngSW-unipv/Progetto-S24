@@ -15,8 +15,21 @@ import it.unipv.sfw.model.staff.Staff;
 import it.unipv.sfw.view.WarehousemanView;
 
 /**
- * Controller che gestisce il flusso del magazziniere (Warehouseman).
- * View -> Controller -> Model(+DAO)
+ * Controller che gestisce il flusso del magazziniere ({@link Warehouseman}).
+ * <p>
+ * Responsabilità principali:
+ * <ul>
+ *   <li>Recuperare l'utente corrente dalla {@link Session} e validarne il ruolo</li>
+ *   <li>Inizializzare la {@link WarehousemanView}, il {@link WarehousemanDAO} e l'{@link Observable}</li>
+ *   <li>Delegare alla {@link WarehousemanFacade} il caricamento delle richieste e le operazioni applicative</li>
+ *   <li>Collegare i listener dei controlli UI e notificare la view tramite l'Observable</li>
+ * </ul>
+ * Il flusso segue lo schema MVC: <i>View -> Controller -> Model (+DAO)</i>.
+ * </p>
+ *
+ * @see WarehousemanView
+ * @see WarehousemanFacade
+ * @see Observable
  */
 public class WarehousemanController extends AbsController {
 
@@ -26,11 +39,29 @@ public class WarehousemanController extends AbsController {
     //Facade
     private WarehousemanFacade facade;
 
+    /**
+     * Restituisce il tipo di controller gestito da questa classe.
+     *
+     * @return {@link AbsController.TypeController#WAREHOUSEMAN}
+     */
     @Override
     public TypeController getType() {
         return TypeController.WAREHOUSEMAN;
     }
 
+    /**
+     * Inizializza il controller del magazziniere.
+     * <ol>
+     *   <li>Recupera e valida l'utente corrente dalla {@link Session}</li>
+     *   <li>Crea la {@link WarehousemanView}, il {@link WarehousemanDAO} e l'{@link Observable}</li>
+     *   <li>Istanzia la {@link WarehousemanFacade} e carica le richieste dal DB nel modello</li>
+     *   <li>Imposta i dati di intestazione nella view e registra quest'ultima come {@link Observer}</li>
+     *   <li>Configura gli handler e i listener dei pulsanti della UI</li>
+     *   <li>Rende visibile la view e associa la {@link #view} al controller</li>
+     * </ol>
+     *
+     * @throws IllegalStateException se l'utente corrente non è un {@link Warehouseman}
+     */
     @Override
     public void initialize() {
         // 1) Utente corrente dalla Session

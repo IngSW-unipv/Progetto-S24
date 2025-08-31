@@ -4,30 +4,39 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Questa classe rappresenta un soggetto osservabile (Observable).
- * Mantiene una lista di osservatori (Observer) e fornisce metodi per
- * aggiungere, rimuovere e notificare gli osservatori quando si verifica
- * un cambiamento nel suo stato.
+ * Classe che implementa il ruolo di soggetto osservabile (Observable)
+ * nel pattern Observer.
+ * <p>
+ * Mantiene una lista di {@link Observer} registrati e fornisce metodi per:
+ * <ul>
+ *   <li>Aggiungere un osservatore</li>
+ *   <li>Rimuovere un osservatore</li>
+ *   <li>Notificare tutti gli osservatori di un cambiamento di stato</li>
+ * </ul>
+ * </p>
+ *
+ * @see Observer
  */
 public class Observable {
+
     /**
-     * Lista degli osservatori registrati con questo oggetto Observable.
+     * Lista degli osservatori registrati a questo oggetto Observable.
      */
     private final List<Observer> observers = new ArrayList<>();
 
     /**
-     * Aggiunge un osservatore alla lista degli osservatori.
+     * Registra un nuovo osservatore.
      *
-     * @param observer L'osservatore da aggiungere.
+     * @param observer l'osservatore da aggiungere alla lista
      */
     public void addObserver(Observer observer) {
         observers.add(observer);
     }
 
     /**
-     * Rimuove un osservatore dalla lista degli osservatori.
+     * Rimuove un osservatore già presente.
      *
-     * @param observer L'osservatore da rimuovere.
+     * @param observer l'osservatore da rimuovere
      */
     public void removeObserver(Observer observer) {
         observers.remove(observer);
@@ -35,10 +44,12 @@ public class Observable {
 
     /**
      * Notifica tutti gli osservatori registrati di un cambiamento.
+     * <p>
+     * Ogni osservatore riceve l'informazione del numero totale di richieste.
+     * </p>
      *
-     * @param totalRequests Il numero totale di richieste, che viene
-     *                      passato agli osservatori come informazione
-     *                      sul cambiamento avvenuto.
+     * @param totalRequests numero totale aggiornato di richieste da propagare
+     *                      agli osservatori
      */
     public void notifyObservers(int totalRequests) {
         for (Observer observer : observers) {
