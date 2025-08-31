@@ -5,12 +5,22 @@ import java.util.EnumMap;
 import java.util.Map;
 
 /**
- * Mapping centralizzato tra i ruoli applicativi ({@link Staff.TypeController})
- * e i tipi di controller UI ({@link AbsController.TypeController}).
- * Non crea istanze, restituisce solo il tipo da caricare.
+ * Classe di utilità che centralizza il mapping tra i ruoli applicativi
+ * ({@link Staff.TypeRole}) e i corrispondenti tipi di controller UI
+ * ({@link AbsController.TypeController}).
+ * <p>
+ * Non istanzia direttamente i controller, ma fornisce il tipo corretto
+ * da caricare in base al ruolo utente autenticato.
+ * </p>
+ *
+ * @see Staff.TypeRole
+ * @see AbsController.TypeController
  */
 public final class ControllerRole {
 
+    /**
+     * Mappa di corrispondenza ruolo -> tipo controller.
+     */
     private static final Map<Staff.TypeRole, AbsController.TypeController> MAP =
             new EnumMap<>(Staff.TypeRole.class);
 
@@ -20,24 +30,33 @@ public final class ControllerRole {
         MAP.put(Staff.TypeRole.WAREHOUSEMAN, AbsController.TypeController.WAREHOUSEMAN);
     }
 
+    /**
+     * Costruttore privato per impedire l’istanziazione della classe.
+     * <p>
+     * La classe espone solo metodi statici.
+     * </p>
+     */
     private ControllerRole() { }
 
     /**
-     * Restituisce il tipo di controller associato al ruolo.
-     * @param role ruolo autenticato (non null)
-     * @return tipo controller da caricare
+     * Restituisce il tipo di controller UI associato al ruolo utente.
+     *
+     * @param role ruolo autenticato (non {@code null})
+     * @return il {@link AbsController.TypeController} da caricare
      * @throws IllegalArgumentException se il ruolo non è mappato
      */
     public static AbsController.TypeController toControllerType(Staff.TypeRole role) {
-        AbsController.TypeController t = MAP.get(role);
-        if (t == null) {
+        AbsController.TypeController tr= MAP.get(role);
+        if (tr == null) {
             throw new IllegalArgumentException("Ruolo non supportato: " + role);
         }
-        return t;
+        return tr;
     }
 
     /**
-     * Tipo controller da usare quando NON c'è un utente autenticato.
+     * Restituisce il tipo di controller da usare quando non c’è
+     * un utente autenticato.
+     *
      * @return {@link AbsController.TypeController#LOGIN}
      */
     public static AbsController.TypeController unauthenticated() {

@@ -15,61 +15,87 @@ import it.unipv.sfw.model.staff.Staff;
 import it.unipv.sfw.view.LoginView;
 
 /**
- * Controller che gestisce il processo di login nella {@link LoginView}.
- * Verifica le credenziali e, in base al ruolo dell'utente,
- * carica il controller congruente usando {@link ControllerFactory}.
+ * Controller che gestisce il processo di autenticazione nella {@link LoginView}.
+ * <p>
+ * Si occupa di:
+ * <ul>
+ *   <li>Leggere username e password dalla view</li>
+ *   <li>Invocare la {@link LoginFacade} per l’autenticazione</li>
+ *   <li>Determinare il ruolo dell’utente autenticato</li>
+ *   <li>Caricare il controller congruente tramite {@link ControllerManager}</li>
+ *   <li>Gestire eventuali errori di login, mostrando i messaggi nella view</li>
+ * </ul>
+ * </p>
+ *
+ * @see LoginFacade
+ * @see ControllerRole
+ * @see ControllerManager
  */
 public class LoginController extends AbsController {
     private LoginView logv;
     private LoginFacade loginFacade;
 
     /**
-     * Esegue il flusso di autenticazione e routing:
-     *
-     *   Legge username/password dalla view.
-     *   Invoca {@link LoginFacade#authenticate(String, char[])} (che a sua volta aggiorna la Session).
-     *   Ricava il ruolo corrente e lo mappa in un {@link AbsController.TypeController}.
-     *   Carica il controller corrispondente nel {@link ControllerManager}.
-     *
-     *   Gestisce gli errori di credenziali mostrando il messaggio nella view.
+     * Esegue il flusso completo di autenticazione e routing:
+     * <ol>
+     *   <li>Recupera username e password dalla view</li>
+     *   <li>Invoca {@link LoginFacade#authenticate(String, char[])}, che aggiorna anche la sessione</li>
+     *   <li>Ottiene il ruolo utente come {@link Staff.TypeRole}</li>
+     *   <li>Tramite {@link ControllerRole}, determina il {@link AbsController.TypeController} associato</li>
+     *   <li>Carica il controller corrispondente usando {@link ControllerManager}</li>
+     *   <li>Gestisce eccezioni di credenziali mostrando l’errore nella view</li>
+     * </ol>
      */
     private void accedi() {
         logv = (LoginView) view;
 
         try {
-            // 1) login applicativo tramite Facade
+            // 1) Login tramite Facade
             AuthResult result = loginFacade.authenticate(getUsername(), getPassword());
 
-            // 2) ruolo corrente come enum
+            // 2) Ruolo corrente
             Staff.TypeRole role = result.getRole();
 
-            // 3) mapping ruolo - tipo controller
+            // 3) Mapping ruolo -> tipo controller
             AbsController.TypeController typeController = ControllerRole.toControllerType(role);
 
-            // 4) carica il controller tramite factory
+            // 4) Caricamento controller e chiusura login
             ControllerManager cm = ControllerManager.getInstance();
             cm.loadController(typeController);
             cm.closeWindow();
 
         } catch (WrongPasswordException | AccountNotFoundException err) {
             System.out.println(err);
-            logv.upError(); //UI per mostrare l'errore
+            logv.upError(); // UI: mostra messaggio di errore
         }
     }
 
+    /**
+     * Restituisce il tipo di controller.
+     *
+     * @return {@link AbsController.TypeController#LOGIN}
+     */
     @Override
     public TypeController getType() {
         return TypeController.LOGIN;
     }
 
+    /**
+     * Inizializza il controller e la view associata.
+     * <p>
+     * Crea la {@link LoginView}, collega gli event listener a tasti e bottoni
+     * e imposta la {@link LoginFacade} di default.
+     * </p>
+     */
     @Override
     public void initialize() {
         System.out.println("Inizializzazione di LoginController - @LOGINCONTROLLER");
         LoginView v = new LoginView();
 
-        // Uso la Facade di login di default (HOME)
+        // Facade di login predefinita
         this.loginFacade = new DefaultLoginFacade(new UserDAO());
 
+        // Listener: tasto ENTER su campo password
         v.getPasswordField().setFocusTraversalKeysEnabled(false);
         v.getPasswordField().addKeyListener(new KeyListener() {
             @Override
@@ -83,10 +109,11 @@ public class LoginController extends AbsController {
             public void keyTyped(KeyEvent e) {}
         });
 
+        // Listener: click su bottone Accedi
         v.getAccediButton().addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) { 
-            	accedi();
+                accedi();
             }
         });
 
@@ -94,9 +121,21 @@ public class LoginController extends AbsController {
         logv = v;
     }
 
-    /** @return username dalla view */
-    private String getUsername() { return logv.getUsernameField().getText(); }
+    /**
+     * Recupera lo username inserito dall’utente.
+     *
+     * @return username testuale dalla {@link LoginView}
+     */
+    private String getUsername() { 
+        return logv.getUsernameField().getText(); 
+    }
 
-    /** @return password dalla view */
-    private char[] getPassword() { return logv.getPasswordField().getPassword(); }
+    /**
+     * Recupera la password inserita dall’utente.
+     *
+     * @return password come array di {@code char[]} dalla {@link LoginView}
+     */
+    private char[] getPassword() { 
+        return logv.getPasswordField().getPassword(); 
+    }
 }
