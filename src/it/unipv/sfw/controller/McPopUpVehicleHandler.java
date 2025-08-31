@@ -12,6 +12,22 @@ import it.unipv.sfw.model.vehicle.Vehicle;
 import it.unipv.sfw.view.McPopUpVehicleView;
 import it.unipv.sfw.view.MechanicView;
 
+/**
+ * Handler che gestisce l'assegnazione/creazione del {@link Vehicle} per un {@link Mechanic}
+ * e il collegamento al pilota tramite la popup {@link McPopUpVehicleView}.
+ * <p>
+ * Raccoglie i dati inseriti dall'utente (id pilota, MSN), delega alla
+ * {@link MechanicFacade} l'operazione applicativa e, in caso di successo,
+ * aggiorna lo stato del modello, la {@link Session} e abilita le azioni
+ * relative al veicolo nella {@link MechanicView}.
+ * </p>
+ *
+ * @see McPopUpVehicleView
+ * @see MechanicView
+ * @see MechanicFacade
+ * @see Mechanic
+ * @see Vehicle
+ */
 public class McPopUpVehicleHandler {
 
     private final McPopUpVehicleView vv;
@@ -19,6 +35,14 @@ public class McPopUpVehicleHandler {
     private final MechanicView mv;
     private final MechanicFacade facade;
 
+    /**
+     * Costruttore che inizializza la popup e registra il listener
+     * per avviare il flusso di assegnazione veicolo/pilota.
+     *
+     * @param m meccanico corrente
+     * @param mv vista del meccanico da aggiornare
+     * @param facade facciata applicativa per l'assegnazione veicolo
+     */
     public McPopUpVehicleHandler(Mechanic m, MechanicView mv, MechanicFacade facade) {
         this.vv = new McPopUpVehicleView();
         this.m  = m;
@@ -33,6 +57,16 @@ public class McPopUpVehicleHandler {
         });
     }
 
+    /**
+     * Gestisce l'invio dalla popup:
+     * <ol>
+     *   <li>Legge id pilota e MSN dalla {@link McPopUpVehicleView}</li>
+     *   <li>Invoca {@link MechanicFacade#assignVehicleToMechanicAndPilot(String, String, String)}</li>
+     *   <li>Aggiorna il modello locale ({@link Mechanic} e {@link Vehicle})</li>
+     *   <li>Aggiorna la {@link Session} e la {@link MechanicView}, abilitando le azioni veicolo</li>
+     *   <li>Gestisce gli errori di dominio mostrando messaggi nella UI</li>
+     * </ol>
+     */
     private void onSend() {
         String idPilot = vv.getId_p().getText();
         String msn     = vv.getMsn().getText().toUpperCase();
@@ -55,6 +89,11 @@ public class McPopUpVehicleHandler {
         }
     }
 
+    /**
+     * Abilita/Disabilita le azioni della {@link MechanicView} legate al veicolo.
+     *
+     * @param on {@code true} per abilitare e rendere visibili i controlli, {@code false} per disabilitarli
+     */
     private void enableVehicleActions(boolean on) {
         mv.getAddComponentButton().setEnabled(on);
         mv.getAddComponentButton().setVisible(true);
@@ -72,9 +111,15 @@ public class McPopUpVehicleHandler {
         mv.getVisualTimePsButton().setVisible(true);
     }
 
+    /**
+     * Mostra la popup per l'inserimento dei dati del veicolo.
+     */
     public void showWindow() {
     	vv.show();
     }
     
+    /**
+     * Pulisce i campi dell'area di invio della popup.
+     */
     public void clear() { vv.clearComponents(vv.getSendPanel()); }
 }

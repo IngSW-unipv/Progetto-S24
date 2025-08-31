@@ -15,8 +15,33 @@ import it.unipv.sfw.model.vehicle.Vehicle;
 import it.unipv.sfw.view.McPopUpComponentView;
 import it.unipv.sfw.view.McPopUpRequestView;
 
+/**
+ * Handler per la gestione delle operazioni sui componenti di un veicolo
+ * tramite popup UI dedicati.
+ * <p>
+ * Supporta due operazioni principali:
+ * <ul>
+ *   <li>{@link Operation#ADD}: aggiunta di un componente</li>
+ *   <li>{@link Operation#REMOVE}: rimozione di un componente</li>
+ * </ul>
+ * L'handler coordina le view {@link McPopUpComponentView} e
+ * {@link McPopUpRequestView}, interagisce con il modello
+ * ({@link Mechanic}, {@link Vehicle}, {@link Components}) e con la
+ * {@link MechanicFacade} per l'aggiornamento lato persistenza.
+ * </p>
+ *
+ * @see Mechanic
+ * @see Vehicle
+ * @see Components
+ * @see MechanicFacade
+ * @see McPopUpComponentView
+ * @see McPopUpRequestView
+ */
 public class McPopUpComponentHandler {
 
+    /**
+     * Operazioni supportate dall'handler sui componenti.
+     */
     public enum Operation { ADD, REMOVE }
 
     private final McPopUpComponentView pc;
@@ -27,6 +52,14 @@ public class McPopUpComponentHandler {
 
     private Components c;
 
+    /**
+     * Costruttore che inizializza l'handler e registra i listener
+     * in base all'operazione richiesta.
+     *
+     * @param m meccanico corrente (modello sorgente dei dati)
+     * @param op operazione da eseguire ({@link Operation#ADD} o {@link Operation#REMOVE})
+     * @param facade facciata applicativa per delegare le operazioni persistenti
+     */
     public McPopUpComponentHandler(Mechanic m, Operation op, MechanicFacade facade) {
         this.pc = new McPopUpComponentView();
         this.pr = new McPopUpRequestView();
@@ -43,6 +76,13 @@ public class McPopUpComponentHandler {
 
     // ---------- ADD ----------
 
+    /**
+     * Registra il listener per il bottone di invio nella modalità aggiunta componente.
+     * <p>
+     * Alla pressione, viene invocata {@link #handleAddComponent()} che
+     * gestisce l'intero flusso di validazione, aggiornamento modello e persistenza.
+     * </p>
+     */
     private void setupAddComponentListener() {
         pc.getSendButton().addActionListener(new ActionListener() {
             @Override 
@@ -57,6 +97,18 @@ public class McPopUpComponentHandler {
         });
     }
 
+    /**
+     * Gestisce l'aggiunta di un componente al veicolo del meccanico:
+     * <ol>
+     *   <li>Verifica la presenza di un veicolo con MSN valido</li>
+     *   <li> input UI (id, nome, stato) e costruisce {@link Components}</li>
+     *   <li>Aggiorna il modello (calcolo wear/esito) tramite {@link Mechanic#addComponent(Vehicle, Components)}</li>
+     *   <li>Invoca la {@link MechanicFacade} per la persistenza</li>
+     *   <li>Gestisce gli esiti ({@link AddComponentOutcome}) e le anomalie</li>
+     * </ol>
+     *
+     * @throws DuplicateComponentException se viene rilevato un duplicato
+     */
     private void handleAddComponent() throws DuplicateComponentException {
         Vehicle v = ensureVehicleWithMSN();
         if (v == null) return;
@@ -70,7 +122,7 @@ public class McPopUpComponentHandler {
             c = new Components(idc, name);
             c.setReplacementStatus(status);
 
-            // model-first: calcola wear/esito
+            // calcola wear/esito
             int result = m.addComponent(v, c); // 1/2 ok, 3 worn
 
             var res = facade.addComponent(
@@ -109,6 +161,17 @@ public class McPopUpComponentHandler {
         }
     }
 
+    /**
+     * Avvia richiesta sostituzione componente:
+     * <ol>
+     *   <li>Nasconde la popup di inserimento</li>
+     *   <li>Mostra la popup di richiesta sostituzione</li>
+     *   <li>Precompila l'id componente</li>
+     *   <li>Registra il listener per inviare la richiesta via {@link MechanicFacade}</li>
+     * </ol>
+     *
+     * @param v veicolo corrente, già validato
+     */
     private void handleComponentReplacementRequest(Vehicle v) {
         pc.hide();
         pr.show();
@@ -137,6 +200,13 @@ public class McPopUpComponentHandler {
 
     // ---------- REMOVE ----------
 
+    /**
+     * Configura la UI per la rimozione del componente:
+     * <ul>
+     *   <li>Nasconde i campi non necessari</li>
+     *   <li>Registra il listener che invoca {@link #handleRemoveComponent()}</li>
+     * </ul>
+     */
     private void setupRemoveComponentListener() {
         pc.hideField();
         pc.getSendButton().addActionListener(new ActionListener() {
@@ -147,6 +217,16 @@ public class McPopUpComponentHandler {
         });
     }
 
+    /**
+     * Gestisce la rimozione di un componente dal veicolo:
+     * <ol>
+     *   <li>Verifica la presenza di veicolo con MSN valido</li>
+     *   <li> input (id, nome)</li>
+     *   <li>Invoca la {@link MechanicFacade#removeComponent(String, String, int, String)}</li>
+     *   <li>Aggiorna il modello locale e notifica la UI</li>
+     * </ol>
+     * Gestisce errori di conversione (ID non numerico) e componenti non trovati.
+     */
     private void handleRemoveComponent() {
         Vehicle v = ensureVehicleWithMSN();
         if (v == null) return;
@@ -181,6 +261,12 @@ public class McPopUpComponentHandler {
 
     // ---------- Helpers SOLO UI ----------
 
+    /**
+     * Verifica che esista un veicolo associato al meccanico con MSN valido.
+     * In caso contrario mostra un messaggio
+     *
+     * @return il {@link Vehicle} valido oppure null se assente/non valido e mostra messaggio warning
+     */
     private Vehicle ensureVehicleWithMSN() {
         Vehicle v = m.getVehicles();
         if (v == null || !v.hasValidMsn()) {
@@ -194,6 +280,15 @@ public class McPopUpComponentHandler {
         return v;
     }
 
-    public void showWindow() { pc.show(); }
+    /**
+     * Mostra la popup principale di gestione componenti.
+     */
+    public void showWindow() { 
+    	pc.show();
+    }
+
+    /**
+     * Pulisce i campi della popup di invio.
+     */
     public void clear() { pc.clearComponents(pc.getSendPanel()); }
 }

@@ -9,19 +9,50 @@ import it.unipv.sfw.model.vehicle.Vehicle;
 import it.unipv.sfw.view.McGraphicAllComponentView;
 
 /**
- * Gestisce la visualizzazione grafica di tutti i componenti del vehicle del meccanico.
- * Dipende dal Mechanic passato dal Controller
+ * Handler che gestisce la visualizzazione grafica di tutti i componenti
+ * del {@link Vehicle} associato a un {@link Mechanic}.
+ * <p>
+ * Riceve in input un meccanico e, a partire dal suo veicolo, 
+ * costruisce la view {@link McGraphicAllComponentView} con l’elenco dei componenti.
+ * </p>
+ * <p>
+ * Se il meccanico non ha ancora un veicolo assegnato o il MSN non è valido,
+ * mostra un messaggio di avviso all’utente.
+ * </p>
+ *
+ * @see Mechanic
+ * @see Vehicle
+ * @see McGraphicAllComponentView
  */
 public class McGraphicAllComponentHandler {
 
+    /**
+     * Meccanico di riferimento, passato dal controller.
+     */
     private final Mechanic m;
+
+    /**
+     * View che mostra i componenti.
+     */
     private McGraphicAllComponentView gv;
 
+    /**
+     * Costruttore che inizializza l’handler con il meccanico associato.
+     *
+     * @param mechanic il {@link Mechanic} da cui recuperare il veicolo e i componenti
+     */
     public McGraphicAllComponentHandler(Mechanic mechanic) {
         this.m = mechanic;
     }
 
-    /** Mostra la finestra con la lista di tutti i componenti. */
+    /**
+     * Mostra la finestra contenente la lista di tutti i componenti del veicolo
+     * associato al meccanico.
+     * <p>
+     * Se il veicolo non è presente, non ha un MSN valido o non è stato assegnato,
+     * viene mostrato un messaggio di avviso tramite {@link JOptionPane}.
+     * </p>
+     */
     public void showWindow() {
         Vehicle v = m.getVehicles();
         if (v == null || v.getMSN() == null || v.getMSN().isBlank()) {

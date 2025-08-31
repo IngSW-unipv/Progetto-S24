@@ -2,6 +2,7 @@ package it.unipv.sfw.controller;
 
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+
 import javax.swing.JOptionPane;
 
 import it.unipv.sfw.dao.mysql.MechanicDAO;
@@ -13,17 +14,57 @@ import it.unipv.sfw.model.staff.Staff;
 import it.unipv.sfw.model.vehicle.Vehicle;
 import it.unipv.sfw.view.MechanicView;
 
+/**
+ * Controller MVC dedicato al ruolo {@link Mechanic}.
+ * <p>
+ * Inizializza la {@link MechanicView}, collega i listener dei comandi della UI
+ * e orchestra gli handler popup per:
+ * <ul>
+ *   <li>Inserimento/assegnazione veicolo e collegamento pilota</li>
+ *   <li>Creazione richieste di sostituzione componenti</li>
+ *   <li>Aggiunta/rimozione componenti</li>
+ *   <li>Visualizzazione tempi di pit stop e stato componenti</li>
+ * </ul>
+ * Le operazioni di dominio/persistenza sono delegate alla {@link MechanicFacade}.
+ * </p>
+ *
+ * @see MechanicView
+ * @see MechanicFacade
+ * @see McPopUpVehicleHandler
+ * @see McPopUpPilotHandler
+ * @see McPopUpRequestHandler
+ * @see McPopUpComponentHandler
+ * @see McGraphicTimePsHandler
+ * @see McGraphicAllComponentHandler
+ */
 public class MechanicController extends AbsController {
 
     private Mechanic m;
     private MechanicView mv;
     private MechanicFacade facade; // Facade
 
+    /**
+     * Restituisce il tipo di controller gestito.
+     *
+     * @return {@link AbsController.TypeController#MECHANIC}
+     */
     @Override
     public TypeController getType() {
         return TypeController.MECHANIC;
     }
 
+    /**
+     * Inizializza il controller del meccanico:
+     * <ol>
+     *   <li>Recupera e valida l'utente corrente dalla {@link Session}</li>
+     *   <li>Istanzia la {@link MechanicView} e la {@link MechanicFacade}</li>
+     *   <li>Configura gli handler popup (veicolo, pilota, richieste, componenti)</li>
+     *   <li>Registra tutti i listener dei pulsanti della view</li>
+     *   <li>Imposta lo stato iniziale dei controlli e mostra la view</li>
+     * </ol>
+     *
+     * @throws IllegalStateException se l'utente corrente non è un {@link Mechanic}
+     */
     @Override
     public void initialize() {
         Staff user = Session.getIstance().getCurrentUser();
@@ -140,6 +181,12 @@ public class MechanicController extends AbsController {
         view = mv;
     }
 
+    /**
+     * Abilita/Disabilita i controlli della {@link MechanicView}
+     * che richiedono la presenza di un veicolo associato.
+     *
+     * @param on {@code true} per abilitare i controlli, {@code false} per disabilitarli
+     */
     private void enableVehicleActions(boolean on) {
         mv.getAddComponentButton().setEnabled(on);
         mv.getAddComponentButton().setVisible(true);
@@ -156,10 +203,5 @@ public class MechanicController extends AbsController {
         mv.getVisualTimePsButton().setEnabled(on);
         mv.getVisualTimePsButton().setVisible(true);
     }
-
- //		DA VERIFICARE
-//    private boolean hasNoComponents() {
-//        Vehicle v = m.getVehicles();
-//        return v == null || v.getComponent().isEmpty();
-//    }
+    
 }
