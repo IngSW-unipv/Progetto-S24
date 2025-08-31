@@ -13,8 +13,26 @@ import it.unipv.sfw.view.StGraphicDetailsView;
 import it.unipv.sfw.view.StPopUpCreateStrategyView;
 
 /**
- * Popup per creare/selezionare la strategia di gara.
- * Dipende da Strategist e Vehicle passati dal Controller (no Model letto da Session).
+ * Handler per la finestra pop-up di creazione/selezione strategia di gara.
+ * <p>
+ * Dipende da {@link Strategist} e {@link Vehicle} passati dal {@link StrategistController},
+ * senza utilizzare la {@link it.unipv.sfw.model.staff.Session}.
+ * </p>
+ * <p>
+ * Responsabilità principali:
+ * <ul>
+ *   <li>Mostrare il livello medio di degrado dei componenti del veicolo</li>
+ *   <li>Determinare una strategia consigliata (PUSH/HOLD) in base al tempo sul giro</li>
+ *   <li>Permettere allo strategist di selezionare manualmente una strategia</li>
+ *   <li>Mostrare i dettagli grafici dei componenti</li>
+ *   <li>Loggare le azioni tramite {@link StrategistFacade}</li>
+ * </ul>
+ * </p>
+ *
+ * @see Strategist
+ * @see Vehicle
+ * @see StrategistFacade
+ * @see StPopUpCreateStrategyView
  */
 public class StPopUpCreateStrategyHandler {
 
@@ -22,7 +40,7 @@ public class StPopUpCreateStrategyHandler {
     private final Strategist strategist;
     private final Vehicle vehicle;
 
-    // Facade per il solo logging 
+    // Facade per logging
     private final StrategistFacade facade;
 
     // Soglia di riferimento per decidere PUSH/HOLD (ms)
@@ -30,6 +48,15 @@ public class StPopUpCreateStrategyHandler {
 
     private StGraphicDetailsView gdv;
 
+    /**
+     * Costruttore: inizializza la popup di creazione strategia e registra i listener.
+     *
+     * @param strategist             strategist corrente
+     * @param vehicle                veicolo associato
+     * @param selectedStrategyCount  numero di strategie già selezionate (0 : prima strategia)
+     * @param currentLapTimeMs       tempo dell'ultimo giro (ms)
+     * @param facade                 {@link StrategistFacade} usata per logging
+     */
     public StPopUpCreateStrategyHandler(Strategist strategist, Vehicle vehicle,
                                         int selectedStrategyCount, int currentLapTimeMs,
                                         StrategistFacade facade) {
@@ -38,10 +65,12 @@ public class StPopUpCreateStrategyHandler {
         this.vehicle    = vehicle;
         this.facade     = facade;
 
+        // Mostra degrado medio componenti
         int averageWear = computeAverageWear(vehicle.getComponent());
         pcs.getComponentLabel1().setText("DEGRADATION OF COMPONENTS: " + averageWear);
         pcs.getComponentLabel1().setForeground(colorForWear(averageWear));
 
+        // Determina messaggio strategia consigliata
         String strategyMsg;
         Color strategyColor;
         if (selectedStrategyCount == 0) {
@@ -57,6 +86,7 @@ public class StPopUpCreateStrategyHandler {
         pcs.getMexLabel().setText(strategyMsg);
         pcs.getMexLabel().setForeground(strategyColor);
 
+        // Listener per mostrare dettagli componenti
         pcs.getDetailsButton().addActionListener(new ActionListener() {
             @Override 
             public void actionPerformed(ActionEvent e) {
@@ -66,6 +96,7 @@ public class StPopUpCreateStrategyHandler {
             }
         });
 
+        // Listener per selezione manuale strategia
         pcs.getBox().addActionListener(new ActionListener() {
             @Override 
             public void actionPerformed(ActionEvent e) {
@@ -77,10 +108,19 @@ public class StPopUpCreateStrategyHandler {
         });
     }
 
+    /**
+     * Mostra la finestra pop-up per la creazione della strategia.
+     */
     public void showWindow() { pcs.show(); }
 
     // ---------- Helpers ----------
 
+    /**
+     * Calcola l'usura media dei componenti.
+     *
+     * @param comps insieme di {@link Components}
+     * @return usura media, oppure 0 se la collezione è nulla o vuota
+     */
     private static int computeAverageWear(Set<Components> comps) {
         if (comps == null || comps.isEmpty()) return 0;
         int sum = 0;
@@ -88,6 +128,13 @@ public class StPopUpCreateStrategyHandler {
         return sum / comps.size();
     }
 
+    /**
+     * Restituisce un colore rappresentativo del livello di usura.
+     *
+     * @param avg usura media (0-100)
+     * @return {@link Color#GREEN} se usura : 70, {@link Color#ORANGE} se compresa tra 50-70,
+     *         {@link Color#RED} altrimenti
+     */
     private static Color colorForWear(int avg) {
         if (avg > 70) return Color.GREEN;
         if (avg >= 50) return Color.ORANGE;
