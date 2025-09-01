@@ -7,7 +7,6 @@ import javax.swing.JOptionPane;
 
 import it.unipv.sfw.exceptions.ComponentNotFoundException;
 import it.unipv.sfw.exceptions.DuplicateComponentException;
-import it.unipv.sfw.facade.AddComponentOutcome;
 import it.unipv.sfw.facade.MechanicFacade;
 import it.unipv.sfw.model.component.Components;
 import it.unipv.sfw.model.staff.Mechanic;
