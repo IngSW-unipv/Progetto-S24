@@ -36,13 +36,12 @@ public class LoginController extends AbsController {
     private LoginFacade loginFacade;
 
     /**
-     * Esegue il flusso completo di autenticazione e routing:
+     * Esegue il flusso completo di autenticazione:
      * <ol>
      *   <li>Recupera username e password dalla view</li>
      *   <li>Invoca {@link LoginFacade#authenticate(String, char[])}, che aggiorna anche la sessione</li>
      *   <li>Ottiene il ruolo utente come {@link Staff.TypeRole}</li>
-     *   <li>Tramite {@link ControllerRole}, determina il {@link AbsController.TypeController} associato</li>
-     *   <li>Carica il controller corrispondente usando {@link ControllerManager}</li>
+     *   <li>Delega a {@link ControllerManager#loadControllerForRole(Staff.TypeRole)} per caricare il controller corretto</li>
      *   <li>Gestisce eccezioni di credenziali mostrando l’errore nella view</li>
      * </ol>
      */
@@ -56,13 +55,8 @@ public class LoginController extends AbsController {
             // 2) Ruolo corrente
             Staff.TypeRole role = result.getRole();
 
-            // 3) Mapping ruolo -> tipo controller
-            AbsController.TypeController typeController = ControllerRole.toControllerType(role);
-
-            // 4) Caricamento controller e chiusura login
-            ControllerManager cm = ControllerManager.getInstance();
-            cm.loadController(typeController);
-            cm.closeWindow();
+            // 3) Caricamento del controller in base al ruolo
+            ControllerManager.getInstance().loadControllerForRole(role);
 
         } catch (WrongPasswordException | AccountNotFoundException err) {
             System.out.println(err);
