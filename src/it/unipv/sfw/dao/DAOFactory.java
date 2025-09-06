@@ -1,61 +1,135 @@
 package it.unipv.sfw.dao;
 
+import it.unipv.sfw.dao.interfacedao.IMechanicDAO;
+import it.unipv.sfw.dao.interfacedao.IStrategistDAO;
+import it.unipv.sfw.dao.interfacedao.IUserDAO;
+import it.unipv.sfw.dao.interfacedao.IVehicleDAO;
+import it.unipv.sfw.dao.interfacedao.IWarehousemanDAO;
+import it.unipv.sfw.dao.mysql.MechanicDAO;
+import it.unipv.sfw.dao.mysql.StrategistDAO;
 import it.unipv.sfw.dao.mysql.UserDAO;
+import it.unipv.sfw.dao.mysql.VehicleDAO;
+import it.unipv.sfw.dao.mysql.WarehousemanDAO;
 
 /**
- * Questa classe utilizza il pattern Factory per fornire un'interfaccia
- * centralizzata per la creazione di istanze dei DAO, in base al tipo di
- * database specificato.
+ * Factory centralizzata per la creazione delle istanze DAO.
+ * <p>
+ * Implementa il pattern Singleton: esiste una sola istanza di {@code DAOFactory}
+ * per l'intera applicazione. A seconda del tipo di database specificato,
+ * fornisce i DAO corrispondenti.
+ * </p>
  */
-public class DAOFactory {
+public final class DAOFactory {
 
     /**
-     * Enumerazione che definisce i tipi di database supportati.
+     * Tipi di database supportati.
      */
     public enum DbType {
         MYSQL
     }
 
+    // --- Singleton ---
     private static DAOFactory instance = null;
 
+    private final DbType dbType;
+
     /**
-     * Metodo statico per creare un'istanza della classe DAOFactory.
-     * Se un'istanza è già stata creata, viene lanciata una RuntimeException.
+     * Crea l'istanza singleton di {@code DAOFactory}.
+     * <p>
+     * Deve essere invocato una sola volta all'avvio dell'applicazione; ulteriori
+     * chiamate produrranno una {@link RuntimeException}.
+     * </p>
      *
-     * @param dbType Il tipo di database a cui connettersi.
-     * @throws RuntimeException Se un'istanza di DAOFactory è già stata creata.
+     * @param dbType tipo di database da utilizzare
+     * @throws RuntimeException se l'istanza è già stata creata
      */
     public static void createInstance(DbType dbType) {
-        if (instance != null)
-            throw new RuntimeException("Instanza DAOFactory già creata.");
-
+        if (instance != null) {
+            throw new RuntimeException("Istanza DAOFactory già creata.");
+        }
         instance = new DAOFactory(dbType);
     }
 
     /**
-     * Metodo statico per creare un'istanza del DAO relativo agli utenti.
+     * Restituisce l'istanza singleton di {@code DAOFactory}.
      *
-     * @return Un'istanza di {@link UserDAO}.
-     * @throws RuntimeException Se l'istanza di DAOFactory non è stata inizializzata.
+     * @return istanza già inizializzata
+     * @throws RuntimeException se {@link #createInstance(DbType)} non è mai stato chiamato
      */
-    public static UserDAO createUserDAO() {
+    public static DAOFactory getInstance() {
         if (instance == null) {
-            throw new RuntimeException("Instanza DAOFactory non inizializzata.");
+            throw new RuntimeException("Istanza DAOFactory non inizializzata.");
         }
-        switch (instance.dbType) {
-            case MYSQL:
-                return new UserDAO();
-            default:
-                throw new RuntimeException("Tipo di database non supportato."); // Gestione di altri tipi di DB
-        }
+        return instance;
+    }
+    
+    /**
+     * Restituisce un DAO per la gestione degli utenti.
+     *
+     * @return implementazione di {@link IUserDAO}
+     * @throws RuntimeException se il tipo di database non è supportato
+     */
+    public IUserDAO createUserDAO() {
+        return switch (dbType) {
+            case MYSQL -> new UserDAO();
+        };
+    }
+    
+    /**
+     * Restituisce un DAO per la gestione dei meccanici.
+     *
+     * @return implementazione di {@link IMechanicDAO}
+     * @throws RuntimeException se il tipo di database non è supportato
+     */
+    public IMechanicDAO createMechanicDAO() {
+        return switch (dbType) {
+            case MYSQL -> new MechanicDAO();
+        };
     }
 
-    private DbType dbType;
+    /**
+     * Restituisce un DAO per la gestione degli strateghi.
+     *
+     * @return implementazione di {@link IStrategistDAO}
+     * @throws RuntimeException se il tipo di database non è supportato
+     */
+    public IStrategistDAO createStrategistDAO() {
+        return switch (dbType) {
+            case MYSQL -> new StrategistDAO();
+        };
+    }
 
     /**
-     * Costruttore privato per impedire la creazione diretta di istanze.
+     * Restituisce un DAO per la gestione dei veicoli.
      *
-     * @param dbType Il tipo di database.
+     * @return implementazione di {@link IVehicleDAO}
+     * @throws RuntimeException se il tipo di database non è supportato
+     */
+    public IVehicleDAO createVehicleDAO() {
+        return switch (dbType) {
+            case MYSQL -> new VehicleDAO();
+        };
+    }
+
+    /**
+     * Restituisce un DAO per la gestione dei magazzinieri.
+     *
+     * @return implementazione di {@link IWarehousemanDAO}
+     * @throws RuntimeException se il tipo di database non è supportato
+     */
+    public IWarehousemanDAO createWarehousemanDAO() {
+        return switch (dbType) {
+            case MYSQL -> new WarehousemanDAO();
+        };
+    }
+
+
+    // --- Costruttore privato ---
+    /**
+     * Costruttore privato: impedisce la creazione diretta di istanze
+     * dall'esterno della classe.
+     *
+     * @param dbType tipo di database selezionato
      */
     private DAOFactory(DbType dbType) {
         this.dbType = dbType;
