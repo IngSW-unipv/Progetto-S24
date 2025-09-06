@@ -34,11 +34,8 @@ public class StrategistController extends AbsController {
 
     private Strategist st;          // model utente corrente
     private Vehicle currentVehicle; // vehicle associato allo strategist
-
+    
     private StrategistView sv;
-    private StrategistDAO sd;
-    private VehicleDAO vd;
-
     // Facade
     private StrategistFacade facade;
 
@@ -81,8 +78,8 @@ public class StrategistController extends AbsController {
 
         // 2) View + DAO
         sv = new StrategistView();
-        sd = new StrategistDAO();
-        vd = new VehicleDAO();
+        StrategistDAO sd = new StrategistDAO();
+        VehicleDAO vd = new VehicleDAO();
 
         // inizializzo la Facade con i DAO (IStrategistDAO + IVehicleDAO)
         facade = new DefaultStrategistFacade(sd, vd);
