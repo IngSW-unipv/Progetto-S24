@@ -9,7 +9,7 @@ import it.unipv.sfw.model.staff.Staff;
  * - valida le credenziali (interroga IUserDAO);
  * - costruisce la sottoclasse concreta di Staff in base al ruolo;
  * - aggiorna la Session con l'utente autenticato e i metadati "leggeri";
- * - restituisce un DTO minimale per il routing dell'applicazione.
+ * - restituisce un oggetto  minimale per il routing dell'applicazione.
  */
 public interface LoginFacade {
 
