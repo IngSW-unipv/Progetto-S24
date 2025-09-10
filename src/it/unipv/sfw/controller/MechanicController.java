@@ -5,9 +5,8 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JOptionPane;
 
-import it.unipv.sfw.dao.mysql.MechanicDAO;
+import it.unipv.sfw.facade.FacadeFactory;
 import it.unipv.sfw.facade.MechanicFacade;
-import it.unipv.sfw.facade.impl.DefaultMechanicFacade;
 import it.unipv.sfw.model.staff.Mechanic;
 import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.model.staff.Staff;
@@ -74,7 +73,7 @@ public class MechanicController extends AbsController {
         m = (Mechanic) user;
 
         mv = new MechanicView();
-        facade = new DefaultMechanicFacade(new MechanicDAO());
+        facade = FacadeFactory.mechanic();
 
         McPopUpVehicleHandler pvc = new McPopUpVehicleHandler(m, mv, facade);
         McPopUpPilotHandler   ppc = new McPopUpPilotHandler(m, mv, facade);

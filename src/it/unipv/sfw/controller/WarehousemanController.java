@@ -5,9 +5,8 @@ import java.awt.event.ActionListener;
 import java.util.HashSet;
 import java.util.Set;
 
-import it.unipv.sfw.dao.mysql.WarehousemanDAO;
+import it.unipv.sfw.facade.FacadeFactory;
 import it.unipv.sfw.facade.WarehousemanFacade;
-import it.unipv.sfw.facade.impl.DefaultWarehousemanFacade;
 import it.unipv.sfw.model.request.Request;
 import it.unipv.sfw.model.staff.Warehouseman;
 import it.unipv.sfw.model.staff.Session;
@@ -20,11 +19,11 @@ import it.unipv.sfw.view.WarehousemanView;
  * Responsabilità principali:
  * <ul>
  *   <li>Recuperare l'utente corrente dalla {@link Session} e validarne il ruolo</li>
- *   <li>Inizializzare la {@link WarehousemanView}, il {@link WarehousemanDAO} e l'{@link Observable}</li>
+ *   <li>Inizializzare la {@link WarehousemanView} e l'{@link Observable}</li>
  *   <li>Delegare alla {@link WarehousemanFacade} il caricamento delle richieste e le operazioni applicative</li>
  *   <li>Collegare i listener dei controlli UI e notificare la view tramite l'Observable</li>
  * </ul>
- * Il flusso segue lo schema MVC: <i>View -> Controller -> Model (+DAO)</i>.
+ * Il flusso segue lo schema MVC: <i>View -> Controller -> Model</i>.
  * </p>
  *
  * @see WarehousemanView
@@ -53,7 +52,7 @@ public class WarehousemanController extends AbsController {
      * Inizializza il controller del magazziniere.
      * <ol>
      *   <li>Recupera e valida l'utente corrente dalla {@link Session}</li>
-     *   <li>Crea la {@link WarehousemanView}, il {@link WarehousemanDAO} e l'{@link Observable}</li>
+     *   <li>Crea la {@link WarehousemanView} e l'{@link Observable}</li>
      *   <li>Istanzia la {@link WarehousemanFacade} e carica le richieste dal DB nel modello</li>
      *   <li>Imposta i dati di intestazione nella view e registra quest'ultima come {@link Observer}</li>
      *   <li>Configura gli handler e i listener dei pulsanti della UI</li>
@@ -71,13 +70,12 @@ public class WarehousemanController extends AbsController {
         }
         m = (Warehouseman) user;
 
-        // 2) View + DAO + Observable
+        // 2) View + Observable
         WarehousemanView mv = new WarehousemanView();
-        WarehousemanDAO md = new WarehousemanDAO();
         obs = new Observable();
 
-        // inizializzo la Facade con il DAO
-        facade = new DefaultWarehousemanFacade(md);
+        // inizializzo la Facade
+        facade = FacadeFactory.warehouseman();
 
         // 3) Carica le richieste dal DB nel Model
         // la Facade NON tocca il Model; aggiorna il controller

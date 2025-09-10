@@ -5,11 +5,9 @@ import java.awt.event.ActionListener;
 
 import javax.swing.JOptionPane;
 
-import it.unipv.sfw.dao.mysql.StrategistDAO;
-import it.unipv.sfw.dao.mysql.VehicleDAO;
 import it.unipv.sfw.exceptions.VehicleNotFoundException;
+import it.unipv.sfw.facade.FacadeFactory;
 import it.unipv.sfw.facade.StrategistFacade;
-import it.unipv.sfw.facade.impl.DefaultStrategistFacade;
 import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.model.staff.Staff;
 import it.unipv.sfw.model.staff.Strategist;
@@ -26,7 +24,7 @@ import it.unipv.sfw.view.StrategistView;
  *   <li>Delegare il calcolo/aggiornamento dei tempi sul giro e dei minimi di settore al modello {@link Strategist}</li>
  *   <li>Abilitare le azioni di strategia sulla {@link StrategistView}</li>
  * </ul>
- * Architettura MVC: <i>View -> Controller -> Model (+DAO)</i>, con delega
+ * Architettura MVC: <i>View -> Controller -> Model</i>, con delega
  * delle operazioni applicative/persistenza alla {@link StrategistFacade}.
  * </p>
  */
@@ -53,7 +51,7 @@ public class StrategistController extends AbsController {
      * Inizializza il controller dello Strategist:
      * <ol>
      *   <li>Recupera e valida l'utente corrente dalla {@link Session}</li>
-     *   <li>Istanzia {@link StrategistView}, {@link StrategistDAO}, {@link VehicleDAO} e la {@link StrategistFacade}</li>
+     *   <li>Istanzia {@link StrategistView} e la {@link StrategistFacade}</li>
      *   <li>Esegue il log di login</li>
      *   <li>Imposta lo stato iniziale della UI disabilitando le azioni di strategia</li>
      *   <li>Registra i listener dei pulsanti:
@@ -76,13 +74,11 @@ public class StrategistController extends AbsController {
         }
         st = (Strategist) user;
 
-        // 2) View + DAO
+        // 2) View
         sv = new StrategistView();
-        StrategistDAO sd = new StrategistDAO();
-        VehicleDAO vd = new VehicleDAO();
 
-        // inizializzo la Facade con i DAO (IStrategistDAO + IVehicleDAO)
-        facade = new DefaultStrategistFacade(sd, vd);
+        // inizializzo la Facade
+        facade = FacadeFactory.strategist();
 
         // 3) Log di login
         facade.log(st.getID(), "LOGIN");
