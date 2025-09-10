@@ -5,12 +5,11 @@ import java.awt.event.ActionListener;
 import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 
-import it.unipv.sfw.dao.mysql.UserDAO;
 import it.unipv.sfw.exceptions.AccountNotFoundException;
 import it.unipv.sfw.exceptions.WrongPasswordException;
 import it.unipv.sfw.facade.AuthResult;
+import it.unipv.sfw.facade.FacadeFactory;
 import it.unipv.sfw.facade.LoginFacade;
-import it.unipv.sfw.facade.impl.DefaultLoginFacade;
 import it.unipv.sfw.model.staff.Staff;
 import it.unipv.sfw.view.LoginView;
 
@@ -87,7 +86,7 @@ public class LoginController extends AbsController {
         LoginView v = new LoginView();
 
         // Facade di login predefinita
-        this.loginFacade = new DefaultLoginFacade(new UserDAO());
+        this.loginFacade = FacadeFactory.login();
 
         // Listener: tasto ENTER su campo password
         v.getPasswordField().setFocusTraversalKeysEnabled(false);
