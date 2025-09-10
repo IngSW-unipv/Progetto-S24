@@ -4,12 +4,15 @@ import it.unipv.sfw.dao.interfacedao.IMechanicDAO;
 import it.unipv.sfw.dao.interfacedao.IStrategistDAO;
 import it.unipv.sfw.dao.interfacedao.IVehicleDAO;
 import it.unipv.sfw.dao.interfacedao.IWarehousemanDAO;
+import it.unipv.sfw.dao.interfacedao.IUserDAO;
 
 import it.unipv.sfw.dao.mysql.MechanicDAO;
 import it.unipv.sfw.dao.mysql.StrategistDAO;
 import it.unipv.sfw.dao.mysql.VehicleDAO;
 import it.unipv.sfw.dao.mysql.WarehousemanDAO;
+import it.unipv.sfw.dao.mysql.UserDAO;
 
+import it.unipv.sfw.facade.impl.DefaultLoginFacade;
 import it.unipv.sfw.facade.impl.DefaultMechanicFacade;
 import it.unipv.sfw.facade.impl.DefaultStrategistFacade;
 import it.unipv.sfw.facade.impl.DefaultWarehousemanFacade;
@@ -30,7 +33,20 @@ public final class FacadeFactory {
      * Costruttore privato per impedire l'instanziazione.
      */
     private FacadeFactory() { }
-
+    /**
+     * Restituisce una facciata predefinita per le operazioni di Login
+     *
+     * La facciata incapsula la logica applicativa e orchestra il DAO
+     * senza esporre dettagli di persistenza ai controller.
+     *
+     * @return un'istanza non {@code null} di {@link LoginFacade}
+     *         basata su {@link DefaultLoginFacade} e {@link UserDAO}.
+     */
+    
+    public static LoginFacade login() {
+        IUserDAO dao = new UserDAO();
+        return new  DefaultLoginFacade(dao);
+    }
     /**
      * Restituisce una facciata predefinita per le operazioni del ruolo
      * Mechanic
@@ -54,7 +70,7 @@ public final class FacadeFactory {
      * senza esporre dettagli di persistenza ai controller.
      *
      * @return un'istanza non {@code null} di {@link StrategistFacade}
-     *         basata su {@link DefaultStrategistFacade} e {@link StrategistDAO}.
+     *         basata su {@link DefaultStrategistFacade} e {@link StrategistDAO}, {@link VehicleDAO}.
      */
     public static StrategistFacade strategist() {
         IStrategistDAO daoS = new StrategistDAO();
