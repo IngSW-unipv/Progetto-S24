@@ -21,8 +21,8 @@ import it.unipv.sfw.model.vehicle.Vehicle;
  */
 public class DefaultStrategistFacade implements StrategistFacade {
 
-    private final IStrategistDAO strategistDAO;
-    private final IVehicleDAO    vehicleDAO; 
+    private final IStrategistDAO sd;
+    private final IVehicleDAO    vd; 
 
     /**
      * Costruttore.
@@ -32,8 +32,8 @@ public class DefaultStrategistFacade implements StrategistFacade {
      * @throws NullPointerException se uno dei parametri è {@code null}
      */
     public DefaultStrategistFacade(IStrategistDAO strategistDAO, IVehicleDAO vehicleDAO) {
-        this.strategistDAO = Objects.requireNonNull(strategistDAO);
-        this.vehicleDAO    = Objects.requireNonNull(vehicleDAO);
+        this.sd = strategistDAO;
+        this. vd    = vehicleDAO;
     }
 
     /**
@@ -49,10 +49,10 @@ public class DefaultStrategistFacade implements StrategistFacade {
         String normMsn = msn == null ? "" : msn.toUpperCase().trim();
 
         // Validazione esistenza veicolo
-        strategistDAO.checkVehicle(normMsn);
+        sd.checkVehicle(normMsn);
 
         // Persistenza associazione
-        strategistDAO.insertStrategistOnVehicle(normMsn, staffId);
+        sd.insertStrategistOnVehicle(normMsn, staffId);
 
         // Il controller si occuperà di creare/agganciare il Vehicle nel model.
     }
@@ -66,7 +66,7 @@ public class DefaultStrategistFacade implements StrategistFacade {
     public void persistSectorTimes(Vehicle vehicle) {
         // Il controller ha già aggiornato i tempi nel model (v.setTimeSect()).
     	// usa IVehicleDAO (implementato da VehicleDAO)
-        vehicleDAO.timeSector(vehicle); 
+    	 vd.timeSector(vehicle); 
     }
 
     /**
@@ -77,6 +77,6 @@ public class DefaultStrategistFacade implements StrategistFacade {
      */
     @Override
     public void log(String staffId, String description) {
-        strategistDAO.insertLogEvent(staffId, description);
+    	sd.insertLogEvent(staffId, description);
     }
 }

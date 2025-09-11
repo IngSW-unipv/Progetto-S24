@@ -29,7 +29,7 @@ import it.unipv.sfw.model.staff.Warehouseman;
  */
 public class DefaultLoginFacade implements LoginFacade {
 
-    private final IUserDAO userDAO;
+    private final IUserDAO ud;
 
     // Indici delle colonne
     private static final int IDX_ID = 0;
@@ -44,7 +44,7 @@ public class DefaultLoginFacade implements LoginFacade {
      * @param userDAO implementazione di {@link IUserDAO} da utilizzare
      */
     public DefaultLoginFacade(IUserDAO userDAO) {
-        this.userDAO = userDAO;
+        this.ud = userDAO;
     }
 
     /**
@@ -68,7 +68,7 @@ public class DefaultLoginFacade implements LoginFacade {
             throws AccountNotFoundException, WrongPasswordException {
 
         // 1) Unica query: prendo tutti i campi come array
-        String[] row = userDAO.selectRowFieldsById(id);
+        String[] row = ud.selectRowFieldsById(id);
         if (row == null) {
             Arrays.fill(password, '\0');
             throw new AccountNotFoundException(id);

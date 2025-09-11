@@ -22,7 +22,7 @@ import it.unipv.sfw.model.request.Request;
  */
 public class DefaultWarehousemanFacade implements WarehousemanFacade {
 
-    private final IWarehousemanDAO dao;
+    private final IWarehousemanDAO wd;
 
     /**
      * Costruttore.
@@ -30,8 +30,8 @@ public class DefaultWarehousemanFacade implements WarehousemanFacade {
      * @param dao implementazione di {@link IWarehousemanDAO} da utilizzare
      * @throws NullPointerException se {@code dao} è {@code null}
      */
-    public DefaultWarehousemanFacade(IWarehousemanDAO dao) {
-        this.dao = Objects.requireNonNull(dao);
+    public DefaultWarehousemanFacade(IWarehousemanDAO warehousemanDao) {
+    	this.wd = warehousemanDao;
     }
 
     // === REQUESTS ===
@@ -49,7 +49,7 @@ public class DefaultWarehousemanFacade implements WarehousemanFacade {
     @Override
     public Set<Request> loadRequests() {
         // Ritorno una copia modificabile (utile al controller per eventuali rimozioni)
-        return new HashSet<>(dao.selectAllRequest());
+        return new HashSet<>(wd.selectAllRequest());
     }
 
     /**
@@ -64,8 +64,8 @@ public class DefaultWarehousemanFacade implements WarehousemanFacade {
     public void deleteRequest(String staffId, String componentId, String msn)
             throws RequestNotFoundException {
         String msnUp = (msn == null) ? "" : msn.toUpperCase();
-        dao.checkRequest(staffId, componentId, msnUp);
-        dao.removeRequest(componentId);
+        wd.checkRequest(staffId, componentId, msnUp);
+        wd.removeRequest(componentId);
       
     }
 
@@ -84,9 +84,9 @@ public class DefaultWarehousemanFacade implements WarehousemanFacade {
     public void updateComponent(String idComp, int wear, String status, String staffId)
             throws ComponentNotFoundException {
         String normStatus = status == null ? "" : status.trim().toUpperCase();
-        dao.checkCompo(idComp);
-        dao.updateComponent(idComp, String.valueOf(wear), normStatus);
-        dao.insertLogEvent(staffId, "UPDATE COMPONENT: " + idComp);
+        wd.checkCompo(idComp);
+        wd.updateComponent(idComp, String.valueOf(wear), normStatus);
+        wd.insertLogEvent(staffId, "UPDATE COMPONENT: " + idComp);
     }
 
     // === COUNTS / REPORT ===
@@ -98,7 +98,7 @@ public class DefaultWarehousemanFacade implements WarehousemanFacade {
      */
     @Override
     public int countAllComponentsInWarehouse() {
-        return dao.countElement();
+        return wd.countElement();
     }
 
     /**
@@ -109,7 +109,7 @@ public class DefaultWarehousemanFacade implements WarehousemanFacade {
      */
     @Override
     public int countComponentsInWarehouseByName(String name) {
-        return dao.countElementBySelect(name);
+        return wd.countElementBySelect(name);
     }
 
     // === LOG ===
@@ -122,6 +122,6 @@ public class DefaultWarehousemanFacade implements WarehousemanFacade {
      */
     @Override
     public void log(String staffId, String description) {
-        dao.insertLogEvent(staffId, description);
+    	wd.insertLogEvent(staffId, description);
     }
 }

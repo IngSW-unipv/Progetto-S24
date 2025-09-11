@@ -36,7 +36,7 @@ public class DefaultMechanicFacade implements MechanicFacade {
      * @throws NullPointerException se {@code mechanicDao} è {@code null}
      */
     public DefaultMechanicFacade(IMechanicDAO mechanicDao) {
-        this.md = Objects.requireNonNull(mechanicDao);
+        this.md = mechanicDao;
     }
 
     // === VEHICLE / PILOT ===
