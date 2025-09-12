@@ -94,7 +94,7 @@ public class MechanicController extends AbsController {
         mv.getInsertRequestButton().addActionListener(new ActionListener() {
             @Override 
             public void actionPerformed(ActionEvent e) {
-                boolean hasVehicle = (m.getVehicles() != null);
+                boolean hasVehicle = (m.getVehicle() != null);
                 Session.getIstance().setOperation(hasVehicle ? "YES_V" : "NO_V");
                 McPopUpRequestHandler prc = new McPopUpRequestHandler(m, facade);
                 prc.showWindow();
