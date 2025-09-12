@@ -55,11 +55,13 @@ public final class FacadeFactory {
      * senza esporre dettagli di persistenza ai controller.
      *
      * @return un'istanza non {@code null} di {@link MechanicFacade}
-     *         basata su {@link DefaultMechanicFacade} e {@link MechanicDAO}.
+     *         basata su {@link DefaultMechanicFacade} , {@link MechanicDAO} e {@link VehicleFactory}.
      */
     public static MechanicFacade mechanic() {
         IMechanicDAO dao = new MechanicDAO();
-        return new DefaultMechanicFacade(dao);
+        VehicleFactory vf = new VehicleFactory();
+        
+        return new DefaultMechanicFacade(dao, vf);
     }
 
     /**

@@ -1,7 +1,5 @@
 package it.unipv.sfw.facade.impl;
 
-import java.util.Objects;
-
 import it.unipv.sfw.dao.interfacedao.IMechanicDAO;
 import it.unipv.sfw.exceptions.ComponentNotFoundException;
 import it.unipv.sfw.exceptions.PilotNotFoundException;
@@ -10,6 +8,8 @@ import it.unipv.sfw.exceptions.WrongIDException;
 import it.unipv.sfw.exceptions.WrongRequestException;
 import it.unipv.sfw.facade.AddComponentResult;
 import it.unipv.sfw.facade.MechanicFacade;
+import it.unipv.sfw.facade.VehicleFactory;
+import it.unipv.sfw.model.vehicle.Vehicle;
 
 /**
  * Implementazione di default della {@link MechanicFacade}.
@@ -28,19 +28,29 @@ import it.unipv.sfw.facade.MechanicFacade;
 public class DefaultMechanicFacade implements MechanicFacade {
 
     private final IMechanicDAO md;
-
+    private final VehicleFactory vf;
     /**
      * Costruttore.
      *
      * @param mechanicDao implementazione di {@link IMechanicDAO} da utilizzare
      * @throws NullPointerException se {@code mechanicDao} è {@code null}
      */
-    public DefaultMechanicFacade(IMechanicDAO mechanicDao) {
+    public DefaultMechanicFacade(IMechanicDAO mechanicDao, VehicleFactory vehicleFactory) {
         this.md = mechanicDao;
+        this.vf = vehicleFactory;
     }
 
     // === VEHICLE / PILOT ===
-
+    
+    
+	@Override
+	public Vehicle createVehicle(String msnRaw) {
+		 String msn = msnRaw.trim().toUpperCase();
+		  Vehicle v = vf.create(msn);
+		  
+		return null;
+	}
+	
     /**
      * Assegna un veicolo ad un meccanico e ad un pilota, effettuando
      * le opportune verifiche di esistenza e registrando un evento di log.
@@ -259,4 +269,5 @@ public class DefaultMechanicFacade implements MechanicFacade {
     public void log(String mechanicId, String description) {
         md.insertLogEvent(mechanicId, description);
     }
+
 }

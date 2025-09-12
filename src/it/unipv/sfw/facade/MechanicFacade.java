@@ -5,6 +5,7 @@ import it.unipv.sfw.exceptions.PilotNotFoundException;
 import it.unipv.sfw.exceptions.VehicleNotFoundException;
 import it.unipv.sfw.exceptions.WrongIDException;
 import it.unipv.sfw.exceptions.WrongRequestException;
+import it.unipv.sfw.model.vehicle.Vehicle;
 
 /**
  * Facade che incapsula le operazioni ad alto livello eseguibili da un {@code Mechanic}.
@@ -23,7 +24,15 @@ import it.unipv.sfw.exceptions.WrongRequestException;
 public interface MechanicFacade {
 
     // === VEHICLE / PILOT ===
-
+	 /**
+     *Crea un veicolo
+     *
+     * @param msn			numero seriale della vettura
+     */
+    Vehicle createVehicle(
+            String msn
+    );
+    
     /**
      * Assegna un veicolo ad un meccanico e ad un pilota.
      *
