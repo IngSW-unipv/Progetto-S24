@@ -29,10 +29,11 @@ public class DefaultMechanicFacade implements MechanicFacade {
 
     private final IMechanicDAO md;
     private final VehicleFactory vf;
+    
     /**
      * Costruttore.
      *
-     * @param mechanicDao implementazione di {@link IMechanicDAO} da utilizzare
+     * @param mechanicDao implementazione di {@link IMechanicDAO} da utilizzare e vehicleFactory oggetto di {@link VehicleFactory}
      * @throws NullPointerException se {@code mechanicDao} è {@code null}
      */
     public DefaultMechanicFacade(IMechanicDAO mechanicDao, VehicleFactory vehicleFactory) {

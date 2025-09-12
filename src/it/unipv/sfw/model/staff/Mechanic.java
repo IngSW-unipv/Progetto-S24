@@ -33,6 +33,7 @@ public class Mechanic extends Staff {
     /**
      * Aggiunge un nuovo veicolo.
      * Sarà il veicolo attribuito al meccanico
+     * @param v L'oggetto {@link Vehicle} da associare al meccanico
      */
     public  void addVehicle(Vehicle v) {
         setVehicle(v);
