@@ -35,7 +35,6 @@ public class Mechanic extends Staff {
      * Sarà il veicolo attribuito al meccanico
      */
     public  void addVehicle(Vehicle v) {
-        Vehicle vehicle  = new Vehicle(v.getMSN());
         setVehicle(v);
 
     }

@@ -37,22 +37,30 @@ public class McPopUpVehicleHandler {
     private final MechanicFacade facade;
     
     /**
-     * Costruttore che invoca alla facade di creare un veicolo
-     * 
-     * @param msnFromView  MSN inserito nella view
+     * Gestisce l'inserimento di un nuovo veicolo a partire dall'MSN fornito dalla view.
+     *
+     * <p>Il metodo delega alla {@code facade} la creazione del {@link it.unipv.sfw.model.vehicle.Vehicle}
+     * (validazioni, normalizzazione e persistenza/log a carico della facade).<br>
+     * Se la facade restituisce {@code null}, viene mostrato un messaggio utente tramite {@code vv.mex()}
+     * e l'operazione termina senza modificare il model. 
+     * In caso di successo il veicolo viene assegnato al model del meccanico tramite {@code m.addVehicle(v)}.</p>
+     *
+     * @param msnFromView MSN inserito nella view
+     *
+     * @see facade.MechanicFacade#createVehicle(String)
+     * @see staff.Mechanic#addVehicle(it.unipv.sfw.model.vehicle.Vehicle)
      */
-    void onInsertVehicle(String msnFromView) throws WrongIDException {
-    	  Vehicle v = facade.createVehicle(msnFromView);
-    	  
-    	    if (v == null) {
-    	    	vv.mex();
-    	    	
-    	        return;
-    	    }
-    	    
-    	  m.addVehicle(v);
-    	  
+    void onInsertVehicle(String msnFromView) {
+        Vehicle v = facade.createVehicle(msnFromView);
+
+        if (v == null) {
+            vv.mex(); // feedback utente (es. errore/avviso)
+            return;
+        }
+
+        m.addVehicle(v);
     }
+
     
     /**
      * Costruttore che inizializza la popup e registra il listener
@@ -105,7 +113,7 @@ public class McPopUpVehicleHandler {
             mv.getInsertVehicleButton().setEnabled(false);
             vv.close();
 
-        } catch (PilotNotFoundException | VehicleNotFoundException | WrongIDException ex) {
+        } catch (PilotNotFoundException | VehicleNotFoundException ex) {
             vv.mex();
         }
     }

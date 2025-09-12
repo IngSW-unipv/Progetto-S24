@@ -42,14 +42,26 @@ public class DefaultMechanicFacade implements MechanicFacade {
 
     // === VEHICLE / PILOT ===
     
-    
-	@Override
-	public Vehicle createVehicle(String msnRaw) {
-		 String msn = msnRaw.trim().toUpperCase();
-		  Vehicle v = vf.create(msn);
-		  
-		return null;
-	}
+    /**
+     * Crea un nuovo {@link it.unipv.sfw.model.vehicle.Vehicle} a partire dall'MSN fornito.
+     *
+     * <p>L'input viene normalizzato e la costruzione effettiva
+     * è delegata alla {@code VehicleFactory} interna ({@code vf})</p>
+     *
+     * @param msnRaw MSN inserito; non deve essere {@code null}
+     * @return il veicolo creato (mai {@code null} se la factory non restituisce {@code null})
+     *
+     * @throws NullPointerException se {@code msnRaw} è {@code null}
+     * @throws IllegalArgumentException se l'MSN, una volta normalizzato, non rispetta le regole della factory
+     * 
+     */
+    @Override
+    public Vehicle createVehicle(String msnRaw) {
+        String msn = msnRaw.trim().toUpperCase();
+        Vehicle v = vf.create(msn);
+        return v;
+    }
+
 	
     /**
      * Assegna un veicolo ad un meccanico e ad un pilota, effettuando
