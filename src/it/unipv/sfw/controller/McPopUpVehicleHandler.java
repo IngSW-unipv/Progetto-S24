@@ -5,6 +5,7 @@ import java.awt.event.ActionListener;
 
 import it.unipv.sfw.exceptions.PilotNotFoundException;
 import it.unipv.sfw.exceptions.VehicleNotFoundException;
+import it.unipv.sfw.exceptions.WrongIDException;
 import it.unipv.sfw.facade.MechanicFacade;
 import it.unipv.sfw.model.staff.Mechanic;
 import it.unipv.sfw.model.staff.Session;
@@ -34,7 +35,25 @@ public class McPopUpVehicleHandler {
     private final Mechanic m;
     private final MechanicView mv;
     private final MechanicFacade facade;
-
+    
+    /**
+     * Costruttore che invoca alla facade di creare un veicolo
+     * 
+     * @param msnFromView  MSN inserito nella view
+     */
+    void onInsertVehicle(String msnFromView) throws WrongIDException {
+    	  Vehicle v = facade.createVehicle(msnFromView);
+    	  
+    	    if (v == null) {
+    	    	vv.mex();
+    	    	
+    	        return;
+    	    }
+    	    
+    	  m.addVehicle(v);
+    	  
+    }
+    
     /**
      * Costruttore che inizializza la popup e registra il listener
      * per avviare il flusso di assegnazione veicolo/pilota.
@@ -52,7 +71,8 @@ public class McPopUpVehicleHandler {
         vv.getSendButton().addActionListener(new ActionListener() {
             @Override 
             public void actionPerformed(ActionEvent e) { 
-            	onSend(); 
+					onSend();
+
             }
         });
     }
@@ -66,16 +86,17 @@ public class McPopUpVehicleHandler {
      *   <li>Aggiorna la {@link Session} e la {@link MechanicView}, abilitando le azioni veicolo</li>
      *   <li>Gestisce gli errori di dominio mostrando messaggi nella UI</li>
      * </ol>
+     * @throws WrongIDException 
      */
-    private void onSend() {
+    private void onSend()  {
         String idPilot = vv.getId_p().getText();
-        String msn     = vv.getMsn().getText().toUpperCase();
+        String msn    = vv.getMsn().getText().toUpperCase();
 
         try {
-            facade.assignVehicleToMechanicAndPilot(m.getID(), idPilot, msn);
-
-            Vehicle v = (m.getVehicles() != null) ? m.getVehicles() : m.addVehicle();
-            v.setMSN(msn);
+        	
+        	onInsertVehicle(msn);
+        	
+            facade.assignVehicleToMechanicAndPilot(m.getID(), idPilot, msn );
 
             Session.getIstance().setId_pilot(idPilot);
 
@@ -84,7 +105,7 @@ public class McPopUpVehicleHandler {
             mv.getInsertVehicleButton().setEnabled(false);
             vv.close();
 
-        } catch (PilotNotFoundException | VehicleNotFoundException ex) {
+        } catch (PilotNotFoundException | VehicleNotFoundException | WrongIDException ex) {
             vv.mex();
         }
     }

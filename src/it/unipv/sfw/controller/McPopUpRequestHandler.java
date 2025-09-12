@@ -52,7 +52,7 @@ public class McPopUpRequestHandler {
         this.m  = m;
         this.facade = facade;
 
-        boolean hasVehicle = (m.getVehicles() != null);
+        boolean hasVehicle = (m.getVehicle() != null);
         if (hasVehicle) { pr.hide(); pr.title(); }
 
         pr.getSendButton().addActionListener(new ActionListener() {
@@ -84,7 +84,7 @@ public class McPopUpRequestHandler {
             msn = pr.getId_v().getText();
             if (msn != null) msn = msn.toUpperCase();
         } else {
-            Vehicle v = m.getVehicles();
+            Vehicle v = m.getVehicle();
             msn = (v != null && v.getMSN() != null) ? v.getMSN().toUpperCase() : null;
         }
 

@@ -74,7 +74,7 @@ public class McPopUpPilotHandler {
         String surname = pv.getSurname().getText().toUpperCase();
         String number  = pv.getNumber().getText();
 
-        Vehicle v = m.getVehicles();
+        Vehicle v = m.getVehicle();
         if (v == null || !v.hasValidMsn()) {
             JOptionPane.showMessageDialog(null,
                 "Assign or create a vehicle (with MSN) before linking a pilot.",

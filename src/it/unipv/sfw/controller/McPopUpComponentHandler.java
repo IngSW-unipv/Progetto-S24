@@ -267,7 +267,7 @@ public class McPopUpComponentHandler {
      * @return il {@link Vehicle} valido oppure null se assente/non valido e mostra messaggio warning
      */
     private Vehicle ensureVehicleWithMSN() {
-        Vehicle v = m.getVehicles();
+        Vehicle v = m.getVehicle();
         if (v == null || !v.hasValidMsn()) {
             JOptionPane.showMessageDialog(
                 null,

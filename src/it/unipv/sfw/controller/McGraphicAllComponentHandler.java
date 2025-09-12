@@ -54,7 +54,7 @@ public class McGraphicAllComponentHandler {
      * </p>
      */
     public void showWindow() {
-        Vehicle v = m.getVehicles();
+        Vehicle v = m.getVehicle();
         if (v == null || v.getMSN() == null || v.getMSN().isBlank()) {
             JOptionPane.showMessageDialog(
                 null,
