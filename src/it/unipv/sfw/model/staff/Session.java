@@ -44,7 +44,7 @@ public final class Session {
     private String surname = "";
     private String operation = "";
     private String strategy = "";
-    private String id_pilot = "";
+    private String idPilot = "";
 
     /** Costruttore privato per impedire l'istanziazione esterna (Singleton). */
     private Session() { }
@@ -74,7 +74,7 @@ public final class Session {
         this.surname = "";
         this.operation = "";
         this.strategy = "";
-        this.id_pilot = "";
+        this.idPilot = "";
     }
 
     // --- Getter/Setter stato utente ---
@@ -113,10 +113,10 @@ public final class Session {
     public void setStrategy(String strategy) { this.strategy = strategy; }
 
     /** @return ID del pilota associato alla sessione */
-    public String getId_pilot() { return id_pilot; }
+    public String getId_pilot() { return idPilot; }
 
     /** @param id_pilot ID del pilota da associare alla sessione */
-    public void setId_pilot(String id_pilot) { this.id_pilot = id_pilot; }
+    public void setId_pilot(String id_pilot) { this.idPilot = id_pilot; }
 
     /** @return nome dell’utente autenticato */
     public String getName() { return name; }
