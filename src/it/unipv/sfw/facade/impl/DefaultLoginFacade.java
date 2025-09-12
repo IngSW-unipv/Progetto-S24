@@ -83,19 +83,16 @@ public class DefaultLoginFacade implements LoginFacade {
         }
 
         // 3) Mappo il ruolo e costruisco la sottoclasse Staff
-        String normRole = (row[IDX_ROLE] == null ? "" : row[IDX_ROLE].trim().toUpperCase());
+        String role = (row[IDX_ROLE] == null ? "" : row[IDX_ROLE].trim().toUpperCase());
         Staff user;
-        switch (normRole) {
+        switch (role) {
             case "MECHANIC"     -> user = new Mechanic(row[IDX_ID], storedPw);
             case "STRATEGIST"   -> user = new Strategist(row[IDX_ID], storedPw);
             case "WAREHOUSEMAN" -> user = new Warehouseman(row[IDX_ID], storedPw);
             default             -> throw new AccountNotFoundException(id); // ruolo sconosciuto
         }
 
-        // 4) Aggiorna lo stato della Session
-        Session.getIstance().setAuthenticatedUser(user, row[IDX_NAME], row[IDX_SURNAME]);
-
-        // 5) Ritorna oggetto per routing/UI
+        // 4) Ritorna oggetto per routing/UI
         return new AuthResult(
                 row[IDX_ID],
                 user.getType(),
@@ -124,12 +121,4 @@ public class DefaultLoginFacade implements LoginFacade {
         return Session.getIstance().getCurrentRole();
     }
 
-    /**
-     * Effettua il logout dell’utente corrente,
-     * azzerando lo stato della {@link Session}.
-     */
-    @Override
-    public void logout() {
-        Session.getIstance().clearAuthentication();
-    }
 }

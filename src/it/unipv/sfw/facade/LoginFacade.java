@@ -34,8 +34,4 @@ public interface LoginFacade {
      */
     Staff.TypeRole currentRoleOrNull();
 
-    /**
-     * Effettua il logout pulendo la Session.
-     */
-    void logout();
 }

@@ -10,6 +10,7 @@ import it.unipv.sfw.exceptions.WrongPasswordException;
 import it.unipv.sfw.facade.AuthResult;
 import it.unipv.sfw.facade.FacadeFactory;
 import it.unipv.sfw.facade.LoginFacade;
+import it.unipv.sfw.model.staff.Session;
 import it.unipv.sfw.model.staff.Staff;
 import it.unipv.sfw.view.LoginView;
 
@@ -50,17 +51,37 @@ public class LoginController extends AbsController {
         try {
             // 1) Login tramite Facade
             AuthResult result = loginFacade.authenticate(getUsername(), getPassword());
-
-            // 2) Ruolo corrente
+            
+            //2) Setting Name e Surname in Session
+            updateNameSurname(result.getName(),result.getSurname());
+            
+            // 3) Ruolo corrente
             Staff.TypeRole role = result.getRole();
 
-            // 3) Caricamento del controller in base al ruolo
+            // 4) Caricamento del controller in base al ruolo
             ControllerManager.getInstance().loadControllerForRole(role);
 
         } catch (WrongPasswordException | AccountNotFoundException err) {
             System.out.println(err);
             logv.upError(); // UI: mostra messaggio di errore
         }
+    }
+    
+    /**
+     * Imposta in {@link it.unipv.sfw.model.staff.Session} i metadati anagrafici
+     * (nome e cognome) dell'utente corrente.
+     * <p>
+     * Eventuali valori {@code null} sono gestiti da {@code Session#setName(..)} e
+     * {@code Session#setSurname(..)} convertendoli in stringhe vuote.
+     * </p>
+     *
+     * @param name   
+     * @param surname
+     */
+    private void updateNameSurname(String name, String surname) {
+       Session s = Session.getIstance();
+        s.setName(name);
+        s.setSurname(surname);
     }
 
     /**
