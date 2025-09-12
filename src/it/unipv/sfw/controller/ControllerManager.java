@@ -79,13 +79,13 @@ public class ControllerManager {
      * Mappa di corrispondenza 1:1 tra i ruoli di dominio {@link Staff.TypeRole}
      * e i rispettivi tipi di controller dell’interfaccia {@link AbsController.TypeController}.
      */
-    private static final Map<Staff.TypeRole, AbsController.TypeController> ROLE_TO_CONTROLLER =
+    private static final Map<Staff.TypeRole, AbsController.TypeController> roleToController =
             new EnumMap<>(Staff.TypeRole.class);
 
     static {
-        ROLE_TO_CONTROLLER.put(Staff.TypeRole.MECHANIC,     AbsController.TypeController.MECHANIC);
-        ROLE_TO_CONTROLLER.put(Staff.TypeRole.STRATEGIST,   AbsController.TypeController.STRATEGIST);
-        ROLE_TO_CONTROLLER.put(Staff.TypeRole.WAREHOUSEMAN, AbsController.TypeController.WAREHOUSEMAN);
+    	roleToController.put(Staff.TypeRole.MECHANIC,     AbsController.TypeController.MECHANIC);
+    	roleToController.put(Staff.TypeRole.STRATEGIST,   AbsController.TypeController.STRATEGIST);
+    	roleToController.put(Staff.TypeRole.WAREHOUSEMAN, AbsController.TypeController.WAREHOUSEMAN);
     }
 
     /**
@@ -116,7 +116,7 @@ public class ControllerManager {
      * @throws IllegalArgumentException se il ruolo non è mappato in {@link #ROLE_TO_CONTROLLER}
      */
     public void loadControllerForRole(Staff.TypeRole role) {
-        AbsController.TypeController type = ROLE_TO_CONTROLLER.get(role);
+        AbsController.TypeController type = roleToController.get(role);
         if (type == null) {
             throw new IllegalArgumentException("Ruolo non supportato: " + role);
         }
