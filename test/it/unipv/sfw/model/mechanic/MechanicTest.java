@@ -15,8 +15,8 @@ class MechanicTest {
 	@Test
 	void addVehicleTest() {
 		Mechanic m = new Mechanic("MM01", "MMpwd123");
-
-		Vehicle v = m.addVehicle();
+		Vehicle v = new Vehicle("SF24-001");
+		m.addVehicle(v);
 		
 		assertTrue(v != null);
 		
