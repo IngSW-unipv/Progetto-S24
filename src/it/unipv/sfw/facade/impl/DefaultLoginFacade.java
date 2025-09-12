@@ -94,8 +94,7 @@ public class DefaultLoginFacade implements LoginFacade {
 
         // 4) Ritorna oggetto per routing/UI
         return new AuthResult(
-                row[IDX_ID],
-                user.getType(),
+                user,
                 row[IDX_NAME],
                 row[IDX_SURNAME]
         );

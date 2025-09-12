@@ -1,67 +1,92 @@
 package it.unipv.sfw.facade;
 
+import java.util.Objects;
+
 import it.unipv.sfw.model.staff.Staff;
+import it.unipv.sfw.model.staff.Staff.TypeRole;
 
 /**
  * Risultato dell'operazione di autenticazione.
  * <p>
- * Incapsula i dati minimi dell'utente autenticato, evitando che i
- * {@code Controller} debbano interrogare direttamente la {@link it.unipv.sfw.model.staff.Session}.
+ * Incapsula l'utente autenticato come istanza tipizzata di {@link Staff}
+ * (es. {@code Mechanic}, {@code Strategist}, {@code Warehouseman}) e alcuni
+ * metadati leggeri utili alla UI (nome, cognome).
  * </p>
- * <p>
- * Contiene:
+ *
+ * <h2>Perché così</h2>
  * <ul>
- *   <li>ID dell'utente</li>
- *   <li>Ruolo dell'utente ({@link Staff.TypeRole})</li>
- *   <li>Nome</li>
- *   <li>Cognome</li>
+ *   <li>Il riferimento a {@link Staff} consente ai {@code Controller} di impostare
+ *       la {@link it.unipv.sfw.model.staff.Session} senza dover interrogare direttamente la Facade.</li>
+ *   <li>Per evitare inconsistenze, <b>ID</b> e <b>ruolo</b> vengono <b>derivati</b> dall'istanza di {@code Staff}
+ *       (non sono duplicati nei campi).</li>
+ *   <li>L'oggetto è <b>immutabile</b> e non contiene la password.</li>
  * </ul>
- * </p>
+ *
+ * <h2>Uso tipico (nel LoginController)</h2>
+ * <pre>{@code
+ * AuthResult res = loginFacade.authenticate(id, pwd);
+ * Session.getIstance().setAuthenticatedUser(res.getUser(), res.getName(), res.getSurname());
+ * controllerManager.loadControllerForRole(res.getRole());
+ * }</pre>
  */
-public class AuthResult {
+public final class AuthResult {
 
-    private final String userId;
-    private final Staff.TypeRole role;
+    /** Utente autenticato (sottoclasse concreta di {@link Staff}). */
+    private final Staff user;
+
+    /** Metadati leggeri per la UI. */
     private final String name;
     private final String surname;
 
     /**
      * Costruisce un nuovo risultato di autenticazione.
      *
-     * @param userId  identificativo univoco dell'utente
-     * @param role    ruolo dell'utente autenticato
-     * @param name    nome dell'utente
-     * @param surname cognome dell'utente
+     * @param user    istanza autenticata di {@link Staff} (non {@code null}); non contiene la password
+     * @param name    nome utente (accetta {@code null} → stringa vuota)
+     * @param surname cognome utente (accetta {@code null} → stringa vuota)
+     * @throws NullPointerException se {@code user} è {@code null}
      */
-    public AuthResult(String userId, Staff.TypeRole role, String name, String surname) {
-        this.userId = userId;
-        this.role = role;
-        this.name = name;
-        this.surname = surname;
+    public AuthResult(Staff user, String name, String surname) {
+        this.user = user;
+        this.name = (name != null ? name : "");
+        this.surname = (surname != null ? surname : "");
+    }
+
+	/**
+     * Restituisce l'istanza autenticata di {@link Staff}.
+     * <p>Può essere usata per aggiornare la {@link it.unipv.sfw.model.staff.Session}.</p>
+     *
+     * @return utente autenticato
+     */
+    public Staff getUser() {
+        return user;
     }
 
     /**
      * Restituisce l'ID dell'utente autenticato.
+     * <p>Derivato da {@link Staff#getID()} per evitare duplicazioni.</p>
      *
-     * @return ID utente
+     * @return ID utente (mai {@code null})
      */
+    
     public String getUserId() {
-        return userId;
+        return user.getID();
     }
 
     /**
      * Restituisce il ruolo dell'utente autenticato.
+     * <p>Derivato da {@link Staff#getType()} per evitare duplicazioni.</p>
      *
-     * @return ruolo dell'utente
+     * @return ruolo dell'utente (mai {@code null})
      */
     public Staff.TypeRole getRole() {
-        return role;
+        return user.getType();
     }
 
     /**
      * Restituisce il nome dell'utente autenticato.
      *
-     * @return nome
+     * @return nome (mai {@code null}; eventualmente stringa vuota)
      */
     public String getName() {
         return name;
@@ -70,7 +95,7 @@ public class AuthResult {
     /**
      * Restituisce il cognome dell'utente autenticato.
      *
-     * @return cognome
+     * @return cognome (mai {@code null}; eventualmente stringa vuota)
      */
     public String getSurname() {
         return surname;

@@ -47,6 +47,8 @@ public class LoginController extends AbsController {
      */
     private void accedi() {
         logv = (LoginView) view;
+        
+        Session s = Session.getIstance();
 
         try {
             // 1) Login tramite Facade
@@ -55,10 +57,13 @@ public class LoginController extends AbsController {
             //2) Setting Name e Surname in Session
             updateNameSurname(result.getName(),result.getSurname());
             
-            // 3) Ruolo corrente
+            //3) Autentica User
+            s.setAuthenticatedUser(result.getUser(), result.getName(), result.getSurname());
+            
+            // 4) Ruolo corrente
             Staff.TypeRole role = result.getRole();
 
-            // 4) Caricamento del controller in base al ruolo
+            // 5) Caricamento del controller in base al ruolo
             ControllerManager.getInstance().loadControllerForRole(role);
 
         } catch (WrongPasswordException | AccountNotFoundException err) {
