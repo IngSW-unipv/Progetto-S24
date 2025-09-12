@@ -15,12 +15,7 @@ import it.unipv.sfw.model.vehicle.Vehicle;
  */
 public class Mechanic extends Staff {
 
-    /*
-     * MSN è il numero di serie dell'autovettura
-     */
-    private String MSN;
-
-    private Vehicle vehicles;
+    private Vehicle vehicle;
 
     private ArrayList<Integer> allTimePitStop = new ArrayList<>();
     private ArrayList<Integer> anomalyTime = new ArrayList<>();
@@ -32,20 +27,16 @@ public class Mechanic extends Staff {
      */
     public Mechanic(String id, String pwd) {
         super(id, pwd);
-
+        
     }
 
     /**
      * Aggiunge un nuovo veicolo.
-     * Genera un numero di serie (MSN) e crea un nuovo oggetto {@link Vehicle}.
-     * @return L'oggetto {@link Vehicle} creato.
+     * Sarà il veicolo attribuito al meccanico
      */
-    public Vehicle addVehicle() {
-
-        MSN = getMSN(); // Potrebbe essere necessario generare un nuovo MSN qui
-        Vehicle v = new Vehicle(MSN);
-
-        return vehicles = v;
+    public  void addVehicle(Vehicle v) {
+        Vehicle vehicle  = new Vehicle(v.getMSN());
+        setVehicle(v);
 
     }
 
@@ -147,16 +138,16 @@ public class Mechanic extends Staff {
      * Restituisce il veicolo assegnato al meccanico.
      * @return Il veicolo assegnato.
      */
-    public Vehicle getVehicles() {
-        return vehicles;
+    public Vehicle getVehicle() {
+        return vehicle;
     }
 
     /**
      * Imposta il veicolo assegnato al meccanico.
      * @param vehicles Il veicolo da assegnare.
      */
-    public void setVehicles(Vehicle vehicles) {
-        this.vehicles = vehicles;
+    public void setVehicle(Vehicle vehicle) {
+        this.vehicle = vehicle;
     }
 
     /**
@@ -173,22 +164,6 @@ public class Mechanic extends Staff {
      */
     public void setAllTimePitStop(ArrayList<Integer> allTimePitStop) {
         this.allTimePitStop = allTimePitStop;
-    }
-
-    /**
-     * Restituisce il numero di serie (MSN) del veicolo.
-     * @return Il numero di serie del veicolo.
-     */
-    public String getMSN() {
-        return MSN;
-    }
-
-    /**
-     * Imposta il numero di serie (MSN) del veicolo.
-     * @param mSN Il numero di serie del veicolo.
-     */
-    public void setMSN(String mSN) {
-        MSN = mSN;
     }
 
     /**
