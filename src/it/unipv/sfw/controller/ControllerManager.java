@@ -103,6 +103,7 @@ public class ControllerManager {
         currentController = ControllerFactory.createController(controllerType);
         currentController.initialize();
         frame.loadView(currentController.getView());
+        
     }
 
     /**
@@ -121,6 +122,7 @@ public class ControllerManager {
             throw new IllegalArgumentException("Ruolo non supportato: " + role);
         }
         loadController(type);
+        closeWindow();
     }
 
     /**
