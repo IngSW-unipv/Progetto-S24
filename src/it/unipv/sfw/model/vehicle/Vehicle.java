@@ -66,13 +66,13 @@ public class Vehicle {
 
         int cond = cmp.getWear();
 
-        if (cond == 100 || cond >= 80) {
+        if (cond >= 80) {
             component.add(cmp);
             System.out.println("Componente ottime condizioni");
             System.out.println("Componente inserito con successo");
             System.out.println(component.toString());
             result = 1;
-        } else if (cond > 80 || cond >= 50) {
+        } else if (cond >= 50) {
             System.out.println("Componente buone condizioni");
             System.out.println("Componente inserito con successo");
             component.add(cmp);
@@ -118,7 +118,7 @@ public class Vehicle {
 
         for (Components c : component) {
             if (c.getName().equalsIgnoreCase(name)) {
-                // provvisorio
+
                 System.out.println(c);
                 return;
             }
