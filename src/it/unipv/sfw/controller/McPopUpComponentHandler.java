@@ -122,8 +122,9 @@ public class McPopUpComponentHandler {
             final int result;
             try {
                 result = m.addComponent(v, c);
-            } catch (DuplicateComponentException dup) {
-                pc.mex();   // già inserito lato model
+            } catch (DuplicateComponentException dce) {
+                pc.mex();
+                System.err.println("DuplicateComponentException: " + dce.getMessage());
                 return;
             }
 
@@ -133,7 +134,7 @@ public class McPopUpComponentHandler {
                 return;
             }
 
-            // 2) PERSISTENZA: qui addComponent ritorna AddComponentResult (NON Outcome!)
+            // 2) PERSISTENZA
             AddComponentResult res = facade.addComponent(
                 m.getID(),
                 v.getMSN().toUpperCase(),
@@ -150,14 +151,14 @@ public class McPopUpComponentHandler {
                     pc.clearComponents(pc.getDataPanel());
                 }
                 case NEEDS_REPLACEMENT -> {
-                    // nel tuo DefaultMechanicFacade questo capita quando status="WORN" e wearFromModelOrNull==null
+                  
                     handleComponentReplacementRequest(v);
                 }
                 case INVALID_INPUT -> {
-                    pc.mex();  // input non valido (puoi specializzare il messaggio)
+                    pc.mex();  // input non valido
                 }
                 default -> {
-                    pc.mex1(); // fallback generico
+                    pc.mex1();
                     pc.clearComponents(pc.getDataPanel());
                 }
             }
