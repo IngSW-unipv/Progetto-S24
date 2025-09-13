@@ -5,6 +5,7 @@ import it.unipv.sfw.exceptions.PilotNotFoundException;
 import it.unipv.sfw.exceptions.VehicleNotFoundException;
 import it.unipv.sfw.exceptions.WrongIDException;
 import it.unipv.sfw.exceptions.WrongRequestException;
+import it.unipv.sfw.facade.AddComponentResult.Outcome;
 import it.unipv.sfw.model.vehicle.Vehicle;
 
 /**

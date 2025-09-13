@@ -7,6 +7,7 @@ import it.unipv.sfw.exceptions.VehicleNotFoundException;
 import it.unipv.sfw.exceptions.WrongIDException;
 import it.unipv.sfw.exceptions.WrongRequestException;
 import it.unipv.sfw.facade.AddComponentResult;
+import it.unipv.sfw.facade.AddComponentResult.Outcome;
 import it.unipv.sfw.facade.MechanicFacade;
 import it.unipv.sfw.facade.VehicleFactory;
 import it.unipv.sfw.model.vehicle.Vehicle;
@@ -165,34 +166,45 @@ public class DefaultMechanicFacade implements MechanicFacade {
                                            Integer wearFromModelOrNull)
             throws ComponentNotFoundException {
 
-        String msn = vehicleMsnUpper == null ? null : vehicleMsnUpper.toUpperCase();
-        String name = componentNameUpper == null ? null : componentNameUpper.toUpperCase();
+        String msn    = vehicleMsnUpper    == null ? null : vehicleMsnUpper.toUpperCase();
+        String name   = componentNameUpper == null ? null : componentNameUpper.toUpperCase();
         String status = declaredStatusUpper == null ? null : declaredStatusUpper.toUpperCase();
 
+        // Validazione base
         if (msn == null || msn.isBlank()
                 || name == null || name.isBlank()
                 || status == null || status.isBlank()) {
             return new AddComponentResult(AddComponentResult.Outcome.INVALID_INPUT);
         }
 
+        // Verifiche lato DAO (esistenza/validità)
         md.checkCompo(String.valueOf(componentId), name, status);
 
-        if (wearFromModelOrNull != null) {
-            boolean ok = md.insertComponent(String.valueOf(componentId), msn);
-            if (ok) {
-                md.updateWear(wearFromModelOrNull, String.valueOf(componentId));
-            }
-            md.insertLogEvent(mechanicId, "INSERT COMPONENT ID: " + componentId);
-            return new AddComponentResult(AddComponentResult.Outcome.INSERTED_OK);
-        }
-
-        if ("WORN".equalsIgnoreCase(status)) {
-            md.insertLogEvent(mechanicId, "REQUEST REPLACEMENT SUGGESTED FOR COMPONENT ID: " + componentId);
+        if (wearFromModelOrNull != null && wearFromModelOrNull < 50) {
+            md.insertLogEvent(mechanicId,
+                    "REPLACEMENT NEEDED: wear=" + wearFromModelOrNull + " for component " + componentId);
+            
+            // NON inserisce  il componente sul veicolo se è da sostituire
             return new AddComponentResult(AddComponentResult.Outcome.NEEDS_REPLACEMENT);
         }
 
-        return new AddComponentResult(AddComponentResult.Outcome.INVALID_INPUT);
+        // Inserimento DB (se non da sostituire)
+        boolean ok = md.insertComponent(String.valueOf(componentId), msn);
+        if (!ok) {
+        	
+            md.insertLogEvent(mechanicId, "INSERT COMPONENT FAILED/DUPLICATE ID: " + componentId);
+            return new AddComponentResult(AddComponentResult.Outcome.INVALID_INPUT);
+        }
+
+        // Aggiornamento wear se fornito
+        if (wearFromModelOrNull != null) {
+            md.updateWear(wearFromModelOrNull, String.valueOf(componentId));
+        }
+
+        md.insertLogEvent(mechanicId, "INSERT COMPONENT ID: " + componentId);
+        return new AddComponentResult(AddComponentResult.Outcome.INSERTED_OK);
     }
+
 
     /**
      * Rimuove un componente da un veicolo dopo averne verificato l'esistenza

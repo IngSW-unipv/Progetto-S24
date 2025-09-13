@@ -7,6 +7,8 @@ import javax.swing.JOptionPane;
 
 import it.unipv.sfw.exceptions.ComponentNotFoundException;
 import it.unipv.sfw.exceptions.DuplicateComponentException;
+import it.unipv.sfw.facade.AddComponentResult;
+import it.unipv.sfw.facade.AddComponentResult.Outcome;
 import it.unipv.sfw.facade.MechanicFacade;
 import it.unipv.sfw.model.component.Components;
 import it.unipv.sfw.model.staff.Mechanic;
@@ -86,12 +88,7 @@ public class McPopUpComponentHandler {
         pc.getSendButton().addActionListener(new ActionListener() {
             @Override 
             public void actionPerformed(ActionEvent e) {
-                try {
-					handleAddComponent();
-				} catch (DuplicateComponentException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
+                handleAddComponent();
             }
         });
     }
@@ -108,23 +105,36 @@ public class McPopUpComponentHandler {
      *
      * @throws DuplicateComponentException se viene rilevato un duplicato
      */
-    private void handleAddComponent() throws DuplicateComponentException {
+    private void handleAddComponent() {
         Vehicle v = ensureVehicleWithMSN();
         if (v == null) return;
 
         try {
-            String idCStr = pc.getIdC().getText();
-            String name   = pc.getNameC().getText().toUpperCase();
-            String status = pc.getStatusC().getText().toUpperCase();
+            String idCStr = pc.getIdC().getText().trim();
+            String name   = pc.getNameC().getText().trim().toUpperCase();
+            String status = pc.getStatusC().getText().trim().toUpperCase();
 
             int idc = Integer.parseInt(idCStr);
             c = new Components(idc, name);
             c.setReplacementStatus(status);
 
-            // calcola wear/esito
-            int result = m.addComponent(v, c); // 1/2 ok, 3 worn
+            // 1) MODEL: può lanciare DuplicateComponentException (nome già presente nel Vehicle)
+            final int result;
+            try {
+                result = m.addComponent(v, c);
+            } catch (DuplicateComponentException dup) {
+                pc.mex();   // già inserito lato model
+                return;
+            }
 
-            var res = facade.addComponent(
+            // Se il model dice "usurato" (3) NON inserire a DB: apri direttamente la richiesta
+            if (result == 3) {
+                handleComponentReplacementRequest(v);
+                return;
+            }
+
+            // 2) PERSISTENZA: qui addComponent ritorna AddComponentResult (NON Outcome!)
+            AddComponentResult res = facade.addComponent(
                 m.getID(),
                 v.getMSN().toUpperCase(),
                 c.getIdComponent(),
@@ -133,21 +143,21 @@ public class McPopUpComponentHandler {
                 c.getWear()
             );
 
+            // 3) UI sugli esiti
             switch (res.getOutcome()) {
                 case INSERTED_OK -> {
-                    pc.mex2();
+                    pc.mex2(); // inserito ok
                     pc.clearComponents(pc.getDataPanel());
                 }
                 case NEEDS_REPLACEMENT -> {
-                    if (result == 3) {
-                        handleComponentReplacementRequest(v);
-                    } else {
-                        pc.mex1();
-                        pc.clearComponents(pc.getDataPanel());
-                    }
+                    // nel tuo DefaultMechanicFacade questo capita quando status="WORN" e wearFromModelOrNull==null
+                    handleComponentReplacementRequest(v);
+                }
+                case INVALID_INPUT -> {
+                    pc.mex();  // input non valido (puoi specializzare il messaggio)
                 }
                 default -> {
-                    pc.mex1();
+                    pc.mex1(); // fallback generico
                     pc.clearComponents(pc.getDataPanel());
                 }
             }
