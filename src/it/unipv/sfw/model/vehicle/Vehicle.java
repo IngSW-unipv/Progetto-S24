@@ -44,15 +44,15 @@ public class Vehicle {
      *         1 se il componente è in ottime condizioni ed è stato aggiunto,
      *         2 se il componente è in buone condizioni ed è stato aggiunto,
      *         3 se il componente è usurato e non è stato aggiunto.
-     * @throws DuplicateComponentException Se si tenta di aggiungere un componente con lo stesso nome di uno già presente.
+     * @throws DuplicateComponentException Se si tenta di aggiungere un componente con lo stesso ID di uno già presente.
      */
     public int addComponent(Components cmp) throws DuplicateComponentException {
         int result = 0;
 
-        // Controllo preliminare per nomi duplicati
+        // Controllo preliminare per ID duplicati
         for (Components existingComponent : component) {
-            if (existingComponent.getName().equals(cmp.getName())) {
-                throw new DuplicateComponentException("Component with name '" + cmp.getName() + "' already exists.");
+            if (existingComponent.getIdComponent() == cmp.getIdComponent()) {
+                throw new DuplicateComponentException("Component with ID '" + cmp.getIdComponent() + "' already exists.");
             }
         }
 
@@ -60,9 +60,10 @@ public class Vehicle {
         System.out.println(component.toString());
         System.out.println("" + cmp.getIdComponent() + "- " + cmp.getName() + "- STATUS " + cmp.getReplacementStatus());
 
+        // calcolo usura delegato al veicolo
         cmp.setWear(cmp.calculateWear(MSN));
 
-        System.out.println("wear =  " + cmp.getWear() + "@vehicle");
+        System.out.println("wear =  " + cmp.getWear() + " @vehicle");
 
         int cond = cmp.getWear();
 
@@ -86,6 +87,7 @@ public class Vehicle {
         return result;
     }
 
+
     /**
      * Rimuove un componente dal veicolo.
      * @param cmp Il componente da rimuovere.
@@ -98,7 +100,7 @@ public class Vehicle {
 
         while (iterator.hasNext()) {
             Components comp = iterator.next();
-            if (comp.getName().equals(cmp.getName())) {
+            if (comp.getIdComponent() == cmp.getIdComponent()) {
                 iterator.remove(); // Rimuove l'elemento corrente
                 found = true;
                 break; // Interrompe la ricerca dopo la rimozione
@@ -106,9 +108,11 @@ public class Vehicle {
         }
 
         if (!found) {
-            throw new ComponentNotFoundException(cmp.getName());
+          
+            throw new ComponentNotFoundException(String.valueOf(cmp.getIdComponent()));
         }
     }
+
 
     /**
      * Restituisce un componente in base al nome.
