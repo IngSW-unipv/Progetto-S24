@@ -1,37 +1,24 @@
 package it.unipv.sfw.facade;
 
-import java.util.Objects;
-
 import it.unipv.sfw.model.staff.Staff;
-import it.unipv.sfw.model.staff.Staff.TypeRole;
 
 /**
  * Risultato dell'operazione di autenticazione.
  * <p>
  * Incapsula l'utente autenticato come istanza tipizzata di {@link Staff}
- * (es. {@code Mechanic}, {@code Strategist}, {@code Warehouseman}) e alcuni
- * metadati leggeri utili alla UI (nome, cognome).
+  *e alcuni metadati leggeri utili alla UI (nome, cognome).
  * </p>
  *
- * <h2>Perché così</h2>
- * <ul>
  *   <li>Il riferimento a {@link Staff} consente ai {@code Controller} di impostare
  *       la {@link it.unipv.sfw.model.staff.Session} senza dover interrogare direttamente la Facade.</li>
  *   <li>Per evitare inconsistenze, <b>ID</b> e <b>ruolo</b> vengono <b>derivati</b> dall'istanza di {@code Staff}
  *       (non sono duplicati nei campi).</li>
  *   <li>L'oggetto è <b>immutabile</b> e non contiene la password.</li>
- * </ul>
  *
- * <h2>Uso tipico (nel LoginController)</h2>
- * <pre>{@code
- * AuthResult res = loginFacade.authenticate(id, pwd);
- * Session.getIstance().setAuthenticatedUser(res.getUser(), res.getName(), res.getSurname());
- * controllerManager.loadControllerForRole(res.getRole());
- * }</pre>
  */
 public final class AuthResult {
 
-    /** Utente autenticato (sottoclasse concreta di {@link Staff}). */
+    /** Utente autenticato */
     private final Staff user;
 
     /** Metadati leggeri per la UI. */
