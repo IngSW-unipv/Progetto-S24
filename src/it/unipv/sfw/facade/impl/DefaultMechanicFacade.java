@@ -45,7 +45,7 @@ public class DefaultMechanicFacade implements MechanicFacade {
     // === VEHICLE / PILOT ===
     
     /**
-     * Crea un nuovo {@link it.unipv.sfw.model.vehicle.Vehicle} a partire dall'MSN fornito.
+     * Crea un nuovo veicolo  a partire dall'MSN fornito.
      *
      * <p>L'input viene normalizzato e la costruzione effettiva
      * è delegata alla {@code VehicleFactory} interna ({@code vf})</p>
