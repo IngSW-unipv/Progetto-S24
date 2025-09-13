@@ -103,7 +103,6 @@ public class McPopUpComponentHandler {
      *   <li>Gestisce gli esiti ({@link AddComponentOutcome}) e le anomalie</li>
      * </ol>
      *
-     * @throws DuplicateComponentException se viene rilevato un duplicato
      */
     private void handleAddComponent() {
         Vehicle v = ensureVehicleWithMSN();
