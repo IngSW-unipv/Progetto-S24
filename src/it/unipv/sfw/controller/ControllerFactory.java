@@ -24,6 +24,12 @@ public final class ControllerFactory {
     /**
      * Mappa che associa ciascun tipo di controller a un {@link Supplier}
      * responsabile della sua creazione.
+     * 
+     * Chiave: l’enum TypeController
+     * 
+     * Valore: Il ? extends AbsController consente che cada lì qualsiasi sottoclasse (LoginController, MechanicController, …)
+     * 
+     * Viene utilizzata questa logica per evitare una esecuzione decisionale
      */
     private static final Map<AbsController.TypeController, Supplier<? extends AbsController>> SUPPLIERS =
             new EnumMap<>(AbsController.TypeController.class);
