@@ -27,7 +27,7 @@ public final class ControllerFactory {
      * 
      * Chiave: l’enum TypeController
      * 
-     * Valore: Il ? extends AbsController consente che cada lì qualsiasi sottoclasse (LoginController, MechanicController, …)
+     * Valore: Il ? extends AbsController consente che cada lì qualsiasi sottoclasse (LoginController, MechanicController,etc)
      * 
      * Viene utilizzata questa logica per evitare una esecuzione decisionale
      */
